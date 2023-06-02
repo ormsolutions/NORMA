@@ -1373,6 +1373,68 @@
 			</plx:function>
 		</plx:class>
 	</xsl:template>
+	<xsl:template match="cvg:DynamicRule" mode="GenerateClasses">
+		<plx:class name="{name()}" partial="true" visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="{name()} verbalization"/>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="{name()} verbalization"/>
+			</plx:trailingInfo>
+			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<plx:function name="GetVerbalization" visibility="private">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
+				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
+				</plx:param>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
+				<plx:param name="sign" dataTypeName="VerbalizationSign"/>
+				<plx:returns dataTypeName=".boolean"/>
+
+				<plx:pragma type="region" data="Preliminary"/>
+				<xsl:call-template name="DeclareIsNegative"/>
+				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
+				<plx:local dataTypeName="StringBuilder" name="sbTemp">
+					<plx:initialize>
+						<plx:nullKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="pathVerbalizer" dataTypeName="RolePathVerbalizer"/>
+				<plx:local name="pathNode" dataTypeName="RolePathNode"/>
+				<plx:local name="pathedRole" dataTypeName="PathedRole"/>
+				<plx:pragma type="closeRegion" data="Preliminary"/>
+				<plx:pragma type="region" data="Pattern Matches"/>
+				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
+					<xsl:with-param name="TopLevel" select="true()"/>
+				</xsl:apply-templates>
+				<plx:pragma type="closeRegion" data="Pattern Matches"/>
+				<xsl:if test="not(cvg:ErrorReportHere)">
+					<xsl:call-template name="CheckErrorConditions">
+						<xsl:with-param name="Primary" select="false()"/>
+						<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+						<xsl:with-param name="BeginVerbalization" select="true()"/>
+					</xsl:call-template>
+				</xsl:if>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</xsl:template>
 	<xsl:template match="cvg:ObjectType" mode="GenerateClasses">
 		<plx:class name="{name()}" partial="true" visibility="public">
 			<plx:leadingInfo>
@@ -1641,6 +1703,10 @@
 	<xsl:template match="cvg:DerivationPath" mode="ConstraintVerbalization">
 		<xsl:param name="VariablePrefix"/>
 		<xsl:param name="VariableDecorator"/>
+		<xsl:variable name="useThisContext" select="@thisContext[.=1 or .='true']"/>
+		<xsl:if test="$useThisContext">
+			<xsl:call-template name="EnsureTempStringBuilder"/>
+		</xsl:if>
 		<plx:assign>
 			<plx:left>
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
@@ -1651,10 +1717,24 @@
 						<plx:nameRef name="pathVerbalizer"/>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:nameRef name="derivationRule"/>
+						<xsl:choose>
+							<xsl:when test="$useThisContext">
+								<plx:thisKeyword/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:nameRef name="derivationRule"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:passParam>
 					<plx:passParam>
-						<plx:nullKeyword/>
+						<xsl:choose>
+							<xsl:when test="$useThisContext">
+								<plx:nameRef name="sbTemp"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:nullKeyword/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:passParam>
 				</plx:callInstance>
 			</plx:right>
@@ -9509,6 +9589,43 @@
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasVerbalizableDynamicRulePath'">
+					<plx:callInstance name="CanVerbalizeDynamicRule" type="property">
+						<plx:callObject>
+							<plx:inlineStatement dataTypeName="RolePathVerbalizer">
+								<plx:assign>
+									<plx:left>
+										<plx:nameRef name="pathVerbalizer"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic dataTypeName="RolePathVerbalizer" name="Create">
+											<plx:passParam>
+												<plx:thisKeyword/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:callNew dataTypeName="StandardRolePathRenderer">
+													<plx:passParam>
+														<plx:nameRef name="snippets"/>
+													</plx:passParam>
+													<plx:passParam>
+														<plx:nameRef name="verbalizationContext" type="parameter"/>
+													</plx:passParam>
+													<plx:passParam>
+														<plx:callInstance name="FormatProvider" type="property">
+															<plx:callObject>
+																<plx:nameRef name="writer"/>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:passParam>
+												</plx:callNew>
+											</plx:passParam>
+										</plx:callStatic>
+									</plx:right>
+								</plx:assign>
+							</plx:inlineStatement>
+						</plx:callObject>
+					</plx:callInstance>
+				</xsl:when>
 				<xsl:when test="$ConditionalMatch='HasStoredDerivationRule'">
 					<plx:binaryOperator type="booleanAnd">
 						<plx:left>
@@ -9636,6 +9753,93 @@
 									</plx:right>
 								</plx:assign>
 							</plx:inlineStatement>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='DynamicRuleHasHeadSection' or $ConditionalMatch='DynamicRuleHasAddSection' or $ConditionalMatch='DynamicRuleHasDeleteSection' or $ConditionalMatch='DynamicRuleHasConditionSection'">
+					<plx:callInstance name="{$ConditionalMatch}" type="property">
+						<plx:callObject>
+							<plx:nameRef name="pathVerbalizer"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='DynamicRuleHasStandaloneConditionSection'">
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:callInstance name="DynamicRuleHasConditionSection" type="property">
+								<plx:callObject>
+									<plx:nameRef name="pathVerbalizer"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callInstance name="DynamicRuleHasHeadSection" type="property">
+									<plx:callObject>
+										<plx:nameRef name="pathVerbalizer"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:unaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='DynamicStateAdded' or $ConditionalMatch='DynamicStateDeleted' or $ConditionalMatch='DynamicStateInitial'">
+					<plx:binaryOperator type="equality">
+						<plx:left>
+							<plx:nameRef name="dynamicState"/>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic dataTypeName="DynamicRuleNodeState" type="field" name="Added">
+								<xsl:choose>
+									<xsl:when test="$ConditionalMatch='DynamicStateDeleted'">
+										<xsl:attribute name="name">
+											<xsl:text>Deleted</xsl:text>
+										</xsl:attribute>
+									</xsl:when>
+									<xsl:when test="$ConditionalMatch='DynamicStateInitial'">
+										<xsl:attribute name="name">
+											<xsl:text>Initial</xsl:text>
+										</xsl:attribute>
+									</xsl:when>
+								</xsl:choose>
+							</plx:callStatic>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='PathNodeFactTypeEntry'">
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:inlineStatement dataTypeName="PathedRole">
+										<plx:assign>
+											<plx:left>
+												<plx:nameRef name="pathedRole"/>
+											</plx:left>
+											<plx:right>
+												<plx:nameRef name="pathNode"/>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="inequality">
+								<plx:left>
+									<plx:callInstance name="PathedRolePurpose" type="property">
+										<plx:callObject>
+											<plx:nameRef name="pathedRole"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic dataTypeName="PathedRolePurpose" name="SameFactType" type="field"/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
@@ -11748,6 +11952,346 @@
 			</plx:assign>
 		</xsl:if>
 	</xsl:template>
+	<xsl:template match="cvg:IteratePathNodeLists" mode="ConstraintVerbalization">
+		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="''"/>
+		<xsl:param name="CompositeCount"/>
+		<xsl:param name="CompositeIterator"/>
+		<xsl:param name="ListStyle" select="@listStyle"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:param name="IteratorContext"/>
+		<xsl:call-template name="EnsureTempStringBuilder"/>
+		<xsl:variable name="match" select="string(@match)"/>
+		<plx:local name="pathNodeLists" dataTypeName="IList">
+			<plx:passTypeParam dataTypeName="Tuple">
+				<plx:passTypeParam dataTypeName="DynamicRuleNodeState"/>
+				<plx:passTypeParam dataTypeName="List">
+					<plx:passTypeParam dataTypeName="RolePathNode"/>
+				</plx:passTypeParam>
+			</plx:passTypeParam>
+			<plx:initialize>
+				<plx:callInstance type="property">
+					<xsl:attribute name="name">
+						<xsl:choose>
+							<xsl:when test="$match='quantifiers'">
+								<xsl:text>DynamicRuleHeadNodes</xsl:text>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:attribute>
+					<plx:callObject>
+						<plx:nameRef name="pathVerbalizer"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:initialize>
+		</plx:local>
+		<plx:local name="pathNodeListCount" dataTypeName=".i4">
+			<plx:initialize>
+				<plx:callInstance name="Count" type="property">
+					<plx:callObject>
+						<plx:nameRef name="pathNodeLists" type="local"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:initialize>
+		</plx:local>
+		<plx:loop>
+			<plx:initializeLoop>
+				<plx:local name="iNodeList" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:value data="0" type="i4"/>
+					</plx:initialize>
+				</plx:local>
+			</plx:initializeLoop>
+			<plx:condition>
+				<plx:binaryOperator type="lessThan">
+					<plx:left>
+						<plx:nameRef name="iNodeList" type="local"/>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="pathNodeListCount" type="local"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:condition>
+			<plx:beforeLoop>
+				<plx:increment>
+					<plx:nameRef name="iNodeList" type="local"/>
+				</plx:increment>
+			</plx:beforeLoop>
+			<plx:local name="pathNodeListTuple" dataTypeName="Tuple">
+				<plx:passTypeParam dataTypeName="DynamicRuleNodeState"/>
+				<plx:passTypeParam dataTypeName="List">
+					<plx:passTypeParam dataTypeName="RolePathNode"/>
+				</plx:passTypeParam>
+				<plx:initialize>
+					<plx:callInstance name=".implied" type="indexerCall">
+						<plx:callObject>
+							<plx:nameRef name="pathNodeLists"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="iNodeList"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="dynamicState" dataTypeName="DynamicRuleNodeState">
+				<plx:initialize>
+					<plx:callInstance name="Item1" type="property">
+						<plx:callObject>
+							<plx:nameRef name="pathNodeListTuple"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="pathNodeList" dataTypeName="IList">
+				<plx:passTypeParam dataTypeName="RolePathNode"/>
+				<plx:initialize>
+					<plx:callInstance name="Item2" type="property">
+						<plx:callObject>
+							<plx:nameRef name="pathNodeListTuple"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
+				<xsl:with-param name="iterVarName" select="'iNodeList'"/>
+				<xsl:with-param name="contextMatch" select="'pathNodeLists'"/>
+				<xsl:with-param name="ListStyle" select="@listStyle"/>
+				<xsl:with-param name="CompositeIterator" select="'iNodeList'"/>
+				<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+				<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+			</xsl:call-template>
+		</plx:loop>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}" type="local"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:nameRef name="sbTemp" type="local"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:IteratePathNodes" mode="ConstraintVerbalization">
+		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="''"/>
+		<xsl:param name="CompositeCount"/>
+		<xsl:param name="CompositeIterator"/>
+		<xsl:param name="ListStyle" select="@listStyle"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:param name="IteratorContext"/>
+		<xsl:variable name="innerIterator" select="$IteratorContext='pathNodeLists'"/>
+		<xsl:choose>
+			<xsl:when test="$innerIterator">
+				<plx:local name="outerStringBuilderLength" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="Length" type="property">
+							<plx:callObject>
+								<plx:nameRef name="sbTemp"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="EnsureTempStringBuilder"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:variable name="match" select="string(@match)"/>
+		<plx:local name="pathNodes" dataTypeName="IList">
+			<plx:passTypeParam dataTypeName="RolePathNode"/>
+			<plx:initialize>
+				<xsl:choose>
+					<xsl:when test="$match='pathNodeList'">
+						<plx:callInstance name="Item2" type="property">
+							<plx:callObject>
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="pathNodeLists"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="iNodeList"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:callInstance type="property">
+							<xsl:attribute name="name">
+								<xsl:choose>
+									<xsl:when test="$match='pathNodeList'">
+										<xsl:text>DynamicRuleHeadNodes</xsl:text>
+									</xsl:when>
+									<xsl:when test="$match='add'">
+										<xsl:text>DynamicRuleAddNodes</xsl:text>
+									</xsl:when>
+									<xsl:when test="$match='delete'">
+										<xsl:text>DynamicRuleDeleteNodes</xsl:text>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:attribute>
+							<plx:callObject>
+								<plx:nameRef name="pathVerbalizer"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</xsl:otherwise>
+				</xsl:choose>
+			</plx:initialize>
+		</plx:local>
+		<plx:local name="pathNodeCount" dataTypeName=".i4">
+			<plx:initialize>
+				<plx:callInstance name="Count" type="property">
+					<plx:callObject>
+						<plx:nameRef name="pathNodes" type="local"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:initialize>
+		</plx:local>
+		<plx:loop>
+			<plx:initializeLoop>
+				<plx:local name="iNode" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:value data="0" type="i4"/>
+					</plx:initialize>
+				</plx:local>
+			</plx:initializeLoop>
+			<plx:condition>
+				<plx:binaryOperator type="lessThan">
+					<plx:left>
+						<plx:nameRef name="iNode" type="local"/>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="pathNodeCount" type="local"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:condition>
+			<plx:beforeLoop>
+				<plx:increment>
+					<plx:nameRef name="iNode" type="local"/>
+				</plx:increment>
+			</plx:beforeLoop>
+			<plx:assign>
+				<plx:left>
+					<plx:nameRef name="pathNode"/>
+				</plx:left>
+				<plx:right>
+					<plx:callInstance name=".implied" type="indexerCall">
+						<plx:callObject>
+							<plx:nameRef name="pathNodes"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="iNode"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:right>
+			</plx:assign>
+			<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
+				<xsl:with-param name="iterVarName" select="'iNode'"/>
+				<xsl:with-param name="contextMatch" select="'pathNodeCount'"/>
+				<xsl:with-param name="ListStyle" select="@listStyle"/>
+				<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+				<xsl:with-param name="CompositeIterator" select="'iNode'"/>
+				<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+				<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+			</xsl:call-template>
+		</plx:loop>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}" type="local"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:nameRef name="sbTemp" type="local"/>
+					</plx:callObject>
+					<xsl:if test="$innerIterator">
+						<plx:passParam>
+							<plx:nameRef name="outerStringBuilderLength"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:binaryOperator type="subtract">
+								<plx:left>
+									<plx:callInstance name="Length" type="property">
+										<plx:callObject>
+											<plx:nameRef name="sbTemp"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="outerStringBuilderLength"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:passParam>
+					</xsl:if>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+		<xsl:if test="$innerIterator">
+			<plx:assign>
+				<plx:left>
+					<plx:callInstance name="Length" type="property">
+						<plx:callObject>
+							<plx:nameRef name="sbTemp"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:nameRef name="outerStringBuilderLength"/>
+				</plx:right>
+			</plx:assign>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="cvg:PathNodeVariable|cvg:PathNodeFactType" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}" type="local"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="RenderAssociatedRolePlayer">
+					<plx:callObject>
+						<plx:nameRef name="pathVerbalizer"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="pathNode"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nullKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callStatic dataTypeName="RolePathRolePlayerRenderingOptions" name="UsedInVerbalizationHead" type="field"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:PathNodeFactType" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}" type="local"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="RenderPathFactType">
+					<plx:callObject>
+						<plx:nameRef name="pathVerbalizer"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef name="pathNode"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef name="sbTemp"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
 	<!-- An IterateQueryParameters tag is used to walk a set of QueryParameters and transform them to be compatible with the
 			patterns already in place to verbalize constraints. -->
 	<xsl:template match="cvg:IterateQueryParameters" mode="ConstraintVerbalization">
@@ -13115,6 +13659,12 @@
 					</xsl:when>
 					<xsl:when test="$useContextMatch='derivedElementCount'">
 						<xsl:text>derivedElementCount</xsl:text>
+					</xsl:when>
+					<xsl:when test="$useContextMatch='pathNodeCount'">
+						<xsl:text>pathNodeCount</xsl:text>
+					</xsl:when>
+					<xsl:when test="$useContextMatch='pathNodeLists'">
+						<xsl:text>pathNodeListCount</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">

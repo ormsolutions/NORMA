@@ -196,7 +196,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
 			}
-			else if (Array.IndexOf(dataFormats, typeof(ShapeFreeDataObjectSourceStore).FullName) > 0 &&
+			else if (Array.IndexOf(dataFormats, typeof(ShapeFreeDataObjectSourceStore).FullName) >= 0 &&
 				(data.GetData(typeof(ShapeFreeDataObjectSourceStore)) as Store) != Store)
 			{
 				// Allow shape-free members to be dragged across stores. This does not create

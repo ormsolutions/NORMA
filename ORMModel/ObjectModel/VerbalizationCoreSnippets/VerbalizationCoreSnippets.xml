@@ -61,6 +61,15 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ExistentialQuantifier" sign="negative"><![CDATA[<span class="quantifier">no</span> {0}]]></Snippet>
 			<Snippet type="ExactlyOneQuantifier"><![CDATA[<span class="quantifier">exactly one</span> {0}]]></Snippet>
 			<Snippet type="ReflexiveQuantifier"><![CDATA[{0} <span class="quantifier">itself</span>]]></Snippet>
+			<Snippet type="DynamicRuleQuantifiers"><![CDATA[<span class="quantifier">For each </span> {0}<br/>{1}]]></Snippet>
+			<Snippet type="DynamicRuleQuantifierCondition"><![CDATA[<span class="quantifier">where</span> {0}<br/>]]></Snippet>
+			<Snippet type="DynamicRuleStandaloneCondition"><![CDATA[<span class="quantifier">When</span><span class="listSeparator">:</span><br/><span class="smallIndent">{0}</span>]]></Snippet>
+			<Snippet type="DynamicRuleAdditions"><![CDATA[<span class="quantifier">Add</span><span class="listSeparator">:</span> {0}<br/>]]></Snippet>
+			<Snippet type="DynamicRuleDeletions"><![CDATA[<span class="quantifier">Delete</span><span class="listSeparator">:</span> {0}<br/>]]></Snippet>
+			<Snippet type="VariableAddedQuantifier"><![CDATA[<span class="quantifier">added</span> {0}]]></Snippet>
+			<Snippet type="VariableDeletedQuantifier"><![CDATA[<span class="quantifier">deleted</span> {0}]]></Snippet>
+			<Snippet type="VariableInitialQuantifier"><![CDATA[<span class="quantifier">initial</span> {0}]]></Snippet>
+			<Snippet type="VariableAddAction"><![CDATA[<span class="quantifier">new</span> {0}]]></Snippet>
 
 			<!-- UNDONE:
 					<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> {0}]]></Form>
@@ -111,6 +120,12 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="QueryNamedParameter"><![CDATA[{1}<span class="logicalOperator">=</span>{0}]]></Snippet>
 			<Snippet type="QueryUnnamedParameter"><![CDATA[{0}]]></Snippet>
 			<Snippet type="QueryVerbalization"><![CDATA[{0}<span class="quantifier">select</span> {1} where<br/><span class="smallIndent">{2}</span>]]></Snippet>
+			<Snippet type="DynamicRuleVerbalization"><![CDATA[{0}{1}{2}{3}]]></Snippet>
+			<Snippet type="IdentityListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="IdentityListPairSeparator"><![CDATA[ <span class="quantifier">that is</span> ]]></Snippet>
+			<Snippet type="IdentityListSeparator"><![CDATA[ <span class="quantifier">that is</span> ]]></Snippet>
+			<Snippet type="IdentityListFinalSeparator"><![CDATA[ <span class="quantifier">that is</span> ]]></Snippet>
+			<Snippet type="IdentityListClose"><![CDATA[]]></Snippet>
 
 			<!-- Used inside a ModalOperator -->
 			<Snippet type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="negative"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Snippet>
@@ -352,6 +367,18 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="VariableIntroductionSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="VariableExistence"><![CDATA[{0} <span class="quantifier">exists</span>]]></Snippet>
 			<Snippet type="NegatedVariableExistence"><![CDATA[{0} <span class="quantifier">does not exist</span>]]></Snippet>
+			<Snippet type="NegatedVariableExistenceAddedState"><![CDATA[{0} <span class="quantifier">does not exist in added state</span>]]></Snippet>
+			<Snippet type="NegatedVariableExistenceDeletedState"><![CDATA[{0} <span class="quantifier">does not exist in deleted state</span>]]></Snippet>
+			<Snippet type="NegatedVariableExistenceInitialState"><![CDATA[{0} <span class="quantifier">does not exist in initial state</span>]]></Snippet>
+			<Snippet type="ExistentialAddedQuantifier" sign="positive"><![CDATA[<span class="quantifier">some added</span> {0}]]></Snippet>
+			<Snippet type="ExistentialAddedQuantifier" sign="negative"><![CDATA[<span class="quantifier">no added</span> {0}]]></Snippet>
+			<Snippet type="ExistentialDeletedQuantifier" sign="positive"><![CDATA[<span class="quantifier">some deleted</span> {0}]]></Snippet>
+			<Snippet type="ExistentialDeletedQuantifier" sign="negative"><![CDATA[<span class="quantifier">no deleted</span> {0}]]></Snippet>
+			<Snippet type="ExistentialInitialQuantifier" sign="positive"><![CDATA[<span class="quantifier">some initial</span> {0}]]></Snippet>
+			<Snippet type="ExistentialInitialQuantifier" sign="negative"><![CDATA[<span class="quantifier">no initial</span> {0}]]></Snippet>
+			<Snippet type="FactTypeAddedState" sign="positive"><![CDATA[<span class="listSeparator">(</span>{0}<span class="listSeparator">)</span> <span class="quantifier">is added</span>]]></Snippet>
+			<Snippet type="FactTypeDeletedState" sign="positive"><![CDATA[<span class="listSeparator">(</span>{0}<span class="listSeparator">)</span> <span class="quantifier">is deleted</span>]]></Snippet>
+			<Snippet type="FactTypeInitialState" sign="positive"><![CDATA[<span class="listSeparator">(</span>{0}<span class="listSeparator">)</span> <span class="quantifier">is initial</span>]]></Snippet>
 
 			<!-- Role plath list management -->
 			<Snippet type="RolePathListCloseOutdentSnippets"><![CDATA[ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose]]></Snippet>

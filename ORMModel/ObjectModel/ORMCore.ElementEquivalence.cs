@@ -2151,6 +2151,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // ElementGrouping class
+	#region DynamicRule class
+	partial class DynamicRule : IElementEquivalence
+	{
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			bool retVal = false;
+			foreach (ORMModel otherModel in foreignStore.ElementDirectory.FindElements<ORMModel>(false))
+			{
+				DynamicRule otherRule = null;
+				LocatedElement matchedRules = otherModel.GeneralRulesDictionary.GetElement(Name);
+				if (!matchedRules.IsEmpty)
+				{
+					ModelElement testSingle;
+					if (null != (testSingle = matchedRules.SingleElement))
+					{
+						otherRule = testSingle as DynamicRule;
+					}
+					else
+					{
+						foreach (ModelElement testElement in matchedRules.MultipleElements)
+						{
+							if (null != (otherRule = testSingle as DynamicRule))
+							{
+								break;
+							}
+						}
+					}
+				}
+
+				if (otherRule != null)
+				{
+					elementTracker.AddEquivalentElement(this, otherRule);
+					retVal = true;
+				}
+			}
+			return retVal;
+		}
+	}
+	#endregion // DynamicRule class
 	#region LeadRolePath class
 	partial class LeadRolePath : IElementEquivalence
 	{
@@ -2515,29 +2554,41 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
 		{
-			RolePathOwner pathOwner = PathOwner;
-			RolePathOwner otherPathOwner;
 			Dictionary<ModelElement, ModelElement> matchedElements = null;
 			bool addEquivalentElements = false;
 
-			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)) &&
-				null != GetMatchingPath(GetUnmappedOtherPaths(pathOwner, otherPathOwner, elementTracker), matchedElements = new Dictionary<ModelElement, ModelElement>(), foreignStore, elementTracker))
+			RolePathOwner pathOwner;
+			DynamicRule dynamicRule;
+			if (null != (pathOwner = this.PathOwner))
 			{
-				addEquivalentElements = true;
-			}
-
-			if (!addEquivalentElements)
-			{
-				foreach (RolePathOwner sharedOwner in SharedWithPathOwnerCollection)
+				RolePathOwner otherPathOwner;
+				if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)) &&
+					null != GetMatchingPath(GetUnmappedOtherPaths(pathOwner, otherPathOwner, elementTracker), matchedElements = new Dictionary<ModelElement, ModelElement>(), foreignStore, elementTracker))
 				{
-					if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(sharedOwner, foreignStore, elementTracker)) &&
-						null != GetMatchingPath(GetUnmappedOtherPaths(sharedOwner, otherPathOwner, elementTracker), matchedElements ?? (matchedElements = new Dictionary<ModelElement, ModelElement>()), foreignStore, elementTracker))
+					addEquivalentElements = true;
+				}
+
+				if (!addEquivalentElements)
+				{
+					foreach (RolePathOwner sharedOwner in SharedWithPathOwnerCollection)
 					{
-						addEquivalentElements = true;
-						break;
+						if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(sharedOwner, foreignStore, elementTracker)) &&
+							null != GetMatchingPath(GetUnmappedOtherPaths(sharedOwner, otherPathOwner, elementTracker), matchedElements ?? (matchedElements = new Dictionary<ModelElement, ModelElement>()), foreignStore, elementTracker))
+						{
+							addEquivalentElements = true;
+							break;
+						}
 					}
 				}
 			}
+			else if (null != (dynamicRule = this.DynamicRule))
+			{
+				DynamicRule otherDynamicRule;
+				addEquivalentElements =
+					null != (otherDynamicRule = CopyMergeUtility.GetEquivalentElement(dynamicRule, foreignStore, elementTracker) as DynamicRule) &&
+					null != GetMatchingPath(((IRolePathOwner)otherDynamicRule).LeadRolePaths, matchedElements ?? (matchedElements = new Dictionary<ModelElement, ModelElement>()), foreignStore, elementTracker);
+			}
+
 			if (addEquivalentElements)
 			{
 				// Register prematched paths, path roots, pathed roles, unifiers, and calculations

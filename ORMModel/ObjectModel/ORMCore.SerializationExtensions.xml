@@ -192,6 +192,9 @@
 			<se:Embed RelationshipName="ModelHasSetConstraint" RoleName="SetConstraint"/>
 			<se:Embed RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraint"/>
 		</se:Container>
+		<se:Container Name="GeneralRules">
+			<se:Embed RelationshipName="ModelDefinesGeneralRule" RoleName="Rule"/>
+		</se:Container>
 		<se:Container Name="DataTypes">
 			<se:Embed RelationshipName="ModelHasDataType" RoleName="DataType"/>
 		</se:Container>
@@ -1727,6 +1730,14 @@
 		<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="RolePath" Name="SharedRolePath"/>
 		<se:Link RelationshipName="RolePathOwnerUsesSharedSubquery" RoleName="Subquery" Name="SharedSubquery"/>
 	</se:Element>
+	<se:Element Class="DynamicRule" Override="true" Sealed="true">
+		<se:Container Name="RuleDefinition">
+			<se:Embed RelationshipName="DynamicRuleOwnsLeadRolePath" RoleName="RolePath"/>
+		</se:Container>
+		<se:Link RelationshipName="DynamicRuleHasDynamicRuleRequiresEventAndActionError" RoleName="EventAndActionRequiredError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError" RoleName="NoDisjunctiveOrNegatedActionError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError" RoleName="DisjunctionRequiresPositiveEventError" WriteStyle="NotWritten"/>
+	</se:Element>
 	<se:Element Class="LeadRolePath" Override="true" SortChildElements="true" Name="RolePath">
 		<se:Container Name="ObjectUnifiers">
 			<se:Embed RelationshipName="LeadRolePathHasObjectUnifier" RoleName="ObjectUnifier"/>
@@ -1990,6 +2001,21 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="DynamicRuleState" Name="DynamicState">
+			<se:Condition WriteStyle="NotWritten">
+				<!-- This could also be filtered to not write outside a dynamic rule,
+				but the defaults in a non-rule path will never change, so the expensive
+				check would not remove any more data -->
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DynamicRuleState" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="DynamicRuleNodeState" name="Current" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="RolePathRootHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
@@ -2000,6 +2026,7 @@
 		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesRolePathRoot" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="QueryParameterBoundToRolePathRoot" RoleName="ParameterBinding" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathRootHasDynamicObjectAddPartialIdentifierError" RoleName="DynamicObjectAddPartialIdentifierError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RoleSubPath" Name="SubPath" Override="true"/>
 	<se:Element Class="PathedRole" SortChildElements="true">
@@ -2008,6 +2035,21 @@
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="IsNegated" type="property"/>
 				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DynamicRuleState" Name="DynamicState">
+			<se:Condition WriteStyle="NotWritten">
+				<!-- This could also be filtered to not write outside a dynamic rule,
+				but the defaults in a non-rule path will never change, so the expensive
+				check would not remove any more data -->
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DynamicRuleState" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="DynamicRuleNodeState" name="Current" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="PathedRolePurpose" Name="Purpose"/>
@@ -2026,11 +2068,19 @@
 		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SubqueryParameterInputs" RoleName="RolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="QueryParameterBoundToPathedRole" RoleName="ParameterBinding" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasMismatchedJoinDynamicStateError" RoleName="MismatchedJoinDynamicStateError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasMismatchedRolePlayerDynamicStateError" RoleName="MismatchedRolePlayerDynamicStateError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasDynamicAddFactTypeUnboundRolesError" RoleName="DynamicAddFactTypeUnboundRolesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasDynamicActionRoleUndeclaredObjectError" RoleName="DynamicActionRoleUndeclaredObjectError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasDynamicObjectAddPartialIdentifierError" RoleName="DynamicObjectAddPartialIdentifierError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError" RoleName="DynamicObjectificationAddRequiresLinkFactTypesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="PathObjectUnifier" Name="ObjectUnifier" Override="true" SortChildElements="true">
 		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="PathRoot" Name="PathRoot"/>
 		<se:Link RelationshipName="PathObjectUnifierUnifiesPathedRole" RoleName="PathedRole" Name="PathedRole"/>
 		<se:Link RelationshipName="PathObjectUnifierHasCompatibleObjectTypesError" RoleName="CompatibilityError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError" RoleName="ObjectUnifierMismatchedDynamicStateError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasDynamicObjectAddPartialIdentifierError" RoleName="DynamicObjectAddPartialIdentifierError" WriteStyle="NotWritten"/>
 	</se:Element>
 
 	<!--Errors-->
@@ -2057,6 +2107,12 @@
 			<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="RecognizedPhrase"/>
 		</se:Container>
 		<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="RecognizedPhrase" Name="RecognizedPhrase"/>
+	</se:Element>
+	<se:Element Class="GeneralRuleDuplicateNameError" Override="true">
+		<se:Container Name="Rules">
+			<se:Link RelationshipName="GeneralRuleHasDuplicateNameError" RoleName="Rule"/>
+		</se:Container>
+		<se:Link RelationshipName="GeneralRuleHasDuplicateNameError" RoleName="Rule" Name="Rule"/>
 	</se:Element>
 	<se:Element Class="FunctionDuplicateNameError" Override="true">
 		<se:Container Name="Functions">
@@ -2462,6 +2518,38 @@
 	</se:Element>
 	<se:Element Class="ConstraintRoleRequiresCompatibleJoinPathProjectionError" Name="JoinedConstraintRoleProjectionCompatibilityError" Override="true">
 		<se:Link RelationshipName="ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError" RoleName="Projection" Name="ConstraintRoleProjection"/>
+	</se:Element>
+	<se:Element Class="DynamicRuleRequiresEventAndActionError" Name="DynamicRuleRequiresEventAndActionError" Override="true">
+		<se:Link RelationshipName="DynamicRuleHasDynamicRuleRequiresEventAndActionError" RoleName="DynamicRule" Name="DynamicRule"/>
+	</se:Element>
+	<se:Element Class="DynamicRuleNoDisjunctiveOrNegatedActionError" Name="DynamicRuleNoDisjunctiveOrNegatedActionError" Override="true">
+		<se:Link RelationshipName="DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError" RoleName="DynamicRule" Name="DynamicRule"/>
+	</se:Element>
+	<se:Element Class="DynamicRuleDisjunctionRequiresPositiveEventError" Name="DynamicRuleDisjunctionRequiresPositiveEventError" Override="true">
+		<se:Link RelationshipName="DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError" RoleName="DynamicRule" Name="DynamicRule"/>
+	</se:Element>
+	<se:Element Class="MismatchedJoinDynamicStateError" Name="MismatchedJoinDynamicStateError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasMismatchedJoinDynamicStateError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="MismatchedRolePlayerDynamicStateError" Name="MismatchedRolePlayerDynamicStateError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasMismatchedRolePlayerDynamicStateError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="DynamicAddFactTypeUnboundRolesError" Name="DynamicAddFactTypeUnboundRolesError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasDynamicAddFactTypeUnboundRolesError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="DynamicActionRoleUndeclaredObjectError" Name="DynamicActionRoleUndeclaredObjectError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasDynamicActionRoleUndeclaredObjectError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="ObjectUnifierMismatchedDynamicStateError" Override="true" Name="ObjectUnifierMismatchedDynamicStateError">
+		<se:Link RelationshipName="PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError" RoleName="ObjectUnifier" Name="ObjectUnifier"/>
+	</se:Element>
+	<se:Element Class="DynamicObjectAddPartialIdentifierError" Override="true" Name="DynamicObjectAddPartialIdentifierError">
+		<se:Link RelationshipName="PathObjectUnifierHasDynamicObjectAddPartialIdentifierError" RoleName="ObjectUnifier" Name="ObjectUnifier"/>
+		<se:Link RelationshipName="PathedRoleHasDynamicObjectAddPartialIdentifierError" RoleName="PathedRole" Name="PathedRole"/>
+		<se:Link RelationshipName="PathRootHasDynamicObjectAddPartialIdentifierError" RoleName="PathRoot" Name="PathRoot"/>
+	</se:Element>
+	<se:Element Class="DynamicObjectificationAddRequiresLinkFactTypesError" Override="true" Name="DynamicObjectificationAddRequiresLinkFactTypesError">
+		<se:Link RelationshipName="PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError" RoleName="PathedRole" Name="PathedRole"/>
 	</se:Element>
 
 	<!-- Grouping constructs -->

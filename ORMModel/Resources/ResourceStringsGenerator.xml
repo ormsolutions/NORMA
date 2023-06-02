@@ -232,6 +232,7 @@
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendum" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum.Compact"/>
+	<ResourceString name="ModelErrorDisplayContextDynamicRule" model="Model" resourceName="ModelError.DisplayContext.DynamicRule"/>
 	<ResourceString name="ModelErrorDisplayContextFactType" model="Model" resourceName="ModelError.DisplayContext.FactType"/>
 	<ResourceString name="ModelErrorDisplayContextFactTypeRole" model="Model" resourceName="ModelError.DisplayContext.FactTypeRole"/>
 	<ResourceString name="ModelErrorDisplayContextObjectType" model="Model" resourceName="ModelError.DisplayContext.ObjectType"/>
@@ -256,6 +257,8 @@
 	<ResourceString name="ModelErrorModelHasDuplicateConstraintNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.CompactText"/>
 	<ResourceString name="ModelErrorModelHasDuplicateFunctionNames" model="Model" resourceName="ModelError.Model.DuplicateFunctionNames.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateFunctionNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateFunctionNames.CompactText"/>
+	<ResourceString name="ModelErrorModelHasDuplicateGeneralRuleNames" model="Model" resourceName="ModelError.Model.DuplicateGeneralRuleNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateGeneralRuleNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateGeneralRuleNames.CompactText"/>
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text"/>
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.CompactText"/>
 	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhraseNames" model="Model" resourceName="ModelError.Model.DuplicateRecognizedPhraseNames.Text"/>
@@ -533,6 +536,44 @@
 	<ResourceString name="ModelErrorConstraintRoleProjectionIncompatibleProjectionCompact" model="Model" resourceName="ModelError.ConstraintRoleProjection.IncompatibleProjection.CompactText"/>
 	<ResourceString name="ModelErrorConstraintRoleSequenceJoinPathRequiredError" model="Model" resourceName="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text"/>
 	<ResourceString name="ModelErrorConstraintRoleSequenceJoinPathRequiredErrorCompact" model="Model" resourceName="ModelError.ConstraintRoleSequence.JoinPathRequiredError.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleActionRoleUndeclaredObject" model="Model" resourceName="ModelError.DynamicRule.ActionRoleUndeclaredObject.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleActionRoleUndeclaredObjectCompact" model="Model" resourceName="ModelError.DynamicRule.ActionRoleUndeclaredObject.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleAddFactTypeUnboundRoles" model="Model" resourceName="ModelError.DynamicRule.AddFactTypeUnboundRoles.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleAddFactTypeUnboundRolesCompact" model="Model" resourceName="ModelError.DynamicRule.AddFactTypeUnboundRoles.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleDisjunctionRequiresPositiveEvent" model="Model" resourceName="ModelError.DynamicRule.DisjunctionRequiresPositiveEvent.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleDisjunctionRequiresPositiveEventCompact" model="Model" resourceName="ModelError.DynamicRule.DisjunctionRequiresPositiveEvent.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedDynamicStateDisplayAdd" model="Model" resourceName="ModelError.DynamicRule.MismatchedDynamicState.Display.Add"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedDynamicStateDisplayAdded" model="Model" resourceName="ModelError.DynamicRule.MismatchedDynamicState.Display.Added"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedDynamicStateDisplayCurrent" model="Model" resourceName="ModelError.DynamicRule.MismatchedDynamicState.Display.Current"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedDynamicStateDisplayDelete" model="Model" resourceName="ModelError.DynamicRule.MismatchedDynamicState.Display.Delete"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedDynamicStateDisplayDeleted" model="Model" resourceName="ModelError.DynamicRule.MismatchedDynamicState.Display.Deleted"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedDynamicStateDisplayInitial" model="Model" resourceName="ModelError.DynamicRule.MismatchedDynamicState.Display.Initial"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForAdd" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForAdd"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForAdded" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForAdded"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForCurrent" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForCurrent"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForDelete" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDelete"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForDeleted" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDeleted"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForInitial" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForInitial"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicState" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedJoinDynamicStateCompact" model="Model" resourceName="ModelError.DynamicRule.MismatchedJoinDynamicState.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForAdd" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForAdd"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForAdded" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForAdded"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForCurrent" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForCurrent"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForDelete" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForDelete"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForDeleted" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForDeleted"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForInitial" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForInitial"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicState" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateCompact" model="Model" resourceName="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleNoDisjunctiveOrNegatedAction" model="Model" resourceName="ModelError.DynamicRule.NoDisjunctiveOrNegatedAction.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleNoDisjunctiveOrNegatedActionCompact" model="Model" resourceName="ModelError.DynamicRule.NoDisjunctiveOrNegatedAction.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleObjectAddPartialIdentifier" model="Model" resourceName="ModelError.DynamicRule.ObjectAddPartialIdentifier.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleObjectAddPartialIdentifierCompact" model="Model" resourceName="ModelError.DynamicRule.ObjectAddPartialIdentifier.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleObjectUnifierMismatchedDynamicState" model="Model" resourceName="ModelError.DynamicRule.ObjectUnifierMismatchedDynamicState.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleObjectUnifierMismatchedDynamicStateCompact" model="Model" resourceName="ModelError.DynamicRule.ObjectUnifierMismatchedDynamicState.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRulePopulateExternallyIdentifiedObjectificationWithLinkFactTypes" model="Model" resourceName="ModelError.DynamicRule.PopulateExternallyIdentifiedObjectificationWithLinkFactTypes.Text"/>
+	<ResourceString name="ModelErrorDynamicRulePopulateExternallyIdentifiedObjectificationWithLinkFactTypesCompact" model="Model" resourceName="ModelError.DynamicRule.PopulateExternallyIdentifiedObjectificationWithLinkFactTypes.CompactText"/>
+	<ResourceString name="ModelErrorDynamicRuleRequiresEventAndAction" model="Model" resourceName="ModelError.DynamicRule.RequiresEventAndAction.Text"/>
+	<ResourceString name="ModelErrorDynamicRuleRequiresEventAndActionCompact" model="Model" resourceName="ModelError.DynamicRule.RequiresEventAndAction.CompactText"/>
 	<ResourceString name="ModelErrorDerivedRoleProjectionProjectionAutomaticProjectionUnavailable" model="Model" resourceName="ModelError.DerivedRoleProjection.AutomaticProjectionUnavailable.Text"/>
 	<ResourceString name="ModelErrorDerivedRoleProjectionIncompatibleProjection" model="Model" resourceName="ModelError.DerivedRoleProjection.IncompatibleProjection.Text"/>
 	<ResourceString name="ModelErrorDerivedRoleProjectionIncompatibleProjectionCompact" model="Model" resourceName="ModelError.DerivedRoleProjection.IncompatibleProjection.CompactText"/>

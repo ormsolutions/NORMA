@@ -948,6 +948,9 @@
 			<arg:DeleteRule methodName="DuplicateReadingSignatureDeletedRule">
 				<arg:RuleOn targetType="ReadingHasDuplicateSignatureError"/>
 			</arg:DeleteRule>
+			<arg:DeleteRule methodName="DuplicateGeneralRuleDeletedRule">
+				<arg:RuleOn targetType="GeneralRuleHasDuplicateNameError"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="QueryBase">
 			<arg:AddRule methodName="QueryAddedRule">
@@ -1311,6 +1314,29 @@
 			<arg:RolePlayerChangeRule methodName="RoleProjectionRolePlayerChangedRule">
 				<arg:RuleOn targetType="DerivedRoleProjection"/>
 			</arg:RolePlayerChangeRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="DynamicRule">
+			<arg:AddRule methodName="DynamicRuleAddedRule">
+				<arg:RuleOn targetType="DynamicRule"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="DynamicRuleRolePathAddedRule">
+				<arg:RuleOn targetType="DynamicRuleOwnsLeadRolePath"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="DynamicRuleRolePathDeletedRule">
+				<arg:RuleOn targetType="DynamicRuleOwnsLeadRolePath"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="DynamicRuleRolePathRolePlayerChangeRule">
+				<arg:RuleOn targetType="DynamicRuleOwnsLeadRolePath"/>
+			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="PathedRoleDynamicStateChangedRule">
+				<arg:RuleOn targetType="PathedRole"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="PathRootDynamicStateChangedRule">
+				<arg:RuleOn targetType="RolePathObjectTypeRoot"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="RolePathChangedRule">
+				<arg:RuleOn targetType="RolePath"/>
+			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SetComparisonConstraint">
 			<arg:AddRule methodName="ConstraintHasRoleSequenceAddedRule" fireBefore="true">

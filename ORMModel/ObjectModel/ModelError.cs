@@ -262,6 +262,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		Guid[] GetIndirectModelErrorOwnerLinkRoles();
 	}
+	#endregion // IHasIndirectModelErrorOwner interface
+	#region IElementLinkRoleHasIndirectModelErrorOwner interface
 	/// <summary>
 	/// The IElementLinkRoleHasIndirectModelErrorOwner interface is used to
 	/// indicate that model errors directly attached to the link
@@ -281,7 +283,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		Guid[] GetIndirectModelErrorOwnerElementLinkRoles();
 	}
-	#endregion // IHasIndirectModelErrorOwner interface
+	#endregion // IElementLinkRoleHasIndirectModelErrorOwner interface
+	#region IResolveCustomErrorOwner interface
+	/// <summary>
+	/// Implement on an extension domain model to allow for display of model
+	/// errors on elements that are related via extension to an error owner.
+	/// These relationships are not known to the error object in advance, so
+	/// cannot otherwise be notified with the <see cref="ModelError.WalkAssociatedElements(AssociatedErrorElementCallback)"/> and
+	/// <see cref="ModelError.WalkAssociatedElements(ModelElement, AssociatedErrorElementCallback)"/> methods.
+	/// </summary>
+	public interface IResolveCustomErrorOwner
+	{
+		/// <summary>
+		/// Resolve on an element in an error owner path to an alternate error owner.
+		/// </summary>
+		/// <param name="errorPathElement">The current node in the path, including
+		/// the primary owner.</param>
+		/// <returns>One or more error nodes. If the node implements <see cref="IModelErrorOwner"/> (generally
+		/// by deferring to the remotely viewed object, but errors can also be removed or added) then
+		/// the <see cref="AssociatedErrorElementCallback"/> will be invoked for this element.</returns>
+		IEnumerable<ModelElement> ResolveCustomErrorOwner(ModelElement errorPathElement);
+	}
+	#endregion // IResolveCustomErrorOwner interface
 	#region IModelErrorActivation interface
 	/// <summary>
 	/// Interface to implement on a shape element
@@ -600,6 +623,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="callback"><see cref="AssociatedErrorElementCallback"/> delegate</param>
 		public void WalkAssociatedElements(AssociatedErrorElementCallback callback)
 		{
+			IFrameworkServices services = this.Store as IORMToolServices;
+			IResolveCustomErrorOwner[] customResolvers = null;
+			if (services != null)
+			{
+				customResolvers = services.GetTypedDomainModelProviders<IResolveCustomErrorOwner>();
+			}
 			foreach (ModelElement element in this.AssociatedElementCollection)
 			{
 				WalkAssociatedElements(element, callback);
@@ -613,7 +642,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="callback"><see cref="AssociatedErrorElementCallback"/> delegate</param>
 		public static void WalkAssociatedElements(ModelElement associatedElement, AssociatedErrorElementCallback callback)
 		{
-			WalkAssociatedElementsHelper(associatedElement, callback, null);
+			IFrameworkServices services = associatedElement.Store as IFrameworkServices;
+			IResolveCustomErrorOwner[] customResolvers = null;
+			if (services != null)
+			{
+				customResolvers = services.GetTypedDomainModelProviders<IResolveCustomErrorOwner>();
+			}
+			WalkAssociatedElements(associatedElement, callback, customResolvers);
+		}
+		/// <summary>
+		/// Walk all elements directly or indirectly associated with a model error,
+		/// starting with the specified associated element
+		/// </summary>
+		/// <param name="associatedElement">The associated <see cref="ModelElement"/></param>
+		/// <param name="callback"><see cref="AssociatedErrorElementCallback"/> delegate</param>
+		/// <param name="customResolvers">Array of custom resolves to navigation an owner path in extension models. Can be null.</param>
+		private static void WalkAssociatedElements(ModelElement associatedElement, AssociatedErrorElementCallback callback, IResolveCustomErrorOwner[] customResolvers)
+		{
+			WalkAssociatedElementsHelper(associatedElement, callback, customResolvers, null);
 
 			ElementLink elementLink;
 			IElementLinkRoleHasIndirectModelErrorOwner indirectOwnerLink;
@@ -627,12 +673,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					for (int i = 0; i < roleCount; ++i)
 					{
-						WalkAssociatedElementsHelper(DomainRoleInfo.GetRolePlayer(elementLink, guids[i]), callback, null);
+						WalkAssociatedElementsHelper(DomainRoleInfo.GetRolePlayer(elementLink, guids[i]), callback, customResolvers, null);
 					}
 				}
 			}
 		}
-		private static void WalkAssociatedElementsHelper(ModelElement element, AssociatedErrorElementCallback callback, Predicate<ModelElement> filter)
+		private static void WalkAssociatedElementsHelper(ModelElement element, AssociatedErrorElementCallback callback, IResolveCustomErrorOwner[] customResolvers, Predicate<ModelElement> filter)
 		{
 			if (element is IModelErrorOwner)
 			{
@@ -659,6 +705,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							WalkAssociatedElementsHelper(
 								linkedElement,
 								callback,
+								customResolvers,
 								delegate(ModelElement testElement)
 								{
 									return testElement == element ||
@@ -668,6 +715,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
+
 			ElementLink elementLink;
 			IElementLinkRoleHasIndirectModelErrorOwner indirectLinkRoleOwner;
 			if (null != (indirectLinkRoleOwner = element as IElementLinkRoleHasIndirectModelErrorOwner) &&
@@ -695,10 +743,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							WalkAssociatedElementsHelper(
 								rolePlayer,
 								callback,
+								customResolvers,
 								delegate(ModelElement testElement)
 								{
 									return testElement == element ||
 										(filter != null && filter(testElement));
+								});
+						}
+					}
+				}
+			}
+
+			if (customResolvers != null)
+			{
+				for (int i = 0; i < customResolvers.Length; ++i)
+				{
+					IEnumerable<ModelElement> customElements = customResolvers[i].ResolveCustomErrorOwner(element);
+					if (customElements != null)
+					{
+						foreach (ModelElement customElement in customElements)
+						{
+							if (filter != null && filter(customElement))
+							{
+								continue;
+							}
+							WalkAssociatedElementsHelper(
+								customElement,
+								callback,
+								customResolvers,
+								delegate (ModelElement testElement)
+								{
+									return customElement == element ||
+										(filter != null && filter(customElement));
 								});
 						}
 					}

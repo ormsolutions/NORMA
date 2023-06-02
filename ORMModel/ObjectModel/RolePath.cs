@@ -22,6 +22,8 @@ using System.Globalization;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework;
+using System.Runtime.CompilerServices;
+using Microsoft.VisualStudio.Modeling.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -154,12 +156,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Get the <see cref="PathObjectUnifier"/> associated with this node.
+		/// Get or set the <see cref="PathObjectUnifier"/> associated with this node.
 		/// </summary>
 		/// <remarks>This retrieves the direct object unifier. It does not attempt
 		/// to resolve a <see cref="P:PathedRole"/> to a same fact type role or
 		/// path root that can be unified. So, if the pathed role is not a same fact
-		/// type role, then it will never be unified.</remarks>
+		/// type role, then it will never be unified. Setting a new unifier requires an
+		/// externally initiated transaction.</remarks>
 		public PathObjectUnifier ObjectUnifier
 		{
 			get
@@ -179,6 +182,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 				return null;
+			}
+			set
+			{
+				object pathObject = myPathObject;
+				if (null != pathObject)
+				{
+					PathedRole pathedRole;
+					RolePathObjectTypeRoot pathRoot;
+					if (null != (pathedRole = pathObject as PathedRole))
+					{
+						pathedRole.ObjectUnifier = value;
+					}
+					else if (null != (pathRoot = pathObject as RolePathObjectTypeRoot))
+					{
+						pathRoot.ObjectUnifier = value;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Get the <see cref="DynamicRuleNodeState"/> associated with this node.
+		/// </summary>
+		/// <remarks>This applies to a <see cref="DynamicRule"/>. The value will be
+		/// set to the default <see cref="DynamicRuleNodeState.Current"/> otherwise
+		/// and should be ignored. This does not check if the node is part of a
+		/// dynamic rule.  Setting a new state requires an externally initiated transaction.</remarks>
+		public DynamicRuleNodeState DynamicRuleState
+		{
+			get
+			{
+				object pathObject = myPathObject;
+				if (null != pathObject)
+				{
+					PathedRole pathedRole;
+					RolePathObjectTypeRoot pathRoot;
+					if (null != (pathedRole = pathObject as PathedRole))
+					{
+						return pathedRole.DynamicRuleState;
+					}
+					else if (null != (pathRoot = pathObject as RolePathObjectTypeRoot))
+					{
+						return pathRoot.DynamicRuleState;
+					}
+				}
+				return DynamicRuleNodeState.Current;
+			}
+			set
+			{
+				object pathObject = myPathObject;
+				if (null != pathObject)
+				{
+					PathedRole pathedRole;
+					RolePathObjectTypeRoot pathRoot;
+					if (null != (pathedRole = pathObject as PathedRole))
+					{
+						pathedRole.DynamicRuleState = value;
+					}
+					else if (null != (pathRoot = pathObject as RolePathObjectTypeRoot))
+					{
+						pathRoot.DynamicRuleState = value;
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -268,6 +333,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return pathNode.myPathObject as PathedRole;
 		}
 		/// <summary>
+		/// Automatically cast this structure to a <see cref="ModelElement"/>
+		/// </summary>
+		public static implicit operator ModelElement(RolePathNode pathNode)
+		{
+			return pathNode.myPathObject as ModelElement;
+		}
+		/// <summary>
 		/// Automatically cast a <see cref="PathedRole"/> to this structure
 		/// </summary>
 		public static implicit operator RolePathNode(PathedRole pathedRole)
@@ -287,6 +359,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static implicit operator RolePathNode(RolePathObjectTypeRoot pathRoot)
 		{
 			return (pathRoot == null) ? default(RolePathNode) : new RolePathNode(pathRoot);
+		}
+		/// <summary>
+		/// Automatically cast a <see cref="ModelElement"/> that is either a <see cref="PathedRole"/>
+		/// or <see cref="RolePathObjectTypeRoot"/>to this structure
+		/// </summary>
+		public static implicit operator RolePathNode(ModelElement pathObject)
+		{
+			PathedRole pathedRole;
+			RolePathObjectTypeRoot pathRoot;
+			if (null != (pathedRole = pathObject as PathedRole)){
+				return new RolePathNode(pathedRole);
+			}
+			else if (null != (pathRoot = pathObject as RolePathObjectTypeRoot))
+			{
+				return new RolePathNode(pathRoot);
+			}
+			return default(RolePathNode);
 		}
 		#endregion // Equality and casting routines
 		#region Helper Methods
@@ -464,6 +553,54 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Helper Methods
 	}
 	#endregion // RolePathNode struct
+	#region IRolePathOwner interface
+	/// <summary>
+	/// A generic mechanism to find the context rule for a join path.
+	/// This will generally be a <see cref="RolePathOwner"/>, but alternate
+	/// owners like <see cref="DynamicRule"/> also implement this interface.
+	/// </summary>
+	public interface IRolePathOwner
+	{
+		/// <summary>
+		/// Retrieve the model for this root element
+		/// </summary>
+		ORMModel Model { get; }
+
+		/// <summary>
+		/// The role paths directly owned by this path owner.
+		/// </summary>
+		IList<LeadRolePath> OwnedLeadRolePaths { get; }
+
+		/// <summary>
+		/// The role paths shared by this path owner (but owned by another path owner).
+		/// </summary>
+		IList<LeadRolePath> SharedLeadRolePaths { get; }
+
+		/// <summary>
+		/// Combined owned and shared paths. The ordering on these may be intermingled,
+		/// so a separate override is provided to return the set.
+		/// </summary>
+		IList<LeadRolePath> LeadRolePaths { get; }
+
+		/// <summary>
+		/// Determine if a <see cref="CalculatedPathValue"/> is consumed by the path owner.
+		/// Derived classes can override this method to add additional consumption patterns
+		/// for calculated values.
+		/// </summary>
+		bool IsCalculatedPathValueConsumed(CalculatedPathValue calculation);
+
+		/// <summary>
+		/// A callback point used during path validation to enable extensions
+		/// to be validated along with the base.
+		/// </summary>
+		/// <remarks>This should be called after <see cref="RolePathOwner.ValidateRolePaths"/>
+		/// is completed, but is kept separate to enable finer-grained control
+		/// over path-specific and owner-specific settings.
+		/// </remarks>
+		/// <param name="notifyAdded">Notification callback for added elements and errors.</param>
+		void ValidateRolePathOwnerSpecifics(INotifyElementAdded notifyAdded);
+	}
+	#endregion // IRolePathOwner
 	#region RolePath class
 	partial class RolePath
 	{
@@ -480,19 +617,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				RolePathOwner owner = RootOwner;
+				IRolePathOwner owner = RootOwner;
 				return (owner != null) ? owner.Model : null;
 			}
 		}
 		/// <summary>
 		/// Get the resolved <see cref="RolePathOwner"/> for this <see cref="RolePath"/>
 		/// </summary>
-		public RolePathOwner RootOwner
+		public IRolePathOwner RootOwner
 		{
 			get
 			{
 				LeadRolePath leadRolePath = RootRolePath;
-				return leadRolePath != null ? leadRolePath.PathOwner : null;
+				return leadRolePath != null ? ((IRolePathOwner)leadRolePath.PathOwner ?? leadRolePath.DynamicRule) : null;
 			}
 		}
 		#endregion // Abstract Properties
@@ -901,7 +1038,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
 			if (linkRoles == null)
 			{
-				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathOwnerOwnsLeadRolePath.RolePathDomainRoleId };
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathOwnerOwnsLeadRolePath.RolePathDomainRoleId, DynamicRuleOwnsLeadRolePath.RolePathDomainRoleId };
 			}
 			return linkRoles;
 		}
@@ -920,7 +1057,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				// UNDONE: Add more specific display context information at the component level
 				// instead of deferring back up the parent hierarchy.
-				IModelErrorDisplayContext deferTo = PathOwner as IModelErrorDisplayContext;
+				IModelErrorDisplayContext deferTo = PathOwner as IModelErrorDisplayContext ?? DynamicRule as IModelErrorDisplayContext;
 				return deferTo != null ? deferTo.ErrorDisplayContext : "";
 			}
 		}
@@ -981,7 +1118,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // PathObjectUnifier class
 	#region RolePathOwner class
-	partial class RolePathOwner : IModelErrorOwner
+	partial class RolePathOwner : IModelErrorOwner, IRolePathOwner
 	{
 		#region Abstract members
 		/// <summary>
@@ -1000,6 +1137,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Abstract members
+		#region IRolePathOwner Implementation
+		IList<LeadRolePath> IRolePathOwner.OwnedLeadRolePaths
+		{
+			get
+			{
+				return this.OwnedLeadRolePathCollection;
+			}
+		}
+		IList<LeadRolePath> IRolePathOwner.SharedLeadRolePaths
+		{
+			get
+			{
+				return this.SharedLeadRolePathCollection;
+			}
+		}
+		IList<LeadRolePath> IRolePathOwner.LeadRolePaths
+		{
+			get
+			{
+				return this.LeadRolePathCollection;
+			}
+		}
+		#endregion // IRolePathOwner Implementation
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Implements <see cref="IModelErrorOwner.GetErrorCollection"/>
@@ -1129,8 +1289,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// the caller of all objects that are added.</param>
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
-			ValidateRolePaths(true, notifyAdded);
-			ValidateDerivedRolePathOwner(notifyAdded);
+			ValidateRolePaths(this, true, notifyAdded);
+			ValidateRolePathOwnerSpecifics(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -3695,9 +3855,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DelayValidatePriority(-1)] // Run before the owner validation
 		private static void DelayValidateLeadRolePath(ModelElement element)
 		{
-			RolePathOwner pathOwner;
+			ModelElement pathOwner;
+			LeadRolePath rolePath;
 			if (!element.IsDeleted &&
-				null != (pathOwner = ((LeadRolePath)element).PathOwner))
+				null != (pathOwner = (rolePath =(LeadRolePath)element).PathOwner as ModelElement ?? rolePath.DynamicRule))
 			{
 				FrameworkDomainModel.DelayValidateElement(pathOwner, DelayValidateLeadRolePaths);
 			}
@@ -3710,12 +3871,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!element.IsDeleted)
 			{
-				((RolePathOwner)element).ValidateRolePaths(false, null);
+				ValidateRolePaths((IRolePathOwner)element, false, null);
 				FrameworkDomainModel.DelayValidateElement(element, DelayValidateDerivedRolePathOwner);
 			}
 		}
 		/// <summary>
-		/// Call to the <see cref="ValidateDerivedRolePathOwner"/> after core path
+		/// Call to the <see cref="ValidateRolePathOwnerSpecifics"/> after core path
 		/// validation is complete.
 		/// </summary>
 		[DelayValidatePriority(1)] // Run after DelayValidateLeadRolePaths
@@ -3723,34 +3884,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!element.IsDeleted)
 			{
-				((RolePathOwner)element).ValidateDerivedRolePathOwner(null);
+				((IRolePathOwner)element).ValidateRolePathOwnerSpecifics(null);
 			}
 		}
 		/// <summary>
 		/// Validate all role path components including calculations
 		/// </summary>
 		/// <param name="element">A <see cref="RolePathOwner"/></param>
-		private static void DelayValidateLeadRolePathsWithCalculations(ModelElement element)
+		public static void DelayValidateLeadRolePathsWithCalculations(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
-				((RolePathOwner)element).ValidateRolePaths(true, null);
-				FrameworkDomainModel.DelayValidateElement(element, DelayValidateDerivedRolePathOwner);
+				ValidateRolePaths((IRolePathOwner)element, true, null);
+				if (element is RolePathOwner)
+				{
+					FrameworkDomainModel.DelayValidateElement(element, DelayValidateDerivedRolePathOwner);
+				}
 			}
 		}
 		/// <summary>
 		/// Validate all path components
 		/// </summary>
+		/// <param name="owner">The virtual owner for this path. This is also assumed to be a model element.</param>
 		/// <param name="validateCalculations">Validate calculated values with the path components.</param>
 		/// <param name="notifyAdded">Notification callback for added errors.</param>
-		private void ValidateRolePaths(bool validateCalculations, INotifyElementAdded notifyAdded)
+		public static void ValidateRolePaths(IRolePathOwner owner, bool validateCalculations, INotifyElementAdded notifyAdded)
 		{
-			Partition partition = Partition;
+			Partition partition = ((ModelElement)owner).Partition;
 			ORMModel model = null;
 			BitTracker roleUseTracker = new BitTracker(0);
 			Stack<LinkedElementCollection<RoleBase>> factTypeRolesStack = new Stack<LinkedElementCollection<RoleBase>>();
 			ObjectType[] compatibilityTester = null;
-			foreach (LeadRolePath leadRolePath in OwnedLeadRolePathCollection)
+			foreach (LeadRolePath leadRolePath in owner.OwnedLeadRolePaths)
 			{
 				// Walk all pathed roles to check path structure and join compatibility. Errors
 				// are specified on the pathed roles.
@@ -4026,7 +4191,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									rootError = new PathRequiresRootObjectTypeError(partition);
 									rootError.RolePath = currentPath;
-									rootError.Model = model ?? (model = this.Model);
+									rootError.Model = model ?? (model = owner.Model);
 									rootError.GenerateErrorText();
 									if (notifyAdded != null)
 									{
@@ -4070,7 +4235,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										sameFactTypeWithoutJoinError = new PathSameFactTypeRoleFollowsJoinError(partition);
 										sameFactTypeWithoutJoinError.PathedRole = currentPathedRole;
-										sameFactTypeWithoutJoinError.Model = model ?? (model = this.Model);
+										sameFactTypeWithoutJoinError.Model = model ?? (model = owner.Model);
 										sameFactTypeWithoutJoinError.GenerateErrorText();
 										if (notifyAdded != null)
 										{
@@ -4090,7 +4255,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										outerJoinError = new PathOuterJoinRequiresOptionalRoleError(partition);
 										outerJoinError.PathedRole = currentPathedRole;
-										outerJoinError.Model = model ?? (model = this.Model);
+										outerJoinError.Model = model ?? (model = owner.Model);
 										outerJoinError.GenerateErrorText();
 										if (notifyAdded != null)
 										{
@@ -4110,7 +4275,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										joinCompatibilityError = new JoinedPathRoleRequiresCompatibleRolePlayerError(partition);
 										joinCompatibilityError.PathedRole = currentPathedRole;
-										joinCompatibilityError.Model = model ?? (model = this.Model);
+										joinCompatibilityError.Model = model ?? (model = owner.Model);
 										joinCompatibilityError.GenerateErrorText();
 										if (notifyAdded != null)
 										{
@@ -4140,7 +4305,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						rootError = new PathRequiresRootObjectTypeError(partition);
 						rootError.RolePath = leadRolePath;
-						rootError.Model = model ?? (model = this.Model);
+						rootError.Model = model ?? (model = owner.Model);
 						rootError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -4204,7 +4369,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								unifierCompatibilityError = new PathObjectUnifierRequiresCompatibleObjectTypesError(partition);
 								unifierCompatibilityError.ObjectUnifier = objectUnifier;
-								unifierCompatibilityError.Model = model ?? (model = this.Model);
+								unifierCompatibilityError.Model = model ?? (model = owner.Model);
 								unifierCompatibilityError.GenerateErrorText();
 								if (notifyAdded != null)
 								{
@@ -4225,7 +4390,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					foreach (CalculatedPathValue calculation in leadRolePath.CalculatedValueCollection)
 					{
-						ValidateCalculatedPathValue(calculation, this, notifyAdded, ref model);
+						ValidateCalculatedPathValue(calculation, owner, notifyAdded, ref model);
 					}
 				}
 				#endregion // Validate calculation completeness
@@ -4240,9 +4405,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// over path-specific and owner-specific settings.
 		/// </remarks>
 		/// <param name="notifyAdded">Notification callback for added elements and errors.</param>
-		protected virtual void ValidateDerivedRolePathOwner(INotifyElementAdded notifyAdded)
+		protected virtual void ValidateRolePathOwnerSpecifics(INotifyElementAdded notifyAdded)
 		{
 			// Intentionally empty
+		}
+		void IRolePathOwner.ValidateRolePathOwnerSpecifics(INotifyElementAdded notifyAdded)
+		{
+			this.ValidateRolePathOwnerSpecifics(notifyAdded);
 		}
 		/// <summary>
 		/// A helper callback for derived classes that consume calculations. Called during rule execution.
@@ -4271,6 +4440,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return calculation.BoundInputCollection.Count != 0 || calculation.RequiredForLeadRolePath != null;
 		}
+		bool IRolePathOwner.IsCalculatedPathValueConsumed(CalculatedPathValue calculation)
+		{
+			return IsCalculatedPathValueConsumed(calculation);
+		}
 		/// <summary>
 		/// Delayed validator for changes in a <see cref="CalculatedPathValue"/>
 		/// </summary>
@@ -4291,7 +4464,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="rolePathOwner">The containing <see cref="RolePathOwner"/> for this calculation.</param>
 		/// <param name="notifyAdded">Callback notification used during deserialization.</param>
 		/// <param name="contextModel">The context <see cref="ORMModel"/>. Calculated automatically if <see langword="null"/></param>
-		private static void ValidateCalculatedPathValue(CalculatedPathValue calculation, RolePathOwner rolePathOwner, INotifyElementAdded notifyAdded, ref ORMModel contextModel)
+		private static void ValidateCalculatedPathValue(CalculatedPathValue calculation, IRolePathOwner rolePathOwner, INotifyElementAdded notifyAdded, ref ORMModel contextModel)
 		{
 			Function function = calculation.Function;
 			Partition partition = calculation.Partition;
@@ -4464,7 +4637,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			LeadRolePath rolePath;
 			if ((null != rolePathOwner ||
 				(null != (rolePath = calculation.LeadRolePath) &&
-				null != (rolePathOwner = rolePath.PathOwner))) &&
+				null != (rolePathOwner = rolePath.PathOwner as IRolePathOwner ?? rolePath.DynamicRule))) &&
 				!rolePathOwner.IsCalculatedPathValueConsumed(calculation))
 			{
 				if (consumptionError == null &&
@@ -4542,7 +4715,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Check derivation projections
 		/// </summary>
 		/// <param name="notifyAdded">Standard deserialization callback.</param>
-		protected override void ValidateDerivedRolePathOwner(INotifyElementAdded notifyAdded)
+		protected override void ValidateRolePathOwnerSpecifics(INotifyElementAdded notifyAdded)
 		{
 			ValidateAutomaticProjections(notifyAdded);
 			if (notifyAdded != null)
@@ -6425,7 +6598,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Check projections
 		/// </summary>
 		/// <param name="notifyAdded">Standard deserialization callback.</param>
-		protected override void ValidateDerivedRolePathOwner(INotifyElementAdded notifyAdded)
+		protected override void ValidateRolePathOwnerSpecifics(INotifyElementAdded notifyAdded)
 		{
 			if (!IsAutomatic)
 			{

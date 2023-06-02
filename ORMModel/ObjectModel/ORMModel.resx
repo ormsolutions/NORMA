@@ -163,6 +163,30 @@
 	<data name="DerivationExpressionStorageType.PartiallyDerivedAndStored" xml:space="preserve">
 		<value>Asserted, or Derived and Stored</value>
 	</data>
+	<data name="DynamicRuleNodeState.Add" xml:space="preserve">
+		<value>Add Action</value>
+		<comment>The displayed form of the DynamicRuleNodeState enum value</comment>
+	</data>
+	<data name="DynamicRuleNodeState.Added" xml:space="preserve">
+		<value>Added Event</value>
+		<comment>The displayed form of the DynamicRuleNodeState enum value</comment>
+	</data>
+	<data name="DynamicRuleNodeState.Current" xml:space="preserve">
+		<value>Current (Initial or Added)</value>
+		<comment>The displayed form of the DynamicRuleNodeState enum value</comment>
+	</data>
+	<data name="DynamicRuleNodeState.Delete" xml:space="preserve">
+		<value>Delete Action</value>
+		<comment>The displayed form of the DynamicRuleNodeState enum value</comment>
+	</data>
+	<data name="DynamicRuleNodeState.Deleted" xml:space="preserve">
+		<value>Deleted Event</value>
+		<comment>The displayed form of the DynamicRuleNodeState enum value</comment>
+	</data>
+	<data name="DynamicRuleNodeState.Initial" xml:space="preserve">
+		<value>Initial</value>
+		<comment>The displayed form of the DynamicRuleNodeState enum value</comment>
+	</data>
 	<data name="EffectiveReferenceModeNamingChoice.CustomFormat" xml:space="preserve">
 		<value>Custom Format</value>
 		<comment>The displayed form of the CustomFormat enum value</comment>
@@ -580,6 +604,158 @@
 		<value>{0} has a derivation projection with an incompatible type.</value>
 		<comment>Model validation error text for projection on a role from a derived fact type where the type of projection does not match the type of the role. {0}=error display context (from role)</comment>
 	</data>
+	<data name="ModelError.DynamicRule.ActionRoleUndeclaredObject.CompactText" xml:space="preserve">
+		<value>Undeclared object in 'Add' or 'Delete' role.</value>
+		<comment>Model validation error text for a role in an action fact type with an object that is not declared in the rule body (non-action nodes) or matching action state (add or delete). Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.ActionRoleUndeclaredObject.Text" xml:space="preserve">
+		<value>{0} uses an object in an 'Add' or 'Delete' fact type that is not declared in that action or in a non-action node that is not under negation or disjunction.</value>
+		<comment>Model validation error text for a role in an action fact type with an object that is not declared in the rule body (non-action nodes) or matching action state (add or delete). {0}=error display context (from dynamic rule)</comment>
+	</data>
+	<data name="ModelError.DynamicRule.AddFactTypeUnboundRoles.CompactText" xml:space="preserve">
+		<value>Unbound roles in 'Add' action fact type.</value>
+		<comment>Model validation error text for a fact type with an Add state and one or more unbound roles. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.AddFactTypeUnboundRoles.Text" xml:space="preserve">
+		<value>{0} has unbound roles in a fact type with an Add state.</value>
+		<comment>Model validation error text for a fact type with an Add state and one or more unbound roles. {0}=error display context (from dynamic rule)</comment>
+	</data>
+	<data name="ModelError.DynamicRule.DisjunctionRequiresPositiveEvent.CompactText" xml:space="preserve">
+		<value>Each path in a disjunction requires at least one non-negated event.</value>
+		<comment>Model validation error text for a dynamic rule with a disjunctive branch without a positive event. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.DisjunctionRequiresPositiveEvent.Text" xml:space="preserve">
+		<value>{0} has at least one disjunctive path without at least one non-negated event node (Added or Deleted state).</value>
+		<comment>Model validation error text for a dynamic rule with a disjunctive branch without a positive event. {0}=error display context (from dynamic rule)</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedDynamicState.Display.Add" xml:space="preserve">
+		<value>Add</value>
+		<comment>Displayed string for the Add state in an error description.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedDynamicState.Display.Added" xml:space="preserve">
+		<value>Added</value>
+		<comment>Displayed string for the Added state in an error description.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedDynamicState.Display.Current" xml:space="preserve">
+		<value>Current</value>
+		<comment>Displayed string for the Current state in an error description.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedDynamicState.Display.Delete" xml:space="preserve">
+		<value>Delete</value>
+		<comment>Displayed string for the Delete state in an error description.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedDynamicState.Display.Deleted" xml:space="preserve">
+		<value>Deleted</value>
+		<comment>Displayed string for the Deleted state in an error description.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedDynamicState.Display.Initial" xml:space="preserve">
+		<value>Initial</value>
+		<comment>Displayed string for the Initial state in an error description.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForAdd" xml:space="preserve">
+		<value>The valid fact type state is Add.</value>
+		<comment>Allowed values for Add context state of joined dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForAdded" xml:space="preserve">
+		<value>Valid fact type states are Added and Add.</value>
+		<comment>Allowed values for Added context state of joined dynamice state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForCurrent" xml:space="preserve">
+		<value>Valid fact type states are Current, Added, Deleted, Add and Delete.</value>
+		<comment>Allowed values for Current context state of joined dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDelete" xml:space="preserve">
+		<value>Valid fact type states are Delete, Current, Initial and Added.</value>
+		<comment>Allowed values for Delete context state of joined dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDeleted" xml:space="preserve">
+		<value>Valid fact type states are Deleted, Delete, Current and Initial.</value>
+		<comment>Allowed values for Deleted context state of joined dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForInitial" xml:space="preserve">
+		<value>Valid fact type states are Current, Initial, Added, Deleted, Add and Delete.</value>
+		<comment>Allowed values for Initial context state of joined dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.CompactText" xml:space="preserve">
+		<value>Joined fact type has inconsistent dynamic state.</value>
+		<comment>Model validation error text for a join pathed role in a dynamic rule with a dynamic static that is inconsistent with the join context. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.Text" xml:space="preserve">
+		<value>{0} has an object with state {1} that is joined to a fact type with state {2}. {3}</value>
+		<comment>Model validation error text for a join pathed role in a dynamic rule with a dynamic static that is inconsistent with the join context. {0}=error display context (from dynamic rule),{1}=context state,{2}=fact type state,{3}=allowed fact type states.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForAdd" xml:space="preserve">
+		<value>Valid role player states are Add, Added, Current and Initial.</value>
+		<comment>Allowed values for Add context state of role player dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForAdded" xml:space="preserve">
+		<value>Valid role player states are Added, Current and Initial.</value>
+		<comment>Allowed values for Added context state of role player dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForCurrent" xml:space="preserve">
+		<value>Valid role player states are Delete, Current and Initial.</value>
+		<comment>Allowed values for Current context state of role player dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForDelete" xml:space="preserve">
+		<value>Valid role player states are Delete, Deleted, Current and Initial.</value>
+		<comment>Allowed values for Delete context state of role player dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForDeleted" xml:space="preserve">
+		<value>Valid role player states are Deleted, Current and Initial.</value>
+		<comment>Allowed values for Deleted context state of role player dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForInitial" xml:space="preserve">
+		<value>Valid role player states are Initial and Delete.</value>
+		<comment>Allowed values for Initial context state of role player dynamic state.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.CompactText" xml:space="preserve">
+		<value>Role player in a fact type has an inconsistent dynamic state.</value>
+		<comment>Model validation error text for a role player in a dynamic rule fact type has an inconsistent dynamic state. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.Text" xml:space="preserve">
+		<value>{0} has a fact type with state {1} that has role player with state {2}. {3}</value>
+		<comment>Model validation error text for a role player in a dynamic rule fact type has an inconsistent dynamic state. {0}=error display context (from dynamic rule),{1}=fact type state,{2}=role player state,{3}=allowed role player states.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.NoDisjunctiveOrNegatedAction.CompactText" xml:space="preserve">
+		<value>Add or delete action nodes must not be under disjunction or negation.</value>
+		<comment>Model validation error text for a dynamic rule with an action node (Add or Delete state) under disjunction or negation. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.NoDisjunctiveOrNegatedAction.Text" xml:space="preserve">
+		<value>{0} has at least one action node (Add or Delete state) inside a disjunction.</value>
+		<comment>Model validation error text for a dynamic rule with an action node (Add or Delete state) under disjunction or negation. {0}=error display context (from dynamic rule)</comment>
+	</data>
+	<data name="ModelError.DynamicRule.ObjectAddPartialIdentifier.CompactText" xml:space="preserve">
+		<value>Dynamic 'Add' object has partial identifier.</value>
+		<comment>Model validation error text for an 'add' object in a dynamic rule without a full identifier 'add'. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.ObjectAddPartialIdentifier.Text" xml:space="preserve">
+		<value>{0} has an object in the Add state that is not fully identified or a partial objectification.</value>
+		<comment>Model validation error text for an 'add' object in a dynamic rule without a full identifier or objectification link fact types in the 'add' state. {0}=error display context (from dynamic rule)</comment>
+	</data>
+	<data name="ModelError.DynamicRule.ObjectUnifierMismatchedDynamicState.CompactText" xml:space="preserve">
+		<value>Object unifier has more than one dynamic state.</value>
+		<comment>Model validation error text for an object unifier in a dynamic rule more than dynamic state. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.ObjectUnifierMismatchedDynamicState.Text" xml:space="preserve">
+		<value>{0} has an object unifier with more than one dynamic state.</value>
+		<comment>Model validation error text for an object unifier in a dynamic rule more than dynamic state. {0}=error display context (from dynamic rule)</comment>
+	</data>
+	<data name="ModelError.DynamicRule.PopulateExternallyIdentifiedObjectificationWithLinkFactTypes.CompactText" xml:space="preserve">
+		<value>Dynamic 'Add' objectification requires link fact types.</value>
+		<comment>Model validation error text for an 'add' objectified fact type that has a non-autogenerated external identifier. Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.PopulateExternallyIdentifiedObjectificationWithLinkFactTypes.Text" xml:space="preserve">
+		<value>{0} has an objectified fact type in the Add state that has an explicit external identification scheme. Add the object type and populated the link fact types instead of the objectified fact type.</value>
+		<comment>Model validation error text for an 'add' objectified fact type that has a non-autogenerated external identifier. {0}=error display context (from dynamic rule)</comment>
+	</data>
+	<data name="ModelError.DynamicRule.RequiresEventAndAction.CompactText" xml:space="preserve">
+		<value>A dynamic rule needs both event and action nodes.</value>
+		<comment>Model validation error text for a dynamic rule without at least one event (Added or Deleted state) and at least one action (Add or Delete state). Compact form.</comment>
+	</data>
+	<data name="ModelError.DynamicRule.RequiresEventAndAction.Text" xml:space="preserve">
+		<value>{0} needs at least one event node (Added or Deleted) and at least one action node (Add or Delete).</value>
+		<comment>Model validation error text for a dynamic rule without at least one event (Added or Deleted state) and at least one action (Add or Delete state). {0}=error display context (from dynamic rule)</comment>
+	</data>
 	<data name="ModelError.ElementGrouping.DuplicateNameError.CompactMessage" xml:space="preserve">
 		<value>Group name '{0}' is used by multiple groups.</value>
 		<comment>Model validation error text used when multiple groups with the same name are loaded into a model. Compact form. field 0 is the element name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
@@ -683,6 +859,14 @@
 	<data name="ModelError.Model.DuplicateFunctionNames.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple functions named '{1}'. Function names must be unique across all functions defined in a model.</value>
 		<comment>Model validation error text used when multiple functions with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.Model.DuplicateGeneralRuleNames.CompactText" xml:space="preserve">
+		<value>Rule name '{0}' is used by multiple rules.</value>
+		<comment>Model validation error text used when multiple general rules with the same name are loaded into a model. Compact form. Field 0 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.Model.DuplicateGeneralRuleNames.Text" xml:space="preserve">
+		<value>Model '{0}' contains multiple rules named '{1}'. Rule names must be unique across all rules in a model.</value>
+		<comment>Model validation error text used when multiple general rules with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateObjectTypeNames.CompactText" xml:space="preserve">
 		<value>Object type name '{0}' is used by multiple object types.</value>
@@ -851,6 +1035,10 @@
 	<data name="ModelError.UncategorizedModelError.CategoryDisplayName" xml:space="preserve">
 		<value>Uncategorized Model Validation Errors</value>
 		<comment>Category name to display for uncategorized model errors.</comment>
+	</data>
+	<data name="ModelError.DisplayContext.DynamicRule" xml:space="preserve">
+		<value>dynamic rule '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated a dynamic rule. Automatically capitalized on replacement. {0}=DynamicRule {1}=Model.</comment>
 	</data>
 	<data name="ModelError.DisplayContext.FactType" xml:space="preserve">
 		<value>fact type '{0}' in model '{1}'</value>

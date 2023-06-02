@@ -1460,6 +1460,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum.Compact");
 			}
 		}
+		/// <summary>Dynamic text replacement for an error associated a dynamic rule. Automatically capitalized on replacement. {0}=DynamicRule {1}=Model.</summary>
+		public static string ModelErrorDisplayContextDynamicRule
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.DynamicRule");
+			}
+		}
 		/// <summary>Dynamic text replacement for an error associated a normal FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</summary>
 		public static string ModelErrorDisplayContextFactType
 		{
@@ -1650,6 +1658,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFunctionNames.CompactText");
+			}
+		}
+		/// <summary>Model validation error text used when multiple general rules with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateGeneralRuleNames
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateGeneralRuleNames.Text");
+			}
+		}
+		/// <summary>Model validation error text used when multiple general rules with the same name are loaded into a model. Compact form. Field 0 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateGeneralRuleNamesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateGeneralRuleNames.CompactText");
 			}
 		}
 		/// <summary>Model validation error text used when multiple object types with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
@@ -3865,6 +3889,310 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequence.JoinPathRequiredError.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for a role in an action fact type with an object that is not declared in the rule body (non-action nodes) or matching action state (add or delete). {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRuleActionRoleUndeclaredObject
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.ActionRoleUndeclaredObject.Text");
+			}
+		}
+		/// <summary>Model validation error text for a role in an action fact type with an object that is not declared in the rule body (non-action nodes) or matching action state (add or delete). Compact form.</summary>
+		public static string ModelErrorDynamicRuleActionRoleUndeclaredObjectCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.ActionRoleUndeclaredObject.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for a fact type with an Add state and one or more unbound roles. {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRuleAddFactTypeUnboundRoles
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.AddFactTypeUnboundRoles.Text");
+			}
+		}
+		/// <summary>Model validation error text for a fact type with an Add state and one or more unbound roles. Compact form.</summary>
+		public static string ModelErrorDynamicRuleAddFactTypeUnboundRolesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.AddFactTypeUnboundRoles.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for a dynamic rule with a disjunctive branch without a positive event. {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRuleDisjunctionRequiresPositiveEvent
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.DisjunctionRequiresPositiveEvent.Text");
+			}
+		}
+		/// <summary>Model validation error text for a dynamic rule with a disjunctive branch without a positive event. Compact form.</summary>
+		public static string ModelErrorDynamicRuleDisjunctionRequiresPositiveEventCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.DisjunctionRequiresPositiveEvent.CompactText");
+			}
+		}
+		/// <summary>Displayed string for the Add state in an error description.</summary>
+		public static string ModelErrorDynamicRuleMismatchedDynamicStateDisplayAdd
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedDynamicState.Display.Add");
+			}
+		}
+		/// <summary>Displayed string for the Added state in an error description.</summary>
+		public static string ModelErrorDynamicRuleMismatchedDynamicStateDisplayAdded
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedDynamicState.Display.Added");
+			}
+		}
+		/// <summary>Displayed string for the Current state in an error description.</summary>
+		public static string ModelErrorDynamicRuleMismatchedDynamicStateDisplayCurrent
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedDynamicState.Display.Current");
+			}
+		}
+		/// <summary>Displayed string for the Delete state in an error description.</summary>
+		public static string ModelErrorDynamicRuleMismatchedDynamicStateDisplayDelete
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedDynamicState.Display.Delete");
+			}
+		}
+		/// <summary>Displayed string for the Deleted state in an error description.</summary>
+		public static string ModelErrorDynamicRuleMismatchedDynamicStateDisplayDeleted
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedDynamicState.Display.Deleted");
+			}
+		}
+		/// <summary>Displayed string for the Initial state in an error description.</summary>
+		public static string ModelErrorDynamicRuleMismatchedDynamicStateDisplayInitial
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedDynamicState.Display.Initial");
+			}
+		}
+		/// <summary>Allowed values for Add context state of joined dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForAdd
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForAdd");
+			}
+		}
+		/// <summary>Allowed values for Added context state of joined dynamice state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForAdded
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForAdded");
+			}
+		}
+		/// <summary>Allowed values for Current context state of joined dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForCurrent
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForCurrent");
+			}
+		}
+		/// <summary>Allowed values for Delete context state of joined dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForDelete
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDelete");
+			}
+		}
+		/// <summary>Allowed values for Deleted context state of joined dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForDeleted
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDeleted");
+			}
+		}
+		/// <summary>Allowed values for Initial context state of joined dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicStateAllowedForInitial
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForInitial");
+			}
+		}
+		/// <summary>Model validation error text for a join pathed role in a dynamic rule with a dynamic static that is inconsistent with the join context. {0}=error display context (from dynamic rule),{1}=context state,{2}=fact type state,{3}=allowed fact type states.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicState
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.Text");
+			}
+		}
+		/// <summary>Model validation error text for a join pathed role in a dynamic rule with a dynamic static that is inconsistent with the join context. Compact form.</summary>
+		public static string ModelErrorDynamicRuleMismatchedJoinDynamicStateCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedJoinDynamicState.CompactText");
+			}
+		}
+		/// <summary>Allowed values for Add context state of role player dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForAdd
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForAdd");
+			}
+		}
+		/// <summary>Allowed values for Added context state of role player dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForAdded
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForAdded");
+			}
+		}
+		/// <summary>Allowed values for Current context state of role player dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForCurrent
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForCurrent");
+			}
+		}
+		/// <summary>Allowed values for Delete context state of role player dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForDelete
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForDelete");
+			}
+		}
+		/// <summary>Allowed values for Deleted context state of role player dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForDeleted
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForDeleted");
+			}
+		}
+		/// <summary>Allowed values for Initial context state of role player dynamic state.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateAllowedForInitial
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForInitial");
+			}
+		}
+		/// <summary>Model validation error text for a role player in a dynamic rule fact type has an inconsistent dynamic state. {0}=error display context (from dynamic rule),{1}=fact type state,{2}=role player state,{3}=allowed role player states.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicState
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.Text");
+			}
+		}
+		/// <summary>Model validation error text for a role player in a dynamic rule fact type has an inconsistent dynamic state. Compact form.</summary>
+		public static string ModelErrorDynamicRuleMismatchedRolePlayerDynamicStateCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.MismatchedRolePlayerDynamicState.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for a dynamic rule with an action node (Add or Delete state) under disjunction or negation. {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRuleNoDisjunctiveOrNegatedAction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.NoDisjunctiveOrNegatedAction.Text");
+			}
+		}
+		/// <summary>Model validation error text for a dynamic rule with an action node (Add or Delete state) under disjunction or negation. Compact form.</summary>
+		public static string ModelErrorDynamicRuleNoDisjunctiveOrNegatedActionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.NoDisjunctiveOrNegatedAction.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for an 'add' object in a dynamic rule without a full identifier or objectification link fact types in the 'add' state. {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRuleObjectAddPartialIdentifier
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.ObjectAddPartialIdentifier.Text");
+			}
+		}
+		/// <summary>Model validation error text for an 'add' object in a dynamic rule without a full identifier 'add'. Compact form.</summary>
+		public static string ModelErrorDynamicRuleObjectAddPartialIdentifierCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.ObjectAddPartialIdentifier.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for an object unifier in a dynamic rule more than dynamic state. {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRuleObjectUnifierMismatchedDynamicState
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.ObjectUnifierMismatchedDynamicState.Text");
+			}
+		}
+		/// <summary>Model validation error text for an object unifier in a dynamic rule more than dynamic state. Compact form.</summary>
+		public static string ModelErrorDynamicRuleObjectUnifierMismatchedDynamicStateCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.ObjectUnifierMismatchedDynamicState.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for an 'add' objectified fact type that has a non-autogenerated external identifier. {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRulePopulateExternallyIdentifiedObjectificationWithLinkFactTypes
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.PopulateExternallyIdentifiedObjectificationWithLinkFactTypes.Text");
+			}
+		}
+		/// <summary>Model validation error text for an 'add' objectified fact type that has a non-autogenerated external identifier. Compact form.</summary>
+		public static string ModelErrorDynamicRulePopulateExternallyIdentifiedObjectificationWithLinkFactTypesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.PopulateExternallyIdentifiedObjectificationWithLinkFactTypes.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for a dynamic rule without at least one event (Added or Deleted state) and at least one action (Add or Delete state). {0}=error display context (from dynamic rule)</summary>
+		public static string ModelErrorDynamicRuleRequiresEventAndAction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.RequiresEventAndAction.Text");
+			}
+		}
+		/// <summary>Model validation error text for a dynamic rule without at least one event (Added or Deleted state) and at least one action (Add or Delete state). Compact form.</summary>
+		public static string ModelErrorDynamicRuleRequiresEventAndActionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DynamicRule.RequiresEventAndAction.CompactText");
 			}
 		}
 		/// <summary>Automatic projection is explicitly requested for a role in a derived fact type when a single node of a matching type does not exist in the role path.</summary>

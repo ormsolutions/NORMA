@@ -2643,7 +2643,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					target = null;
 				}
 			}
-			return false;
+
+			// Selection is failing, but if we have a model error activator it may still be
+			// able to navigate to and select the item.
+			bool errorHandled = false;
+			if (modelError != null)
+			{
+				modelError.WalkAssociatedElements((el) =>
+				{
+					if (!errorHandled)
+					{
+						errorHandled = ModelErrorActivationService.ActivateError(el, modelError);
+					}
+				});
+			}
+			return errorHandled;
 		}
 		/// <summary>
 		/// Get the containing embedding element

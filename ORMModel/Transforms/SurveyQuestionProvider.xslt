@@ -54,7 +54,13 @@
 					</plx:implementsInterface>
 					<xsl:variable name="groupings" select="qp:groupings/qp:grouping"/>
 					<xsl:for-each select="$dynamicQuestions">
-						<plx:field name="myDynamic{@questionType}QuestionInstance" dataTypeName="ProvideSurveyQuestionFor{@questionType}" visibility="private"/>
+						<plx:field name="myDynamic{@questionType}QuestionInstance" dataTypeName="ProvideSurveyQuestionFor{@questionType}" visibility="private">
+							<xsl:if test="@questionTypeQualifier">
+								<xsl:attribute name="dataTypeQualifier">
+									<xsl:value-of select="@questionTypeQualifier"/>
+								</xsl:attribute>
+							</xsl:if>
+						</plx:field>
 					</xsl:for-each>
 					<xsl:choose>
 						<xsl:when test="$groupings">
@@ -183,6 +189,11 @@
 																								</plx:left>
 																								<plx:right>
 																									<plx:inlineStatement dataTypeName="{@questionType}">
+																										<xsl:if test="@questionTypeQualifier">
+																											<xsl:attribute name="dataTypeQualifier">
+																												<xsl:value-of select="@questionTypeQualifier"/>
+																											</xsl:attribute>
+																										</xsl:if>
 																										<plx:assign>
 																											<plx:left>
 																												<plx:callThis name="myDynamic{@questionType}QuestionInstance" type="field"/>
@@ -358,13 +369,19 @@
 							<plx:passTypeParam dataTypeName="Type"/>
 						</plx:returns>
 						<plx:return>
-							<xsl:variable name="errorTypeNames" select="qp:surveyQuestions/qp:surveyQuestion[@isErrorDisplay='true' or @isErrorDisplay='1']/@questionType"/>
+							<xsl:variable name="errorTypeNames" select="qp:surveyQuestions/qp:surveyQuestion[@isErrorDisplay='true' or @isErrorDisplay='1']"/>
 							<xsl:choose>
 								<xsl:when test="$errorTypeNames">
 									<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
 										<plx:arrayInitializer>
 											<xsl:for-each select="$errorTypeNames">
-												<plx:typeOf dataTypeName="{.}"/>
+												<plx:typeOf dataTypeName="{@questionType}">
+													<xsl:if test="@questionTypeQualifier">
+														<xsl:attribute name="dataTypeQualifier">
+															<xsl:value-of select="@questionTypeQualifier"/>
+														</xsl:attribute>
+													</xsl:if>
+												</plx:typeOf>
 											</xsl:for-each>
 										</plx:arrayInitializer>
 									</plx:callNew>
@@ -422,7 +439,13 @@
 				<plx:returns dataTypeName="Type"/>
 				<plx:get>
 					<plx:return>
-						<plx:typeOf dataTypeName="{@questionType}"/>
+						<plx:typeOf dataTypeName="{@questionType}">
+							<xsl:if test="@questionTypeQualifier">
+								<xsl:attribute name="dataTypeQualifier">
+									<xsl:value-of select="@questionTypeQualifier"/>
+								</xsl:attribute>
+							</xsl:if>
+						</plx:typeOf>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -470,10 +493,22 @@
 					<xsl:copy-of select="$redirection[position()&lt;$redirectionCount]"/>
 				</xsl:if>
 				<plx:local name="typedData" dataTypeName="{$interfaceType}">
-					<plx:passTypeParam dataTypeName="{@questionType}"/>
+					<plx:passTypeParam dataTypeName="{@questionType}">
+						<xsl:if test="@questionTypeQualifier">
+							<xsl:attribute name="dataTypeQualifier">
+								<xsl:value-of select="@questionTypeQualifier"/>
+							</xsl:attribute>
+						</xsl:if>
+					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast dataTypeName="{$interfaceType}" type="testCast">
-							<plx:passTypeParam dataTypeName="{@questionType}"/>
+							<plx:passTypeParam dataTypeName="{@questionType}">
+								<xsl:if test="@questionTypeQualifier">
+									<xsl:attribute name="dataTypeQualifier">
+										<xsl:value-of select="@questionTypeQualifier"/>
+									</xsl:attribute>
+								</xsl:if>
+							</plx:passTypeParam>
 							<xsl:choose>
 								<xsl:when test="$redirection">
 									<xsl:copy-of select="$redirection[$redirectionCount]"/>
@@ -557,21 +592,39 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="questionType" select="string(@questionType)"/>
+								<xsl:variable name="questionTypeQualifier" select="string(@questionTypeQualifier)"/>
 								<plx:local name="retVal" dataTypeName=".i4"/>
 								<plx:switch>
 									<plx:condition>
 										<plx:cast dataTypeName="{$questionType}">
+											<xsl:if test="$questionTypeQualifier">
+												<xsl:attribute name="dataTypeQualifier">
+													<xsl:value-of select="$questionTypeQualifier"/>
+												</xsl:attribute>
+											</xsl:if>
 											<plx:nameRef name="answer" type="parameter"/>
 										</plx:cast>
 									</plx:condition>
 									<xsl:for-each select="$imageMap/qp:map">
 										<plx:case>
 											<plx:condition>
-												<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+												<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field">
+													<xsl:if test="$questionTypeQualifier">
+														<xsl:attribute name="dataTypeQualifier">
+															<xsl:value-of select="$questionTypeQualifier"/>
+														</xsl:attribute>
+													</xsl:if>
+												</plx:callStatic>
 											</plx:condition>
 											<xsl:for-each select="$imageMap/qp:mapSameAs[@targetEnumValue=current()/@enumValue]">
 												<plx:condition>
-													<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+													<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field">
+														<xsl:if test="$questionTypeQualifier">
+															<xsl:attribute name="dataTypeQualifier">
+																<xsl:value-of select="$questionTypeQualifier"/>
+															</xsl:attribute>
+														</xsl:if>
+													</plx:callStatic>
 												</plx:condition>
 											</xsl:for-each>
 											<plx:assign>
@@ -688,6 +741,11 @@
 						<plx:switch>
 							<plx:condition>
 								<plx:cast dataTypeName="{$questionType}">
+									<xsl:if test="@questionTypeQualifier">
+										<xsl:attribute name="dataTypeQualifier">
+											<xsl:value-of select="@questionTypeQualifier"/>
+										</xsl:attribute>`
+									</xsl:if>
 									<plx:nameRef name="answer" type="parameter"/>
 								</plx:cast>
 							</plx:condition>
@@ -826,6 +884,11 @@
 							<plx:local name="typedAnswer" dataTypeName="{$questionType}">
 								<plx:initialize>
 									<plx:cast dataTypeName="{$questionType}">
+										<xsl:if test="@questionTypeQualifier">
+											<xsl:attribute name="dataTypeQualifier">
+												<xsl:value-of select="@questionTypeQualifier"/>
+											</xsl:attribute>
+										</xsl:if>
 										<plx:nameRef name="answer" type="parameter"/>
 									</plx:cast>
 								</plx:initialize>
@@ -1012,7 +1075,13 @@
 												<plx:binaryOperator type="add">
 													<plx:left>
 														<plx:cast dataTypeName=".i4">
-															<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
+															<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field">
+																<xsl:if test="$ImageMap/../@questionTypeQualifier">
+																	<xsl:attribute name="dataTypeQualifier">
+																		<xsl:value-of select="$ImageMap/../@questionTypeQualifier"/>
+																	</xsl:attribute>
+																</xsl:if>
+															</plx:callStatic>
 														</plx:cast>
 													</plx:left>
 													<plx:right>
@@ -1081,7 +1150,13 @@
 						<plx:binaryOperator type="add">
 							<plx:left>
 								<plx:cast dataTypeName=".i4">
-									<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field"/>
+									<plx:callStatic dataTypeName="{$ImageMap/../@questionType}" name="{$lastAnswer}" type="field">
+										<xsl:if test="$ImageMap/../@questionTypeQualifier">
+											<xsl:attribute name="dataTypeQualifier">
+												<xsl:value-of select="$ImageMap/../@questionTypeQualifier"/>
+											</xsl:attribute>
+										</xsl:if>
+									</plx:callStatic>
 								</plx:cast>
 							</plx:left>
 							<plx:right>

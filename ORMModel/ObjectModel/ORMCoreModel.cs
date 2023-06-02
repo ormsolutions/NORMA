@@ -1484,7 +1484,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IRegisterSignalChanges Implementation
 		#region IShapeFreeDataObjectProvider Implementation
-		private static Type[] m_shapeFreeDataObjectTypes = new Type[] { typeof(ElementGrouping) };
+		private static Type[] m_shapeFreeDataObjectTypes = new Type[] { typeof(ElementGrouping), typeof(DynamicRule) };
 		/// <summary>
 		/// Implements IShapeFreeDataObjectProvider.ShapeFreeDataObjectTypes
 		/// </summary>
@@ -1699,6 +1699,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class DynamicRuleOwnsLeadRolePath : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return DynamicRule;
 			}
 		}
 		#endregion // IModelErrorOwnerPath Implementation

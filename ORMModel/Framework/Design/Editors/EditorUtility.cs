@@ -256,103 +256,106 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 					string targetDisplayName = targetDescriptor.DisplayName;
 					GridItem activateItem = null;
 					GridItem selectedItem = propertyGrid.SelectedGridItem;
-					if (selectedItem.GridItemType == GridItemType.Property && selectedItem.Label == targetDisplayName)
+					if (selectedItem != null)
 					{
-						activateItem = selectedItem;
-					}
-					else
-					{
-						GridItem currentItem = selectedItem;
-						bool moveDown = false;
-						switch (currentItem.GridItemType)
+						if (selectedItem.GridItemType == GridItemType.Property && selectedItem.Label == targetDisplayName)
 						{
-							case GridItemType.Property:
-								if (currentItem.Label == targetDisplayName &&
-									currentItem.PropertyDescriptor.Category == targetCategory)
-								{
-									activateItem = currentItem;
-								}
-								break;
-							case GridItemType.Category:
-								if (currentItem.Label == targetCategory)
-								{
-									moveDown = true;
-								}
-								break;
+							activateItem = selectedItem;
 						}
-						while (activateItem == null && currentItem != null)
+						else
 						{
-							GridItemCollection items = null;
-							if (moveDown)
+							GridItem currentItem = selectedItem;
+							bool moveDown = false;
+							switch (currentItem.GridItemType)
 							{
-								if (currentItem.Expandable && !currentItem.Expanded)
-								{
-									currentItem.Expanded = true;
-								}
-								items = currentItem.GridItems;
-							}
-							else
-							{
-								currentItem = currentItem.Parent;
-								while (!moveDown && currentItem != null)
-								{
-									switch (currentItem.GridItemType)
+								case GridItemType.Property:
+									if (currentItem.Label == targetDisplayName &&
+										currentItem.PropertyDescriptor.Category == targetCategory)
 									{
-										case GridItemType.Category:
-											if (currentItem.Label == targetCategory)
-											{
-												items = currentItem.GridItems;
-												moveDown = true;
-											}
-											else
-											{
-												currentItem = currentItem.Parent;
-											}
-											break;
-										case GridItemType.Root:
-											items = currentItem.GridItems;
-											moveDown = true;
-											break;
-										default:
-											currentItem = currentItem.Parent;
-											break;
-
+										activateItem = currentItem;
 									}
-								}
+									break;
+								case GridItemType.Category:
+									if (currentItem.Label == targetCategory)
+									{
+										moveDown = true;
+									}
+									break;
+							}
+							while (activateItem == null && currentItem != null)
+							{
+								GridItemCollection items = null;
 								if (moveDown)
 								{
 									if (currentItem.Expandable && !currentItem.Expanded)
 									{
 										currentItem.Expanded = true;
 									}
+									items = currentItem.GridItems;
 								}
-							}
-							while (activateItem == null && items != null)
-							{
-								currentItem = null; // Break outer loop
-								GridItemCollection iterateItems = items;
-								items = null;
-								foreach (GridItem item in iterateItems)
+								else
 								{
-									GridItemType itemType = item.GridItemType;
-									if (itemType == GridItemType.Category)
+									currentItem = currentItem.Parent;
+									while (!moveDown && currentItem != null)
 									{
-										if (item.Label == targetCategory)
+										switch (currentItem.GridItemType)
 										{
-											if (item.Expandable && !item.Expanded)
-											{
-												item.Expanded = true;
-											}
-											items = item.GridItems;
-											break;
+											case GridItemType.Category:
+												if (currentItem.Label == targetCategory)
+												{
+													items = currentItem.GridItems;
+													moveDown = true;
+												}
+												else
+												{
+													currentItem = currentItem.Parent;
+												}
+												break;
+											case GridItemType.Root:
+												items = currentItem.GridItems;
+												moveDown = true;
+												break;
+											default:
+												currentItem = currentItem.Parent;
+												break;
+
 										}
 									}
-									else if (itemType == GridItemType.Property)
+									if (moveDown)
 									{
-										if (item.Label == targetDisplayName)
+										if (currentItem.Expandable && !currentItem.Expanded)
 										{
-											activateItem = item;
-											break;
+											currentItem.Expanded = true;
+										}
+									}
+								}
+								while (activateItem == null && items != null)
+								{
+									currentItem = null; // Break outer loop
+									GridItemCollection iterateItems = items;
+									items = null;
+									foreach (GridItem item in iterateItems)
+									{
+										GridItemType itemType = item.GridItemType;
+										if (itemType == GridItemType.Category)
+										{
+											if (item.Label == targetCategory)
+											{
+												if (item.Expandable && !item.Expanded)
+												{
+													item.Expanded = true;
+												}
+												items = item.GridItems;
+												break;
+											}
+										}
+										else if (itemType == GridItemType.Property)
+										{
+											if (item.Label == targetDisplayName)
+											{
+												activateItem = item;
+												break;
+											}
 										}
 									}
 								}
@@ -622,11 +625,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// then the normal property descriptor category mechanism is used to retrieve the category.
 		/// This provides a simpler approach than setting <see cref="CategoryAttribute"/> attributes
 		/// for each property.</param>
+		/// <param name="afterChange">A callback that is passed the modified element (containing the new value) inside the transaction and after a change is made.</param>
 		/// <returns>A <see cref="PropertyDescriptor"/> that can be used similarly to an <see cref="ElementPropertyDescriptor"/>.
 		/// Setting and resetting values with this descriptor will automatically create the appropriate <see cref="Transaction"/>.</returns>
-		public static PropertyDescriptor ReflectStoreEnabledPropertyDescriptor(Type componentType, string propertyName, Type propertyType, string descriptorName, string displayName, string description, string category)
+		public static PropertyDescriptor ReflectStoreEnabledPropertyDescriptor(Type componentType, string propertyName, Type propertyType, string descriptorName, string displayName, string description, string category, Action<object> afterChange = null)
 		{
-			return new StoreEnabledPropertyDescriptor(TypeDescriptor.CreateProperty(componentType, propertyName, propertyType), descriptorName, displayName, description, category);
+			return new StoreEnabledPropertyDescriptor(TypeDescriptor.CreateProperty(componentType, propertyName, propertyType), descriptorName, displayName, description, category, afterChange);
 		}
 		#endregion // ReflectStoreEnabledPropertyDescriptor
 		#region RedirectPropertyDescriptor
@@ -1148,6 +1152,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		private readonly string myDisplayName;
 		private readonly string myDescription;
 		private readonly string myCategory;
+		private readonly Action<object> myAfterChange;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -1160,13 +1165,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
 		/// <param name="description">A customized description. If this is <see langword="null"/>, then the original description is used.</param>
 		/// <param name="category">A customized category. If this is <see langword="null"/>, then the original category is used.</param>
-		public StoreEnabledPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
+		/// <param name="afterChange">A callback that is passed the modified element (containing the new value) inside the transaction and after a change is made.</param>
+		public StoreEnabledPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category, Action<object> afterChange = null)
 			: base(descriptorName ?? modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
 		{
 			myInner = modifyDescriptor;
 			myDisplayName = displayName;
 			myDescription = description;
 			myCategory = category;
+			myAfterChange = afterChange;
 		}
 		#endregion // Constructor
 		#region Component Resolution
@@ -1274,6 +1281,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(DisplayName)))
 			{
 				myInner.ResetValue(element);
+				if (myAfterChange != null)
+				{
+					myAfterChange(element);
+				}
 				if (t.HasPendingChanges)
 				{
 					t.Commit();
@@ -1301,6 +1312,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(DisplayName)))
 			{
 				myInner.SetValue(element, value);
+				if (myAfterChange != null)
+				{
+					myAfterChange(element);
+				}
 				if (t.HasPendingChanges)
 				{
 					t.Commit();

@@ -119,6 +119,11 @@
 				<xs:documentation>The name of an enum type with sequential values starting at zero that forms the set of answers to this question.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="questionTypeQualifier" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>An explicit namespace qualifier for questionType. Question type names must be unique in this file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="dynamicValues" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>The questionType attribute refers to the name of a type that implements the ISurveyDynamicValues interface instead of an enum. The type should have a constructor callable from this scope that takes a single Store parameter. Not compatible with isErrorDisplay.</xs:documentation>

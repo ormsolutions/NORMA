@@ -27,6 +27,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Automatic top-level embedding relationships
 			closureManager.AddRootEmbeddingRelationship(ModelHasObjectType.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelHasFactType.DomainClassId);
+			closureManager.AddRootEmbeddingRelationship(ModelDefinesGeneralRule.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelHasError.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelHasReferenceModeKind.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelHasReferenceMode.DomainClassId);
@@ -62,6 +63,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ConstraintRoleSequenceHasJoinPath.RoleSequenceDomainRoleId), new DomainRoleClosureRestriction(ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.SourceDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.RoleProjectionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DynamicRuleOwnsLeadRolePath.RolePathDomainRoleId), new DomainRoleClosureRestriction(DynamicRuleOwnsLeadRolePath.DynamicRuleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DynamicRuleOwnsLeadRolePath.DynamicRuleDomainRoleId), new DomainRoleClosureRestriction(DynamicRuleOwnsLeadRolePath.RolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ElementGroupingHasDefinition.DefinitionDomainRoleId), new DomainRoleClosureRestriction(ElementGroupingHasDefinition.GroupingDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ElementGroupingHasDefinition.GroupingDomainRoleId), new DomainRoleClosureRestriction(ElementGroupingHasDefinition.DefinitionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ElementGroupingHasNote.NoteDomainRoleId), new DomainRoleClosureRestriction(ElementGroupingHasNote.GroupingDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);

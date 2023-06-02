@@ -198,6 +198,11 @@
 				<DomainClassMoniker Name="ModelErrorCategory"/>
 			</BaseClass>
 		</DomainClass>
+		<DomainClass Name="DynamicRuleErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3FE784FD-564E-46C7-9240-56C74B4C8FE2" DisplayName="Dynamic Rule Errors" InheritanceModifier="Abstract" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelErrorCategory"/>
+			</BaseClass>
+		</DomainClass>
 
 		<DomainClass Name="ElementGroupingSet" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C0436CE8-6957-4FB9-A526-D94DC2073C02" DisplayName="Groups" InheritanceModifier="Sealed" Description="A Group owner, allows group containment, order, and naming enforcement."/>
 		<DomainClass Name="ElementGrouping" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B3856187-EFEB-4437-AF4C-8DF5504FB461" DisplayName="Group" Description="A group of elements. A GroupType is associated with the Group to control the group contents.">
@@ -1352,6 +1357,16 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
+		<DomainClass Name="GeneralRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0E86C09D-51E1-405C-BF4A-B9DD642216D9" DisplayName="GeneratlRule" InheritanceModifier="Abstract" Description="A rule that acts on fact types and objects types but is not owned by them.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMNamedElement"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DynamicRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B3DFAE38-AAAA-4961-B355-D000DF7107E2" DisplayName="DynamicRule" InheritanceModifier="Sealed" Description="A rule that responds to dynamic changes (additions and deletions) by adding and deleting other elements.">
+			<BaseClass>
+				<DomainClassMoniker Name="GeneralRule"/>
+			</BaseClass>
+		</DomainClass>
 		<!-- Role path errors -->
 		<DomainClass Name="PathRequiresRootObjectTypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6DFCE057-33B0-45BB-A957-8F45B6D3A673" DisplayName="Root Object Type Required" Description="A LeadRolePath must specify a root object type.">
 			<BaseClass>
@@ -1428,6 +1443,56 @@
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
+		<DomainClass Name="DynamicRuleRequiresEventAndActionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EA6EF8C4-CFF9-4C49-95D1-DFF095997BBC" DisplayName="Event and Action Required" Description="A dynamic rule needs at least one triggering event and one action.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DynamicRuleNoDisjunctiveOrNegatedActionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2E6B0D2B-034D-4CF6-869A-45CD80131C17" DisplayName="No Actions Under Disjunction or Negation" Description="Add and Delete actions for a dynamic rule cannot occur inside a disjunction or negation.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DynamicRuleDisjunctionRequiresPositiveEventError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3C27D943-C066-415F-8A3B-BB3BC3A29939" DisplayName="Disjunctive Path Missing Event" Description="Each disjunctive branch in a dynamic rule must contain at least one non-negated event.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="MismatchedJoinDynamicStateError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A97CF711-6065-45B1-BBE7-01FBFB0FEF54" DisplayName="Joined Fact Type Dynamic State Mismatch" Description="An object type in a dynamic rule is joined to a fact type with an inconsistent dynamic state.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="MismatchedRolePlayerDynamicStateError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="41325491-135F-40F0-AFD7-C0AE8C9CB193" DisplayName="Role Player Dynamic State Mismatch" Description="A fact type in a dynamic rule has a role player with an inconsistent dynamic state.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DynamicAddFactTypeUnboundRolesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5D0DC5E8-F486-4FC6-B243-E21F7A4A0CEE" DisplayName="Unbound Fact Type Roles for Add Action" Description="An 'Add' action fact type in a dynamic rule must explicitly bind all roles.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DynamicActionRoleUndeclaredObjectError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A36593A7-7916-4442-BF1F-B33B5DC1F64D" DisplayName="Action Fact Type Object Undeclared" Description="An object referenced in an 'Add' or 'Delete' fact type in a dynamic rule must have the same action state or be declared in the body (non-action state nodes) of that rule.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ObjectUnifierMismatchedDynamicStateError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="30C567D2-31AE-49E5-8B7D-D7867CAFC974" DisplayName="Correlated Nodes Dynamic State Mismatch" Description="Correlated nodes much all have the same dynamic state.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DynamicObjectAddPartialIdentifierError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="400A6774-B949-48E0-96C5-17BFB850A785" DisplayName="Dynamically Added Object Identification" Description="An object with a dynamic Add state requires identifying facts in the Add state.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="DynamicObjectificationAddRequiresLinkFactTypesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="134E3294-49CF-405F-B1C4-AE4B80D96F8E" DisplayName="Dynamically Added Objectification Identification" Description="An objectification with a dynamic Add state must populate link fact types if it uses a non-autogenerated external identifier.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
 
 		<DomainClass Name="TooFewRoleSequencesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="686A4B07-0ED9-4143-8225-5524C4D6C001" DisplayName="Too Few Role Sequences" Description="">
 			<BaseClass>
@@ -1442,6 +1507,12 @@
 		</DomainClass>
 
 		<DomainClass Name="ObjectTypeDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="798D4CC7-1AD8-4A83-AFD5-5730AC342DC2" DisplayName="Duplicate ObjectType Names" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="DuplicateNameError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="GeneralRuleDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A9DCF59C-BDD1-4BB3-B243-AD7B99F575FD" DisplayName="Duplicate Rule Names" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
 			</BaseClass>
@@ -2884,6 +2955,26 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="ModelDefinesGeneralRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="FC47694F-75DB-445D-A141-62D3FEE707DC">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Model" PropertyName="GeneralRuleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="20BE5816-8B2D-48FB-887B-461EC0C2359F">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Rule" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Rule" Id="0BF30917-C9E2-4C74-8632-B2329A42960F">
+					<RolePlayer>
+						<DomainClassMoniker Name="GeneralRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ModelHasError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="20CFE989-A6AF-4D97-A552-AE5DD7684971">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3418,6 +3509,26 @@
 				<DomainRole Name="DuplicateNameError" PropertyName="ObjectTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="40422AA2-B5FD-4056-ABBF-D393358BC01A">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectTypeDuplicateNameError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="GeneralRuleHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="31A371AC-7DCA-4934-A0A8-E2272884EDF3">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Rule" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Rule" Id="03BA0757-1897-474D-B01E-7D72B3D8B2BE">
+					<RolePlayer>
+						<DomainClassMoniker Name="GeneralRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DuplicateNameError" PropertyName="RuleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="8DC10C4F-F46A-4ECF-BFAB-9A47F652B0DD">
+					<RolePlayer>
+						<DomainClassMoniker Name="GeneralRuleDuplicateNameError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -6192,11 +6303,32 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="DynamicRuleOwnsLeadRolePath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="8F2199E6-46C3-44F1-A61D-C2AA2EEECAC7" InheritanceModifier="Sealed">
+			<Source>
+				<DomainRole Name="DynamicRule" PropertyName="LeadRolePath" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="DynamicRule" Id="D0715FCF-7548-407F-9F6E-B63A0B43FAF9">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RolePath" PropertyName="DynamicRule" Multiplicity="ZeroOne" IsPropertyGenerator="true" PropagatesDelete="true" DisplayName="RolePath" Id="3984C334-B65A-4FAE-8FF7-0CF6B07ED479">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Name="RolePathObjectTypeRoot" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4FFD036F-FC35-41AF-A318-27DB84E2D7B4">
 			<Properties>
 				<DomainProperty Name="IsNegated" DefaultValue="False" DisplayName="IsNegated" Id="0CA66A3F-586D-433C-A829-B9698DE2ACB3" Description="Indicates a negated path root.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DynamicRuleState" DefaultValue="Current" DisplayName="DynamicRuleState" Id="595CCD0D-11A8-4809-BBB9-2485087420F2" Description="Specifies how this node is used in a dynamic rule.">
+					<Type>
+						<DomainEnumerationMoniker Name="DynamicRuleNodeState"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -6225,6 +6357,11 @@
 				<DomainProperty Name="PathedRolePurpose" DefaultValue="SameFactType" DisplayName="PathedRolePurpose" Id="FFAF4EF9-CA23-4D14-BB6D-8F5B3C90E680" Description="Specifies how this pathed role relates to the previous pathed role or path root.">
 					<Type>
 						<DomainEnumerationMoniker Name="PathedRolePurpose"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DynamicRuleState" DefaultValue="Current" DisplayName="DynamicRuleState" Id="4887550D-7D35-4532-AEDD-BD6BFBE2F674" Description="Specifies how this node is used in a dynamic rule.">
+					<Type>
+						<DomainEnumerationMoniker Name="DynamicRuleNodeState"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -7264,6 +7401,234 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="DynamicRuleHasDynamicRuleRequiresEventAndActionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CC63D5DD-E6F1-4934-B89C-D62059EE2E74">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="DynamicRule" PropertyName="RequiresEventAndActionError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DynamicRule" Id="5FE0B8A5-8430-430C-92F3-6386518B3772">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="EventAndActionRequiredError" PropertyName="DynamicRule" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EventAndActionRequiredError" Id="F75F564D-98BF-45F3-8DAD-A4F0D80A4080">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicRuleRequiresEventAndActionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D0CD4BF3-C0A2-4839-9C8B-6B134BBADBBA">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="DynamicRule" PropertyName="NoDisjunctiveOrNegatedActionError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DynamicRule" Id="E23F9D0E-724A-4221-AA14-B8A4DE17D1D0">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="NoDisjunctiveOrNegatedActionError" PropertyName="DynamicRule" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="NoDisjunctiveOrNegatedActionError" Id="6E3C12AF-6877-41CB-BC80-A84E447A1E0A">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicRuleNoDisjunctiveOrNegatedActionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="588EF17C-E39E-4700-9342-AA89F258C80F">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="DynamicRule" PropertyName="DisjunctionRequiresPositiveEventError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DynamicRule" Id="14C5811A-A8DE-4FAA-947C-977194032216">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicRule"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DisjunctionRequiresPositiveEventError" PropertyName="DynamicRule" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DisjunctionRequiresPositiveEventError" Id="F2298EAF-75E2-4675-9285-9EDA2780C118">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicRuleDisjunctionRequiresPositiveEventError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasMismatchedJoinDynamicStateError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="616D3CA5-6064-4D70-893F-999B0924E11C">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="MismatchedJoinDynamicStateError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="63FAEB9E-AE1C-44E6-9C52-5C499761DD8C">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="MismatchedJoinDynamicStateError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="MismatchedJoinDynamicStateError" Id="3DEDA0A4-BA85-477B-BA86-B53934D34CBF">
+					<RolePlayer>
+						<DomainClassMoniker Name="MismatchedJoinDynamicStateError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasMismatchedRolePlayerDynamicStateError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="574386C5-BC4A-4EBC-BE68-6B4E8C8EBEFE">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="MismatchedRolePlayerDynamicStateError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="9CAA4FBD-03FB-42C6-8D92-2E41D7A5FCD4">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="MismatchedRolePlayerDynamicStateError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="MismatchedRolePlayerDynamicStateError" Id="9827417F-BE60-46E2-848C-7DBB9F96AD9F">
+					<RolePlayer>
+						<DomainClassMoniker Name="MismatchedRolePlayerDynamicStateError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasDynamicAddFactTypeUnboundRolesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CF37454A-E1C3-4DDC-87F5-6D77D04AD0CC">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="DynamicAddFactTypeUnboundRolesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="643BEE44-8B24-4A09-85EB-8812B7706854">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DynamicAddFactTypeUnboundRolesError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DynamicAddFactTypeUnboundRolesError" Id="CB612EC3-BC67-4544-9794-01373015E714">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicAddFactTypeUnboundRolesError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasDynamicActionRoleUndeclaredObjectError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CAAE3095-D3D9-4300-85A4-555524D5080E">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="DynamicActionRoleUndeclaredObjectError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="1DBA5584-06F1-474E-BC82-74DF2177C022">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DynamicActionRoleUndeclaredObjectError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DynamicActionRoleUndeclaredObjectError" Id="5D8873ED-4701-4518-89F5-0A6C889155A4">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicActionRoleUndeclaredObjectError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EBE0CE65-5AE5-4023-B774-11AF72D1FF5D">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ObjectUnifier" PropertyName="MismatchedDynamicStateError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectUnifier" Id="360F30EE-F0CC-4565-9236-54846E41398C">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathObjectUnifier"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ObjectUnifierMismatchedDynamicStateError" PropertyName="ObjectUnifier" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectUnifierMismatchedDynamicStateError" Id="BAAA605C-94AE-45F0-A45A-E2F98332D7CA">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectUnifierMismatchedDynamicStateError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathObjectUnifierHasDynamicObjectAddPartialIdentifierError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AF419018-256A-4ABA-A5C8-F56AB58F9F02">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ObjectUnifier" PropertyName="DynamicObjectAddPartialIdentifierError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectUnifier" Id="8724D518-360F-4F70-8595-0CB36CD1E2E5">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathObjectUnifier"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DynamicObjectAddPartialIdentifierError" PropertyName="ObjectUnifier" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DynamicObjectAddPartialIdentifierError" Id="65FFA5D3-4242-4460-8F40-1361FE0BD589">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicObjectAddPartialIdentifierError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasDynamicObjectAddPartialIdentifierError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CF66E4DD-3FA7-4E70-B4E8-B896D00484BE">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="DynamicObjectAddPartialIdentifierError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="60BEC9DC-B456-46A9-8865-7A1EC83B110F">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DynamicObjectAddPartialIdentifierError" PropertyName="PathedRole" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DynamicObjectAddPartialIdentifierError" Id="E9820D19-E4B3-4851-9D93-01976B195A0D">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicObjectAddPartialIdentifierError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathRootHasDynamicObjectAddPartialIdentifierError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B787AAD1-8DFB-484C-B371-9E6084D3E534">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathRoot" PropertyName="DynamicObjectAddPartialIdentifierError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathRoot" Id="C8EB2DA0-EF6C-4A74-AA97-8B2814ECEC7C">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="RolePathObjectTypeRoot"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DynamicObjectAddPartialIdentifierError" PropertyName="PathRoot" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DynamicObjectAddPartialIdentifierError" Id="161AA920-775F-4702-853B-DC9D6736D920">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicObjectAddPartialIdentifierError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2BE582EB-9D01-4AC7-A6A7-D0E4CE0DF7C5">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathedRole" PropertyName="DynamicObjectificationAddRequiresLinkFactTypesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PathedRole" Id="50295136-C0E8-4DC6-B112-66D436EFD62A">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DynamicObjectificationAddRequiresLinkFactTypesError" PropertyName="PathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DynamicObjectificationAddRequiresLinkFactTypesError" Id="F7A1913A-AE2B-4519-AEC9-081E521D9B93">
+					<RolePlayer>
+						<DomainClassMoniker Name="DynamicObjectificationAddRequiresLinkFactTypesError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 	</Relationships>
 
 	<Types>
@@ -7619,6 +7984,23 @@
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;EffectiveReferenceModeNamingChoice, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DynamicRuleNodeState" Description="Specify how nodes in the role path for a &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule&quot;/&gt; are mapped.">
+			<Literals>
+				<EnumerationLiteral Name="Current" Value="0" Description="The node exists in the current state, so it is initial or added."/>
+				<EnumerationLiteral Name="Initial" Value="1" Description="The node existed in the initial state and is not added."/>
+				<EnumerationLiteral Name="Added" Value="2" Description="The node did not exist in the initial state but exists in the current state."/>
+				<EnumerationLiteral Name="Deleted" Value="3" Description="The node existed in the initial state but was deleted."/>
+				<EnumerationLiteral Name="Add" Value="4" Description="Add this node to the current state."/>
+				<EnumerationLiteral Name="Delete" Value="5" Description="Delete this node from the current state."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;DynamicRuleNodeState, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

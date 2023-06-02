@@ -179,6 +179,66 @@
 				<ExpressionBody/>
 			</Snippet>
 		</DerivationNote>
+		<DynamicRule>
+			<Snippet ref="DynamicRuleVerbalization" conditionalMatch="HasVerbalizableDynamicRulePath">
+				<ConditionalReplacement>
+					<Snippet ref="DynamicRuleQuantifiers" conditionalMatch="DynamicRuleHasHeadSection">
+						<IteratePathNodeLists listStyle="CompactSimpleList" match="quantifiers">
+							<ConditionalSnippet>
+								<Snippet ref="VariableAddedQuantifier" conditionalMatch="DynamicStateAdded"/>
+								<Snippet ref="VariableDeletedQuantifier" conditionalMatch="DynamicStateDeleted"/>
+								<Snippet ref="VariableInitialQuantifier" conditionalMatch="DynamicStateInitial"/>
+								<Snippet ref="SelfReference"/>
+								<SnippetReplacements>
+									<IteratePathNodes listStyle="IdentityList" match="pathNodeList">
+										<PathNodeVariable/>
+									</IteratePathNodes>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+						</IteratePathNodeLists>
+						<ConditionalReplacement>
+							<Snippet ref="DynamicRuleQuantifierCondition" conditionalMatch="DynamicRuleHasConditionSection">
+								<DerivationPath thisContext="true"/>
+							</Snippet>
+							<Snippet ref="null"/>
+						</ConditionalReplacement>
+					</Snippet>
+					<Snippet ref="null"/>
+				</ConditionalReplacement>
+				<ConditionalReplacement>
+					<Snippet ref="DynamicRuleAdditions" conditionalMatch="DynamicRuleHasAddSection">
+						<IteratePathNodes listStyle="MultilineIndentedCompoundList" match="add">
+							<ConditionalReplacement>
+								<PathNodeFactType conditionalMatch="PathNodeFactTypeEntry"/>
+								<Snippet ref="VariableAddAction">
+									<PathNodeVariable/>
+								</Snippet>
+							</ConditionalReplacement>
+						</IteratePathNodes>
+					</Snippet>
+					<Snippet ref="null"/>
+				</ConditionalReplacement>
+				<ConditionalReplacement>
+					<Snippet ref="DynamicRuleDeletions" conditionalMatch="DynamicRuleHasDeleteSection">
+						<IteratePathNodes listStyle="MultilineIndentedCompoundList" match="delete">
+							<ConditionalReplacement>
+								<PathNodeFactType conditionalMatch="PathNodeFactTypeEntry"/>
+								<Snippet ref="DefiniteArticle">
+									<PathNodeVariable/>
+								</Snippet>
+							</ConditionalReplacement>
+						</IteratePathNodes>
+					</Snippet>
+					<Snippet ref="null"/>
+				</ConditionalReplacement>
+				<ConditionalReplacement>
+					<Snippet ref="DynamicRuleStandaloneCondition" conditionalMatch="DynamicRuleHasStandaloneConditionSection">
+						<DerivationPath thisContext="true"/>
+					</Snippet>
+					<Snippet ref="null"/>
+				</ConditionalReplacement>
+			</Snippet>
+		</DynamicRule>
 		<ErrorReports>
 			<ErrorReport type="ErrorReport" childHelperFor="Role" childHelperErrorReport="true"/>
 		</ErrorReports>

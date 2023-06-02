@@ -314,6 +314,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ORMModel).GetNestedType("DuplicateRecognizedPhraseDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("DuplicateFunctionNameDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("DuplicateReadingSignatureDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMModel).GetNestedType("DuplicateGeneralRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(QueryBase).GetNestedType("QueryAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(QueryBase).GetNestedType("QueryDerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(QueryParameterBinding).GetNestedType("BoundToPathedRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -427,6 +428,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(RoleProjectedDerivationRule).GetNestedType("RoleProjectionAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("RoleProjectionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("RoleProjectionRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(DynamicRule).GetNestedType("DynamicRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(DynamicRule).GetNestedType("DynamicRuleRolePathAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(DynamicRule).GetNestedType("DynamicRuleRolePathDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(DynamicRule).GetNestedType("DynamicRuleRolePathRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(DynamicRule).GetNestedType("PathedRoleDynamicStateChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(DynamicRule).GetNestedType("PathRootDynamicStateChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(DynamicRule).GetNestedType("RolePathChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintHasRoleSequenceAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("EnforceRoleSequenceCardinalityForConstraintAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -557,7 +565,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 489; ++i)
+			for (int i = 0; i < 497; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -7962,6 +7970,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateReadingSignatureDeletedRule");
 			}
 		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(GeneralRuleHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DuplicateGeneralRuleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DuplicateGeneralRuleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel
+			/// /// <summary>
+			/// /// DeleteRule: typeof(GeneralRuleHasDuplicateNameError)
+			/// /// </summary>
+			/// private static void DuplicateGeneralRuleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateGeneralRuleDeletedRule");
+				ORMModel.DuplicateGeneralRuleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateGeneralRuleDeletedRule");
+			}
+		}
 	}
 	#endregion // Rule classes for ORMModel
 	#region Rule classes for QueryBase
@@ -10962,6 +10996,193 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for RoleProjectedDerivationRule
+	#region Rule classes for DynamicRule
+	partial class DynamicRule
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DynamicRule), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DynamicRuleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DynamicRuleAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule
+			/// /// <summary>
+			/// /// AddRule: typeof(DynamicRule)
+			/// /// </summary>
+			/// private static void DynamicRuleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleAddedRule");
+				DynamicRule.DynamicRuleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DynamicRuleOwnsLeadRolePath), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DynamicRuleRolePathAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DynamicRuleRolePathAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule
+			/// /// <summary>
+			/// /// AddRule: typeof(DynamicRuleOwnsLeadRolePath)
+			/// /// </summary>
+			/// private static void DynamicRuleRolePathAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleRolePathAddedRule");
+				DynamicRule.DynamicRuleRolePathAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleRolePathAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DynamicRuleOwnsLeadRolePath), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DynamicRuleRolePathDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DynamicRuleRolePathDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule
+			/// /// <summary>
+			/// /// DeleteRule: typeof(DynamicRuleOwnsLeadRolePath)
+			/// /// </summary>
+			/// private static void DynamicRuleRolePathDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleRolePathDeletedRule");
+				DynamicRule.DynamicRuleRolePathDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleRolePathDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DynamicRuleOwnsLeadRolePath), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DynamicRuleRolePathRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DynamicRuleRolePathRolePlayerChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(DynamicRuleOwnsLeadRolePath)
+			/// /// </summary>
+			/// private static void DynamicRuleRolePathRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleRolePathRolePlayerChangeRule");
+				DynamicRule.DynamicRuleRolePathRolePlayerChangeRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DynamicRuleRolePathRolePlayerChangeRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(PathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class PathedRoleDynamicStateChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public PathedRoleDynamicStateChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule
+			/// /// <summary>
+			/// /// ChangeRule: typeof(PathedRole)
+			/// /// </summary>
+			/// private static void PathedRoleDynamicStateChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.PathedRoleDynamicStateChangedRule");
+				DynamicRule.PathedRoleDynamicStateChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.PathedRoleDynamicStateChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathObjectTypeRoot), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class PathRootDynamicStateChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public PathRootDynamicStateChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule
+			/// /// <summary>
+			/// /// ChangeRule: typeof(RolePathObjectTypeRoot)
+			/// /// </summary>
+			/// private static void PathRootDynamicStateChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.PathRootDynamicStateChangedRule");
+				DynamicRule.PathRootDynamicStateChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.PathRootDynamicStateChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePath), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class RolePathChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public RolePathChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule
+			/// /// <summary>
+			/// /// ChangeRule: typeof(RolePath)
+			/// /// </summary>
+			/// private static void RolePathChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.RolePathChangedRule");
+				DynamicRule.RolePathChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.RolePathChangedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for DynamicRule
 	#region Rule classes for SetComparisonConstraint
 	partial class SetComparisonConstraint
 	{

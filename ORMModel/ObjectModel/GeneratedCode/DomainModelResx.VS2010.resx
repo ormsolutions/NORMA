@@ -373,6 +373,14 @@
     <value>Derivation Path and Join Path Errors</value>
     <comment>DisplayName for DomainClass &apos;RolePathErrorCategory&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleErrorCategory.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DynamicRuleErrorCategory&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleErrorCategory.DisplayName" xml:space="preserve">
+    <value>Dynamic Rule Errors</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleErrorCategory&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.Description" xml:space="preserve">
     <value>A Group owner, allows group containment, order, and naming enforcement.</value>
     <comment>Description for DomainClass &apos;ElementGroupingSet&apos;</comment>
@@ -1454,6 +1462,22 @@
     <value>AutomaticJoinPath</value>
     <comment>DisplayName for DomainProperty &apos;IsAutomatic&apos; on DomainClass &apos;ConstraintRoleSequenceJoinPath&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule.Description" xml:space="preserve">
+    <value>A rule that acts on fact types and objects types but is not owned by them.</value>
+    <comment>Description for DomainClass &apos;GeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule.DisplayName" xml:space="preserve">
+    <value>GeneratlRule</value>
+    <comment>DisplayName for DomainClass &apos;GeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.Description" xml:space="preserve">
+    <value>A rule that responds to dynamic changes (additions and deletions) by adding and deleting other elements.</value>
+    <comment>Description for DomainClass &apos;DynamicRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule.DisplayName" xml:space="preserve">
+    <value>DynamicRule</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRule&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRequiresRootObjectTypeError.Description" xml:space="preserve">
     <value>A LeadRolePath must specify a root object type.</value>
     <comment>Description for DomainClass &apos;PathRequiresRootObjectTypeError&apos;</comment>
@@ -1574,6 +1598,86 @@
     <value>Incompatible Join Path Projection</value>
     <comment>DisplayName for DomainClass &apos;ConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleRequiresEventAndActionError.Description" xml:space="preserve">
+    <value>A dynamic rule needs at least one triggering event and one action.</value>
+    <comment>Description for DomainClass &apos;DynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleRequiresEventAndActionError.DisplayName" xml:space="preserve">
+    <value>Event and Action Required</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNoDisjunctiveOrNegatedActionError.Description" xml:space="preserve">
+    <value>Add and Delete actions for a dynamic rule cannot occur inside a disjunction or negation.</value>
+    <comment>Description for DomainClass &apos;DynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNoDisjunctiveOrNegatedActionError.DisplayName" xml:space="preserve">
+    <value>No Actions Under Disjunction or Negation</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleDisjunctionRequiresPositiveEventError.Description" xml:space="preserve">
+    <value>Each disjunctive branch in a dynamic rule must contain at least one non-negated event.</value>
+    <comment>Description for DomainClass &apos;DynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleDisjunctionRequiresPositiveEventError.DisplayName" xml:space="preserve">
+    <value>Disjunctive Path Missing Event</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedJoinDynamicStateError.Description" xml:space="preserve">
+    <value>An object type in a dynamic rule is joined to a fact type with an inconsistent dynamic state.</value>
+    <comment>Description for DomainClass &apos;MismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedJoinDynamicStateError.DisplayName" xml:space="preserve">
+    <value>Joined Fact Type Dynamic State Mismatch</value>
+    <comment>DisplayName for DomainClass &apos;MismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedRolePlayerDynamicStateError.Description" xml:space="preserve">
+    <value>A fact type in a dynamic rule has a role player with an inconsistent dynamic state.</value>
+    <comment>Description for DomainClass &apos;MismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedRolePlayerDynamicStateError.DisplayName" xml:space="preserve">
+    <value>Role Player Dynamic State Mismatch</value>
+    <comment>DisplayName for DomainClass &apos;MismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicAddFactTypeUnboundRolesError.Description" xml:space="preserve">
+    <value>An &apos;Add&apos; action fact type in a dynamic rule must explicitly bind all roles.</value>
+    <comment>Description for DomainClass &apos;DynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicAddFactTypeUnboundRolesError.DisplayName" xml:space="preserve">
+    <value>Unbound Fact Type Roles for Add Action</value>
+    <comment>DisplayName for DomainClass &apos;DynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicActionRoleUndeclaredObjectError.Description" xml:space="preserve">
+    <value>An object referenced in an &apos;Add&apos; or &apos;Delete&apos; fact type in a dynamic rule must have the same action state or be declared in the body (non-action state nodes) of that rule.</value>
+    <comment>Description for DomainClass &apos;DynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicActionRoleUndeclaredObjectError.DisplayName" xml:space="preserve">
+    <value>Action Fact Type Object Undeclared</value>
+    <comment>DisplayName for DomainClass &apos;DynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectUnifierMismatchedDynamicStateError.Description" xml:space="preserve">
+    <value>Correlated nodes much all have the same dynamic state.</value>
+    <comment>Description for DomainClass &apos;ObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectUnifierMismatchedDynamicStateError.DisplayName" xml:space="preserve">
+    <value>Correlated Nodes Dynamic State Mismatch</value>
+    <comment>DisplayName for DomainClass &apos;ObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError.Description" xml:space="preserve">
+    <value>An object with a dynamic Add state requires identifying facts in the Add state.</value>
+    <comment>Description for DomainClass &apos;DynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError.DisplayName" xml:space="preserve">
+    <value>Dynamically Added Object Identification</value>
+    <comment>DisplayName for DomainClass &apos;DynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectificationAddRequiresLinkFactTypesError.Description" xml:space="preserve">
+    <value>An objectification with a dynamic Add state must populate link fact types if it uses a non-autogenerated external identifier.</value>
+    <comment>Description for DomainClass &apos;DynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectificationAddRequiresLinkFactTypesError.DisplayName" xml:space="preserve">
+    <value>Dynamically Added Objectification Identification</value>
+    <comment>DisplayName for DomainClass &apos;DynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewRoleSequencesError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;TooFewRoleSequencesError&apos;</comment>
@@ -1597,6 +1701,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeDuplicateNameError.DisplayName" xml:space="preserve">
     <value>Duplicate ObjectType Names</value>
     <comment>DisplayName for DomainClass &apos;ObjectTypeDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleDuplicateNameError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;GeneralRuleDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Duplicate Rule Names</value>
+    <comment>DisplayName for DomainClass &apos;GeneralRuleDuplicateNameError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseDuplicateNameError.Description" xml:space="preserve">
     <value></value>
@@ -3360,6 +3472,38 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;ModelHasFactType&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule</value>
+    <comment>Description for DomainClass &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.DisplayName" xml:space="preserve">
+    <value>Model Defines General Rule</value>
+    <comment>DisplayName for DomainClass &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Model.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Model.PropertyDisplayName" xml:space="preserve">
+    <value>General Rule Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Rule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.Rule</value>
+    <comment>Description for DomainRole &apos;Rule&apos; on DomainRelationship &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Rule.DisplayName" xml:space="preserve">
+    <value>Rule</value>
+    <comment>DisplayName for DomainRole &apos;Rule&apos; on DomainRelationship &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Rule.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Rule&apos; on DomainRelationship &apos;ModelDefinesGeneralRule&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasError</value>
     <comment>Description for DomainClass &apos;ModelHasError&apos;</comment>
@@ -4255,6 +4399,38 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
     <value>Object Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;ObjectTypeHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError</value>
+    <comment>Description for DomainClass &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>General Rule Has Duplicate Name Error</value>
+    <comment>DisplayName for DomainClass &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/Rule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.Rule</value>
+    <comment>Description for DomainRole &apos;Rule&apos; on DomainRelationship &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/Rule.DisplayName" xml:space="preserve">
+    <value>Rule</value>
+    <comment>DisplayName for DomainRole &apos;Rule&apos; on DomainRelationship &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/Rule.PropertyDisplayName" xml:space="preserve">
+    <value>Duplicate Name Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Rule&apos; on DomainRelationship &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/DuplicateNameError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.DuplicateNameError</value>
+    <comment>Description for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/DuplicateNameError.DisplayName" xml:space="preserve">
+    <value>DuplicateNameError</value>
+    <comment>DisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
+    <value>Rule Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;GeneralRuleHasDuplicateNameError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError</value>
@@ -8808,6 +8984,38 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Shared With Path Owner Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath</value>
+    <comment>Description for DomainClass &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.DisplayName" xml:space="preserve">
+    <value>Dynamic Rule Owns Lead Role Path</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/DynamicRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.DynamicRule</value>
+    <comment>Description for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/DynamicRule.DisplayName" xml:space="preserve">
+    <value>DynamicRule</value>
+    <comment>DisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/DynamicRule.PropertyDisplayName" xml:space="preserve">
+    <value>Lead Role Path</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/RolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.RolePath</value>
+    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/RolePath.DisplayName" xml:space="preserve">
+    <value>RolePath</value>
+    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/RolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;DynamicRuleOwnsLeadRolePath&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot</value>
     <comment>Description for DomainClass &apos;RolePathObjectTypeRoot&apos;</comment>
@@ -8823,6 +9031,14 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/IsNegated.DisplayName" xml:space="preserve">
     <value>IsNegated</value>
     <comment>DisplayName for DomainProperty &apos;IsNegated&apos; on DomainClass &apos;RolePathObjectTypeRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/DynamicRuleState.Description" xml:space="preserve">
+    <value>Specifies how this node is used in a dynamic rule.</value>
+    <comment>Description for DomainProperty &apos;DynamicRuleState&apos; on DomainClass &apos;RolePathObjectTypeRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/DynamicRuleState.DisplayName" xml:space="preserve">
+    <value>DynamicRuleState</value>
+    <comment>DisplayName for DomainProperty &apos;DynamicRuleState&apos; on DomainClass &apos;RolePathObjectTypeRoot&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/RolePath.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.RolePath</value>
@@ -8871,6 +9087,14 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/PathedRolePurpose.DisplayName" xml:space="preserve">
     <value>PathedRolePurpose</value>
     <comment>DisplayName for DomainProperty &apos;PathedRolePurpose&apos; on DomainClass &apos;PathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/DynamicRuleState.Description" xml:space="preserve">
+    <value>Specifies how this node is used in a dynamic rule.</value>
+    <comment>Description for DomainProperty &apos;DynamicRuleState&apos; on DomainClass &apos;PathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/DynamicRuleState.DisplayName" xml:space="preserve">
+    <value>DynamicRuleState</value>
+    <comment>DisplayName for DomainProperty &apos;DynamicRuleState&apos; on DomainClass &apos;PathedRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/RolePath.Description" xml:space="preserve">
     <value>The roles included in this path.</value>
@@ -10824,6 +11048,390 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Projection</value>
     <comment>PropertyDisplayName for DomainRole &apos;IncompatibleProjectionError&apos; on DomainRelationship &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError</value>
+    <comment>Description for DomainClass &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.DisplayName" xml:space="preserve">
+    <value>Dynamic Rule Has Dynamic Rule Requires Event And Action Error</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/DynamicRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.DynamicRule</value>
+    <comment>Description for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/DynamicRule.DisplayName" xml:space="preserve">
+    <value>DynamicRule</value>
+    <comment>DisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/DynamicRule.PropertyDisplayName" xml:space="preserve">
+    <value>Requires Event And Action Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/EventAndActionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.EventAndActionRequiredError</value>
+    <comment>Description for DomainRole &apos;EventAndActionRequiredError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/EventAndActionRequiredError.DisplayName" xml:space="preserve">
+    <value>EventAndActionRequiredError</value>
+    <comment>DisplayName for DomainRole &apos;EventAndActionRequiredError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/EventAndActionRequiredError.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;EventAndActionRequiredError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleRequiresEventAndActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError</value>
+    <comment>Description for DomainClass &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DisplayName" xml:space="preserve">
+    <value>Dynamic Rule Has Dynamic Rule No Disjunctive Or Negated Action Error</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/DynamicRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DynamicRule</value>
+    <comment>Description for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/DynamicRule.DisplayName" xml:space="preserve">
+    <value>DynamicRule</value>
+    <comment>DisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/DynamicRule.PropertyDisplayName" xml:space="preserve">
+    <value>No Disjunctive Or Negated Action Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/NoDisjunctiveOrNegatedActionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.NoDisjunctiveOrNegatedActionError</value>
+    <comment>Description for DomainRole &apos;NoDisjunctiveOrNegatedActionError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/NoDisjunctiveOrNegatedActionError.DisplayName" xml:space="preserve">
+    <value>NoDisjunctiveOrNegatedActionError</value>
+    <comment>DisplayName for DomainRole &apos;NoDisjunctiveOrNegatedActionError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/NoDisjunctiveOrNegatedActionError.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;NoDisjunctiveOrNegatedActionError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError</value>
+    <comment>Description for DomainClass &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DisplayName" xml:space="preserve">
+    <value>Dynamic Rule Has Dynamic Rule Disjunction Requires Positive Event Error</value>
+    <comment>DisplayName for DomainClass &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DynamicRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DynamicRule</value>
+    <comment>Description for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DynamicRule.DisplayName" xml:space="preserve">
+    <value>DynamicRule</value>
+    <comment>DisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DynamicRule.PropertyDisplayName" xml:space="preserve">
+    <value>Disjunction Requires Positive Event Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicRule&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DisjunctionRequiresPositiveEventError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DisjunctionRequiresPositiveEventError</value>
+    <comment>Description for DomainRole &apos;DisjunctionRequiresPositiveEventError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DisjunctionRequiresPositiveEventError.DisplayName" xml:space="preserve">
+    <value>DisjunctionRequiresPositiveEventError</value>
+    <comment>DisplayName for DomainRole &apos;DisjunctionRequiresPositiveEventError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DisjunctionRequiresPositiveEventError.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Rule</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DisjunctionRequiresPositiveEventError&apos; on DomainRelationship &apos;DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Mismatched Join Dynamic State Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Mismatched Join Dynamic State Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/MismatchedJoinDynamicStateError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateError</value>
+    <comment>Description for DomainRole &apos;MismatchedJoinDynamicStateError&apos; on DomainRelationship &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/MismatchedJoinDynamicStateError.DisplayName" xml:space="preserve">
+    <value>MismatchedJoinDynamicStateError</value>
+    <comment>DisplayName for DomainRole &apos;MismatchedJoinDynamicStateError&apos; on DomainRelationship &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/MismatchedJoinDynamicStateError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MismatchedJoinDynamicStateError&apos; on DomainRelationship &apos;PathedRoleHasMismatchedJoinDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Mismatched Role Player Dynamic State Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Mismatched Role Player Dynamic State Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/MismatchedRolePlayerDynamicStateError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateError</value>
+    <comment>Description for DomainRole &apos;MismatchedRolePlayerDynamicStateError&apos; on DomainRelationship &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/MismatchedRolePlayerDynamicStateError.DisplayName" xml:space="preserve">
+    <value>MismatchedRolePlayerDynamicStateError</value>
+    <comment>DisplayName for DomainRole &apos;MismatchedRolePlayerDynamicStateError&apos; on DomainRelationship &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/MismatchedRolePlayerDynamicStateError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MismatchedRolePlayerDynamicStateError&apos; on DomainRelationship &apos;PathedRoleHasMismatchedRolePlayerDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Dynamic Add Fact Type Unbound Roles Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Add Fact Type Unbound Roles Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/DynamicAddFactTypeUnboundRolesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesError</value>
+    <comment>Description for DomainRole &apos;DynamicAddFactTypeUnboundRolesError&apos; on DomainRelationship &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/DynamicAddFactTypeUnboundRolesError.DisplayName" xml:space="preserve">
+    <value>DynamicAddFactTypeUnboundRolesError</value>
+    <comment>DisplayName for DomainRole &apos;DynamicAddFactTypeUnboundRolesError&apos; on DomainRelationship &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/DynamicAddFactTypeUnboundRolesError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicAddFactTypeUnboundRolesError&apos; on DomainRelationship &apos;PathedRoleHasDynamicAddFactTypeUnboundRolesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Dynamic Action Role Undeclared Object Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Action Role Undeclared Object Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/DynamicActionRoleUndeclaredObjectError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectError</value>
+    <comment>Description for DomainRole &apos;DynamicActionRoleUndeclaredObjectError&apos; on DomainRelationship &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/DynamicActionRoleUndeclaredObjectError.DisplayName" xml:space="preserve">
+    <value>DynamicActionRoleUndeclaredObjectError</value>
+    <comment>DisplayName for DomainRole &apos;DynamicActionRoleUndeclaredObjectError&apos; on DomainRelationship &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/DynamicActionRoleUndeclaredObjectError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicActionRoleUndeclaredObjectError&apos; on DomainRelationship &apos;PathedRoleHasDynamicActionRoleUndeclaredObjectError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError</value>
+    <comment>Description for DomainClass &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.DisplayName" xml:space="preserve">
+    <value>Path Object Unifier Has Object Unifier Mismatched Dynamic State Error</value>
+    <comment>DisplayName for DomainClass &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifier.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifier</value>
+    <comment>Description for DomainRole &apos;ObjectUnifier&apos; on DomainRelationship &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifier.DisplayName" xml:space="preserve">
+    <value>ObjectUnifier</value>
+    <comment>DisplayName for DomainRole &apos;ObjectUnifier&apos; on DomainRelationship &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifier.PropertyDisplayName" xml:space="preserve">
+    <value>Mismatched Dynamic State Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectUnifier&apos; on DomainRelationship &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifierMismatchedDynamicStateError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierMismatchedDynamicStateError</value>
+    <comment>Description for DomainRole &apos;ObjectUnifierMismatchedDynamicStateError&apos; on DomainRelationship &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifierMismatchedDynamicStateError.DisplayName" xml:space="preserve">
+    <value>ObjectUnifierMismatchedDynamicStateError</value>
+    <comment>DisplayName for DomainRole &apos;ObjectUnifierMismatchedDynamicStateError&apos; on DomainRelationship &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifierMismatchedDynamicStateError.PropertyDisplayName" xml:space="preserve">
+    <value>Object Unifier</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectUnifierMismatchedDynamicStateError&apos; on DomainRelationship &apos;PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError</value>
+    <comment>Description for DomainClass &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.DisplayName" xml:space="preserve">
+    <value>Path Object Unifier Has Dynamic Object Add Partial Identifier Error</value>
+    <comment>DisplayName for DomainClass &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/ObjectUnifier.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.ObjectUnifier</value>
+    <comment>Description for DomainRole &apos;ObjectUnifier&apos; on DomainRelationship &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/ObjectUnifier.DisplayName" xml:space="preserve">
+    <value>ObjectUnifier</value>
+    <comment>DisplayName for DomainRole &apos;ObjectUnifier&apos; on DomainRelationship &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/ObjectUnifier.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Object Add Partial Identifier Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectUnifier&apos; on DomainRelationship &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierError</value>
+    <comment>Description for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.DisplayName" xml:space="preserve">
+    <value>DynamicObjectAddPartialIdentifierError</value>
+    <comment>DisplayName for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.PropertyDisplayName" xml:space="preserve">
+    <value>Object Unifier</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathObjectUnifierHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Dynamic Object Add Partial Identifier Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Object Add Partial Identifier Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierError</value>
+    <comment>Description for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.DisplayName" xml:space="preserve">
+    <value>DynamicObjectAddPartialIdentifierError</value>
+    <comment>DisplayName for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError</value>
+    <comment>Description for DomainClass &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.DisplayName" xml:space="preserve">
+    <value>Path Root Has Dynamic Object Add Partial Identifier Error</value>
+    <comment>DisplayName for DomainClass &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/PathRoot.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRoot</value>
+    <comment>Description for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/PathRoot.DisplayName" xml:space="preserve">
+    <value>PathRoot</value>
+    <comment>DisplayName for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/PathRoot.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Object Add Partial Identifier Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathRoot&apos; on DomainRelationship &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierError</value>
+    <comment>Description for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.DisplayName" xml:space="preserve">
+    <value>DynamicObjectAddPartialIdentifierError</value>
+    <comment>DisplayName for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.PropertyDisplayName" xml:space="preserve">
+    <value>Path Root</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicObjectAddPartialIdentifierError&apos; on DomainRelationship &apos;PathRootHasDynamicObjectAddPartialIdentifierError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError</value>
+    <comment>Description for DomainClass &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DisplayName" xml:space="preserve">
+    <value>Pathed Role Has Dynamic Objectification Add Requires Link Fact Types Error</value>
+    <comment>DisplayName for DomainClass &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/PathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRole</value>
+    <comment>Description for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/PathedRole.DisplayName" xml:space="preserve">
+    <value>PathedRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/PathedRole.PropertyDisplayName" xml:space="preserve">
+    <value>Dynamic Objectification Add Requires Link Fact Types Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedRole&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/DynamicObjectificationAddRequiresLinkFactTypesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesError</value>
+    <comment>Description for DomainRole &apos;DynamicObjectificationAddRequiresLinkFactTypesError&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/DynamicObjectificationAddRequiresLinkFactTypesError.DisplayName" xml:space="preserve">
+    <value>DynamicObjectificationAddRequiresLinkFactTypesError</value>
+    <comment>DisplayName for DomainRole &apos;DynamicObjectificationAddRequiresLinkFactTypesError&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/DynamicObjectificationAddRequiresLinkFactTypesError.PropertyDisplayName" xml:space="preserve">
+    <value>Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DynamicObjectificationAddRequiresLinkFactTypesError&apos; on DomainRelationship &apos;PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/Derived.DisplayName" xml:space="preserve">
     <value>Derived</value>
     <comment>Display name for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationExpressionStorageType&apos;</comment>
@@ -11543,6 +12151,54 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
     <value>Use a custom format with the other three values as replacement fields.</value>
     <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Current.DisplayName" xml:space="preserve">
+    <value>Current</value>
+    <comment>Display name for EnumerationLiteral &apos;Current&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Current.Description" xml:space="preserve">
+    <value>The node exists in the current state, so it is initial or added.</value>
+    <comment>Description for EnumerationLiteral &apos;Current&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Initial.DisplayName" xml:space="preserve">
+    <value>Initial</value>
+    <comment>Display name for EnumerationLiteral &apos;Initial&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Initial.Description" xml:space="preserve">
+    <value>The node existed in the initial state and is not added.</value>
+    <comment>Description for EnumerationLiteral &apos;Initial&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Added.DisplayName" xml:space="preserve">
+    <value>Added</value>
+    <comment>Display name for EnumerationLiteral &apos;Added&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Added.Description" xml:space="preserve">
+    <value>The node did not exist in the initial state but exists in the current state.</value>
+    <comment>Description for EnumerationLiteral &apos;Added&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Deleted.DisplayName" xml:space="preserve">
+    <value>Deleted</value>
+    <comment>Display name for EnumerationLiteral &apos;Deleted&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Deleted.Description" xml:space="preserve">
+    <value>The node existed in the initial state but was deleted.</value>
+    <comment>Description for EnumerationLiteral &apos;Deleted&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Add.DisplayName" xml:space="preserve">
+    <value>Add</value>
+    <comment>Display name for EnumerationLiteral &apos;Add&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Add.Description" xml:space="preserve">
+    <value>Add this node to the current state.</value>
+    <comment>Description for EnumerationLiteral &apos;Add&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Delete.DisplayName" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Display name for EnumerationLiteral &apos;Delete&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Delete.Description" xml:space="preserve">
+    <value>Delete this node from the current state.</value>
+    <comment>Description for EnumerationLiteral &apos;Delete&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
   </data>
   <data name="UnrecognizedElementType" xml:space="preserve">
     <value>ElementType {0} is not recognized as a type of domain class which belongs to this domain model.</value>

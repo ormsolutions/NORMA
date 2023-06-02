@@ -3378,6 +3378,248 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ModelDefinesGeneralRule
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("fc47694f-75db-445d-a141-62d3fee707dc")]
+	public partial class ModelDefinesGeneralRule : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ModelDefinesGeneralRule domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xfc47694f, 0x75db, 0x445d, 0xa1, 0x41, 0x62, 0xd3, 0xfe, 0xe7, 0x07, 0xdc);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ModelDefinesGeneralRule link in the same Partition as the given ORMModel
+		/// </summary>
+		/// <param name="source">ORMModel to use as the source of the relationship.</param>
+		/// <param name="target">GeneralRule to use as the target of the relationship.</param>
+		public ModelDefinesGeneralRule(ORMModel source, GeneralRule target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ModelDefinesGeneralRule.ModelDomainRoleId, source), new DslModeling::RoleAssignment(ModelDefinesGeneralRule.RuleDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelDefinesGeneralRule(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelDefinesGeneralRule(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ModelDefinesGeneralRule(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ModelDefinesGeneralRule(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x20be5816, 0x8b2d, 0x48fb, 0x88, 0x7b, 0x46, 0x1e, 0xc0, 0xc2, 0x35, 0x9f);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Model.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Model.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "GeneralRuleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Model.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("20be5816-8b2d-48fb-887b-461ec0c2359f")]
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a GeneralRule
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMModel GetModel(GeneralRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RuleDomainRoleId) as ORMModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(GeneralRule element, ORMModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RuleDomainRoleId, newModel);
+		}
+		#endregion
+		#region Rule domain role code
+		
+		/// <summary>
+		/// Rule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RuleDomainRoleId = new global::System.Guid(0x0bf30917, 0xc9e2, 0x4c74, 0x86, 0x32, 0xb2, 0x32, 0x9a, 0x42, 0x96, 0x0f);
+		
+		/// <summary>
+		/// DomainRole Rule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.Rule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Rule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Rule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule/Rule.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("0bf30917-c9e2-4c74-8632-b2329a42960f")]
+		public virtual GeneralRule Rule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (GeneralRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, RuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access GeneralRuleCollection of a ORMModel
+		/// <summary>
+		/// Gets a list of GeneralRuleCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<GeneralRule> GetGeneralRuleCollection(ORMModel element)
+		{
+			return GetRoleCollection<DslModeling::LinkedElementCollection<GeneralRule>, GeneralRule>(element, ModelDomainRoleId);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the list of ModelDefinesGeneralRule links to a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule> GetLinksToGeneralRuleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel modelInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule>(modelInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.ModelDomainRoleId);
+		}
+		#endregion
+		#region Rule link accessor
+		/// <summary>
+		/// Get the ModelDefinesGeneralRule link to a GeneralRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule GetLinkToModel (global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule ruleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule>(ruleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.RuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Rule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ModelDefinesGeneralRule instance accessors
+		
+		/// <summary>
+		/// Get any ModelDefinesGeneralRule links between a given ORMModel and a GeneralRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.ModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule link in links )
+			{
+				if ( target.Equals(link.Rule) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ModelDefinesGeneralRule link between a given ORMModeland a GeneralRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule.ModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelDefinesGeneralRule link in links )
+			{
+				if ( target.Equals(link.Rule) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ModelHasError
 	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasError
 	/// </summary>
@@ -10474,6 +10716,292 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasDuplicateNameError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship GeneralRuleHasDuplicateNameError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("31a371ac-7dca-4934-a0a8-e2272884edf3")]
+	public partial class GeneralRuleHasDuplicateNameError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// GeneralRuleHasDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x31a371ac, 0x7dca, 0x4934, 0xa0, 0xa8, 0xe2, 0x27, 0x28, 0x84, 0xed, 0xf3);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a GeneralRuleHasDuplicateNameError link in the same Partition as the given GeneralRule
+		/// </summary>
+		/// <param name="source">GeneralRule to use as the source of the relationship.</param>
+		/// <param name="target">GeneralRuleDuplicateNameError to use as the target of the relationship.</param>
+		public GeneralRuleHasDuplicateNameError(GeneralRule source, GeneralRuleDuplicateNameError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(GeneralRuleHasDuplicateNameError.RuleDomainRoleId, source), new DslModeling::RoleAssignment(GeneralRuleHasDuplicateNameError.DuplicateNameErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GeneralRuleHasDuplicateNameError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GeneralRuleHasDuplicateNameError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public GeneralRuleHasDuplicateNameError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public GeneralRuleHasDuplicateNameError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Rule domain role code
+		
+		/// <summary>
+		/// Rule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RuleDomainRoleId = new global::System.Guid(0x03ba0757, 0x1897, 0x474d, 0xb0, 0x1e, 0x7d, 0x72, 0xb3, 0xd8, 0xb2, 0xbe);
+		
+		/// <summary>
+		/// DomainRole Rule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.Rule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/Rule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/Rule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/Rule.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("03ba0757-1897-474d-b01e-7d72b3d8b2be")]
+		public virtual GeneralRule Rule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (GeneralRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, RuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RuleCollection of a GeneralRuleDuplicateNameError
+		/// <summary>
+		/// Gets a list of RuleCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<GeneralRule> GetRuleCollection(GeneralRuleDuplicateNameError element)
+		{
+			return GetRoleCollection<DslModeling::LinkedElementCollection<GeneralRule>, GeneralRule>(element, DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Rule domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Rule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Rule = (GeneralRule)value;
+			}
+		}
+		
+		#endregion
+		#region DuplicateNameError domain role code
+		
+		/// <summary>
+		/// DuplicateNameError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DuplicateNameErrorDomainRoleId = new global::System.Guid(0x8dc10c4f, 0xf46a, 0x4ecf, 0xbf, 0xab, 0x9a, 0x47, 0xf6, 0x52, 0xb0, 0xdd);
+		
+		/// <summary>
+		/// DomainRole DuplicateNameError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/DuplicateNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/DuplicateNameError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RuleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError/DuplicateNameError.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("8dc10c4f-f46a-4ecf-bfab-9a47f652b0dd")]
+		public virtual GeneralRuleDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (GeneralRuleDuplicateNameError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DuplicateNameErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DuplicateNameErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DuplicateNameError of a GeneralRule
+		/// <summary>
+		/// Gets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static GeneralRuleDuplicateNameError GetDuplicateNameError(GeneralRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RuleDomainRoleId) as GeneralRuleDuplicateNameError;
+		}
+		
+		/// <summary>
+		/// Sets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDuplicateNameError(GeneralRule element, GeneralRuleDuplicateNameError newDuplicateNameError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RuleDomainRoleId, newDuplicateNameError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (GeneralRuleDuplicateNameError)value;
+			}
+		}
+		
+		#endregion
+		#region Rule link accessor
+		/// <summary>
+		/// Get the GeneralRuleHasDuplicateNameError link to a GeneralRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError GetLinkToDuplicateNameError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule ruleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError>(ruleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.RuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Rule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DuplicateNameError link accessor
+		/// <summary>
+		/// Get the list of GeneralRuleHasDuplicateNameError links to a GeneralRuleDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError> GetLinksToRuleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleDuplicateNameError duplicateNameErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError>(duplicateNameErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region GeneralRuleHasDuplicateNameError instance accessors
+		
+		/// <summary>
+		/// Get any GeneralRuleHasDuplicateNameError links between a given GeneralRule and a GeneralRuleDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleDuplicateNameError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.RuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one GeneralRuleHasDuplicateNameError link between a given GeneralRuleand a GeneralRuleDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleDuplicateNameError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError.RuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.GeneralRuleHasDuplicateNameError link in links )
 			{
 				if ( target.Equals(link.DuplicateNameError) )
 				{
@@ -48245,6 +48773,267 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship DynamicRuleOwnsLeadRolePath
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("8f2199e6-46c3-44f1-a61d-c2aa2eeecac7")]
+	public sealed partial class DynamicRuleOwnsLeadRolePath : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DynamicRuleOwnsLeadRolePath domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8f2199e6, 0x46c3, 0x44f1, 0xa6, 0x1d, 0xc2, 0xaa, 0x2e, 0xee, 0xca, 0xc7);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DynamicRuleOwnsLeadRolePath link in the same Partition as the given DynamicRule
+		/// </summary>
+		/// <param name="source">DynamicRule to use as the source of the relationship.</param>
+		/// <param name="target">LeadRolePath to use as the target of the relationship.</param>
+		public DynamicRuleOwnsLeadRolePath(DynamicRule source, LeadRolePath target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DynamicRuleOwnsLeadRolePath.DynamicRuleDomainRoleId, source), new DslModeling::RoleAssignment(DynamicRuleOwnsLeadRolePath.RolePathDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleOwnsLeadRolePath(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleOwnsLeadRolePath(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleOwnsLeadRolePath(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleOwnsLeadRolePath(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DynamicRule domain role code
+		
+		/// <summary>
+		/// DynamicRule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicRuleDomainRoleId = new global::System.Guid(0xd0715fcf, 0x7548, 0x407f, 0x9f, 0x6e, 0xb6, 0x3a, 0x0b, 0x43, 0xfa, 0xf9);
+		
+		/// <summary>
+		/// DomainRole DynamicRule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.DynamicRule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/DynamicRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/DynamicRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "LeadRolePath", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/DynamicRule.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("d0715fcf-7548-407f-9f6e-b63a0b43faf9")]
+		public DynamicRule DynamicRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicRuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicRuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicRule of a LeadRolePath
+		/// <summary>
+		/// Gets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicRule GetDynamicRule(LeadRolePath element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolePathDomainRoleId) as DynamicRule;
+		}
+		
+		/// <summary>
+		/// Sets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicRule(LeadRolePath element, DynamicRule newDynamicRule)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolePathDomainRoleId, newDynamicRule);
+		}
+		#endregion
+		#region RolePath domain role code
+		
+		/// <summary>
+		/// RolePath domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RolePathDomainRoleId = new global::System.Guid(0x3984c334, 0xb65a, 0x4fae, 0x8f, 0xf7, 0x0c, 0xf6, 0xb0, 0x7e, 0xd4, 0x79);
+		
+		/// <summary>
+		/// DomainRole RolePath
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.RolePath
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/RolePath.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/RolePath.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DynamicRule", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath/RolePath.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("3984c334-b65a-4fae-8ff7-0cf6b07ed479")]
+		public LeadRolePath RolePath
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (LeadRolePath)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolePathDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolePathDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access LeadRolePath of a DynamicRule
+		/// <summary>
+		/// Gets LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static LeadRolePath GetLeadRolePath(DynamicRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicRuleDomainRoleId) as LeadRolePath;
+		}
+		
+		/// <summary>
+		/// Sets LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetLeadRolePath(DynamicRule element, LeadRolePath newRolePath)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicRuleDomainRoleId, newRolePath);
+		}
+		#endregion
+		#region DynamicRule link accessor
+		/// <summary>
+		/// Get the DynamicRuleOwnsLeadRolePath link to a DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath GetLinkToLeadRolePath (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule dynamicRuleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath>(dynamicRuleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.DynamicRuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicRule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region RolePath link accessor
+		/// <summary>
+		/// Get the DynamicRuleOwnsLeadRolePath link to a LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath GetLinkToDynamicRule (global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath rolePathInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath>(rolePathInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.RolePathDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolePath not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicRuleOwnsLeadRolePath instance accessors
+		
+		/// <summary>
+		/// Get any DynamicRuleOwnsLeadRolePath links between a given DynamicRule and a LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath link in links )
+			{
+				if ( target.Equals(link.RolePath) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DynamicRuleOwnsLeadRolePath link between a given DynamicRuleand a LeadRolePath.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleOwnsLeadRolePath link in links )
+			{
+				if ( target.Equals(link.RolePath) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship RolePathObjectTypeRoot
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot
@@ -48499,6 +49288,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region DynamicRuleState domain property code
+		
+		/// <summary>
+		/// DynamicRuleState domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicRuleStateDomainPropertyId = new global::System.Guid(0x595ccd0d, 0x11a8, 0x4809, 0xbb, 0xb9, 0x24, 0x85, 0x08, 0x74, 0x20, 0xf2);
+		
+		/// <summary>
+		/// Storage for DynamicRuleState
+		/// </summary>
+		private DynamicRuleNodeState dynamicRuleStatePropertyStorage = DynamicRuleNodeState.Current;
+		
+		/// <summary>
+		/// Gets or sets the value of DynamicRuleState domain property.
+		/// Specifies how this node is used in a dynamic rule.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/DynamicRuleState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot/DynamicRuleState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(DynamicRuleNodeState.Current)]
+		[DslModeling::DomainObjectId("595ccd0d-11a8-4809-bbb9-2485087420f2")]
+		public DynamicRuleNodeState DynamicRuleState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return dynamicRuleStatePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DynamicRuleStatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the RolePathObjectTypeRoot.DynamicRuleState domain property.
+		/// </summary>
+		internal sealed partial class DynamicRuleStatePropertyHandler : DslModeling::DomainPropertyValueHandler<RolePathObjectTypeRoot, DynamicRuleNodeState>
+		{
+			private DynamicRuleStatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the RolePathObjectTypeRoot.DynamicRuleState domain property value handler.
+			/// </summary>
+			public static readonly DynamicRuleStatePropertyHandler Instance = new DynamicRuleStatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the RolePathObjectTypeRoot.DynamicRuleState domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DynamicRuleStateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DynamicRuleNodeState GetValue(RolePathObjectTypeRoot element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.dynamicRuleStatePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(RolePathObjectTypeRoot element, DynamicRuleNodeState newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DynamicRuleNodeState oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.dynamicRuleStatePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region ValueConstraint opposite domain role accessor
 		/// <summary>
@@ -48563,6 +49440,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return GetRoleCollection<DslModeling::LinkedElementCollection<CalculatedPathValueInput>, CalculatedPathValueInput>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueInputBindsToRolePathRoot.SourceDomainRoleId);
+			}
+		}
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DynamicObjectAddPartialIdentifierError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRoot
+		/// </summary>
+		public virtual DynamicObjectAddPartialIdentifierError DynamicObjectAddPartialIdentifierError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRootDomainRoleId) as DynamicObjectAddPartialIdentifierError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRootDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -48972,6 +49881,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region DynamicRuleState domain property code
+		
+		/// <summary>
+		/// DynamicRuleState domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicRuleStateDomainPropertyId = new global::System.Guid(0x4887550d, 0x7d35, 0x4532, 0xae, 0xdd, 0xbd, 0x6b, 0xfb, 0xe2, 0xf6, 0x74);
+		
+		/// <summary>
+		/// Storage for DynamicRuleState
+		/// </summary>
+		private DynamicRuleNodeState dynamicRuleStatePropertyStorage = DynamicRuleNodeState.Current;
+		
+		/// <summary>
+		/// Gets or sets the value of DynamicRuleState domain property.
+		/// Specifies how this node is used in a dynamic rule.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/DynamicRuleState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole/DynamicRuleState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(DynamicRuleNodeState.Current)]
+		[DslModeling::DomainObjectId("4887550d-7d35-4532-aedd-bd6bfbe2f674")]
+		public DynamicRuleNodeState DynamicRuleState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return dynamicRuleStatePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DynamicRuleStatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the PathedRole.DynamicRuleState domain property.
+		/// </summary>
+		internal sealed partial class DynamicRuleStatePropertyHandler : DslModeling::DomainPropertyValueHandler<PathedRole, DynamicRuleNodeState>
+		{
+			private DynamicRuleStatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the PathedRole.DynamicRuleState domain property value handler.
+			/// </summary>
+			public static readonly DynamicRuleStatePropertyHandler Instance = new DynamicRuleStatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the PathedRole.DynamicRuleState domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DynamicRuleStateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DynamicRuleNodeState GetValue(PathedRole element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.dynamicRuleStatePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(PathedRole element, DynamicRuleNodeState newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DynamicRuleNodeState oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.dynamicRuleStatePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region ValueConstraint opposite domain role accessor
 		/// <summary>
@@ -49131,6 +50128,198 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMandatoryOuterJoinError.PathedRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region MismatchedJoinDynamicStateError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets MismatchedJoinDynamicStateError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRole
+		/// </summary>
+		public virtual MismatchedJoinDynamicStateError MismatchedJoinDynamicStateError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRoleDomainRoleId) as MismatchedJoinDynamicStateError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region MismatchedRolePlayerDynamicStateError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets MismatchedRolePlayerDynamicStateError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRole
+		/// </summary>
+		public virtual MismatchedRolePlayerDynamicStateError MismatchedRolePlayerDynamicStateError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRoleDomainRoleId) as MismatchedRolePlayerDynamicStateError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DynamicAddFactTypeUnboundRolesError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DynamicAddFactTypeUnboundRolesError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRole
+		/// </summary>
+		public virtual DynamicAddFactTypeUnboundRolesError DynamicAddFactTypeUnboundRolesError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRoleDomainRoleId) as DynamicAddFactTypeUnboundRolesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DynamicActionRoleUndeclaredObjectError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DynamicActionRoleUndeclaredObjectError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRole
+		/// </summary>
+		public virtual DynamicActionRoleUndeclaredObjectError DynamicActionRoleUndeclaredObjectError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRoleDomainRoleId) as DynamicActionRoleUndeclaredObjectError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DynamicObjectAddPartialIdentifierError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRole
+		/// </summary>
+		public virtual DynamicObjectAddPartialIdentifierError DynamicObjectAddPartialIdentifierError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRoleDomainRoleId) as DynamicObjectAddPartialIdentifierError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DynamicObjectificationAddRequiresLinkFactTypesError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DynamicObjectificationAddRequiresLinkFactTypesError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRole
+		/// </summary>
+		public virtual DynamicObjectificationAddRequiresLinkFactTypesError DynamicObjectificationAddRequiresLinkFactTypesError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRoleDomainRoleId) as DynamicObjectificationAddRequiresLinkFactTypesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRoleDomainRoleId, value);
 				}
 			}
 		}
@@ -65016,6 +66205,3666 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError link in links )
 			{
 				if ( target.Equals(link.IncompatibleProjectionError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship DynamicRuleHasDynamicRuleRequiresEventAndActionError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("cc63d5dd-e6f1-4934-b89c-d62059ee2e74")]
+	public partial class DynamicRuleHasDynamicRuleRequiresEventAndActionError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DynamicRuleHasDynamicRuleRequiresEventAndActionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcc63d5dd, 0xe6f1, 0x4934, 0xb8, 0x9c, 0xd6, 0x20, 0x59, 0xee, 0x2e, 0x74);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DynamicRuleHasDynamicRuleRequiresEventAndActionError link in the same Partition as the given DynamicRule
+		/// </summary>
+		/// <param name="source">DynamicRule to use as the source of the relationship.</param>
+		/// <param name="target">DynamicRuleRequiresEventAndActionError to use as the target of the relationship.</param>
+		public DynamicRuleHasDynamicRuleRequiresEventAndActionError(DynamicRule source, DynamicRuleRequiresEventAndActionError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DynamicRuleHasDynamicRuleRequiresEventAndActionError.DynamicRuleDomainRoleId, source), new DslModeling::RoleAssignment(DynamicRuleHasDynamicRuleRequiresEventAndActionError.EventAndActionRequiredErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleHasDynamicRuleRequiresEventAndActionError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleHasDynamicRuleRequiresEventAndActionError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleHasDynamicRuleRequiresEventAndActionError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleHasDynamicRuleRequiresEventAndActionError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DynamicRule domain role code
+		
+		/// <summary>
+		/// DynamicRule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicRuleDomainRoleId = new global::System.Guid(0x5fe0b8a5, 0x8430, 0x430c, 0x92, 0xf3, 0x63, 0x86, 0x51, 0x8b, 0x37, 0x72);
+		
+		/// <summary>
+		/// DomainRole DynamicRule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.DynamicRule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/DynamicRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/DynamicRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RequiresEventAndActionError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/DynamicRule.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("5fe0b8a5-8430-430c-92f3-6386518b3772")]
+		public virtual DynamicRule DynamicRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicRuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicRuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicRule of a DynamicRuleRequiresEventAndActionError
+		/// <summary>
+		/// Gets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicRule GetDynamicRule(DynamicRuleRequiresEventAndActionError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EventAndActionRequiredErrorDomainRoleId) as DynamicRule;
+		}
+		
+		/// <summary>
+		/// Sets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicRule(DynamicRuleRequiresEventAndActionError element, DynamicRule newDynamicRule)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, EventAndActionRequiredErrorDomainRoleId, newDynamicRule);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicRule domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicRule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicRule = (DynamicRule)value;
+			}
+		}
+		
+		#endregion
+		#region EventAndActionRequiredError domain role code
+		
+		/// <summary>
+		/// EventAndActionRequiredError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid EventAndActionRequiredErrorDomainRoleId = new global::System.Guid(0xf75f564d, 0x98bf, 0x45f3, 0x8d, 0xad, 0xa4, 0xf0, 0xd8, 0x0a, 0x40, 0x80);
+		
+		/// <summary>
+		/// DomainRole EventAndActionRequiredError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.EventAndActionRequiredError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/EventAndActionRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/EventAndActionRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DynamicRule", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError/EventAndActionRequiredError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("f75f564d-98bf-45f3-8dad-a4f0d80a4080")]
+		public virtual DynamicRuleRequiresEventAndActionError EventAndActionRequiredError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicRuleRequiresEventAndActionError)DslModeling::DomainRoleInfo.GetRolePlayer(this, EventAndActionRequiredErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, EventAndActionRequiredErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RequiresEventAndActionError of a DynamicRule
+		/// <summary>
+		/// Gets RequiresEventAndActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicRuleRequiresEventAndActionError GetRequiresEventAndActionError(DynamicRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicRuleDomainRoleId) as DynamicRuleRequiresEventAndActionError;
+		}
+		
+		/// <summary>
+		/// Sets RequiresEventAndActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRequiresEventAndActionError(DynamicRule element, DynamicRuleRequiresEventAndActionError newEventAndActionRequiredError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicRuleDomainRoleId, newEventAndActionRequiredError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing EventAndActionRequiredError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.EventAndActionRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.EventAndActionRequiredError = (DynamicRuleRequiresEventAndActionError)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicRule link accessor
+		/// <summary>
+		/// Get the DynamicRuleHasDynamicRuleRequiresEventAndActionError link to a DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError GetLinkToRequiresEventAndActionError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule dynamicRuleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError>(dynamicRuleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.DynamicRuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicRule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region EventAndActionRequiredError link accessor
+		/// <summary>
+		/// Get the DynamicRuleHasDynamicRuleRequiresEventAndActionError link to a DynamicRuleRequiresEventAndActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError GetLinkToDynamicRule (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleRequiresEventAndActionError eventAndActionRequiredErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError>(eventAndActionRequiredErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.EventAndActionRequiredErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EventAndActionRequiredError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicRuleHasDynamicRuleRequiresEventAndActionError instance accessors
+		
+		/// <summary>
+		/// Get any DynamicRuleHasDynamicRuleRequiresEventAndActionError links between a given DynamicRule and a DynamicRuleRequiresEventAndActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleRequiresEventAndActionError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError link in links )
+			{
+				if ( target.Equals(link.EventAndActionRequiredError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DynamicRuleHasDynamicRuleRequiresEventAndActionError link between a given DynamicRuleand a DynamicRuleRequiresEventAndActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleRequiresEventAndActionError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleRequiresEventAndActionError link in links )
+			{
+				if ( target.Equals(link.EventAndActionRequiredError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("d0cd4bf3-c0a2-4839-9c8b-6b134bbadbba")]
+	public partial class DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd0cd4bf3, 0xc0a2, 0x4839, 0x9c, 0x8b, 0x6b, 0x13, 0x4b, 0xba, 0xdb, 0xba);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError link in the same Partition as the given DynamicRule
+		/// </summary>
+		/// <param name="source">DynamicRule to use as the source of the relationship.</param>
+		/// <param name="target">DynamicRuleNoDisjunctiveOrNegatedActionError to use as the target of the relationship.</param>
+		public DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError(DynamicRule source, DynamicRuleNoDisjunctiveOrNegatedActionError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DynamicRuleDomainRoleId, source), new DslModeling::RoleAssignment(DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.NoDisjunctiveOrNegatedActionErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DynamicRule domain role code
+		
+		/// <summary>
+		/// DynamicRule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicRuleDomainRoleId = new global::System.Guid(0xe23f9d0e, 0x724a, 0x4221, 0xaa, 0x14, 0xb8, 0xa4, 0xde, 0x17, 0xd1, 0xd0);
+		
+		/// <summary>
+		/// DomainRole DynamicRule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DynamicRule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/DynamicRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/DynamicRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NoDisjunctiveOrNegatedActionError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/DynamicRule.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("e23f9d0e-724a-4221-aa14-b8a4de17d1d0")]
+		public virtual DynamicRule DynamicRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicRuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicRuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicRule of a DynamicRuleNoDisjunctiveOrNegatedActionError
+		/// <summary>
+		/// Gets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicRule GetDynamicRule(DynamicRuleNoDisjunctiveOrNegatedActionError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoDisjunctiveOrNegatedActionErrorDomainRoleId) as DynamicRule;
+		}
+		
+		/// <summary>
+		/// Sets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicRule(DynamicRuleNoDisjunctiveOrNegatedActionError element, DynamicRule newDynamicRule)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoDisjunctiveOrNegatedActionErrorDomainRoleId, newDynamicRule);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicRule domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicRule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicRule = (DynamicRule)value;
+			}
+		}
+		
+		#endregion
+		#region NoDisjunctiveOrNegatedActionError domain role code
+		
+		/// <summary>
+		/// NoDisjunctiveOrNegatedActionError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoDisjunctiveOrNegatedActionErrorDomainRoleId = new global::System.Guid(0x6e3c12af, 0x6877, 0x41cb, 0xbc, 0x80, 0xa8, 0x4e, 0x44, 0x7a, 0x1e, 0x0a);
+		
+		/// <summary>
+		/// DomainRole NoDisjunctiveOrNegatedActionError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.NoDisjunctiveOrNegatedActionError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/NoDisjunctiveOrNegatedActionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/NoDisjunctiveOrNegatedActionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DynamicRule", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError/NoDisjunctiveOrNegatedActionError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("6e3c12af-6877-41cb-bc80-a84e447a1e0a")]
+		public virtual DynamicRuleNoDisjunctiveOrNegatedActionError NoDisjunctiveOrNegatedActionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicRuleNoDisjunctiveOrNegatedActionError)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoDisjunctiveOrNegatedActionErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoDisjunctiveOrNegatedActionErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access NoDisjunctiveOrNegatedActionError of a DynamicRule
+		/// <summary>
+		/// Gets NoDisjunctiveOrNegatedActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicRuleNoDisjunctiveOrNegatedActionError GetNoDisjunctiveOrNegatedActionError(DynamicRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicRuleDomainRoleId) as DynamicRuleNoDisjunctiveOrNegatedActionError;
+		}
+		
+		/// <summary>
+		/// Sets NoDisjunctiveOrNegatedActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNoDisjunctiveOrNegatedActionError(DynamicRule element, DynamicRuleNoDisjunctiveOrNegatedActionError newNoDisjunctiveOrNegatedActionError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicRuleDomainRoleId, newNoDisjunctiveOrNegatedActionError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing NoDisjunctiveOrNegatedActionError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.NoDisjunctiveOrNegatedActionError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.NoDisjunctiveOrNegatedActionError = (DynamicRuleNoDisjunctiveOrNegatedActionError)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicRule link accessor
+		/// <summary>
+		/// Get the DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError link to a DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError GetLinkToNoDisjunctiveOrNegatedActionError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule dynamicRuleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError>(dynamicRuleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DynamicRuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicRule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region NoDisjunctiveOrNegatedActionError link accessor
+		/// <summary>
+		/// Get the DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError link to a DynamicRuleNoDisjunctiveOrNegatedActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError GetLinkToDynamicRule (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNoDisjunctiveOrNegatedActionError noDisjunctiveOrNegatedActionErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError>(noDisjunctiveOrNegatedActionErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.NoDisjunctiveOrNegatedActionErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of NoDisjunctiveOrNegatedActionError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError instance accessors
+		
+		/// <summary>
+		/// Get any DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError links between a given DynamicRule and a DynamicRuleNoDisjunctiveOrNegatedActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNoDisjunctiveOrNegatedActionError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError link in links )
+			{
+				if ( target.Equals(link.NoDisjunctiveOrNegatedActionError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError link between a given DynamicRuleand a DynamicRuleNoDisjunctiveOrNegatedActionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNoDisjunctiveOrNegatedActionError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleNoDisjunctiveOrNegatedActionError link in links )
+			{
+				if ( target.Equals(link.NoDisjunctiveOrNegatedActionError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("588ef17c-e39e-4700-9342-aa89f258c80f")]
+	public partial class DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x588ef17c, 0xe39e, 0x4700, 0x93, 0x42, 0xaa, 0x89, 0xf2, 0x58, 0xc8, 0x0f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError link in the same Partition as the given DynamicRule
+		/// </summary>
+		/// <param name="source">DynamicRule to use as the source of the relationship.</param>
+		/// <param name="target">DynamicRuleDisjunctionRequiresPositiveEventError to use as the target of the relationship.</param>
+		public DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError(DynamicRule source, DynamicRuleDisjunctionRequiresPositiveEventError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DynamicRuleDomainRoleId, source), new DslModeling::RoleAssignment(DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DisjunctionRequiresPositiveEventErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DynamicRule domain role code
+		
+		/// <summary>
+		/// DynamicRule domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicRuleDomainRoleId = new global::System.Guid(0x14c5811a, 0xa8de, 0x4faa, 0x94, 0x7c, 0x97, 0x71, 0x94, 0x03, 0x22, 0x16);
+		
+		/// <summary>
+		/// DomainRole DynamicRule
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DynamicRule
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DynamicRule.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DynamicRule.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DisjunctionRequiresPositiveEventError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DynamicRule.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("14c5811a-a8de-4faa-947c-977194032216")]
+		public virtual DynamicRule DynamicRule
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicRule)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicRuleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicRuleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicRule of a DynamicRuleDisjunctionRequiresPositiveEventError
+		/// <summary>
+		/// Gets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicRule GetDynamicRule(DynamicRuleDisjunctionRequiresPositiveEventError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DisjunctionRequiresPositiveEventErrorDomainRoleId) as DynamicRule;
+		}
+		
+		/// <summary>
+		/// Sets DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicRule(DynamicRuleDisjunctionRequiresPositiveEventError element, DynamicRule newDynamicRule)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DisjunctionRequiresPositiveEventErrorDomainRoleId, newDynamicRule);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicRule domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicRule;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicRule = (DynamicRule)value;
+			}
+		}
+		
+		#endregion
+		#region DisjunctionRequiresPositiveEventError domain role code
+		
+		/// <summary>
+		/// DisjunctionRequiresPositiveEventError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DisjunctionRequiresPositiveEventErrorDomainRoleId = new global::System.Guid(0xf2298eaf, 0x75e2, 0x4675, 0x92, 0x85, 0x9e, 0xda, 0x27, 0x80, 0xc1, 0x18);
+		
+		/// <summary>
+		/// DomainRole DisjunctionRequiresPositiveEventError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DisjunctionRequiresPositiveEventError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DisjunctionRequiresPositiveEventError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DisjunctionRequiresPositiveEventError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DynamicRule", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError/DisjunctionRequiresPositiveEventError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("f2298eaf-75e2-4675-9285-9eda2780c118")]
+		public virtual DynamicRuleDisjunctionRequiresPositiveEventError DisjunctionRequiresPositiveEventError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicRuleDisjunctionRequiresPositiveEventError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DisjunctionRequiresPositiveEventErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DisjunctionRequiresPositiveEventErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DisjunctionRequiresPositiveEventError of a DynamicRule
+		/// <summary>
+		/// Gets DisjunctionRequiresPositiveEventError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicRuleDisjunctionRequiresPositiveEventError GetDisjunctionRequiresPositiveEventError(DynamicRule element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicRuleDomainRoleId) as DynamicRuleDisjunctionRequiresPositiveEventError;
+		}
+		
+		/// <summary>
+		/// Sets DisjunctionRequiresPositiveEventError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDisjunctionRequiresPositiveEventError(DynamicRule element, DynamicRuleDisjunctionRequiresPositiveEventError newDisjunctionRequiresPositiveEventError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicRuleDomainRoleId, newDisjunctionRequiresPositiveEventError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DisjunctionRequiresPositiveEventError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DisjunctionRequiresPositiveEventError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DisjunctionRequiresPositiveEventError = (DynamicRuleDisjunctionRequiresPositiveEventError)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicRule link accessor
+		/// <summary>
+		/// Get the DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError link to a DynamicRule.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError GetLinkToDisjunctionRequiresPositiveEventError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule dynamicRuleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError>(dynamicRuleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DynamicRuleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicRule not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DisjunctionRequiresPositiveEventError link accessor
+		/// <summary>
+		/// Get the DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError link to a DynamicRuleDisjunctionRequiresPositiveEventError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError GetLinkToDynamicRule (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleDisjunctionRequiresPositiveEventError disjunctionRequiresPositiveEventErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError>(disjunctionRequiresPositiveEventErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DisjunctionRequiresPositiveEventErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DisjunctionRequiresPositiveEventError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError instance accessors
+		
+		/// <summary>
+		/// Get any DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError links between a given DynamicRule and a DynamicRuleDisjunctionRequiresPositiveEventError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleDisjunctionRequiresPositiveEventError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError link in links )
+			{
+				if ( target.Equals(link.DisjunctionRequiresPositiveEventError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError link between a given DynamicRuleand a DynamicRuleDisjunctionRequiresPositiveEventError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRule source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleDisjunctionRequiresPositiveEventError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError.DynamicRuleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError link in links )
+			{
+				if ( target.Equals(link.DisjunctionRequiresPositiveEventError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathedRoleHasMismatchedJoinDynamicStateError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("616d3ca5-6064-4d70-893f-999b0924e11c")]
+	public partial class PathedRoleHasMismatchedJoinDynamicStateError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathedRoleHasMismatchedJoinDynamicStateError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x616d3ca5, 0x6064, 0x4d70, 0x89, 0x3f, 0x99, 0x9b, 0x09, 0x24, 0xe1, 0x1c);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathedRoleHasMismatchedJoinDynamicStateError link in the same Partition as the given PathedRole
+		/// </summary>
+		/// <param name="source">PathedRole to use as the source of the relationship.</param>
+		/// <param name="target">MismatchedJoinDynamicStateError to use as the target of the relationship.</param>
+		public PathedRoleHasMismatchedJoinDynamicStateError(PathedRole source, MismatchedJoinDynamicStateError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasMismatchedJoinDynamicStateError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasMismatchedJoinDynamicStateError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasMismatchedJoinDynamicStateError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasMismatchedJoinDynamicStateError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasMismatchedJoinDynamicStateError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x63faeb9e, 0xae1c, 0x44e6, 0x9c, 0x52, 0x5c, 0x49, 0x97, 0x61, 0xdd, 0x8c);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MismatchedJoinDynamicStateError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/PathedRole.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("63faeb9e-ae1c-44e6-9c52-5c499761dd8c")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRole of a MismatchedJoinDynamicStateError
+		/// <summary>
+		/// Gets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathedRole GetPathedRole(MismatchedJoinDynamicStateError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, MismatchedJoinDynamicStateErrorDomainRoleId) as PathedRole;
+		}
+		
+		/// <summary>
+		/// Sets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathedRole(MismatchedJoinDynamicStateError element, PathedRole newPathedRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, MismatchedJoinDynamicStateErrorDomainRoleId, newPathedRole);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing PathedRole domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PathedRole = (PathedRole)value;
+			}
+		}
+		
+		#endregion
+		#region MismatchedJoinDynamicStateError domain role code
+		
+		/// <summary>
+		/// MismatchedJoinDynamicStateError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid MismatchedJoinDynamicStateErrorDomainRoleId = new global::System.Guid(0x3deda0a4, 0xba85, 0x477b, 0xba, 0x86, 0xb5, 0x39, 0x34, 0xd3, 0x4c, 0xbf);
+		
+		/// <summary>
+		/// DomainRole MismatchedJoinDynamicStateError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/MismatchedJoinDynamicStateError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/MismatchedJoinDynamicStateError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError/MismatchedJoinDynamicStateError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("3deda0a4-ba85-477b-ba86-b53934d34cbf")]
+		public virtual MismatchedJoinDynamicStateError MismatchedJoinDynamicStateError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (MismatchedJoinDynamicStateError)DslModeling::DomainRoleInfo.GetRolePlayer(this, MismatchedJoinDynamicStateErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, MismatchedJoinDynamicStateErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access MismatchedJoinDynamicStateError of a PathedRole
+		/// <summary>
+		/// Gets MismatchedJoinDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static MismatchedJoinDynamicStateError GetMismatchedJoinDynamicStateError(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as MismatchedJoinDynamicStateError;
+		}
+		
+		/// <summary>
+		/// Sets MismatchedJoinDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetMismatchedJoinDynamicStateError(PathedRole element, MismatchedJoinDynamicStateError newMismatchedJoinDynamicStateError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newMismatchedJoinDynamicStateError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing MismatchedJoinDynamicStateError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MismatchedJoinDynamicStateError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MismatchedJoinDynamicStateError = (MismatchedJoinDynamicStateError)value;
+			}
+		}
+		
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathedRoleHasMismatchedJoinDynamicStateError link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError GetLinkToMismatchedJoinDynamicStateError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MismatchedJoinDynamicStateError link accessor
+		/// <summary>
+		/// Get the PathedRoleHasMismatchedJoinDynamicStateError link to a MismatchedJoinDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedJoinDynamicStateError mismatchedJoinDynamicStateErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError>(mismatchedJoinDynamicStateErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of MismatchedJoinDynamicStateError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathedRoleHasMismatchedJoinDynamicStateError instance accessors
+		
+		/// <summary>
+		/// Get any PathedRoleHasMismatchedJoinDynamicStateError links between a given PathedRole and a MismatchedJoinDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedJoinDynamicStateError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError link in links )
+			{
+				if ( target.Equals(link.MismatchedJoinDynamicStateError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathedRoleHasMismatchedJoinDynamicStateError link between a given PathedRoleand a MismatchedJoinDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedJoinDynamicStateError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedJoinDynamicStateError link in links )
+			{
+				if ( target.Equals(link.MismatchedJoinDynamicStateError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathedRoleHasMismatchedRolePlayerDynamicStateError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("574386c5-bc4a-4ebc-be68-6b4e8c8ebefe")]
+	public partial class PathedRoleHasMismatchedRolePlayerDynamicStateError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathedRoleHasMismatchedRolePlayerDynamicStateError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x574386c5, 0xbc4a, 0x4ebc, 0xbe, 0x68, 0x6b, 0x4e, 0x8c, 0x8e, 0xbe, 0xfe);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathedRoleHasMismatchedRolePlayerDynamicStateError link in the same Partition as the given PathedRole
+		/// </summary>
+		/// <param name="source">PathedRole to use as the source of the relationship.</param>
+		/// <param name="target">MismatchedRolePlayerDynamicStateError to use as the target of the relationship.</param>
+		public PathedRoleHasMismatchedRolePlayerDynamicStateError(PathedRole source, MismatchedRolePlayerDynamicStateError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasMismatchedRolePlayerDynamicStateError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasMismatchedRolePlayerDynamicStateError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasMismatchedRolePlayerDynamicStateError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasMismatchedRolePlayerDynamicStateError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x9caa4fbd, 0x03fb, 0x42c6, 0x8d, 0x92, 0x2e, 0x41, 0xd7, 0xa5, 0xfc, 0xd4);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MismatchedRolePlayerDynamicStateError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/PathedRole.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("9caa4fbd-03fb-42c6-8d92-2e41d7a5fcd4")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRole of a MismatchedRolePlayerDynamicStateError
+		/// <summary>
+		/// Gets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathedRole GetPathedRole(MismatchedRolePlayerDynamicStateError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, MismatchedRolePlayerDynamicStateErrorDomainRoleId) as PathedRole;
+		}
+		
+		/// <summary>
+		/// Sets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathedRole(MismatchedRolePlayerDynamicStateError element, PathedRole newPathedRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, MismatchedRolePlayerDynamicStateErrorDomainRoleId, newPathedRole);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing PathedRole domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PathedRole = (PathedRole)value;
+			}
+		}
+		
+		#endregion
+		#region MismatchedRolePlayerDynamicStateError domain role code
+		
+		/// <summary>
+		/// MismatchedRolePlayerDynamicStateError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid MismatchedRolePlayerDynamicStateErrorDomainRoleId = new global::System.Guid(0x9827417f, 0xbe60, 0x46e2, 0x84, 0x8c, 0x7d, 0xbb, 0x9f, 0x96, 0xad, 0x9f);
+		
+		/// <summary>
+		/// DomainRole MismatchedRolePlayerDynamicStateError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/MismatchedRolePlayerDynamicStateError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/MismatchedRolePlayerDynamicStateError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError/MismatchedRolePlayerDynamicStateError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("9827417f-be60-46e2-848c-7dbb9f96ad9f")]
+		public virtual MismatchedRolePlayerDynamicStateError MismatchedRolePlayerDynamicStateError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (MismatchedRolePlayerDynamicStateError)DslModeling::DomainRoleInfo.GetRolePlayer(this, MismatchedRolePlayerDynamicStateErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, MismatchedRolePlayerDynamicStateErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access MismatchedRolePlayerDynamicStateError of a PathedRole
+		/// <summary>
+		/// Gets MismatchedRolePlayerDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static MismatchedRolePlayerDynamicStateError GetMismatchedRolePlayerDynamicStateError(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as MismatchedRolePlayerDynamicStateError;
+		}
+		
+		/// <summary>
+		/// Sets MismatchedRolePlayerDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetMismatchedRolePlayerDynamicStateError(PathedRole element, MismatchedRolePlayerDynamicStateError newMismatchedRolePlayerDynamicStateError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newMismatchedRolePlayerDynamicStateError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing MismatchedRolePlayerDynamicStateError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.MismatchedRolePlayerDynamicStateError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.MismatchedRolePlayerDynamicStateError = (MismatchedRolePlayerDynamicStateError)value;
+			}
+		}
+		
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathedRoleHasMismatchedRolePlayerDynamicStateError link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError GetLinkToMismatchedRolePlayerDynamicStateError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MismatchedRolePlayerDynamicStateError link accessor
+		/// <summary>
+		/// Get the PathedRoleHasMismatchedRolePlayerDynamicStateError link to a MismatchedRolePlayerDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedRolePlayerDynamicStateError mismatchedRolePlayerDynamicStateErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError>(mismatchedRolePlayerDynamicStateErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of MismatchedRolePlayerDynamicStateError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathedRoleHasMismatchedRolePlayerDynamicStateError instance accessors
+		
+		/// <summary>
+		/// Get any PathedRoleHasMismatchedRolePlayerDynamicStateError links between a given PathedRole and a MismatchedRolePlayerDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedRolePlayerDynamicStateError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError link in links )
+			{
+				if ( target.Equals(link.MismatchedRolePlayerDynamicStateError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathedRoleHasMismatchedRolePlayerDynamicStateError link between a given PathedRoleand a MismatchedRolePlayerDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MismatchedRolePlayerDynamicStateError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasMismatchedRolePlayerDynamicStateError link in links )
+			{
+				if ( target.Equals(link.MismatchedRolePlayerDynamicStateError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathedRoleHasDynamicAddFactTypeUnboundRolesError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("cf37454a-e1c3-4ddc-87f5-6d77d04ad0cc")]
+	public partial class PathedRoleHasDynamicAddFactTypeUnboundRolesError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathedRoleHasDynamicAddFactTypeUnboundRolesError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcf37454a, 0xe1c3, 0x4ddc, 0x87, 0xf5, 0x6d, 0x77, 0xd0, 0x4a, 0xd0, 0xcc);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathedRoleHasDynamicAddFactTypeUnboundRolesError link in the same Partition as the given PathedRole
+		/// </summary>
+		/// <param name="source">PathedRole to use as the source of the relationship.</param>
+		/// <param name="target">DynamicAddFactTypeUnboundRolesError to use as the target of the relationship.</param>
+		public PathedRoleHasDynamicAddFactTypeUnboundRolesError(PathedRole source, DynamicAddFactTypeUnboundRolesError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicAddFactTypeUnboundRolesError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicAddFactTypeUnboundRolesError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicAddFactTypeUnboundRolesError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicAddFactTypeUnboundRolesError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x643bee44, 0x8b24, 0x4a09, 0x85, 0xeb, 0x88, 0x12, 0xb7, 0x70, 0x68, 0x54);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DynamicAddFactTypeUnboundRolesError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/PathedRole.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("643bee44-8b24-4a09-85eb-8812b7706854")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRole of a DynamicAddFactTypeUnboundRolesError
+		/// <summary>
+		/// Gets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathedRole GetPathedRole(DynamicAddFactTypeUnboundRolesError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicAddFactTypeUnboundRolesErrorDomainRoleId) as PathedRole;
+		}
+		
+		/// <summary>
+		/// Sets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathedRole(DynamicAddFactTypeUnboundRolesError element, PathedRole newPathedRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicAddFactTypeUnboundRolesErrorDomainRoleId, newPathedRole);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing PathedRole domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PathedRole = (PathedRole)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicAddFactTypeUnboundRolesError domain role code
+		
+		/// <summary>
+		/// DynamicAddFactTypeUnboundRolesError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicAddFactTypeUnboundRolesErrorDomainRoleId = new global::System.Guid(0xcb612ec3, 0xbc67, 0x4544, 0x97, 0x94, 0x01, 0x37, 0x30, 0x15, 0xe7, 0x14);
+		
+		/// <summary>
+		/// DomainRole DynamicAddFactTypeUnboundRolesError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/DynamicAddFactTypeUnboundRolesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/DynamicAddFactTypeUnboundRolesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError/DynamicAddFactTypeUnboundRolesError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("cb612ec3-bc67-4544-9794-01373015e714")]
+		public virtual DynamicAddFactTypeUnboundRolesError DynamicAddFactTypeUnboundRolesError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicAddFactTypeUnboundRolesError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicAddFactTypeUnboundRolesErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicAddFactTypeUnboundRolesErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicAddFactTypeUnboundRolesError of a PathedRole
+		/// <summary>
+		/// Gets DynamicAddFactTypeUnboundRolesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicAddFactTypeUnboundRolesError GetDynamicAddFactTypeUnboundRolesError(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as DynamicAddFactTypeUnboundRolesError;
+		}
+		
+		/// <summary>
+		/// Sets DynamicAddFactTypeUnboundRolesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicAddFactTypeUnboundRolesError(PathedRole element, DynamicAddFactTypeUnboundRolesError newDynamicAddFactTypeUnboundRolesError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newDynamicAddFactTypeUnboundRolesError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicAddFactTypeUnboundRolesError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicAddFactTypeUnboundRolesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicAddFactTypeUnboundRolesError = (DynamicAddFactTypeUnboundRolesError)value;
+			}
+		}
+		
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicAddFactTypeUnboundRolesError link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError GetLinkToDynamicAddFactTypeUnboundRolesError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicAddFactTypeUnboundRolesError link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicAddFactTypeUnboundRolesError link to a DynamicAddFactTypeUnboundRolesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicAddFactTypeUnboundRolesError dynamicAddFactTypeUnboundRolesErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError>(dynamicAddFactTypeUnboundRolesErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicAddFactTypeUnboundRolesError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathedRoleHasDynamicAddFactTypeUnboundRolesError instance accessors
+		
+		/// <summary>
+		/// Get any PathedRoleHasDynamicAddFactTypeUnboundRolesError links between a given PathedRole and a DynamicAddFactTypeUnboundRolesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicAddFactTypeUnboundRolesError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError link in links )
+			{
+				if ( target.Equals(link.DynamicAddFactTypeUnboundRolesError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathedRoleHasDynamicAddFactTypeUnboundRolesError link between a given PathedRoleand a DynamicAddFactTypeUnboundRolesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicAddFactTypeUnboundRolesError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicAddFactTypeUnboundRolesError link in links )
+			{
+				if ( target.Equals(link.DynamicAddFactTypeUnboundRolesError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathedRoleHasDynamicActionRoleUndeclaredObjectError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("caae3095-d3d9-4300-85a4-555524d5080e")]
+	public partial class PathedRoleHasDynamicActionRoleUndeclaredObjectError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathedRoleHasDynamicActionRoleUndeclaredObjectError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcaae3095, 0xd3d9, 0x4300, 0x85, 0xa4, 0x55, 0x55, 0x24, 0xd5, 0x08, 0x0e);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathedRoleHasDynamicActionRoleUndeclaredObjectError link in the same Partition as the given PathedRole
+		/// </summary>
+		/// <param name="source">PathedRole to use as the source of the relationship.</param>
+		/// <param name="target">DynamicActionRoleUndeclaredObjectError to use as the target of the relationship.</param>
+		public PathedRoleHasDynamicActionRoleUndeclaredObjectError(PathedRole source, DynamicActionRoleUndeclaredObjectError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicActionRoleUndeclaredObjectError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicActionRoleUndeclaredObjectError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicActionRoleUndeclaredObjectError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicActionRoleUndeclaredObjectError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x1dba5584, 0x06f1, 0x474e, 0xbc, 0x82, 0x74, 0xdf, 0x21, 0x77, 0xc0, 0x22);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DynamicActionRoleUndeclaredObjectError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/PathedRole.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("1dba5584-06f1-474e-bc82-74df2177c022")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRole of a DynamicActionRoleUndeclaredObjectError
+		/// <summary>
+		/// Gets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathedRole GetPathedRole(DynamicActionRoleUndeclaredObjectError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicActionRoleUndeclaredObjectErrorDomainRoleId) as PathedRole;
+		}
+		
+		/// <summary>
+		/// Sets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathedRole(DynamicActionRoleUndeclaredObjectError element, PathedRole newPathedRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicActionRoleUndeclaredObjectErrorDomainRoleId, newPathedRole);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing PathedRole domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PathedRole = (PathedRole)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicActionRoleUndeclaredObjectError domain role code
+		
+		/// <summary>
+		/// DynamicActionRoleUndeclaredObjectError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicActionRoleUndeclaredObjectErrorDomainRoleId = new global::System.Guid(0x5d8873ed, 0x4701, 0x4518, 0x89, 0xf5, 0x0a, 0x6c, 0x88, 0x91, 0x55, 0xa4);
+		
+		/// <summary>
+		/// DomainRole DynamicActionRoleUndeclaredObjectError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/DynamicActionRoleUndeclaredObjectError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/DynamicActionRoleUndeclaredObjectError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError/DynamicActionRoleUndeclaredObjectError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("5d8873ed-4701-4518-89f5-0a6c889155a4")]
+		public virtual DynamicActionRoleUndeclaredObjectError DynamicActionRoleUndeclaredObjectError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicActionRoleUndeclaredObjectError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicActionRoleUndeclaredObjectErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicActionRoleUndeclaredObjectErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicActionRoleUndeclaredObjectError of a PathedRole
+		/// <summary>
+		/// Gets DynamicActionRoleUndeclaredObjectError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicActionRoleUndeclaredObjectError GetDynamicActionRoleUndeclaredObjectError(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as DynamicActionRoleUndeclaredObjectError;
+		}
+		
+		/// <summary>
+		/// Sets DynamicActionRoleUndeclaredObjectError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicActionRoleUndeclaredObjectError(PathedRole element, DynamicActionRoleUndeclaredObjectError newDynamicActionRoleUndeclaredObjectError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newDynamicActionRoleUndeclaredObjectError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicActionRoleUndeclaredObjectError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicActionRoleUndeclaredObjectError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicActionRoleUndeclaredObjectError = (DynamicActionRoleUndeclaredObjectError)value;
+			}
+		}
+		
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicActionRoleUndeclaredObjectError link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError GetLinkToDynamicActionRoleUndeclaredObjectError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicActionRoleUndeclaredObjectError link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicActionRoleUndeclaredObjectError link to a DynamicActionRoleUndeclaredObjectError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicActionRoleUndeclaredObjectError dynamicActionRoleUndeclaredObjectErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError>(dynamicActionRoleUndeclaredObjectErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicActionRoleUndeclaredObjectError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathedRoleHasDynamicActionRoleUndeclaredObjectError instance accessors
+		
+		/// <summary>
+		/// Get any PathedRoleHasDynamicActionRoleUndeclaredObjectError links between a given PathedRole and a DynamicActionRoleUndeclaredObjectError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicActionRoleUndeclaredObjectError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError link in links )
+			{
+				if ( target.Equals(link.DynamicActionRoleUndeclaredObjectError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathedRoleHasDynamicActionRoleUndeclaredObjectError link between a given PathedRoleand a DynamicActionRoleUndeclaredObjectError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicActionRoleUndeclaredObjectError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicActionRoleUndeclaredObjectError link in links )
+			{
+				if ( target.Equals(link.DynamicActionRoleUndeclaredObjectError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("ebe0ce65-5ae5-4023-b774-11af72d1ff5d")]
+	public partial class PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xebe0ce65, 0x5ae5, 0x4023, 0xb7, 0x74, 0x11, 0xaf, 0x72, 0xd1, 0xff, 0x5d);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError link in the same Partition as the given PathObjectUnifier
+		/// </summary>
+		/// <param name="source">PathObjectUnifier to use as the source of the relationship.</param>
+		/// <param name="target">ObjectUnifierMismatchedDynamicStateError to use as the target of the relationship.</param>
+		public PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError(PathObjectUnifier source, ObjectUnifierMismatchedDynamicStateError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierDomainRoleId, source), new DslModeling::RoleAssignment(PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierMismatchedDynamicStateErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectUnifier domain role code
+		
+		/// <summary>
+		/// ObjectUnifier domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectUnifierDomainRoleId = new global::System.Guid(0x360f30ee, 0xf0cc, 0x4565, 0x92, 0x36, 0x54, 0x84, 0x6e, 0x41, 0x39, 0x8c);
+		
+		/// <summary>
+		/// DomainRole ObjectUnifier
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifier
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifier.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MismatchedDynamicStateError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifier.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("360f30ee-f0cc-4565-9236-54846e41398c")]
+		public virtual PathObjectUnifier ObjectUnifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathObjectUnifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectUnifierDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectUnifierDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectUnifier of a ObjectUnifierMismatchedDynamicStateError
+		/// <summary>
+		/// Gets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathObjectUnifier GetObjectUnifier(ObjectUnifierMismatchedDynamicStateError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectUnifierMismatchedDynamicStateErrorDomainRoleId) as PathObjectUnifier;
+		}
+		
+		/// <summary>
+		/// Sets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectUnifier(ObjectUnifierMismatchedDynamicStateError element, PathObjectUnifier newObjectUnifier)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectUnifierMismatchedDynamicStateErrorDomainRoleId, newObjectUnifier);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectUnifier domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectUnifier;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectUnifier = (PathObjectUnifier)value;
+			}
+		}
+		
+		#endregion
+		#region ObjectUnifierMismatchedDynamicStateError domain role code
+		
+		/// <summary>
+		/// ObjectUnifierMismatchedDynamicStateError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectUnifierMismatchedDynamicStateErrorDomainRoleId = new global::System.Guid(0xbaaa605c, 0x94ae, 0x45f0, 0xa4, 0x5a, 0xe2, 0xf9, 0x83, 0x32, 0xd7, 0xca);
+		
+		/// <summary>
+		/// DomainRole ObjectUnifierMismatchedDynamicStateError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierMismatchedDynamicStateError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifierMismatchedDynamicStateError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifierMismatchedDynamicStateError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectUnifier", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError/ObjectUnifierMismatchedDynamicStateError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("baaa605c-94ae-45f0-a45a-e2f98332d7ca")]
+		public virtual ObjectUnifierMismatchedDynamicStateError ObjectUnifierMismatchedDynamicStateError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectUnifierMismatchedDynamicStateError)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectUnifierMismatchedDynamicStateErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectUnifierMismatchedDynamicStateErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access MismatchedDynamicStateError of a PathObjectUnifier
+		/// <summary>
+		/// Gets MismatchedDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectUnifierMismatchedDynamicStateError GetMismatchedDynamicStateError(PathObjectUnifier element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectUnifierDomainRoleId) as ObjectUnifierMismatchedDynamicStateError;
+		}
+		
+		/// <summary>
+		/// Sets MismatchedDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetMismatchedDynamicStateError(PathObjectUnifier element, ObjectUnifierMismatchedDynamicStateError newObjectUnifierMismatchedDynamicStateError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectUnifierDomainRoleId, newObjectUnifierMismatchedDynamicStateError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectUnifierMismatchedDynamicStateError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectUnifierMismatchedDynamicStateError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectUnifierMismatchedDynamicStateError = (ObjectUnifierMismatchedDynamicStateError)value;
+			}
+		}
+		
+		#endregion
+		#region ObjectUnifier link accessor
+		/// <summary>
+		/// Get the PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError link to a PathObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError GetLinkToMismatchedDynamicStateError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier objectUnifierInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError>(objectUnifierInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectUnifier not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectUnifierMismatchedDynamicStateError link accessor
+		/// <summary>
+		/// Get the PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError link to a ObjectUnifierMismatchedDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError GetLinkToObjectUnifier (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectUnifierMismatchedDynamicStateError objectUnifierMismatchedDynamicStateErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError>(objectUnifierMismatchedDynamicStateErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierMismatchedDynamicStateErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectUnifierMismatchedDynamicStateError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError instance accessors
+		
+		/// <summary>
+		/// Get any PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError links between a given PathObjectUnifier and a ObjectUnifierMismatchedDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectUnifierMismatchedDynamicStateError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError link in links )
+			{
+				if ( target.Equals(link.ObjectUnifierMismatchedDynamicStateError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError link between a given PathObjectUnifierand a ObjectUnifierMismatchedDynamicStateError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectUnifierMismatchedDynamicStateError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasObjectUnifierMismatchedDynamicStateError link in links )
+			{
+				if ( target.Equals(link.ObjectUnifierMismatchedDynamicStateError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathObjectUnifierHasDynamicObjectAddPartialIdentifierError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("af419018-256a-4aba-a5c8-f56ab58f9f02")]
+	public partial class PathObjectUnifierHasDynamicObjectAddPartialIdentifierError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathObjectUnifierHasDynamicObjectAddPartialIdentifierError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xaf419018, 0x256a, 0x4aba, 0xa5, 0xc8, 0xf5, 0x6a, 0xb5, 0x8f, 0x9f, 0x02);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathObjectUnifierHasDynamicObjectAddPartialIdentifierError link in the same Partition as the given PathObjectUnifier
+		/// </summary>
+		/// <param name="source">PathObjectUnifier to use as the source of the relationship.</param>
+		/// <param name="target">DynamicObjectAddPartialIdentifierError to use as the target of the relationship.</param>
+		public PathObjectUnifierHasDynamicObjectAddPartialIdentifierError(PathObjectUnifier source, DynamicObjectAddPartialIdentifierError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.ObjectUnifierDomainRoleId, source), new DslModeling::RoleAssignment(PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierHasDynamicObjectAddPartialIdentifierError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierHasDynamicObjectAddPartialIdentifierError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathObjectUnifierHasDynamicObjectAddPartialIdentifierError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathObjectUnifierHasDynamicObjectAddPartialIdentifierError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectUnifier domain role code
+		
+		/// <summary>
+		/// ObjectUnifier domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectUnifierDomainRoleId = new global::System.Guid(0x8724d518, 0x360f, 0x4f70, 0x85, 0x95, 0x0c, 0xb3, 0x6c, 0xd1, 0xe2, 0xe5);
+		
+		/// <summary>
+		/// DomainRole ObjectUnifier
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.ObjectUnifier
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/ObjectUnifier.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/ObjectUnifier.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DynamicObjectAddPartialIdentifierError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/ObjectUnifier.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("8724d518-360f-4f70-8595-0cb36cd1e2e5")]
+		public virtual PathObjectUnifier ObjectUnifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathObjectUnifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectUnifierDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectUnifierDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectUnifier of a DynamicObjectAddPartialIdentifierError
+		/// <summary>
+		/// Gets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathObjectUnifier GetObjectUnifier(DynamicObjectAddPartialIdentifierError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicObjectAddPartialIdentifierErrorDomainRoleId) as PathObjectUnifier;
+		}
+		
+		/// <summary>
+		/// Sets ObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectUnifier(DynamicObjectAddPartialIdentifierError element, PathObjectUnifier newObjectUnifier)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicObjectAddPartialIdentifierErrorDomainRoleId, newObjectUnifier);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ObjectUnifier domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ObjectUnifier;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ObjectUnifier = (PathObjectUnifier)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError domain role code
+		
+		/// <summary>
+		/// DynamicObjectAddPartialIdentifierError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicObjectAddPartialIdentifierErrorDomainRoleId = new global::System.Guid(0x65ffa5d3, 0x4242, 0x4460, 0x8f, 0x40, 0x13, 0x61, 0xfe, 0x0b, 0xd5, 0x89);
+		
+		/// <summary>
+		/// DomainRole DynamicObjectAddPartialIdentifierError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectUnifier", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("65ffa5d3-4242-4460-8f40-1361fe0bd589")]
+		public virtual DynamicObjectAddPartialIdentifierError DynamicObjectAddPartialIdentifierError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicObjectAddPartialIdentifierError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicObjectAddPartialIdentifierErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicObjectAddPartialIdentifierErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicObjectAddPartialIdentifierError of a PathObjectUnifier
+		/// <summary>
+		/// Gets DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicObjectAddPartialIdentifierError GetDynamicObjectAddPartialIdentifierError(PathObjectUnifier element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectUnifierDomainRoleId) as DynamicObjectAddPartialIdentifierError;
+		}
+		
+		/// <summary>
+		/// Sets DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicObjectAddPartialIdentifierError(PathObjectUnifier element, DynamicObjectAddPartialIdentifierError newDynamicObjectAddPartialIdentifierError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectUnifierDomainRoleId, newDynamicObjectAddPartialIdentifierError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicObjectAddPartialIdentifierError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicObjectAddPartialIdentifierError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicObjectAddPartialIdentifierError = (DynamicObjectAddPartialIdentifierError)value;
+			}
+		}
+		
+		#endregion
+		#region ObjectUnifier link accessor
+		/// <summary>
+		/// Get the PathObjectUnifierHasDynamicObjectAddPartialIdentifierError link to a PathObjectUnifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError GetLinkToDynamicObjectAddPartialIdentifierError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier objectUnifierInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError>(objectUnifierInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.ObjectUnifierDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectUnifier not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError link accessor
+		/// <summary>
+		/// Get the PathObjectUnifierHasDynamicObjectAddPartialIdentifierError link to a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError GetLinkToObjectUnifier (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError dynamicObjectAddPartialIdentifierErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError>(dynamicObjectAddPartialIdentifierErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicObjectAddPartialIdentifierError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathObjectUnifierHasDynamicObjectAddPartialIdentifierError instance accessors
+		
+		/// <summary>
+		/// Get any PathObjectUnifierHasDynamicObjectAddPartialIdentifierError links between a given PathObjectUnifier and a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectAddPartialIdentifierError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathObjectUnifierHasDynamicObjectAddPartialIdentifierError link between a given PathObjectUnifierand a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifier source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError.ObjectUnifierDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathObjectUnifierHasDynamicObjectAddPartialIdentifierError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectAddPartialIdentifierError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathedRoleHasDynamicObjectAddPartialIdentifierError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("cf66e4dd-3fa7-4e70-b4e8-b896d00484be")]
+	public partial class PathedRoleHasDynamicObjectAddPartialIdentifierError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathedRoleHasDynamicObjectAddPartialIdentifierError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcf66e4dd, 0x3fa7, 0x4e70, 0xb4, 0xe8, 0xb8, 0x96, 0xd0, 0x04, 0x84, 0xbe);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathedRoleHasDynamicObjectAddPartialIdentifierError link in the same Partition as the given PathedRole
+		/// </summary>
+		/// <param name="source">PathedRole to use as the source of the relationship.</param>
+		/// <param name="target">DynamicObjectAddPartialIdentifierError to use as the target of the relationship.</param>
+		public PathedRoleHasDynamicObjectAddPartialIdentifierError(PathedRole source, DynamicObjectAddPartialIdentifierError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicObjectAddPartialIdentifierError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicObjectAddPartialIdentifierError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicObjectAddPartialIdentifierError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicObjectAddPartialIdentifierError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x60bec9dc, 0xb456, 0x46a9, 0x88, 0x65, 0x7a, 0x1e, 0xc8, 0x3b, 0x11, 0x0f);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DynamicObjectAddPartialIdentifierError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/PathedRole.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("60bec9dc-b456-46a9-8865-7a1ec83b110f")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRole of a DynamicObjectAddPartialIdentifierError
+		/// <summary>
+		/// Gets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathedRole GetPathedRole(DynamicObjectAddPartialIdentifierError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicObjectAddPartialIdentifierErrorDomainRoleId) as PathedRole;
+		}
+		
+		/// <summary>
+		/// Sets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathedRole(DynamicObjectAddPartialIdentifierError element, PathedRole newPathedRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicObjectAddPartialIdentifierErrorDomainRoleId, newPathedRole);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing PathedRole domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PathedRole = (PathedRole)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError domain role code
+		
+		/// <summary>
+		/// DynamicObjectAddPartialIdentifierError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicObjectAddPartialIdentifierErrorDomainRoleId = new global::System.Guid(0xe9820d19, 0xe4b3, 0x4851, 0x9d, 0x93, 0x01, 0x97, 0x6b, 0x19, 0x5a, 0x0d);
+		
+		/// <summary>
+		/// DomainRole DynamicObjectAddPartialIdentifierError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("e9820d19-e4b3-4851-9d93-01976b195a0d")]
+		public virtual DynamicObjectAddPartialIdentifierError DynamicObjectAddPartialIdentifierError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicObjectAddPartialIdentifierError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicObjectAddPartialIdentifierErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicObjectAddPartialIdentifierErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicObjectAddPartialIdentifierError of a PathedRole
+		/// <summary>
+		/// Gets DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicObjectAddPartialIdentifierError GetDynamicObjectAddPartialIdentifierError(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as DynamicObjectAddPartialIdentifierError;
+		}
+		
+		/// <summary>
+		/// Sets DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicObjectAddPartialIdentifierError(PathedRole element, DynamicObjectAddPartialIdentifierError newDynamicObjectAddPartialIdentifierError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newDynamicObjectAddPartialIdentifierError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicObjectAddPartialIdentifierError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicObjectAddPartialIdentifierError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicObjectAddPartialIdentifierError = (DynamicObjectAddPartialIdentifierError)value;
+			}
+		}
+		
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicObjectAddPartialIdentifierError link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError GetLinkToDynamicObjectAddPartialIdentifierError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicObjectAddPartialIdentifierError link to a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError dynamicObjectAddPartialIdentifierErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError>(dynamicObjectAddPartialIdentifierErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicObjectAddPartialIdentifierError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathedRoleHasDynamicObjectAddPartialIdentifierError instance accessors
+		
+		/// <summary>
+		/// Get any PathedRoleHasDynamicObjectAddPartialIdentifierError links between a given PathedRole and a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectAddPartialIdentifierError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathedRoleHasDynamicObjectAddPartialIdentifierError link between a given PathedRoleand a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectAddPartialIdentifierError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectAddPartialIdentifierError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathRootHasDynamicObjectAddPartialIdentifierError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("b787aad1-8dfb-484c-b371-9e6084d3e534")]
+	public partial class PathRootHasDynamicObjectAddPartialIdentifierError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathRootHasDynamicObjectAddPartialIdentifierError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb787aad1, 0x8dfb, 0x484c, 0xb3, 0x71, 0x9e, 0x60, 0x84, 0xd3, 0xe5, 0x34);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathRootHasDynamicObjectAddPartialIdentifierError link in the same Partition as the given RolePathObjectTypeRoot
+		/// </summary>
+		/// <param name="source">RolePathObjectTypeRoot to use as the source of the relationship.</param>
+		/// <param name="target">DynamicObjectAddPartialIdentifierError to use as the target of the relationship.</param>
+		public PathRootHasDynamicObjectAddPartialIdentifierError(RolePathObjectTypeRoot source, DynamicObjectAddPartialIdentifierError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathRootHasDynamicObjectAddPartialIdentifierError.PathRootDomainRoleId, source), new DslModeling::RoleAssignment(PathRootHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathRootHasDynamicObjectAddPartialIdentifierError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathRootHasDynamicObjectAddPartialIdentifierError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathRootHasDynamicObjectAddPartialIdentifierError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathRootHasDynamicObjectAddPartialIdentifierError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathRoot domain role code
+		
+		/// <summary>
+		/// PathRoot domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathRootDomainRoleId = new global::System.Guid(0xc8eb2da0, 0xef6c, 0x4a74, 0xaa, 0x97, 0x8b, 0x28, 0x14, 0xec, 0xec, 0x7c);
+		
+		/// <summary>
+		/// DomainRole PathRoot
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRoot
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/PathRoot.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/PathRoot.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DynamicObjectAddPartialIdentifierError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/PathRoot.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("c8eb2da0-ef6c-4a74-aa97-8b2814ecec7c")]
+		public virtual RolePathObjectTypeRoot PathRoot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RolePathObjectTypeRoot)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathRootDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathRootDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathRoot of a DynamicObjectAddPartialIdentifierError
+		/// <summary>
+		/// Gets PathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static RolePathObjectTypeRoot GetPathRoot(DynamicObjectAddPartialIdentifierError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicObjectAddPartialIdentifierErrorDomainRoleId) as RolePathObjectTypeRoot;
+		}
+		
+		/// <summary>
+		/// Sets PathRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathRoot(DynamicObjectAddPartialIdentifierError element, RolePathObjectTypeRoot newPathRoot)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicObjectAddPartialIdentifierErrorDomainRoleId, newPathRoot);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing PathRoot domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PathRoot;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PathRoot = (RolePathObjectTypeRoot)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError domain role code
+		
+		/// <summary>
+		/// DynamicObjectAddPartialIdentifierError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicObjectAddPartialIdentifierErrorDomainRoleId = new global::System.Guid(0x161aa920, 0x775f, 0x4702, 0x85, 0x3b, 0xdc, 0x9d, 0x67, 0x36, 0xd9, 0x20);
+		
+		/// <summary>
+		/// DomainRole DynamicObjectAddPartialIdentifierError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathRoot", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError/DynamicObjectAddPartialIdentifierError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("161aa920-775f-4702-853b-dc9d6736d920")]
+		public virtual DynamicObjectAddPartialIdentifierError DynamicObjectAddPartialIdentifierError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicObjectAddPartialIdentifierError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicObjectAddPartialIdentifierErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicObjectAddPartialIdentifierErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicObjectAddPartialIdentifierError of a RolePathObjectTypeRoot
+		/// <summary>
+		/// Gets DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicObjectAddPartialIdentifierError GetDynamicObjectAddPartialIdentifierError(RolePathObjectTypeRoot element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathRootDomainRoleId) as DynamicObjectAddPartialIdentifierError;
+		}
+		
+		/// <summary>
+		/// Sets DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicObjectAddPartialIdentifierError(RolePathObjectTypeRoot element, DynamicObjectAddPartialIdentifierError newDynamicObjectAddPartialIdentifierError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathRootDomainRoleId, newDynamicObjectAddPartialIdentifierError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicObjectAddPartialIdentifierError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicObjectAddPartialIdentifierError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicObjectAddPartialIdentifierError = (DynamicObjectAddPartialIdentifierError)value;
+			}
+		}
+		
+		#endregion
+		#region PathRoot link accessor
+		/// <summary>
+		/// Get the PathRootHasDynamicObjectAddPartialIdentifierError link to a RolePathObjectTypeRoot.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError GetLinkToDynamicObjectAddPartialIdentifierError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot pathRootInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError>(pathRootInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRootDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathRoot not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicObjectAddPartialIdentifierError link accessor
+		/// <summary>
+		/// Get the PathRootHasDynamicObjectAddPartialIdentifierError link to a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError GetLinkToPathRoot (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError dynamicObjectAddPartialIdentifierErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError>(dynamicObjectAddPartialIdentifierErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicObjectAddPartialIdentifierError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathRootHasDynamicObjectAddPartialIdentifierError instance accessors
+		
+		/// <summary>
+		/// Get any PathRootHasDynamicObjectAddPartialIdentifierError links between a given RolePathObjectTypeRoot and a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRootDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectAddPartialIdentifierError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathRootHasDynamicObjectAddPartialIdentifierError link between a given RolePathObjectTypeRootand a DynamicObjectAddPartialIdentifierError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectAddPartialIdentifierError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError.PathRootDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathRootHasDynamicObjectAddPartialIdentifierError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectAddPartialIdentifierError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("2be582eb-9d01-4ac7-a6a7-d0e4ce0df7c5")]
+	public partial class PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x2be582eb, 0x9d01, 0x4ac7, 0xa6, 0xa7, 0xd0, 0xe4, 0xce, 0x0d, 0xf7, 0xc5);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError link in the same Partition as the given PathedRole
+		/// </summary>
+		/// <param name="source">PathedRole to use as the source of the relationship.</param>
+		/// <param name="target">DynamicObjectificationAddRequiresLinkFactTypesError to use as the target of the relationship.</param>
+		public PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError(PathedRole source, DynamicObjectificationAddRequiresLinkFactTypesError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRoleDomainRoleId, source), new DslModeling::RoleAssignment(PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PathedRole domain role code
+		
+		/// <summary>
+		/// PathedRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PathedRoleDomainRoleId = new global::System.Guid(0x50295136, 0xc0e8, 0x4dc6, 0xb1, 0x12, 0x66, 0xd4, 0x36, 0xef, 0xd6, 0x2a);
+		
+		/// <summary>
+		/// DomainRole PathedRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/PathedRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DynamicObjectificationAddRequiresLinkFactTypesError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/PathedRole.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("50295136-c0e8-4dc6-b112-66d436efd62a")]
+		public virtual PathedRole PathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PathedRole)DslModeling::DomainRoleInfo.GetRolePlayer(this, PathedRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PathedRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PathedRole of a DynamicObjectificationAddRequiresLinkFactTypesError
+		/// <summary>
+		/// Gets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PathedRole GetPathedRole(DynamicObjectificationAddRequiresLinkFactTypesError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId) as PathedRole;
+		}
+		
+		/// <summary>
+		/// Sets PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPathedRole(DynamicObjectificationAddRequiresLinkFactTypesError element, PathedRole newPathedRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId, newPathedRole);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing PathedRole domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.PathedRole = (PathedRole)value;
+			}
+		}
+		
+		#endregion
+		#region DynamicObjectificationAddRequiresLinkFactTypesError domain role code
+		
+		/// <summary>
+		/// DynamicObjectificationAddRequiresLinkFactTypesError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId = new global::System.Guid(0xf7a1913a, 0xae2b, 0x4519, 0xae, 0xc9, 0x08, 0x1e, 0x52, 0x1d, 0x9b, 0x93);
+		
+		/// <summary>
+		/// DomainRole DynamicObjectificationAddRequiresLinkFactTypesError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/DynamicObjectificationAddRequiresLinkFactTypesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/DynamicObjectificationAddRequiresLinkFactTypesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PathedRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError/DynamicObjectificationAddRequiresLinkFactTypesError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("f7a1913a-ae2b-4519-aec9-081e521d9b93")]
+		public virtual DynamicObjectificationAddRequiresLinkFactTypesError DynamicObjectificationAddRequiresLinkFactTypesError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DynamicObjectificationAddRequiresLinkFactTypesError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DynamicObjectificationAddRequiresLinkFactTypesError of a PathedRole
+		/// <summary>
+		/// Gets DynamicObjectificationAddRequiresLinkFactTypesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DynamicObjectificationAddRequiresLinkFactTypesError GetDynamicObjectificationAddRequiresLinkFactTypesError(PathedRole element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PathedRoleDomainRoleId) as DynamicObjectificationAddRequiresLinkFactTypesError;
+		}
+		
+		/// <summary>
+		/// Sets DynamicObjectificationAddRequiresLinkFactTypesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDynamicObjectificationAddRequiresLinkFactTypesError(PathedRole element, DynamicObjectificationAddRequiresLinkFactTypesError newDynamicObjectificationAddRequiresLinkFactTypesError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PathedRoleDomainRoleId, newDynamicObjectificationAddRequiresLinkFactTypesError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DynamicObjectificationAddRequiresLinkFactTypesError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DynamicObjectificationAddRequiresLinkFactTypesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DynamicObjectificationAddRequiresLinkFactTypesError = (DynamicObjectificationAddRequiresLinkFactTypesError)value;
+			}
+		}
+		
+		#endregion
+		#region PathedRole link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError link to a PathedRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError GetLinkToDynamicObjectificationAddRequiresLinkFactTypesError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole pathedRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError>(pathedRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PathedRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DynamicObjectificationAddRequiresLinkFactTypesError link accessor
+		/// <summary>
+		/// Get the PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError link to a DynamicObjectificationAddRequiresLinkFactTypesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError GetLinkToPathedRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectificationAddRequiresLinkFactTypesError dynamicObjectificationAddRequiresLinkFactTypesErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError>(dynamicObjectificationAddRequiresLinkFactTypesErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DynamicObjectificationAddRequiresLinkFactTypesError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError instance accessors
+		
+		/// <summary>
+		/// Get any PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError links between a given PathedRole and a DynamicObjectificationAddRequiresLinkFactTypesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectificationAddRequiresLinkFactTypesError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectificationAddRequiresLinkFactTypesError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError link between a given PathedRoleand a DynamicObjectificationAddRequiresLinkFactTypesError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicObjectificationAddRequiresLinkFactTypesError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.PathedRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError link in links )
+			{
+				if ( target.Equals(link.DynamicObjectificationAddRequiresLinkFactTypesError) )
 				{
 					return link;
 				}

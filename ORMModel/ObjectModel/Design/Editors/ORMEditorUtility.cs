@@ -110,6 +110,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			IORMToolServices toolServices;
 			IORMModelErrorActivationService activationService;
+			ORMModelErrorActivator activator;
 			if (null != (toolServices = store as IORMToolServices) &&
 				null != (activationService = toolServices.ModelErrorActivationService))
 			{
@@ -149,29 +150,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					});
 				#endregion // Role error activation
 				#region ValueConstraint error activation
-				activationService.RegisterErrorActivator(
-					typeof(ValueConstraint),
-					true,
-					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+				activator = delegate (IORMToolServices services, ModelElement selectedElement, ModelError error)
+				{
+					bool retVal = true;
+					if (error is ValueConstraintError)
 					{
-						bool retVal = true;
-						if (error is ValueConstraintError)
-						{
-							EditorUtility.ActivatePropertyEditor(
-								services.ServiceProvider,
-								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ValueConstraint.TextDomainPropertyId),
-								false);
-						}
-						else if (error is ConstraintDuplicateNameError)
-						{
-							ActivateNameProperty(selectedElement);
-						}
-						else
-						{
-							retVal = false;
-						}
-						return retVal;
-					});
+						EditorUtility.ActivatePropertyEditor(
+							services.ServiceProvider,
+							DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ValueConstraint.TextDomainPropertyId),
+							false);
+					}
+					else if (error is ConstraintDuplicateNameError)
+					{
+						ActivateNameProperty(selectedElement);
+					}
+					else
+					{
+						retVal = false;
+					}
+					return retVal;
+				};
+				activationService.RegisterErrorActivator(typeof(ValueTypeValueConstraint), true, activator);
+				activationService.RegisterErrorActivator(typeof(RoleValueConstraint), true, activator);
 				#endregion // ValueConstraint error activation
 				#region CardinalityConstraint error activation
 				activationService.RegisterErrorActivator(

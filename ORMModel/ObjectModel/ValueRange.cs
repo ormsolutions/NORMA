@@ -2037,7 +2037,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				PathedRole pathedRole;
-				RolePathOwner owner;
+				IRolePathOwner owner;
 				if (null != (pathedRole = PathedRole) &&
 					null != (owner = pathedRole.RolePath.RootOwner))
 				{

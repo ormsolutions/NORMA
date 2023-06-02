@@ -49,6 +49,7 @@
 			<cmc:EmbeddingDirective relationship="ObjectTypeHasAbbreviation" ignore="true"/>
 			<cmc:EmbeddingDirective relationship="RecognizedPhraseHasAbbreviation" ignore="true"/>
 			<cmc:EmbeddingDirective relationship="NameGeneratorRefinesNameGenerator" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="DynamicRuleOwnsLeadRolePath" automaticEquivalence="false"/>
 
 			<!-- Unordered top-level relationships -->
 			<cmc:EmbeddingDirective relationship="ModelHasFactType" order="Unordered"/>
@@ -58,6 +59,7 @@
 			<cmc:EmbeddingDirective relationship="ModelHasModelNote" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelHasReferenceMode" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelHasReferenceModeKind" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="ModelDefinesGeneralRule" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ElementGroupingSetContainsElementGrouping" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ElementGroupingIsOfElementGroupingType" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="GenerationStateHasGenerationSetting" order="Unordered"/>

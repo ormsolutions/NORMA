@@ -4373,6 +4373,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				/// the descoping is already tracked with the partnered variable.
 				/// </summary>
 				IsPartneredUse = 0x20,
+				/// <summary>
+				/// Does the variable have a dynamic state of <see cref="DynamicRuleNodeState.Initial"/>?
+				/// </summary>
+				IsInitialDynamicState = 0x40, // Be careful if this is modified, the bit offset is used in the DynamicState getter.
+				/// <summary>
+				/// Does the variable have a dynamic state of <see cref="DynamicRuleNodeState.Added"/>?
+				/// </summary>
+				IsAddedDynamicState = 0x80,
+				/// <summary>
+				/// Does the variable have a dynamic state of <see cref="DynamicRuleNodeState.Deleted"/>?
+				/// </summary>
+				IsDeletedDynamicState = 0xC0, // We want the values to be 1,2,3 when shited, not 1,2,4
 			}
 			private StateFlags myFlags;
 			private ObjectType myRolePlayer;
@@ -4384,11 +4396,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// Create a <see cref="RolePlayerVariable"/> with default settings
 			/// </summary>
 			/// <param name="rolePlayer">The participating role player</param>
-			public RolePlayerVariable(ObjectType rolePlayer)
+			/// <param name="dynamicState">The dynamic state associated with this variable. Note that
+			/// The Current state is note stored and the Add and Delete states are handled outside of
+			/// standard path verbalization, so are not separatedly tracked.</param>
+			public RolePlayerVariable(ObjectType rolePlayer, DynamicRuleNodeState dynamicState)
 			{
 				myRolePlayer = rolePlayer;
 				mySubscript = -1;
 				mySubscriptOffset = 0;
+				switch (dynamicState)
+				{
+					case DynamicRuleNodeState.Initial:
+						myFlags = StateFlags.IsInitialDynamicState;
+						break;
+					case DynamicRuleNodeState.Added:
+						myFlags = StateFlags.IsAddedDynamicState;
+						break;
+					case DynamicRuleNodeState.Deleted:
+						myFlags = StateFlags.IsDeletedDynamicState;
+						break;
+				}
 			}
 			/// <summary>
 			/// Get the associated role player
@@ -4629,6 +4656,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						myFlags &= ~StateFlags.MinimizeHeadSubscripting;
 					}
+				}
+			}
+			/// <summary>
+			/// Get the dynamic state specified during construction.
+			/// </summary>
+			/// <remarks>This does not return Add or Delete states, which are extracted in path
+			/// verbalization instead of being annotated in the rule.</remarks>
+			public DynamicRuleNodeState DynamicState
+			{
+				get
+				{
+					return (DynamicRuleNodeState)((int)(myFlags & (StateFlags.IsInitialDynamicState | StateFlags.IsAddedDynamicState | StateFlags.IsDeletedDynamicState)) >> 6);
 				}
 			}
 		}
@@ -5919,8 +5958,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Create and attach a new fact type node.
 			/// </summary>
-			/// <param name="factTypeEntry">The <see cref="FactType"/> for this node.</param>
 			/// <param name="factType">The <see cref="PathedRole"/> that is the first in the <paramref name="factType"/>.</param>
+			/// <param name="factTypeEntry">The <see cref="FactType"/> for this node.</param>
 			/// <param name="pathContext">The path context for this node.</param>
 			/// <param name="parentNode">The parent <see cref="VerbalizationPlanNode"/> for the new node.</param>
 			/// <param name="rootNode">A reference to the root node of the chain.</param>
@@ -6187,7 +6226,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// The first newly scoped variable, appropriate for a branch node
 			/// </summary>
-			public virtual LinkedNode<RolePlayerVariable> FirstNewlyScopeVariableNode
+			public virtual LinkedNode<RolePlayerVariable> FirstNewlyScopedVariableNode
 			{
 				get
 				{
@@ -6205,6 +6244,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				get
 				{
 					return VerbalizationPlanBranchType.None;
+				}
+				set
+				{
 				}
 			}
 			/// <summary>
@@ -6387,6 +6429,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 				}
 			}
+			/// <summary>
+			/// Set to true if a dynamic state should be marked.
+			/// </summary>
+			public virtual bool AnnotateDynamicState
+			{
+				get
+				{
+					return false;
+				}
+				set
+				{
+				}
+			}
 			public virtual IList<object> EquivalentVariableKeys
 			{
 				get
@@ -6487,7 +6542,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				private readonly PathedRole myEntryPathedRole;
 				private IReading myReading;
 				private const int RenderedRequiredContextVariableBit = 0x10000;
-				private int myOptions; // VerbalizationPlanReadingOptions and the RenderedRequiredContextVariableBit
+				private const int AnnotateDynamicStateBit = 0x20000;
+				private int myOptions; // VerbalizationPlanReadingOptions and the RenderedRequiredContextVariableBit and AnnotateDynamicStateBit values
 				private RolePlayerVariable myBackReferencedVariable;
 				public FactTypeNode(object pathContext, VerbalizationPlanNode parentNode, FactType factType, PathedRole factTypeEntryRole)
 					: base(pathContext, parentNode)
@@ -6539,19 +6595,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					get
 					{
-						return (VerbalizationPlanReadingOptions)(myOptions & ~RenderedRequiredContextVariableBit);
+						return (VerbalizationPlanReadingOptions)(myOptions & ~(RenderedRequiredContextVariableBit | AnnotateDynamicStateBit));
 					}
 					set
 					{
 						int options = myOptions;
-						if (0 != (myOptions & RenderedRequiredContextVariableBit))
-						{
-							myOptions = (int)value | RenderedRequiredContextVariableBit;
-						}
-						else
-						{
-							myOptions = (int)value;
-						}
+						int extraBits = myOptions & (RenderedRequiredContextVariableBit | AnnotateDynamicStateBit);
+						myOptions = (int)value | extraBits;
 					}
 				}
 				public override bool RenderedRequiredContextVariable
@@ -6569,6 +6619,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						else
 						{
 							myOptions &= ~RenderedRequiredContextVariableBit;
+						}
+					}
+				}
+				public override bool AnnotateDynamicState
+				{
+					get
+					{
+						return 0 != (myOptions & AnnotateDynamicStateBit);
+					}
+					set
+					{
+						if (value)
+						{
+							myOptions |= AnnotateDynamicStateBit;
+						}
+						else
+						{
+							myOptions &= ~AnnotateDynamicStateBit;
 						}
 					}
 				}
@@ -6612,7 +6680,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						myChildNodes = value;
 					}
 				}
-				public override LinkedNode<RolePlayerVariable> FirstNewlyScopeVariableNode
+				public override LinkedNode<RolePlayerVariable> FirstNewlyScopedVariableNode
 				{
 					get
 					{
@@ -6682,6 +6750,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					get
 					{
 						return (VerbalizationPlanBranchType)(mySettings & BranchTypeMask);
+					}
+					set
+					{
+						mySettings = (int)value | (mySettings & ~BranchTypeMask);
 					}
 				}
 				public override VerbalizationPlanBranchRenderingStyle BranchRenderingStyle
@@ -7107,14 +7179,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Single path owner, used in place of instantiating myPathOwnerToVerbalizationPlanMap
 		/// for a single path owner.
 		/// </summary>
-		private RolePathOwner mySingleRolePathOwner;
+		private IRolePathOwner mySingleRolePathOwner;
 		/// <summary>
 		/// Support for tracking verbalization plans for multiple
 		/// <see cref="RolePathOwner"/> instances using the same
 		/// variables. Populated if <see cref="InitializeRolePathOwner"/>
 		/// is called multiple times for the same verbalization helper.
 		/// </summary>
-		private Dictionary<RolePathOwner, VerbalizationPlanNode> myPathOwnerToVerbalizationPlanMap;
+		private Dictionary<IRolePathOwner, VerbalizationPlanNode> myPathOwnerToVerbalizationPlanMap;
 		/// <summary>
 		/// Rendering callbacks
 		/// </summary>
@@ -7224,14 +7296,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Accessor Properties
 		#region Analysis Methods
 		/// <summary>
-		/// Initialize verbalization information for a single <see cref="RolePathOwner"/>.
+		/// Initialize verbalization information for a single <see cref="IRolePathOwner"/>.
 		/// </summary>
 		/// <param name="pathOwner">The role path to verbalize.</param>
-		protected void InitializeRolePathOwner(RolePathOwner pathOwner)
+		protected void InitializeRolePathOwner(IRolePathOwner pathOwner)
 		{
 			// If we've been called previously, then catalog the previous
 			// results by the previous owner.
-			RolePathOwner previousPathOwner = mySingleRolePathOwner;
+			IRolePathOwner previousPathOwner = mySingleRolePathOwner;
 			VerbalizationPlanNode previousRootNode = myRootPlanNode;
 
 			// Reset the per-owner member variables
@@ -7250,7 +7322,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RolePlayerVariable contextTrailingVariable = null;
 				ResolveReadings(newRootNode, null, false, ref contextLeadVariable, ref contextTrailingVariable);
 
-				Dictionary<RolePathOwner, VerbalizationPlanNode> planMap = myPathOwnerToVerbalizationPlanMap;
+				Dictionary<IRolePathOwner, VerbalizationPlanNode> planMap = myPathOwnerToVerbalizationPlanMap;
 				if (planMap != null)
 				{
 					planMap.Add(pathOwner, newRootNode);
@@ -7262,7 +7334,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					myPathOwnerToVerbalizationPlanMap = planMap = new Dictionary<RolePathOwner, VerbalizationPlanNode>();
+					myPathOwnerToVerbalizationPlanMap = planMap = new Dictionary<IRolePathOwner, VerbalizationPlanNode>();
 					planMap.Add(previousPathOwner, previousRootNode);
 					planMap.Add(pathOwner, newRootNode);
 					myRootPlanNode = null;
@@ -7281,13 +7353,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			BeginQuantificationUsePhase();
 		}
 		private delegate object PathContextCreator(LeadRolePath rolePath);
-		private void InitializeRolePaths(object pathContext, PathContextCreator contextCreator, VariableKeyDecorator keyDecorator, RolePathOwner pathOwner, IDictionary<LeadRolePath, IList<IList<object>>> equivalentVariableKeysByPath, ref LinkedNode<object> pendingRequiredVariableKeys)
+		private void InitializeRolePaths(object pathContext, PathContextCreator contextCreator, VariableKeyDecorator keyDecorator, IRolePathOwner pathOwner, IDictionary<LeadRolePath, IList<IList<object>>> equivalentVariableKeysByPath, ref LinkedNode<object> pendingRequiredVariableKeys)
 		{
 			// Determine owned paths to verbalize
 			// Verbalize in owned/shared order. The LeadRolePathCollection is unordered.
-			ReadOnlyLinkedElementCollection<LeadRolePath> ownedRolePaths = pathOwner.OwnedLeadRolePathCollection;
+			IList<LeadRolePath> ownedRolePaths = pathOwner.OwnedLeadRolePaths;
 			int ownedPathCount = ownedRolePaths.Count;
-			ReadOnlyLinkedElementCollection<LeadRolePath> sharedRolePaths = pathOwner.SharedLeadRolePathCollection;
+			IList<LeadRolePath> sharedRolePaths = pathOwner.SharedLeadRolePaths;
 			int sharedPathCount = sharedRolePaths.Count;
 			int rolePathCount = ownedPathCount + sharedPathCount;
 			if (rolePathCount != 0)
@@ -7358,7 +7430,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		private void InitializeRolePath(object initialPathContext, RolePathOwner pathOwner, LeadRolePath leadRolePath, VariableKeyDecorator keyDecorator, ref LinkedNode<object> requiredVariableKeys, ref IList<IList<object>> equivalentVariableSets)
+		private void InitializeRolePath(object initialPathContext, IRolePathOwner pathOwner, LeadRolePath leadRolePath, VariableKeyDecorator keyDecorator, ref LinkedNode<object> requiredVariableKeys, ref IList<IList<object>> equivalentVariableSets)
 		{
 			LinkedElementCollection<CalculatedPathValue> pathConditions = leadRolePath.CalculatedConditionCollection;
 			int pathConditionCount = pathConditions.Count;
@@ -7378,7 +7450,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// only. See if we can integrate this notion with a normal variable introduction node and handle
 				// this inline in VisitRolePathParts.
 				pathNode = new RolePathNode(pathRoot, initialPathContext);
-				rootObjectTypeVariable = RegisterRolePlayerUse(pathRoot.RootObjectType, null, pathNode, pathNode);
+				rootObjectTypeVariable = RegisterRolePlayerUse(pathRoot.RootObjectType, null, pathNode, pathNode, pathRoot.DynamicRuleState);
 			}
 			if (initialPathContext == null)
 			{
@@ -7400,6 +7472,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VerbalizationPlanNode startingBranchNode = myCurrentBranchNode;
 			LinkedNode<VerbalizationPlanNode> startingBranchTailLink = startingBranchNode != null ? startingBranchNode.FirstChildNode : null;
 			Dictionary<object, RolePlayerVariableUse> useMap = myUseToVariableMap;
+			Stack<DynamicRuleNodeState> contextDynamicState = null;
+			if (VerbalizeDynamicState)
+			{
+				contextDynamicState = new Stack<DynamicRuleNodeState>();
+			}
 			if (startingBranchTailLink != null)
 			{
 				startingBranchTailLink = startingBranchTailLink.GetTail();
@@ -7436,7 +7513,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									IsPathedRoleReferencedOutsidePath(currentPathedRole))
 								{
 									pathNode = new RolePathNode(currentPathedRole, pathContext);
-									RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode);
+									RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode, currentPathedRole.DynamicRuleState); // pendingForSameFactType is always a SameFactType node, so the dynamic state can be read off the pathed role
 									resolvedRoleIndex = ResolveRoleIndex(factTypeRolesStack.Peek(), currentRole);
 									if (resolvedRoleIndex != -1) // Defensive, guard against bogus path
 									{
@@ -7477,9 +7554,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// created by a path section.
 								PopConditionalChainNode(pathConditions, ref processedPathConditions);
 							}
+							if (sameFactType && contextDynamicState != null)
+							{
+								contextDynamicState.Pop();
+							}
 						}
 						else
 						{
+							if (sameFactType && contextDynamicState != null)
+							{
+								contextDynamicState.Push(currentPathedRole.DynamicRuleState);
+							}
 							if (currentPathedRoleIndex == 0)
 							{
 								// Push a chain node so that we can add multiple elements if needed
@@ -7492,6 +7577,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// Error condition, missing an entry role, push the fact type
 									// so the stack does not get out of balance.
 									currentRole = currentPathedRole.Role;
+
 									if (isSubqueryRole)
 									{
 										PushSubquery(pathContext, leadRolePath, currentRole.FactType, currentPathedRole, currentPathedRoles, currentPathedRoleIndex, factTypeRolesStack, ref roleUseTracker, ref roleUseBaseIndex, pathConditions, ref processedPathConditions, ref queryParametersStack, ref inlineSubqueryRoles, ref inlineSubqueryRoleBaseIndex, ref inlineSubqueryParameters, ref inlineSubqueryParameterBaseIndex, ref pendingRequiredVariableKeys);
@@ -7628,7 +7714,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										currentRole = pendingForSameFactType.Role;
 										pathNode = new RolePathNode(pendingForSameFactType, pathContext);
-										RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode);
+										RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode, pendingForSameFactType.DynamicRuleState);  // pendingForSameFactType is always a SameFactType node, so the dynamic state can be read off the pathed role
 										resolvedRoleIndex = ResolveRoleIndex(factTypeRolesStack.Peek(), currentRole);
 										if (resolvedRoleIndex != -1) // Defensive, guard against bogus path
 										{
@@ -7655,7 +7741,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// but not the verbalization plan.
 									currentRole = pendingForSameFactType.Role;
 									pathNode = new RolePathNode(pendingForSameFactType, pathContext);
-									RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode);
+									RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode, pendingForSameFactType.DynamicRuleState); // pendingForSameFactType is always a SameFactType node, so the dynamic state can be read off the pathed role
 									resolvedRoleIndex = ResolveRoleIndex(factTypeRolesStack.Peek(), currentRole);
 									if (resolvedRoleIndex != -1) // Defensive, guard against bogus path
 									{
@@ -7669,7 +7755,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									pendingForSameFactType = null;
 									pendingPathedRoles = null;
 								}
-								RegisterFactTypeEntryRolePlayerUse(pathContext, currentPathedRole, contextPathNode);
+								RegisterFactTypeEntryRolePlayerUse(pathContext, currentPathedRole, contextPathNode, contextDynamicState != null && contextDynamicState.Count != 0 ? contextDynamicState.Peek() : DynamicRuleNodeState.Current);
 								if (currentPathedRole.IsNegated)
 								{
 									ChainNewlyCalculatableConditions(pathConditions, ref processedPathConditions);
@@ -7725,9 +7811,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								PopConditionalChainNode(pathConditions, ref processedPathConditions);
 							}
+							if (contextDynamicState != null)
+							{
+								contextDynamicState.Pop();
+							}
 						}
 						else
 						{
+							if (contextDynamicState != null)
+							{
+								contextDynamicState.Push(currentPathRoot.DynamicRuleState);
+							}
 							(contextPathRoots ?? (contextPathRoots = new List<RolePathObjectTypeRoot>())).Add(currentPathRoot);
 							if (pendingForSameFactType != null)
 							{
@@ -7738,7 +7832,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									IsPathedRoleReferencedOutsidePath(pendingForSameFactType))
 								{
 									pathNode = new RolePathNode(pendingForSameFactType, pathContext);
-									RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode);
+									RegisterRolePlayerUse(currentRole.RolePlayer, null, pathNode, pathNode, pendingForSameFactType.DynamicRuleState); // pendingForSameFactType is always a SameFactType node, so the dynamic state can be read off the pathed role
 									resolvedRoleIndex = ResolveRoleIndex(factTypeRolesStack.Peek(), currentRole);
 									if (resolvedRoleIndex != -1) // Defensive, guard against bogus path
 									{
@@ -7759,7 +7853,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (currentPath != leadRolePath) // Handled earlier, see notes above
 							{
 								pathNode = new RolePathNode(currentPathRoot, pathContext);
-								RegisterRolePlayerUse(currentPathRoot.RootObjectType, null, pathNode, pathNode, out variableAlreadyScoped);
+								RegisterRolePlayerUse(currentPathRoot.RootObjectType, null, pathNode, pathNode, currentPathRoot.DynamicRuleState, out variableAlreadyScoped);
 							}
 
 							if (currentPathRoot.IsNegated)
@@ -7775,6 +7869,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								PushConditionalChainNode(pathContext);
 								VerbalizationPlanNode.AddVariableExistenceNode(currentPathRoot, pathContext, myCurrentBranchNode, ref myRootPlanNode).NegateExistence = true;
+								variableAlreadyScoped = true;
 							}
 							ValueConstraint valueConstraint;
 							if (null != (valueConstraint = currentPathRoot.ValueConstraint))
@@ -8133,70 +8228,88 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					LinkedElementCollection<ReadingOrder> readingOrders = factType.ReadingOrderCollection;
 					IReading reading = null;
 					VerbalizationPlanReadingOptions options = VerbalizationPlanReadingOptions.None;
-					if (localContextLeadVariable != null)
+					bool isAnnotatedFactType = false;
+					if (this.VerbalizeDynamicState)
 					{
-						// Continue with another reading starting with the lead role of the
-						// preceding fact type.
-						RolePlayerVariableUse? entryVariableUse;
-						if (localContextLeadVariable == ((entryVariableUse = GetRolePlayerVariableUse(new RolePathNode(factTypeEntry, pathContext))).HasValue ? entryVariableUse.Value.PrimaryRolePlayerVariable : null))
+						switch (factTypeEntry.DynamicRuleState)
 						{
-							// Optimization of next branch to test the entry variable without invoking the delegate
-							reading = factType.GetMatchingReading(readingOrders, null, entryRoleBase, null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound);
+							case DynamicRuleNodeState.Deleted:
+							case DynamicRuleNodeState.Added:
+							case DynamicRuleNodeState.Initial:
+								isAnnotatedFactType = true;
+								verbalizationNode.AnnotateDynamicState = true;
+								break;
 						}
-						else
+					}
+					if (!isAnnotatedFactType)
+					{
+
+						if (localContextLeadVariable != null)
 						{
+							// Continue with another reading starting with the lead role of the
+							// preceding fact type.
+							RolePlayerVariableUse? entryVariableUse;
+							if (localContextLeadVariable == ((entryVariableUse = GetRolePlayerVariableUse(new RolePathNode(factTypeEntry, pathContext))).HasValue ? entryVariableUse.Value.PrimaryRolePlayerVariable : null))
+							{
+								// Optimization of next branch to test the entry variable without invoking the delegate
+								reading = factType.GetMatchingReading(readingOrders, null, entryRoleBase, null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound);
+							}
+							else
+							{
+								VisitPathedRolesForFactTypeEntry(
+									factTypeEntry,
+									delegate(PathedRole testPathedRole)
+									{
+										RolePlayerVariableUse? nullableVariableUse;
+										return !(testPathedRole != factTypeEntry && // Tested in previous branch
+											(nullableVariableUse = GetRolePlayerVariableUse(new RolePathNode(testPathedRole, pathContext))).HasValue &&
+											nullableVariableUse.Value.PrimaryRolePlayerVariable == localContextLeadVariable &&
+											null != (reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound)));
+									});
+							}
+							if (reading != null)
+							{
+								options |= VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
+							}
+						}
+
+						if (reading == null && localContextTrailingVariable != null)
+						{
+							IReading pairedReading = null;
 							VisitPathedRolesForFactTypeEntry(
 								factTypeEntry,
 								delegate(PathedRole testPathedRole)
 								{
-									RolePlayerVariableUse? nullableVariableUse;
-									return !(testPathedRole != factTypeEntry && // Tested in previous branch
-										(nullableVariableUse = GetRolePlayerVariableUse(new RolePathNode(testPathedRole, pathContext))).HasValue &&
-										nullableVariableUse.Value.PrimaryRolePlayerVariable == localContextLeadVariable &&
-										null != (reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound)));
+									bool exactMatch;
+									if (CanPartnerWithVariable(new RolePathNode(testPathedRole, pathContext), pathContext, localContextTrailingVariable, out exactMatch) &&
+										null != (reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound)))
+									{
+										// Keep going if we don't have an exact variable match, we might still find one.
+										if (exactMatch)
+										{
+											return false;
+										}
+										if (pairedReading == null)
+										{
+											pairedReading = reading;
+										}
+										reading = null;
+									}
+									return true;
 								});
-						}
-						if (reading != null)
-						{
-							options |= VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
-						}
-					}
-					if (reading == null && localContextTrailingVariable != null)
-					{
-						IReading pairedReading = null;
-						VisitPathedRolesForFactTypeEntry(
-							factTypeEntry,
-							delegate(PathedRole testPathedRole)
+							if (reading != null)
 							{
-								bool exactMatch;
-								if (CanPartnerWithVariable(new RolePathNode(testPathedRole, pathContext), pathContext, localContextTrailingVariable, out exactMatch) &&
-									null != (reading = factType.GetMatchingReading(readingOrders, null, ResolveRoleBaseInFactType(testPathedRole.Role, factType), null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound)))
-								{
-									// Keep going if we don't have an exact variable match, we might still find one.
-									if (exactMatch)
-									{
-										return false;
-									}
-									if (pairedReading == null)
-									{
-										pairedReading = reading;
-									}
-									reading = null;
-								}
-								return true;
-							});
-						if (reading != null)
-						{
-							// We have a forward primary reading starting with the same variable
-							options |= VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
-						}
-						else if (pairedReading != null)
-						{
-							// The primary reading has a lead role that can be successfully
-							// paired with the context variable.
-							reading = pairedReading;
-							options |= VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
-							verbalizationNode.CorrelateWithBackReferencedVariable = localContextTrailingVariable;
+								// We have a forward primary reading starting with the same variable
+								options |= VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
+							}
+							else if (pairedReading != null)
+							{
+								// The primary reading has a lead role that can be successfully
+								// paired with the context variable.
+								reading = pairedReading;
+								options |= VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BasicLeadRole;
+								verbalizationNode.CorrelateWithBackReferencedVariable = localContextTrailingVariable;
+							}
 						}
 					}
 
@@ -8217,7 +8330,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						readingText = reading.Text;
 					}
 					IList<RoleBase> roles = reading.RoleCollection;
-					if (canCollapseLead)
+					if (canCollapseLead && !isAnnotatedFactType)
 					{
 						if (null != localContextLeadVariable &&
 							0 == (options & VerbalizationPlanReadingOptions.FullyCollapseFirstRole))
@@ -8268,7 +8381,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						null != (parentNode = verbalizationNode.ParentNode) &&
 						parentNode.BranchType == VerbalizationPlanBranchType.NegatedChain;
 					bool hasTrailingRolePlayer = roleCount > 1 && readingText.EndsWith("{" + (roleCount - 1).ToString(CultureInfo.InvariantCulture) + "}");
-					if (checkOppositeNegation || hasTrailingRolePlayer)
+					if (checkOppositeNegation || (hasTrailingRolePlayer && !isAnnotatedFactType))
 					{
 						Role findTrailingRole = (hasTrailingRolePlayer || !reverseReading) ? roles[roleCount - 1].Role : null;
 						Role findLeadRole = (reverseReading && checkOppositeNegation) ? roles[0].Role : null;
@@ -8283,7 +8396,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										oppositePathedRole = testPathedRole;
 									}
-									if (hasTrailingRolePlayer)
+									if (hasTrailingRolePlayer && !isAnnotatedFactType)
 									{
 										RolePlayerVariableUse? pathedRoleVariableUse = GetRolePlayerVariableUse(new RolePathNode(testPathedRole, pathContext));
 										if (pathedRoleVariableUse.HasValue)
@@ -8905,7 +9018,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						pendingRequiredVariableKeys.GetTail().SetNext(new LinkedNode<object>(queryParameterKey), ref pendingRequiredVariableKeys);
 					}
-					RegisterRolePlayerUse(parameter.ParameterType, null, queryParameterKey, RolePathNode.Empty);
+					RegisterRolePlayerUse(parameter.ParameterType, null, queryParameterKey, RolePathNode.Empty, DynamicRuleNodeState.Current); // Dynamic rules do not support subqueries, always use the Current state
 					// Correlate the parameter key with input pathed roles and path roots. Input constants
 					// and calculated values will be bound later.
 					SubqueryParameterInput parameterInput;
@@ -8929,7 +9042,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							// so we need to verify existing before accessing them.
 							object inputKey = inputNode;
 							RolePlayerVariableUse? existingInputUse = GetRolePlayerVariableUse(inputKey);
-							CustomCorrelateVariables(existingInputUse.HasValue ? existingInputUse.Value.PrimaryRolePlayerVariable : RegisterRolePlayerUse(inputNode.ObjectType, null, inputKey, inputNode), useMap[queryParameterKey].PrimaryRolePlayerVariable);
+							CustomCorrelateVariables(
+								existingInputUse.HasValue ? existingInputUse.Value.PrimaryRolePlayerVariable : RegisterRolePlayerUse(inputNode.ObjectType, null, inputKey, inputNode, DynamicRuleNodeState.Current), // Dynamic rules do not support subqueries, always use the Current state
+								useMap[queryParameterKey].PrimaryRolePlayerVariable);
 						}
 					}
 				}
@@ -8958,7 +9073,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					pendingRequiredVariableKeys.GetTail().SetNext(new LinkedNode<object>(queryRoleKey), ref pendingRequiredVariableKeys);
 				}
-				RegisterRolePlayerUse(queryRole.RolePlayer, null, queryRoleKey, RolePathNode.Empty);
+				RegisterRolePlayerUse(queryRole.RolePlayer, null, queryRoleKey, RolePathNode.Empty, DynamicRuleNodeState.Current); // Dynamic rules do not support subqueries, always use the Current state
 				if (queryRole == factTypeEntryRole)
 				{
 					RolePlayerVariable newVariable = useMap[queryRoleKey].PrimaryRolePlayerVariable;
@@ -9019,7 +9134,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						correlationNode = new RolePathNode(correlationNode, innerPathContext);
 					}
-					RolePlayerVariable newVar = RegisterRolePlayerUse(variableType, null, correlationNode, correlationNode);
+					RolePlayerVariable newVar = RegisterRolePlayerUse(variableType, null, correlationNode, correlationNode, DynamicRuleNodeState.Current); // Dynamic rules do not support subqueries, always use the Current state
 					if (!correlationNode.IsEmpty)
 					{
 						RolePlayerVariableUse? correlateWithVar = GetRolePlayerVariableUse(key);
@@ -9275,7 +9390,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						null != (rolePlayer = factTypeRoles[i].Role.RolePlayer) &&
 						!rolePlayer.IsImplicitBooleanValue)
 					{
-						RegisterRolePlayerUse(rolePlayer, null, null, RolePathNode.Empty);
+						RegisterRolePlayerUse(rolePlayer, null, null, RolePathNode.Empty, DynamicRuleNodeState.Current); // Roles with no path node cannot specify a dynamic state, always use Current
 					}
 				}
 			}
@@ -9516,7 +9631,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return;
 			}
 			object pathContext = chainNode.PathContext;
-			if (null != chainNode.FirstNewlyScopeVariableNode)
+			if (null != chainNode.FirstNewlyScopedVariableNode)
 			{
 				int conditionCount = pathConditions.Count;
 				if (conditionCount != 0)
@@ -9725,6 +9840,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return true;
 				}
 			}
+			return PreserveUnreferencedSameFactTypeRole(pathedRole);
+		}
+		/// <summary>
+		/// Provide a mechanism for forcing a variable to be declared for a pathed role that is
+		/// not used outside the path and would normally be reduced to a fully existential variable.
+		/// </summary>
+		/// <param name="pathedRole">The PathedRole to test.</param>
+		/// <returns>true if a full variable should always be created.</returns>
+		protected virtual bool PreserveUnreferencedSameFactTypeRole(PathedRole pathedRole)
+		{
 			return false;
 		}
 		/// <summary>
@@ -9797,7 +9922,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="pathContext">The path context to record this node in.</param>
 		/// <param name="pathedRole">The entry into a fact type.</param>
 		/// <param name="joinSourcePathNode">The join source.</param>
-		private void RegisterFactTypeEntryRolePlayerUse(object pathContext, PathedRole pathedRole, RolePathNode joinSourcePathNode)
+		/// <param name="dynamicState">The dynamic state for the registered variable.</param>
+		private void RegisterFactTypeEntryRolePlayerUse(object pathContext, PathedRole pathedRole, RolePathNode joinSourcePathNode, DynamicRuleNodeState dynamicState)
 		{
 			Dictionary<object, RolePlayerVariableUse> useMap = myUseToVariableMap;
 			RolePlayerVariable joinToVariable = null;
@@ -9811,7 +9937,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					joinToVariable = joinSourceVariableUse.PrimaryRolePlayerVariable;
 				}
 			}
-			RegisterRolePlayerUse(targetRolePlayer, joinToVariable, pathNode, pathNode);
+			RegisterRolePlayerUse(targetRolePlayer, joinToVariable, pathNode, pathNode, dynamicState);
 		}
 		/// <summary>
 		/// Register a use of an object type before verbalization. All uses
@@ -9827,11 +9953,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// with. The list of correlated variables is stored with the normalized root correlation
 		/// variable. This may be the same instance as <paramref name="usedFor"/> and should not
 		/// be pre-normalized before this call.</param>
+		/// <param name="dynamicState">Specify the dynamic rule state this varible is used for. Only Initial, Added and Deleted are tracked.</param>
 		/// <returns>New or existing variable</returns>
-		private RolePlayerVariable RegisterRolePlayerUse(ObjectType rolePlayer, RolePlayerVariable joinToVariable, object usedFor, RolePathNode correlateWithNode)
+		private RolePlayerVariable RegisterRolePlayerUse(ObjectType rolePlayer, RolePlayerVariable joinToVariable, object usedFor, RolePathNode correlateWithNode, DynamicRuleNodeState dynamicState)
 		{
 			bool variableAlreadyScoped;
-			return RegisterRolePlayerUse(rolePlayer, joinToVariable, usedFor, correlateWithNode, out variableAlreadyScoped);
+			return RegisterRolePlayerUse(rolePlayer, joinToVariable, usedFor, correlateWithNode, dynamicState, out variableAlreadyScoped);
 		}
 		/// <summary>
 		/// Register a use of an object type before verbalization. All uses
@@ -9847,9 +9974,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// with. The list of correlated variables is stored with the normalized root correlation
 		/// variable. This may be the same instance as <paramref name="usedFor"/> and should not
 		/// be pre-normalized before this call.</param>
+		/// <param name="dynamicState">Specify the dynamic rule state this varible is used for. Only Initial, Added and Deleted are tracked.</param>
 		/// <param name="variableAlreadyScoped">The returned variable was in use and scoped before this call.</param>
 		/// <returns>New or existing variable</returns>
-		private RolePlayerVariable RegisterRolePlayerUse(ObjectType rolePlayer, RolePlayerVariable joinToVariable, object usedFor, RolePathNode correlateWithNode, out bool variableAlreadyScoped)
+		private RolePlayerVariable RegisterRolePlayerUse(ObjectType rolePlayer, RolePlayerVariable joinToVariable, object usedFor, RolePathNode correlateWithNode, DynamicRuleNodeState dynamicState, out bool variableAlreadyScoped)
 		{
 			Dictionary<object, RolePlayerVariableUse> useMap = myUseToVariableMap;
 			RolePlayerVariable existingVariable = null;
@@ -9965,7 +10093,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// Note that if joinToVariable is set here, then it comes from an external
 					// correlation. Otherwise, the join would have the same correlation root
 					// as the current pathed role.
-					RegisterRolePlayerUse(correlationRootRolePlayer, joinToVariable, correlateWithKey, RolePathNode.Empty, out variableAlreadyScoped);
+					RegisterRolePlayerUse(correlationRootRolePlayer, joinToVariable, correlateWithKey, RolePathNode.Empty, dynamicState, out variableAlreadyScoped);
 					lockVariableAlreadyScoped = true;
 					correlationRootVariableUse = useMap[correlateWithKey];
 					if (correlationRootRolePlayer == rolePlayer)
@@ -10130,7 +10258,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					existingVariable = new RolePlayerVariable(rolePlayer);
+					existingVariable = new RolePlayerVariable(rolePlayer, dynamicState);
 					ScopeVariable(existingVariable, true);
 					existingVariableUse = new RolePlayerVariableUse(existingVariable, joinToVariable, usedFor.Equals(correlateWith) ? null : correlateWith);
 					useMap[usedFor] = existingVariableUse;
@@ -10199,11 +10327,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				variable.IsDescopedDuringPathCreation = false;
 				LinkedNode<RolePlayerVariable> newlyScoped = new LinkedNode<RolePlayerVariable>(variable);
 				LinkedNode<RolePlayerVariable> existingNewlyScoped;
-				if (null != (existingNewlyScoped = currentBranchNode.FirstNewlyScopeVariableNode))
+				if (null != (existingNewlyScoped = currentBranchNode.FirstNewlyScopedVariableNode))
 				{
 					newlyScoped.SetNext(existingNewlyScoped, ref newlyScoped);
 				}
-				currentBranchNode.FirstNewlyScopeVariableNode = newlyScoped;
+				currentBranchNode.FirstNewlyScopedVariableNode = newlyScoped;
 				return true;
 			}
 			return false;
@@ -10212,10 +10340,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			LinkedNode<RolePlayerVariable> newInChild;
 			VerbalizationPlanNode parentNode;
-			if (null != (newInChild = branchNode.FirstNewlyScopeVariableNode) &&
+			if (null != (newInChild = branchNode.FirstNewlyScopedVariableNode) &&
 				null != (parentNode = branchNode.ParentNode))
 			{
-				branchNode.FirstNewlyScopeVariableNode = null;
+				branchNode.FirstNewlyScopedVariableNode = null;
 
 				// Propagate variables up the chain as 'new' without descoping
 				// if the parent is a 'chain' or an 'and'. Otherwise, the new
@@ -10262,14 +10390,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					LinkedNode<RolePlayerVariable> newInParent = parentNode.FirstNewlyScopeVariableNode;
+					LinkedNode<RolePlayerVariable> newInParent = parentNode.FirstNewlyScopedVariableNode;
 					if (newInParent != null)
 					{
 						newInParent.GetTail().SetNext(newInChild, ref newInParent);
 					}
 					else
 					{
-						parentNode.FirstNewlyScopeVariableNode = newInChild;
+						parentNode.FirstNewlyScopedVariableNode = newInChild;
 					}
 				}
 			}
@@ -10291,10 +10419,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// A chance for a subtype to add path projections using the
 		/// <see cref="AddExternalVariable"/> method.
 		/// </summary>
-		/// <param name="pathOwner">The <see cref="RolePathOwner"/></param>
+		/// <param name="pathOwner">The <see cref="IRolePathOwner"/></param>
 		/// <returns>Dictionary keyed by the lead role path contains sets of variable
 		/// keys that should be combined into the path verbalization as equivalent nodes.</returns>
-		protected virtual IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(RolePathOwner pathOwner)
+		protected virtual IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(IRolePathOwner pathOwner)
 		{
 			// Default implementation is empty
 			return null;
@@ -10312,10 +10440,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <see cref="ProjectExternalVariable(Object,PathConstant,Object)"/> methods.
 		/// </summary>
 		/// <param name="pathContext">The context representing a use of this path.</param>
-		/// <param name="pathOwner">The <see cref="RolePathOwner"/></param>
+		/// <param name="pathOwner">The <see cref="IRolePathOwner"/></param>
 		/// <param name="rolePath">A <see cref="LeadRolePath"/> with associated projections.</param>
 		/// <param name="keyDecorator">A callback function for decorating keys of projected items.</param>
-		protected virtual void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
+		protected virtual void AddCalculatedAndConstantProjections(object pathContext, IRolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 		{
 			// Default implementation is empty
 		}
@@ -10323,6 +10451,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Begin the verbalization with a quantified root variable
 		/// </summary>
 		protected virtual bool VerbalizeRootObjectType
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determine if dynamic states should be verbalized.
+		/// </summary>
+		protected virtual bool VerbalizeDynamicState
 		{
 			get
 			{
@@ -10345,12 +10483,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Override to add a filtering to establish which paths should be verbalized.
 		/// Return <see langword="true"/> to allow verbalization of the path.
 		/// </summary>
-		/// <param name="pathOwner">The context <see cref="RolePathOwner"/> to test.</param>
+		/// <param name="pathOwner">The context <see cref="IRolePathOwner"/> to test.</param>
 		/// <param name="rolePath">The <see cref="LeadRolePath"/> to test for verbalization.</param>
 		/// <remarks>All verbalizers may be requested to verbalize role projected derivation rules
 		/// as part of subquery verbalizations. The default implementation checks for this type of rule
 		/// and other implementations should check the base result to handle this case.</remarks>
-		protected virtual bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+		protected virtual bool VerbalizesPath(IRolePathOwner pathOwner, LeadRolePath rolePath)
 		{
 			RoleProjectedDerivationRule derivationRule;
 			return null != (derivationRule = pathOwner as RoleProjectedDerivationRule) &&
@@ -10385,7 +10523,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					existingExternalVariable = existingVariable;
 				}
 			}
-			RolePlayerVariable retVal = RegisterRolePlayerUse(rolePlayer, existingExternalVariable, headVariableKey, associatedPathNode);
+			RolePlayerVariable retVal = RegisterRolePlayerUse(rolePlayer, existingExternalVariable, headVariableKey, associatedPathNode, DynamicRuleNodeState.Current); // This is not used by DynamicRuleVerbalizer, always use DynamicRuleNodeState.Current
 			retVal.IsExternalVariable = true;
 			return retVal;
 		}
@@ -10626,19 +10764,107 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return false;
 			}
-			Dictionary<RolePathOwner, VerbalizationPlanNode> planMap = myPathOwnerToVerbalizationPlanMap;
+			Dictionary<IRolePathOwner, VerbalizationPlanNode> planMap = myPathOwnerToVerbalizationPlanMap;
 			return planMap != null ? planMap.ContainsKey(pathOwner) : pathOwner == mySingleRolePathOwner;
+		}
+		/// <summary>
+		/// Test if a dynamic rule can be verbalized
+		/// </summary>
+		public bool CanVerbalizeDynamicRule
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null && verbalizer.CanVerbalize;
+			}
+		}
+		/// <summary>
+		/// Test if a dynamic rule has a head section
+		/// </summary>
+		public bool DynamicRuleHasHeadSection
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null && verbalizer.HeadNodes != null;
+			}
+		}
+		/// <summary>
+		/// Test if a dynamic rule has an add section
+		/// </summary>
+		public bool DynamicRuleHasAddSection
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null && verbalizer.AddNodes != null;
+			}
+		}
+		/// <summary>
+		/// Test if a dynamic rule has a delete section
+		/// </summary>
+		public bool DynamicRuleHasDeleteSection
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null && verbalizer.DeleteNodes != null;
+			}
+		}
+		/// <summary>
+		/// Test if a dynamic rule has a condition section
+		/// </summary>
+		public bool DynamicRuleHasConditionSection
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null && verbalizer.HasConditionsSection;
+			}
+		}
+		/// <summary>
+		/// Return the list of head nodes, or null.
+		/// </summary>
+		public IList<Tuple<DynamicRuleNodeState, List<RolePathNode>>> DynamicRuleHeadNodes
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null ? verbalizer.HeadNodes : null;
+			}
+		}
+		/// <summary>
+		/// Return the list of 'add' nodes, or null.
+		/// </summary>
+		public IList<RolePathNode> DynamicRuleAddNodes
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null ? verbalizer.AddNodes : null;
+			}
+		}
+		/// <summary>
+		/// Return the list of 'delete' nodes, or null.
+		/// </summary>
+		public IList<RolePathNode> DynamicRuleDeleteNodes
+		{
+			get
+			{
+				DynamicRuleVerbalizer verbalizer = this as DynamicRuleVerbalizer;
+				return verbalizer != null ? verbalizer.DeleteNodes : null;
+			}
 		}
 		/// <summary>
 		/// Render the path verbalization for a specific owner.
 		/// </summary>
-		/// <param name="pathOwner">The <see cref="RolePathOwner"/> to render.</param>
+		/// <param name="pathOwner">The <see cref="IRolePathOwner"/> to render.</param>
 		/// <param name="builder">An existing <see cref="StringBuilder"/>. The current state
 		/// of the builder will be restored before returning.</param>
 		/// <returns>The completed verbalization string for the path.</returns>
-		public string RenderPathVerbalization(RolePathOwner pathOwner, StringBuilder builder)
+		public string RenderPathVerbalization(IRolePathOwner pathOwner, StringBuilder builder)
 		{
-			Dictionary<RolePathOwner, VerbalizationPlanNode> planMap = myPathOwnerToVerbalizationPlanMap;
+			Dictionary<IRolePathOwner, VerbalizationPlanNode> planMap = myPathOwnerToVerbalizationPlanMap;
 			VerbalizationPlanNode planNode = null;
 			if (planMap != null)
 			{
@@ -10661,6 +10887,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return RenderVerbalizationPlanNode(builder, planNode, null, ref blockNextLeadRoleCollapse, out outdentPosition);
 		}
 		/// <summary>
+		/// Render a fact type as if it were part of a full derivation path.
+		/// </summary>
+		/// <param name="factTypeEntry">The pathed role to render</param>
+		/// <param name="builder">An existing <see cref="StringBuilder"/>. The current state
+		/// of the builder will be restored before returning.</param>
+		/// <returns>String rendering of the fact type.</returns>
+		public string RenderPathFactType(PathedRole factTypeEntry, StringBuilder builder)
+		{
+			VerbalizationPlanNode rootNode = null;
+			// This is currently used to render fact types after variables are known to be introduced.
+			// The joined to state affects only new variables, so we do not currently pass this through.
+			VerbalizationPlanNode.AddFactTypeEntryNode(factTypeEntry.Role.FactType, factTypeEntry, null, null, ref rootNode);
+			if (builder == null)
+			{
+				builder = new StringBuilder();
+			}
+			RolePlayerVariable contextLeadVariable = null;
+			RolePlayerVariable contextTrailingVariable = null;
+			ResolveReadings(rootNode, null, false, ref contextLeadVariable, ref contextTrailingVariable);
+			int outdentPosition;
+			bool blockNextLeadRoleCollapse = false;
+			return RenderVerbalizationPlanNode(builder, rootNode, null, ref blockNextLeadRoleCollapse, out outdentPosition);
+		}
+		/// <summary>
 		/// Render a role player for use outside in an external predicate replacement.
 		/// </summary>
 		/// <param name="rolePlayerFor">The role player this is for.</param>
@@ -10679,6 +10929,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				rolePlayerFor = ResolveSupertypeKey(rolePlayerFor);
 			}
 			RolePlayerVariableUse? nullableVariableUse = GetRolePlayerVariableUse(rolePlayerFor);
+			DynamicRuleNodeState dynamicState = DynamicRuleNodeState.Current;
 			bool firstUse = true;
 			if (nullableVariableUse.HasValue)
 			{
@@ -10727,6 +10978,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					retVal = GetSubscriptedRolePlayerName(variable);
 				}
+				dynamicState = variable.DynamicState;
 			}
 			else if (null != (roleBase = rolePlayerFor as RoleBase))
 			{
@@ -10740,7 +10992,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (0 != (renderingOptions & RolePathRolePlayerRenderingOptions.Quantify))
 				{
-					retVal = QuantifyRolePlayerName(retVal, firstUse, false);
+					retVal = QuantifyRolePlayerName(retVal, firstUse, false, dynamicState);
 				}
 				return retVal;
 			}
@@ -10945,11 +11197,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							return true;
 						};
-						RolePathOwner singleOwner;
-						Dictionary<RolePathOwner, VerbalizationPlanNode> ownerMap;
+						IRolePathOwner singleOwner;
+						Dictionary<IRolePathOwner, VerbalizationPlanNode> ownerMap;
 						if (null != (singleOwner = mySingleRolePathOwner))
 						{
-							foreach (RolePath path in singleOwner.LeadRolePathCollection)
+							foreach (RolePath path in singleOwner.LeadRolePaths)
 							{
 								if (!pathWalker(path))
 								{
@@ -10960,9 +11212,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						else if (null != (ownerMap = myPathOwnerToVerbalizationPlanMap) &&
 							ownerMap.Count != 0)
 						{
-							foreach (RolePathOwner owner in ownerMap.Keys)
+							foreach (IRolePathOwner owner in ownerMap.Keys)
 							{
-								foreach (RolePath path in owner.LeadRolePathCollection)
+								foreach (RolePath path in owner.LeadRolePaths)
 								{
 									if (!pathWalker(path))
 									{
@@ -11048,6 +11300,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			object variableUseKey;
 			RolePlayerVariableUse variableUse;
 			object pathContext;
+			CoreVerbalizationSnippetType snippet;
 			IRolePathRenderer renderer = myRenderer;
 			switch (node.NodeType)
 			{
@@ -11120,7 +11373,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											rolePlayer = backReferenceVariable.RolePlayer;
 											replacement = renderer.GetSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? CoreVerbalizationSnippetType.PersonalPronoun : CoreVerbalizationSnippetType.ImpersonalPronoun);
 
-											// Figure out if we need to the variables as well
+											// Figure out if we need to correlated the variables as well
 											Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
 											RolePlayerVariable primaryVariable = pathedRoleVariableUse.Value.PrimaryRolePlayerVariable;
 											CorrelatedVariablePairing pairing = new CorrelatedVariablePairing(primaryVariable, backReferenceVariable);
@@ -11133,7 +11386,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												replacement = string.Format(
 													renderer.FormatProvider,
 													renderer.GetSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? CoreVerbalizationSnippetType.PersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.ImpersonalLeadIdentityCorrelation),
-													QuantifyRolePlayerName(GetSubscriptedRolePlayerName(primaryVariable), UseVariable(primaryVariable, CurrentQuantificationUsePhase, true), false),
+													QuantifyRolePlayerName(GetSubscriptedRolePlayerName(primaryVariable), UseVariable(primaryVariable, CurrentQuantificationUsePhase, true), false, primaryVariable.DynamicState),
 													replacement);
 												if (pairings == null)
 												{
@@ -11201,7 +11454,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						roleReplacements[i] = replacement;
 					}
 					blockNextLeadRoleCollapse = false; // Rendering a fact type will always reuse or introduce a new context
-					return hyphenBinder.PopulatePredicateText(reading, renderer.FormatProvider, predicatePartDecorator, factRoles, roleReplacements, false);
+					string factTypeVerbalization = hyphenBinder.PopulatePredicateText(reading, renderer.FormatProvider, predicatePartDecorator, factRoles, roleReplacements, false);
+					if (node.AnnotateDynamicState)
+					{
+						CoreVerbalizationSnippetType annotationSnippet = (CoreVerbalizationSnippetType)(-1);
+						switch (entryPathedRole.DynamicRuleState)
+						{
+							case DynamicRuleNodeState.Added:
+								annotationSnippet = CoreVerbalizationSnippetType.FactTypeAddedState;
+								break;
+							case DynamicRuleNodeState.Deleted:
+								annotationSnippet = CoreVerbalizationSnippetType.FactTypeDeletedState;
+								break;
+							case DynamicRuleNodeState.Initial:
+								annotationSnippet = CoreVerbalizationSnippetType.FactTypeInitialState;
+								break;
+						}
+						if (annotationSnippet != (CoreVerbalizationSnippetType)(-1))
+						{
+							return string.Format(
+								renderer.FormatProvider,
+								renderer.GetSnippet(annotationSnippet),
+								factTypeVerbalization);
+						}
+					}
+					return factTypeVerbalization;
 				case VerbalizationPlanNodeType.Branch:
 					int restoreBuilder = builder.Length;
 					VerbalizationPlanBranchType branchType = node.BranchType;
@@ -11212,7 +11489,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool isTailBranch = false;
 					bool inlineNegatedChain = false;
 					int nestedOutdent = -1;
-					CoreVerbalizationSnippetType snippet;
 					VerbalizationPlanBranchType childBranchType;
 					VerbalizationPlanNodeType previousChildNodeType = (VerbalizationPlanNodeType)(-1);
 					VerbalizationPlanNode previousChildNode = null;
@@ -11627,13 +11903,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						renderer.RenderConstant(node.Constant));
 				case VerbalizationPlanNodeType.ChainedRootVariable:
 					rootVariable = node.RootVariable;
-					return QuantifyRolePlayerName(GetSubscriptedRolePlayerName(rootVariable), UseVariable(rootVariable, CurrentQuantificationUsePhase, true), false);
+					return QuantifyRolePlayerName(GetSubscriptedRolePlayerName(rootVariable), UseVariable(rootVariable, CurrentQuantificationUsePhase, true), false, rootVariable.DynamicState);
 				case VerbalizationPlanNodeType.VariableExistence:
 					variableUse = GetRolePlayerVariableUse(node.VariableKey).Value;
 					bool negateExistence = node.NegateExistence;
+					if (negateExistence && variableUse.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true))
+					{
+						switch (variableUse.PrimaryRolePlayerVariable.DynamicState)
+						{
+							case DynamicRuleNodeState.Initial:
+								snippet = CoreVerbalizationSnippetType.NegatedVariableExistenceInitialState;
+								break;
+							case DynamicRuleNodeState.Added:
+								snippet = CoreVerbalizationSnippetType.NegatedVariableExistenceAddedState;
+								break;
+							case DynamicRuleNodeState.Deleted:
+								snippet = CoreVerbalizationSnippetType.NegatedVariableExistenceDeletedState;
+								break;
+							default:
+								snippet = CoreVerbalizationSnippetType.NegatedVariableExistence;
+								break;
+						}
+					}
+					else
+					{
+						// Dynamic state is reflected in the existential quantifier, so there are no added states for variable existence.
+						snippet = CoreVerbalizationSnippetType.VariableExistence;
+					}
 					return string.Format(
 						renderer.FormatProvider,
-						renderer.GetSnippet((negateExistence && variableUse.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true)) ? CoreVerbalizationSnippetType.NegatedVariableExistence : CoreVerbalizationSnippetType.VariableExistence),
+						renderer.GetSnippet(snippet),
 						QuantifyVariableUse(variableUse, node.PathContext, negateExistence, false, default(VerbalizationHyphenBinder), -1));
 				case VerbalizationPlanNodeType.VariableEquivalence:
 					IList<object> equivalentKeys = node.EquivalentVariableKeys;
@@ -11883,7 +12182,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (basicLeadRole && !negateExistentialQuantifier && preRenderedPartnerWith == null)
 						{
 							// Use the optimized lead version of the identity correlation.
-							return PartnerVariables(primaryVariable, QuantifyRolePlayerName(result, UseVariable(primaryVariable, quantificationUsePhase, true), negateExistentialQuantifier), partnerWithVariable, preRenderedPartnerWith, true);
+							return PartnerVariables(primaryVariable, QuantifyRolePlayerName(result, UseVariable(primaryVariable, quantificationUsePhase, true), negateExistentialQuantifier, primaryVariable.DynamicState), partnerWithVariable, preRenderedPartnerWith, true);
 						}
 						// Note that we never chain with the optimized lead form
 						result = PartnerVariables(primaryVariable, result, partnerWithVariable, preRenderedPartnerWith, false);
@@ -11903,7 +12202,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				result = GetSubscriptedRolePlayerName(primaryVariable);
 			}
-			return QuantifyRolePlayerName(hyphenBinderRoleIndex >= 0 ? hyphenBinder.HyphenBindRoleReplacement(result, hyphenBinderRoleIndex) : result, UseVariable(primaryVariable, quantificationUsePhase, true), negateExistentialQuantifier);
+			return QuantifyRolePlayerName(hyphenBinderRoleIndex >= 0 ? hyphenBinder.HyphenBindRoleReplacement(result, hyphenBinderRoleIndex) : result, UseVariable(primaryVariable, quantificationUsePhase, true), negateExistentialQuantifier, primaryVariable.DynamicState);
 		}
 		/// <summary>
 		/// Test if two variables can be partnered, meaning that they represent different types
@@ -12285,7 +12584,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				renderer.FormatProvider,
 				renderer.GetSnippet(leftRolePlayer != null && leftRolePlayer.TreatAsPersonal ? (leadRolePattern ? CoreVerbalizationSnippetType.PersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.PersonalIdentityCorrelation) : (leadRolePattern ? CoreVerbalizationSnippetType.ImpersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.ImpersonalIdentityCorrelation)),
 				preRenderedPrimary,
-				QuantifyRolePlayerName(preRenderedPartner, UseVariable(partnerWithVariable, CurrentQuantificationUsePhase, true), false));
+				QuantifyRolePlayerName(preRenderedPartner, UseVariable(partnerWithVariable, CurrentQuantificationUsePhase, true), false, partnerWithVariable.DynamicState));
 			if (pairings == null)
 			{
 				myCorrelatedVariablePairing = pairings = new Dictionary<CorrelatedVariablePairing, int>();
@@ -12303,7 +12602,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="variableRegistrar">A callback to register variables.</param>
 		/// <param name="keyDecorator">A callback to translate a projection key (either a role or a parameter) into a decorated key.
 		/// If specified, keys are preprocessed by this call before being passed to the variable registrar.</param>
-		private IDictionary<LeadRolePath, IList<IList<object>>> GenerateRoleAndParameterProjections(RolePathOwner pathOwner, RegisterSubqueryProjectionVariable variableRegistrar, VariableKeyDecorator keyDecorator)
+		private IDictionary<LeadRolePath, IList<IList<object>>> GenerateRoleAndParameterProjections(IRolePathOwner pathOwner, RegisterSubqueryProjectionVariable variableRegistrar, VariableKeyDecorator keyDecorator)
 		{
 			// Overlay all projection information
 			// Make the QueryDerivationRule optional so that this supports inlining of derived fact types
@@ -12558,8 +12857,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="rolePlayerName">The formatted role player name.</param>
 		/// <param name="existentialQuantifier">Apply an existential quantifier instead of a back reference.</param>
 		/// <param name="negateExistentialQuantifier">Negate the existential quantifier.</param>
+		/// <param name="dynamicState">The dynamic state for the associated variable. Affects existential quantification</param>
 		/// <returns>Quantified name.</returns>
-		private string QuantifyRolePlayerName(string rolePlayerName, bool existentialQuantifier, bool negateExistentialQuantifier)
+		private string QuantifyRolePlayerName(string rolePlayerName, bool existentialQuantifier, bool negateExistentialQuantifier, DynamicRuleNodeState dynamicState)
 		{
 			IRolePathRenderer renderer = myRenderer;
 			CoreVerbalizationSnippetType snippet = CoreVerbalizationSnippetType.DefiniteArticle;
@@ -12578,7 +12878,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					snippet = CoreVerbalizationSnippetType.ExistentialQuantifier;
+					switch (dynamicState)
+					{
+						case DynamicRuleNodeState.Initial:
+							snippet = CoreVerbalizationSnippetType.ExistentialInitialQuantifier;
+							break;
+						case DynamicRuleNodeState.Added:
+							snippet = CoreVerbalizationSnippetType.ExistentialAddedQuantifier;
+							break;
+						case DynamicRuleNodeState.Deleted:
+							snippet = CoreVerbalizationSnippetType.ExistentialDeletedQuantifier;
+							break;
+						default:
+							snippet = CoreVerbalizationSnippetType.ExistentialQuantifier;
+							break;
+					}
 				}
 			}
 			string formatString = renderer.GetSnippet(snippet, isDeontic, isNegative);
@@ -12599,7 +12913,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private string QuantifyFullyExistentialRolePlayer(ObjectType rolePlayer, bool negateExistentialQuantifier, VerbalizationHyphenBinder hyphenBinder, int hyphenBinderRoleIndex)
 		{
-			return QuantifyRolePlayerName(hyphenBinder.HyphenBindRoleReplacement(myRenderer.RenderRolePlayer(rolePlayer, 0, true), hyphenBinderRoleIndex), true, negateExistentialQuantifier);
+			return QuantifyRolePlayerName(hyphenBinder.HyphenBindRoleReplacement(myRenderer.RenderRolePlayer(rolePlayer, 0, true), hyphenBinderRoleIndex), true, negateExistentialQuantifier, DynamicRuleNodeState.Current); // Fully existential nodes don't have pathed roles, cannot record dynamic state
 		}
 		#endregion // Rendering Methods
 		#region Static Helper Methods
@@ -12995,6 +13309,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			retVal.AddExternalVariable(derivationRule, null, derivationRule.Subtype, RolePathNode.Empty);
 			return retVal;
 		}
+		/// <summary>
+		/// Create a new <see cref="RolePathVerbalizer"/> for a given <see cref="DynamicRule"/>.
+		/// </summary>
+		public static RolePathVerbalizer Create(DynamicRule dynamicRule, IRolePathRenderer rolePathRenderer)
+		{
+			DynamicRuleVerbalizer retVal = new DynamicRuleVerbalizer(rolePathRenderer);
+			retVal.Initialize(dynamicRule);
+			return retVal;
+		}
 		#endregion // Type-specific Creation Methods
 		#region Type-specific Classes
 		#region RoleProjectedDerivationRuleVerbalizer class
@@ -13010,7 +13333,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to add and correlate variables for projection bindings
 			/// </summary>
-			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(RolePathOwner pathOwner)
+			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(IRolePathOwner pathOwner)
 			{
 				return GenerateRoleAndParameterProjections(
 					pathOwner,
@@ -13023,7 +13346,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
+			protected override void AddCalculatedAndConstantProjections(object pathContext, IRolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 			{
 				// Overlay projection information
 				RoleSetDerivationProjection projection = RoleSetDerivationProjection.GetLink((RoleProjectedDerivationRule)pathOwner, rolePath);
@@ -13063,7 +13386,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// Bind parameters the same as projections. As far as the rule body
 			/// is concerned, these all verbalize as free variables.
 			/// </summary>
-			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(RolePathOwner pathOwner)
+			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(IRolePathOwner pathOwner)
 			{
 				return GenerateRoleAndParameterProjections(
 					pathOwner,
@@ -13075,6 +13398,657 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // QueryDerivationRuleVerbalizer class
+		#region DynamicRuleVerbalizer class
+		/// <summary>
+		/// Provide different sections of a dynamic rule role path
+		/// </summary>
+		private sealed class DynamicRuleVerbalizer : RolePathVerbalizer
+		{
+			/// <summary>
+			/// Unmodifed role path
+			/// </summary>
+			private LeadRolePath myRolePath;
+
+			/// <summary>
+			/// Variable nodes extracted from the role path that must be declared in the head.
+			/// </summary>
+			private IList<Tuple<DynamicRuleNodeState, List<RolePathNode>>> myHeadNodes;
+			private IList<RolePathNode> myAddNodes;
+			private IList<RolePathNode> myDeleteNodes;
+			private IDictionary<PathedRole, bool> myPreservedSameFactTypeRoles;
+			private bool myHasConditionPath;
+			public DynamicRuleVerbalizer(IRolePathRenderer rolePathRenderer)
+				: base(rolePathRenderer)
+			{
+			}
+			
+			/// <summary>
+			/// Comparer for sorting head nodes. We show non-default states first (Current/Initial/Added/Deleted). There
+			/// are no Add or Delete nodes in a head nodes list.
+			/// </summary>
+			private static readonly Comparison<Tuple<DynamicRuleNodeState, List<RolePathNode>>> HeadNodesComparer = (left, right) =>
+			{
+				// Sort head nodes by added/deleted/initial/current (add nodes are not in the head, delete nodes are sorted the same as current),
+				// then by object type name.
+				// Note that the head list uses a 'CompactSimpleList' style instead of 'SimpleList', so there is no 'and' in the list,
+				// just commas. Otherwise, if we put the current variables last, then 'added A and B' is ambigous if A is added and B is current,
+				// so current would need to go at the front of the list. The 'and' also causes ambiguity with identity lists, so it is not clear
+				// that 'A that is B and C' means 'A that is B, C'. Use the compact list style (a comma between each element) removes the ambiguities.
+				// This would need to be changed if we wanted to modify the list style to the 'SimpleList', which uses the more natural language
+				// friendly 'and' for the trailing pairing.
+				DynamicRuleNodeState leftState = left.Item1;
+				DynamicRuleNodeState rightState = right.Item1;
+				if (leftState != rightState)
+				{
+					int leftPri = 3;
+					int rightPri = 3;
+					switch (leftState)
+					{
+						case DynamicRuleNodeState.Initial:
+							leftPri = 2;
+							break;
+						case DynamicRuleNodeState.Added:
+							leftPri = 0;
+							break;
+						case DynamicRuleNodeState.Deleted:
+							leftPri = 1;
+							break;
+					}
+					switch (rightState)
+					{
+						case DynamicRuleNodeState.Initial:
+							rightPri = 2;
+							break;
+						case DynamicRuleNodeState.Added:
+							rightPri = 0;
+							break;
+						case DynamicRuleNodeState.Deleted:
+							rightPri = 1;
+							break;
+					}
+					if (rightPri != leftPri)
+					{
+						return leftPri - rightPri;
+					}
+				}
+
+				return PathNodeObjectTypeComparer(left.Item2[0], right.Item2[0]);
+			};
+
+			private static readonly Comparison<RolePathNode> PathNodeObjectTypeComparer = (left, right) =>
+			{
+				ObjectType leftType = left.ObjectType;
+				ObjectType rightType = right.ObjectType;
+				if (leftType == rightType || rightType == null)
+				{
+					return -1; // Use the original sort order
+				}
+				else if (leftType == null)
+				{
+					return 1;
+				}
+				int stringCompare = string.Compare(leftType.Name, rightType.Name, StringComparison.CurrentCultureIgnoreCase);
+				return stringCompare == 0 ? -1 : stringCompare;
+			};
+
+			/// <summary>
+			/// Comparer for sorting nodes in the Add and Delete sections. These will all have the same dynamic state. We sort
+			/// by type before fact type so that all variables referenced in a fact type (head variable or of the same type) are
+			/// declared before.
+			/// </summary>
+			private static readonly Comparison<RolePathNode> ActionNodesComparer = (left, right) =>
+			{
+				// Sort add or delete nodes by type (variables first, fact types second) then by name. The states here will all be the same.
+				PathedRole leftPathedRole = left;
+				PathedRole rightPathedRole = right;
+				bool leftIsType = leftPathedRole == null || leftPathedRole.PathedRolePurpose == PathedRolePurpose.SameFactType;
+				bool rightIsType = rightPathedRole == null || rightPathedRole.PathedRolePurpose == PathedRolePurpose.SameFactType;
+
+				if (leftIsType)
+				{
+					if (!rightIsType)
+					{
+						return -1;
+					}
+				}
+				else if (rightIsType)
+				{
+					return 1;
+				}
+
+				int stringCompare;
+				if (leftIsType)
+				{
+					// Compare type names
+					ObjectType leftType = left.ObjectType;
+					ObjectType rightType = right.ObjectType;
+					if (leftType == rightType || rightType == null)
+					{
+						return -1; // Use the original sort order
+					}
+					else if (leftType == null)
+					{
+						return 1;
+					}
+					stringCompare = string.Compare(leftType.Name, rightType.Name, StringComparison.CurrentCultureIgnoreCase);
+				}
+				else
+				{
+					// Compare fact type default names
+					stringCompare = string.Compare(leftPathedRole.Role.FactType.DefaultName, rightPathedRole.Role.FactType.DefaultName, StringComparison.CurrentCultureIgnoreCase);
+				}
+				return stringCompare == 0 ? -1 : stringCompare;
+			};
+			public void Initialize(DynamicRule dynamicRule)
+			{
+				LeadRolePath rolePath = dynamicRule.LeadRolePath;
+				myRolePath = rolePath;
+				if (rolePath != null)
+				{
+					// The first step is to figure out which nodes are in which section of the path (head, add, delete, condition).
+					// To be meaningful, we need at least one add/delete and at least one of head/condition, but the associated
+					// error renderings allow us to at least show progress with less than this. A basic scan is sufficient (we don't
+					// need the more involved VisitRolePathParts).
+
+					// Track nodes we care about by correlation key. Note that this assumes all correlated nodes have the
+					// same dynamic state, so results are less predictable if this rule is violated. This will include add
+					// and delete nodes and head nodes (non-add/delete nodes referenced in add/delete sections).
+					Dictionary<ModelElement, Tuple<DynamicRuleNodeState, List<RolePathNode>>> extractedNodes = new Dictionary<ModelElement, Tuple<DynamicRuleNodeState, List<RolePathNode>>>();
+					List<Tuple<RolePathNode, RolePathNode>> pairedHeadVariableKeys = null;
+
+					// All nodes that are not extracted are tracked as content nodes. A body node may be extracted after it is
+					// defined if we find it is used in an action fact type. Keyed by the correlation value or the node itself.
+					Dictionary<ModelElement, bool> bodyContentNodes = new Dictionary<ModelElement, bool>();
+					ModelElement correlationKey;
+					List<ModelElement> headNodeKeys = null;
+					List<RolePathNode> addNodes = null;
+					List<RolePathNode> deleteNodes = null;
+					bool currentActionFactType = false;
+					Stack<RolePathNode> contextTypeNodes = new Stack<RolePathNode>();
+					Action<DynamicRuleNodeState, ModelElement, RolePathNode> addHeadNode = (headDynamicState, headCorrelationKey, headVariableNode) =>
+					{
+						Tuple<DynamicRuleNodeState, List<RolePathNode>> headNodeSpec;
+						List<RolePathNode> pathNodes;
+						if (extractedNodes.TryGetValue(headCorrelationKey, out headNodeSpec))
+						{
+							if (headNodeSpec == null)
+							{
+								// This node has been set as an extracted node with a null, indicating it is an Add or Delete
+								// action node and does not have a head variable. Do not add it to the head.
+								return;
+							}
+
+							pathNodes = headNodeSpec.Item2;
+							ObjectType findObjectType = headVariableNode.ObjectType;
+							(pairedHeadVariableKeys ?? (pairedHeadVariableKeys = new List<Tuple<RolePathNode, RolePathNode>>())).Add(new Tuple<RolePathNode, RolePathNode>(pathNodes[0], headVariableNode));
+							int count = pathNodes.Count;
+							int i = 0;
+							for (; i < count; ++i)
+							{
+								if (pathNodes[i].ObjectType == findObjectType)
+								{
+									break;
+								}
+							}
+							if (i == count)
+							{
+								pathNodes.Add(headVariableNode);
+							}
+						}
+						else
+						{
+							pathNodes = new List<RolePathNode>();
+							pathNodes.Add(headVariableNode);
+							extractedNodes[headCorrelationKey] = new Tuple<DynamicRuleNodeState, List<RolePathNode>>(headDynamicState == DynamicRuleNodeState.Delete ? DynamicRuleNodeState.Current : headDynamicState, pathNodes);
+							(headNodeKeys ?? (headNodeKeys = new List<ModelElement>())).Add(headCorrelationKey);
+						}
+					};
+					RolePathNode.VisitPathNodes(rolePath, RolePathNode.Empty, true, (RolePathNode currentPathNode, RolePathNode previousPathNode, bool unwinding) =>
+					{
+						DynamicRuleNodeState dynamicState;
+						PathedRole pathedRole = currentPathNode;
+						RolePathObjectTypeRoot pathRoot = pathedRole == null ? currentPathNode.PathRoot : null;
+						if (unwinding)
+						{
+							if (pathedRole != null)
+							{
+								if (pathedRole.PathedRolePurpose == PathedRolePurpose.SameFactType)
+								{
+									contextTypeNodes.Pop();
+								}
+							}
+							else
+							{
+								contextTypeNodes.Pop();
+							}
+						}
+						else if (pathedRole != null)
+						{
+							dynamicState = pathedRole.DynamicRuleState;
+							switch (pathedRole.PathedRolePurpose)
+							{
+								case PathedRolePurpose.SameFactType:
+									// Variable use or introduction
+									correlationKey = (ModelElement)pathedRole.ObjectUnifier ?? pathedRole;
+									bool actionNode = false;
+									bool notBodyNode = false;
+									switch (pathedRole.DynamicRuleState)
+									{
+										case DynamicRuleNodeState.Add:
+											// Add variables are used only in the Add section
+											(addNodes ?? (addNodes = new List<RolePathNode>())).Add(currentPathNode);
+											extractedNodes[correlationKey] = null;
+											actionNode = notBodyNode = true;
+											break;
+										case DynamicRuleNodeState.Delete:
+											// Delete variables are quantified in the head list and referenced in the delete list
+											(deleteNodes ?? (deleteNodes = new List<RolePathNode>())).Add(currentPathNode);
+											addHeadNode(DynamicRuleNodeState.Delete, correlationKey, currentPathNode);
+											actionNode = notBodyNode = true;
+											break;
+									}
+									if (currentActionFactType && !actionNode)
+									{
+										notBodyNode = true;
+										addHeadNode(pathedRole.DynamicRuleState, correlationKey, currentPathNode);
+									}
+
+									if (notBodyNode)
+									{
+										if (bodyContentNodes.ContainsKey(correlationKey))
+										{
+											bodyContentNodes.Remove(correlationKey);
+										}
+									}
+									else if (!extractedNodes.ContainsKey(correlationKey))
+									{
+										bodyContentNodes[correlationKey] = true;
+									}
+									contextTypeNodes.Push(currentPathNode);
+									break;
+								default: // Fact type entry
+									bool contextTypeInHead = false;
+									switch (dynamicState)
+									{
+										case DynamicRuleNodeState.Add:
+											extractedNodes[pathedRole] = null;
+											currentActionFactType = contextTypeInHead = true;
+											(addNodes ?? (addNodes = new List<RolePathNode>())).Add(currentPathNode);
+											break;
+										case DynamicRuleNodeState.Delete:
+											extractedNodes[pathedRole] = null;
+											currentActionFactType = contextTypeInHead = true;
+											(deleteNodes ?? (deleteNodes = new List<RolePathNode>())).Add(currentPathNode);
+											break;
+										default:
+											bodyContentNodes[pathedRole] = true;
+											currentActionFactType = false;
+											break;
+									}
+									if (contextTypeInHead && contextTypeNodes.Count != 0)
+									{
+										RolePathNode typeNode = contextTypeNodes.Peek();
+										PathedRole typePathedRole = typeNode.PathedRole;
+										if (typePathedRole != null)
+										{
+											correlationKey = (ModelElement)typePathedRole.ObjectUnifier ?? typePathedRole;
+										}
+										else
+										{
+											RolePathObjectTypeRoot typePathRoot = typeNode.PathRoot;
+											correlationKey = (ModelElement)typePathRoot.ObjectUnifier ?? typePathRoot;
+										}
+
+										addHeadNode(typeNode.DynamicRuleState, correlationKey, currentPathNode);
+										if (bodyContentNodes.ContainsKey(correlationKey))
+										{
+											bodyContentNodes.Remove(correlationKey);
+										}
+									}
+									break;
+							}
+						}
+						else
+						{
+							correlationKey = (ModelElement)pathRoot.ObjectUnifier ?? pathRoot;
+							switch (pathRoot.DynamicRuleState)
+							{
+								case DynamicRuleNodeState.Add:
+									if (!extractedNodes.ContainsKey(correlationKey))
+									{
+										extractedNodes[correlationKey] = null;
+										(addNodes ?? (addNodes = new List<RolePathNode>())).Add(currentPathNode);
+									}
+									break;
+								case DynamicRuleNodeState.Delete:
+									if (!extractedNodes.ContainsKey(correlationKey))
+									{
+										// Delete variables are quantified in the head list and referenced in the delete list
+										(deleteNodes ?? (deleteNodes = new List<RolePathNode>())).Add(currentPathNode);
+									}
+									addHeadNode(DynamicRuleNodeState.Delete, correlationKey, currentPathNode);
+									break;
+								default:
+									if (!extractedNodes.ContainsKey(correlationKey))
+									{
+										bodyContentNodes[correlationKey] = true;
+									}
+									break;
+							}
+							contextTypeNodes.Push(currentPathNode);
+						}
+						return true; // Continue iteration
+					});
+
+					if (headNodeKeys != null)
+					{
+						List<Tuple<DynamicRuleNodeState, List<RolePathNode>>> headNodes = new List<Tuple<DynamicRuleNodeState, List<RolePathNode>>>();
+						Dictionary<PathedRole, bool> preservedSameFactTypeRoles = null;
+						for (int count = headNodeKeys.Count, i = 0; i < count; ++i)
+						{
+							Tuple<DynamicRuleNodeState, List<RolePathNode>> headTuple = extractedNodes[headNodeKeys[i]];
+							if (headTuple == null)
+							{
+								// This should only happen if correlated nodes have different dynamic states, in which case we
+								// can add a correlation key for a head node that is later deemed 'not head' by virtue of it
+								// being an action variable. This is a defensive sanity check.
+								continue;
+							}
+
+							List<RolePathNode> variableKeys = headTuple.Item2;
+							if (variableKeys.Count > 1)
+							{
+								variableKeys.Sort(PathNodeObjectTypeComparer);
+							}
+
+							// If a same fact type pathed role is otherwise unused then it will not have a unifier and
+							// will be the first item added in the node list, so a basic check here will suffice. Anything
+							// besides a Current state is also trivially flagged, so we just track the current ones.
+							PathedRole sameFactTypePathedRole = variableKeys[0].PathedRole;
+							if (sameFactTypePathedRole != null &&
+								sameFactTypePathedRole.PathedRolePurpose == PathedRolePurpose.SameFactType &&
+								sameFactTypePathedRole.DynamicRuleState == DynamicRuleNodeState.Current)
+							{
+								(preservedSameFactTypeRoles ?? (preservedSameFactTypeRoles = new Dictionary<PathedRole, bool>()))[sameFactTypePathedRole] = true;
+							}
+							headNodes.Add(headTuple);
+						}
+
+						if (headNodes.Count != 0)
+						{
+							if (headNodes.Count > 1)
+							{
+								headNodes.Sort(HeadNodesComparer);
+							}
+							myHeadNodes = headNodes;
+						}
+
+						myPreservedSameFactTypeRoles = preservedSameFactTypeRoles;
+					}
+
+					if (addNodes != null)
+					{
+						if (addNodes.Count > 1)
+						{
+							addNodes.Sort(ActionNodesComparer);
+						}
+						myAddNodes = addNodes;
+					}
+
+					if (deleteNodes != null)
+					{
+						if (deleteNodes.Count > 1)
+						{
+							deleteNodes.Sort(ActionNodesComparer);
+						}
+						myDeleteNodes = deleteNodes;
+					}
+
+					myHasConditionPath = bodyContentNodes.Count != 0;
+
+					InitializeRolePathOwner(dynamicRule);
+					if (bodyContentNodes.Count != 0 && extractedNodes != null)
+					{
+						FilterVerbalizationPlan(myRootPlanNode, node =>
+						{
+							switch (node.NodeType)
+							{
+								case VerbalizationPlanNodeType.FactType:
+									return extractedNodes.ContainsKey(node.FactTypeEntry);
+								case VerbalizationPlanNodeType.VariableExistence:
+									object key = node.VariableKey;
+									PathedRole pathedRole = null;
+									RolePathObjectTypeRoot pathRoot = null;
+									if (key is RolePathNode)
+									{
+										RolePathNode pathNode = (RolePathNode)key;
+										if (null == (pathedRole = pathNode))
+										{
+											pathRoot = pathNode;
+										}
+									}
+									else if (null == (pathedRole = key as PathedRole))
+									{
+										pathRoot = key as RolePathObjectTypeRoot;
+									}
+
+									correlationKey = null;
+									if (pathedRole != null)
+									{
+										correlationKey =(ModelElement)pathedRole.ObjectUnifier ?? pathedRole;
+									}
+									else if (pathRoot != null)
+									{
+										correlationKey = (ModelElement)pathRoot.ObjectUnifier ?? pathRoot;
+									}
+									if (correlationKey != null)
+									{
+										return extractedNodes.ContainsKey(correlationKey);
+									}
+									break;
+							}
+							return false;
+						});
+					}
+
+					if (pairedHeadVariableKeys != null)
+					{
+						int pairingPhase = CurrentPairingUsePhase;
+						Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
+						if (pairings == null)
+						{
+							myCorrelatedVariablePairing = pairings = new Dictionary<CorrelatedVariablePairing, int>();
+						}
+						for (int count = pairedHeadVariableKeys.Count, i = 0; i < count; ++i)
+						{
+							Tuple<RolePathNode, RolePathNode> pair = pairedHeadVariableKeys[i];
+							RolePlayerVariableUse? use1;
+							RolePlayerVariableUse? use2;
+							if ((use1 = GetRolePlayerVariableUse(pair.Item1)).HasValue &&
+								(use2 = GetRolePlayerVariableUse(pair.Item2)).HasValue)
+							{
+								pairings[new CorrelatedVariablePairing(use1.Value.PrimaryRolePlayerVariable, use2.Value.PrimaryRolePlayerVariable)] = pairingPhase;
+							}
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// Recursive helper to remove verbalization plan nodes. Returns true if nodes were removed.
+			/// </summary>
+			/// <param name="node">The node to verify. This does a depth-first search and collapses on the way back up.</param>
+			/// <param name="filter">Return true to remove the item</param>
+			/// <returns>true if something changed.</returns>
+			private bool FilterVerbalizationPlan(VerbalizationPlanNode node, Predicate<VerbalizationPlanNode> filter)
+			{
+				bool retVal = false;
+				LinkedNode<VerbalizationPlanNode> nextChildNode = node.FirstChildNode;
+				if (nextChildNode != null)
+				{
+					LinkedNode<VerbalizationPlanNode> firstChildNode = nextChildNode;
+					LinkedNode<VerbalizationPlanNode> startFirstChildNode = firstChildNode;
+					while (nextChildNode != null)
+					{
+						LinkedNode<VerbalizationPlanNode> childNode = nextChildNode;
+						nextChildNode = childNode.Next; // This may remove the link, test up front
+						if (filter(childNode.Value)) // Take out this node and all children
+						{
+							childNode.Detach(ref firstChildNode);
+							if (startFirstChildNode != firstChildNode)
+							{
+								node.FirstChildNode = startFirstChildNode = firstChildNode;
+							}
+							retVal = true;
+						}
+						else if (FilterVerbalizationPlan(childNode.Value, filter))
+						{
+							retVal = true;
+						}
+					}
+					if (retVal)
+					{
+						ReduceNodeAfterChildModifications(node);
+					}
+				}
+				return retVal;
+			}
+			private static void ReduceNodeAfterChildModifications(VerbalizationPlanNode node)
+			{
+				if (node.NodeType == VerbalizationPlanNodeType.Branch)
+				{
+					VerbalizationPlanNode parentNode = node.ParentNode;
+					LinkedNode<VerbalizationPlanNode> childNode = node.FirstChildNode;
+					if (childNode == null)
+					{
+						if (parentNode != null)
+						{
+							LinkedNode<VerbalizationPlanNode> firstSiblingNode = parentNode.FirstChildNode;
+							LinkedNode<VerbalizationPlanNode> startFirstSiblingNode = firstSiblingNode;
+							LinkedNode<VerbalizationPlanNode> siblingNode = firstSiblingNode;
+							while (siblingNode != null)
+							{
+								if (siblingNode.Value == node)
+								{
+									siblingNode.Detach(ref firstSiblingNode);
+									if (firstSiblingNode != startFirstSiblingNode)
+									{
+										parentNode.FirstChildNode = firstSiblingNode;
+									}
+									break;
+								}
+								siblingNode = siblingNode.Next;
+							}
+						}
+					}
+					else if (childNode.Next == null)
+					{
+						// We've reduced a branch to one child. A positive split should be collapsed,
+						// and a negated split should be turned into a negated chain (which handles one child node).
+						switch (node.BranchType)
+						{
+							case VerbalizationPlanBranchType.Chain:
+								if (parentNode != null)
+								{
+									parentNode.CollapseChildNode(node);
+								}
+								break;
+							case VerbalizationPlanBranchType.AndSplit:
+							case VerbalizationPlanBranchType.OrSplit:
+							case VerbalizationPlanBranchType.XorSplit:
+								if (parentNode != null)
+								{
+									parentNode.CollapseChildNode(node);
+								}
+								else
+								{
+									node.BranchType = VerbalizationPlanBranchType.Chain;
+								}
+								break;
+							case VerbalizationPlanBranchType.NegatedAndSplit:
+							case VerbalizationPlanBranchType.NegatedOrSplit:
+							case VerbalizationPlanBranchType.NegatedXorSplit:
+								node.BranchType = VerbalizationPlanBranchType.NegatedChain;
+								break;
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// Is verbalization possible for this rule?
+			/// </summary>
+			public bool CanVerbalize
+			{
+				get
+				{
+					return myRolePath != null && (myHeadNodes != null || myAddNodes != null || myDeleteNodes != null || myHasConditionPath);
+				}
+			}
+			/// <summary>
+			/// Add dynamic state quantifiers and other annotations
+			/// </summary>
+			protected override bool VerbalizeDynamicState
+			{
+				get
+				{
+					return true;
+				}
+			}
+			/// <summary>
+			/// Return head nodes, or null.
+			/// </summary>
+			public IList<Tuple<DynamicRuleNodeState, List<RolePathNode>>> HeadNodes
+			{
+				get
+				{
+					return myHeadNodes;
+				}
+			}
+			/// <summary>
+			/// Return 'add' nodes, or null.
+			/// </summary>
+			public IList<RolePathNode> AddNodes
+			{
+				get
+				{
+					return myAddNodes;
+				}
+			}
+			/// <summary>
+			/// Return 'delete' nodes, or null.
+			/// </summary>
+			public IList<RolePathNode> DeleteNodes
+			{
+				get
+				{
+					return myDeleteNodes;
+				}
+			}
+			/// <summary>
+			/// Is there a conditions section (unextracted paths remaining in the role path)?
+			/// </summary>
+			public bool HasConditionsSection
+			{
+				get
+				{
+					return myHasConditionPath;
+				}
+			}
+			protected override bool VerbalizesPath(IRolePathOwner pathOwner, LeadRolePath rolePath)
+			{
+				return rolePath == myRolePath;
+			}
+			protected override bool PreserveUnreferencedSameFactTypeRole(PathedRole pathedRole)
+			{
+				if (pathedRole.DynamicRuleState != DynamicRuleNodeState.Current)
+				{
+					return true;
+				}
+
+				IDictionary<PathedRole, bool> preservedRoles = myPreservedSameFactTypeRoles;
+				return preservedRoles != null && preservedRoles.ContainsKey(pathedRole);
+			}
+		}
+		#endregion // DynamicRuleVerbalizer class
 		#region SubTypeDerivationRuleVerbalizer class
 		/// <summary>
 		/// A class to assist in verbalization of a sub type derivation
@@ -13099,7 +14073,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Verbalize a path if it has a supertype root object type.
 			/// </summary>
-			protected override bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+			protected override bool VerbalizesPath(IRolePathOwner pathOwner, LeadRolePath rolePath)
 			{
 				if (base.VerbalizesPath(pathOwner, rolePath))
 				{
@@ -13253,7 +14227,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Verbalize a path if it is projected
 			/// </summary>
-			protected override bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+			protected override bool VerbalizesPath(IRolePathOwner pathOwner, LeadRolePath rolePath)
 			{
 				if (base.VerbalizesPath(pathOwner, rolePath))
 				{
@@ -13266,7 +14240,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to add and correlate variables for projection bindings
 			/// </summary>
-			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(RolePathOwner pathOwner)
+			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(IRolePathOwner pathOwner)
 			{
 				// Overlay all projection information
 				ConstraintRoleSequenceJoinPath joinPath = (ConstraintRoleSequenceJoinPath)pathOwner;
@@ -13355,7 +14329,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
+			protected override void AddCalculatedAndConstantProjections(object pathContext, IRolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 			{
 				// Overlay projection information.
 				// Key decorator is ignored as this is always called top level.
@@ -13486,7 +14460,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Verbalize a path if it is projected
 			/// </summary>
-			protected override bool VerbalizesPath(RolePathOwner pathOwner, LeadRolePath rolePath)
+			protected override bool VerbalizesPath(IRolePathOwner pathOwner, LeadRolePath rolePath)
 			{
 				if (base.VerbalizesPath(pathOwner, rolePath))
 				{
@@ -13499,7 +14473,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to add and correlate variables for projection bindings
 			/// </summary>
-			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(RolePathOwner pathOwner)
+			protected override IDictionary<LeadRolePath, IList<IList<object>>> AddPathProjections(IRolePathOwner pathOwner)
 			{
 				// Overlay all projection information
 				ConstraintRoleSequenceJoinPath joinPath = (ConstraintRoleSequenceJoinPath)pathOwner;
@@ -13525,7 +14499,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
+			protected override void AddCalculatedAndConstantProjections(object pathContext, IRolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 			{
 				// Overlay projection information
 				// Key decorator is ignored as this is always called top level.

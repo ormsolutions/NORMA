@@ -266,7 +266,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Format: at most {1}</remark>
 		CountRangeMinUnbounded,
 		/// <summary>The 'DefiniteArticle' format string snippet. Contains 1 replacement field.</summary>
-		/// <remark>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.</remark>
+		/// <remark>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type. Format: that {0}</remark>
 		DefiniteArticle,
 		/// <summary>The 'DerivationNoteVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the informal note specified for an element derivation rule. Format: Derivation  Note: {0}</remark>
@@ -297,6 +297,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'DescriptionVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the text specified for an element description. Format: Informal Description: {0}</remark>
 		DescriptionVerbalization,
+		/// <summary>The 'DynamicRuleAdditions' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Dynamic rule additions section. Specify instances and facts to add.
+		/// Format: Add: {0}</remark>
+		DynamicRuleAdditions,
+		/// <summary>The 'DynamicRuleDeletions' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Dynamic rule deletions section. Specify instances and facts to delete.
+		/// Format: Remove: {0}</remark>
+		DynamicRuleDeletions,
+		/// <summary>The 'DynamicRuleQuantifierCondition' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Dynamic rule conditions attached to the quanfiers section. Verbalize the path body (with additions and deletions filtered)
+		/// Format: where {0}</remark>
+		DynamicRuleQuantifierCondition,
+		/// <summary>The 'DynamicRuleQuantifiers' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Dynamic rule quantification section. Contains quantifiers for body variables used in additions and deletions, plus remaining conditions from the path.
+		/// Format: For each {0}{1}</remark>
+		DynamicRuleQuantifiers,
+		/// <summary>The 'DynamicRuleStandaloneCondition' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Dynamic rule conditions attached to the end of the rule when there are now to the quanfiers section. Verbalize the path body (with additions and deletions filtered)
+		/// Format: When: {0}</remark>
+		DynamicRuleStandaloneCondition,
+		/// <summary>The 'DynamicRuleVerbalization' format string snippet. Contains 4 replacement fields.</summary>
+		/// <remark>Description: Root verbalization for a dynamic rule. Containers simple replacement fields for the four possible parts of a dynamic rule verbalization (quantifier + condition, additions, deletions, standalone conditions).
+		/// Format: {0}{1}{2}{3}</remark>
+		DynamicRuleVerbalization,
 		/// <summary>The 'EntityTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes an object as being an entity type. Format: {0} is an entity type</remark>
 		EntityTypeVerbalization,
@@ -364,9 +388,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'ExclusionCombined' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to combine the first role player and the roles played for an Exclusion constraint (i.e: No Person authored and reviewed). Format: {0} {1}</remark>
 		ExclusionCombined,
+		/// <summary>The 'ExistentialAddedQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'some' before the name of an object in the 'added' dynamic state to signify the context in which the object is being referred to.  Format: some added {0}</remark>
+		ExistentialAddedQuantifier,
+		/// <summary>The 'ExistentialDeletedQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'some' before the name of an object in the 'deleted' dynamic state to signify the context in which the object is being referred to.  Format: some deleted {0}</remark>
+		ExistentialDeletedQuantifier,
+		/// <summary>The 'ExistentialInitialQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'some' before the name of an object in the 'initial' dynamic state to signify the context in which the object is being referred to.  Format: some initial {0}</remark>
+		ExistentialInitialQuantifier,
 		/// <summary>The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}</remark>
 		ExistentialQuantifier,
+		/// <summary>The 'FactTypeAddedState' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to indicate that a fact type is in the 'added' dynamic state.  Format: ({0}) is added</remark>
+		FactTypeAddedState,
+		/// <summary>The 'FactTypeDeletedState' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to indicate that a fact type is in the 'initial' dynamic state.  Format: ({0}) is deleted</remark>
+		FactTypeDeletedState,
+		/// <summary>The 'FactTypeInitialState' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to indicate that a fact type is in the 'initial' dynamic state.  Format: ({0}) is initial</remark>
+		FactTypeInitialState,
 		/// <summary>The 'FactTypeInstanceBlockEnd' simple snippet value.</summary>
 		/// <remark>Description: Formatted single snippet used to end a sample population verbalization of fact types block.</remark>
 		FactTypeInstanceBlockEnd,
@@ -492,6 +534,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'IdentityEqualityListSeparator' simple snippet value.</summary>
 		/// <remark>Description: Used to separate items in an identity equality list.  Format: that is a</remark>
 		IdentityEqualityListSeparator,
+		/// <summary>The 'IdentityListClose' simple snippet value.</summary>
+		/// <remark>Description:  Text and formatting to end a list of different-typed identifiers representating the same instance.
+		/// Format: </remark>
+		IdentityListClose,
+		/// <summary>The 'IdentityListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description:  Text and formatting to separate the last pair of 3 or more items or different-typed identifiers representating the same instance.
+		/// Format: that is </remark>
+		IdentityListFinalSeparator,
+		/// <summary>The 'IdentityListOpen' simple snippet value.</summary>
+		/// <remark>Description:  Text and formatting to begin a list of different-typed identifiers representating the same instance.
+		/// Format: </remark>
+		IdentityListOpen,
+		/// <summary>The 'IdentityListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description:  Text and formatting to separate a two-item list of different-typed identifiers representating the same instance.
+		/// Format: that is </remark>
+		IdentityListPairSeparator,
+		/// <summary>The 'IdentityListSeparator' simple snippet value.</summary>
+		/// <remark>Description:  Text and formatting to separate all but the last item of 3 or more items or different-typed identifiers representating the same instance.
+		/// Format: that is </remark>
+		IdentityListSeparator,
 		/// <summary>The 'IdentityReferenceQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used for 'the same' before an object name to signify exactly which object is being reference.  Format: the same {0}</remark>
 		IdentityReferenceQuantifier,
@@ -771,6 +833,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Note that VariableExistence can be used with a negated quantifier if the negated variable has not been previously introduced.
 		/// Format: {0} does not exist</remark>
 		NegatedVariableExistence,
+		/// <summary>The 'NegatedVariableExistenceAddedState' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert variable non-existence in the added state.
+		/// Format: {0} does not exist in added state</remark>
+		NegatedVariableExistenceAddedState,
+		/// <summary>The 'NegatedVariableExistenceDeletedState' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert variable non-existence in the deleted state.
+		/// Format: {0} does not in deleted state</remark>
+		NegatedVariableExistenceDeletedState,
+		/// <summary>The 'NegatedVariableExistenceInitialState' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert variable non-existence in the initial state.
+		/// Format: {0} does not exist in initial state</remark>
+		NegatedVariableExistenceInitialState,
 		/// <summary>The 'NegatedXorLeadListClose' simple snippet value.</summary>
 		/// <remark/>
 		NegatedXorLeadListClose,
@@ -1138,11 +1212,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'ValueTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes an object as being a value type. Format: {0} is a value type</remark>
 		ValueTypeVerbalization,
+		/// <summary>The 'VariableAddAction' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: A decorated for a variable listed in the 'add' section of a dynamic rule.
+		/// Format: new {0}</remark>
+		VariableAddAction,
+		/// <summary>The 'VariableAddedQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: A universally quanfied variable in a dynamic rule is part of the 'added' state.
+		/// Format: added {0}</remark>
+		VariableAddedQuantifier,
+		/// <summary>The 'VariableDeletedQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: A universally quanfied variable in a dynamic rule is part of the 'deleted' state.
+		/// Format: deleted {0}</remark>
+		VariableDeletedQuantifier,
 		/// <summary>The 'VariableExistence' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Assert variable existence as a complete statement, as opposed to the
 		/// VariableIntroductionClause used to introduce a variable using a prefix.
 		/// Format: {0} exists</remark>
 		VariableExistence,
+		/// <summary>The 'VariableInitialQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: A universally quanfied variable in a dynamic rule is part of the 'initial' state.
+		/// Format: initial {0}</remark>
+		VariableInitialQuantifier,
 		/// <summary>The 'VariableIntroductionClause' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Introduce variables inline in the verbalization phrase. The replacement is either
 		/// a single value or a list, and the quantifiers (some, no, that) are already included in the replacement list.
@@ -1318,6 +1408,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Add</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">where</span> {0}<br/>",
+				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
+				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
 				"",
@@ -1337,7 +1433,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">exactly once</span>",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
+				@"<span class=""quantifier"">some added</span> {0}",
+				@"<span class=""quantifier"">some deleted</span> {0}",
+				@"<span class=""quantifier"">some initial</span> {0}",
 				@"<span class=""quantifier"">some</span> {0}",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
@@ -1373,6 +1475,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				@" <span class=""quantifier"">that is</span> ",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"{0} <span class=""quantifier"">that is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
@@ -1455,6 +1562,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"{0} <span class=""quantifier"">does not exist</span>",
+				@"{0} <span class=""quantifier"">does not exist in added state</span>",
+				@"{0} <span class=""quantifier"">does not exist in deleted state</span>",
+				@"{0} <span class=""quantifier"">does not exist in initial state</span>",
 				"</span>",
 				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
@@ -1561,7 +1671,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">&#8220;</span>{0}<span class=""listSeparator"">&#8221;,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"<span class=""quantifier"">new</span> {0}",
+				@"<span class=""quantifier"">added</span> {0}",
+				@"<span class=""quantifier"">deleted</span> {0}",
 				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">initial</span> {0}",
 				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
@@ -1692,6 +1806,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Add</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">where</span> {0}<br/>",
+				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
+				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
 				"",
@@ -1711,7 +1831,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">exactly once</span>",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
+				@"<span class=""quantifier"">some added</span> {0}",
+				@"<span class=""quantifier"">some deleted</span> {0}",
+				@"<span class=""quantifier"">some initial</span> {0}",
 				@"<span class=""quantifier"">some</span> {0}",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
@@ -1747,6 +1873,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				@" <span class=""quantifier"">that is</span> ",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"{0} <span class=""quantifier"">that is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
@@ -1829,6 +1960,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"{0} <span class=""quantifier"">does not exist</span>",
+				@"{0} <span class=""quantifier"">does not exist in added state</span>",
+				@"{0} <span class=""quantifier"">does not exist in deleted state</span>",
+				@"{0} <span class=""quantifier"">does not exist in initial state</span>",
 				"</span>",
 				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
@@ -1935,7 +2069,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">&#8220;</span>{0}<span class=""listSeparator"">&#8221;,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"<span class=""quantifier"">new</span> {0}",
+				@"<span class=""quantifier"">added</span> {0}",
+				@"<span class=""quantifier"">deleted</span> {0}",
 				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">initial</span> {0}",
 				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
@@ -2066,6 +2204,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Add</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">where</span> {0}<br/>",
+				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
+				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
 				"",
@@ -2085,7 +2229,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">more than once</span>",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
+				@"<span class=""quantifier"">no added</span> {0}",
+				@"<span class=""quantifier"">no deleted</span> {0}",
+				@"<span class=""quantifier"">no initial</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
@@ -2121,6 +2271,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				@" <span class=""quantifier"">that is</span> ",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"{0} <span class=""quantifier"">that is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
@@ -2203,6 +2358,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"{0} <span class=""quantifier"">does not exist</span>",
+				@"{0} <span class=""quantifier"">does not exist in added state</span>",
+				@"{0} <span class=""quantifier"">does not exist in deleted state</span>",
+				@"{0} <span class=""quantifier"">does not exist in initial state</span>",
 				"</span>",
 				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
@@ -2309,7 +2467,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">&#8220;</span>{0}<span class=""listSeparator"">&#8221;,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"<span class=""quantifier"">new</span> {0}",
+				@"<span class=""quantifier"">added</span> {0}",
+				@"<span class=""quantifier"">deleted</span> {0}",
 				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">initial</span> {0}",
 				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
@@ -2440,6 +2602,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
+				@"<span class=""quantifier"">Add</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
+				@"<span class=""quantifier"">where</span> {0}<br/>",
+				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
+				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
 				"",
@@ -2459,7 +2627,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">more than once</span>",
 				@"<span class=""quantifier"">no</span> {0}<span class=""quantifier""> the same </span>{1}",
 				"{0} {1}",
+				@"<span class=""quantifier"">no added</span> {0}",
+				@"<span class=""quantifier"">no deleted</span> {0}",
+				@"<span class=""quantifier"">no initial</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
@@ -2495,6 +2669,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				"",
+				@" <span class=""quantifier"">that is</span> ",
+				@" <span class=""quantifier"">that is</span> ",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"{0} <span class=""quantifier"">that is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
@@ -2577,6 +2756,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"{0} <span class=""quantifier"">does not exist</span>",
+				@"{0} <span class=""quantifier"">does not exist in added state</span>",
+				@"{0} <span class=""quantifier"">does not exist in deleted state</span>",
+				@"{0} <span class=""quantifier"">does not exist in initial state</span>",
 				"</span>",
 				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
@@ -2683,7 +2865,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">&#8220;</span>{0}<span class=""listSeparator"">&#8221;,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"<span class=""quantifier"">new</span> {0}",
+				@"<span class=""quantifier"">added</span> {0}",
+				@"<span class=""quantifier"">deleted</span> {0}",
 				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">initial</span> {0}",
 				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
@@ -4309,6 +4495,406 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // DerivationNote verbalization
+	#region DynamicRule verbalization
+	public partial class DynamicRule : IVerbalize
+	{
+		/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+		private bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			#region Preliminary
+			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			#region Prerequisite error check
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			bool blockingErrors = false;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			#endregion // Prerequisite error check
+			StringBuilder sbTemp = null;
+			const bool isDeontic = false;
+			RolePathVerbalizer pathVerbalizer;
+			RolePathNode pathNode;
+			PathedRole pathedRole;
+			#endregion // Preliminary
+			#region Pattern Matches
+			if ((pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider))).CanVerbalizeDynamicRule)
+			{
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DynamicRuleVerbalization, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				if (pathVerbalizer.DynamicRuleHasHeadSection)
+				{
+					string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DynamicRuleQuantifiers, isDeontic, isNegative);
+					string snippet1Replace1Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					IList<Tuple<DynamicRuleNodeState, List<RolePathNode>>> pathNodeLists = pathVerbalizer.DynamicRuleHeadNodes;
+					int pathNodeListCount = pathNodeLists.Count;
+					for (int iNodeList = 0; iNodeList < pathNodeListCount; ++iNodeList)
+					{
+						Tuple<DynamicRuleNodeState, List<RolePathNode>> pathNodeListTuple = pathNodeLists[iNodeList];
+						DynamicRuleNodeState dynamicState = pathNodeListTuple.Item1;
+						IList<RolePathNode> pathNodeList = pathNodeListTuple.Item2;
+						CoreVerbalizationSnippetType listSnippet;
+						if (iNodeList == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.CompactSimpleListOpen;
+						}
+						else if (iNodeList == pathNodeListCount - 1)
+						{
+							if (iNodeList == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompactSimpleListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompactSimpleListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType1 = 0;
+						if (dynamicState == DynamicRuleNodeState.Added)
+						{
+							snippet1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.VariableAddedQuantifier;
+						}
+						else if (dynamicState == DynamicRuleNodeState.Deleted)
+						{
+							snippet1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.VariableDeletedQuantifier;
+						}
+						else if (dynamicState == DynamicRuleNodeState.Initial)
+						{
+							snippet1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.VariableInitialQuantifier;
+						}
+						else
+						{
+							snippet1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.SelfReference;
+						}
+						string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType1, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1 = null;
+						int outerStringBuilderLength = sbTemp.Length;
+						IList<RolePathNode> pathNodes = pathNodeLists[iNodeList].Item2;
+						int pathNodeCount = pathNodes.Count;
+						for (int iNode = 0; iNode < pathNodeCount; ++iNode)
+						{
+							pathNode = pathNodes[iNode];
+							if (iNode == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.IdentityListOpen;
+							}
+							else if (iNode == pathNodeCount - 1)
+							{
+								if (iNode == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.IdentityListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.IdentityListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.IdentityListSeparator;
+							}
+							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+							snippet1Replace1Replace1Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(pathNode, null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead);
+							sbTemp.Append(snippet1Replace1Replace1Replace1);
+							if (iNode == pathNodeCount - 1)
+							{
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.IdentityListClose, isDeontic, isNegative));
+							}
+						}
+						snippet1Replace1Replace1Replace1 = sbTemp.ToString(outerStringBuilderLength, sbTemp.Length - outerStringBuilderLength);
+						sbTemp.Length = outerStringBuilderLength;
+						snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
+						sbTemp.Append(snippet1Replace1Replace1);
+						if (iNodeList == pathNodeListCount - 1)
+						{
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+						}
+					}
+					snippet1Replace1Replace1 = sbTemp.ToString();
+					string snippet1Replace1Replace2 = null;
+					if (pathVerbalizer.DynamicRuleHasConditionSection)
+					{
+						string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.DynamicRuleQuantifierCondition, isDeontic, isNegative);
+						string snippet1Replace1Replace2Replace1 = null;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else
+						{
+							sbTemp.Length = 0;
+						}
+						snippet1Replace1Replace2Replace1 = pathVerbalizer.RenderPathVerbalization(this, sbTemp);
+						snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1);
+					}
+					else
+					{
+						string snippet1Replace1ReplaceFormat2 = "";
+						snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2);
+					}
+					snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
+				}
+				else
+				{
+					string snippet1ReplaceFormat1 = "";
+					snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1);
+				}
+				string snippet1Replace2 = null;
+				if (pathVerbalizer.DynamicRuleHasAddSection)
+				{
+					string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.DynamicRuleAdditions, isDeontic, isNegative);
+					string snippet1Replace2Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					IList<RolePathNode> pathNodes = pathVerbalizer.DynamicRuleAddNodes;
+					int pathNodeCount = pathNodes.Count;
+					for (int iNode = 0; iNode < pathNodeCount; ++iNode)
+					{
+						pathNode = pathNodes[iNode];
+						CoreVerbalizationSnippetType listSnippet;
+						if (iNode == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListOpen;
+						}
+						else if (iNode == pathNodeCount - 1)
+						{
+							if (iNode == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListSeparator;
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						if ((pathedRole = pathNode) != null && pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+						{
+							snippet1Replace2Replace1 = pathVerbalizer.RenderPathFactType(pathNode, sbTemp);
+						}
+						else
+						{
+							string snippet1Replace2ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.VariableAddAction, isDeontic, isNegative);
+							string snippet1Replace2Replace1Replace1 = null;
+							snippet1Replace2Replace1Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(pathNode, null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead);
+							snippet1Replace2Replace1 = string.Format(writer.FormatProvider, snippet1Replace2ReplaceFormat1, snippet1Replace2Replace1Replace1);
+						}
+						sbTemp.Append(snippet1Replace2Replace1);
+						if (iNode == pathNodeCount - 1)
+						{
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.MultilineIndentedCompoundListClose, isDeontic, isNegative));
+						}
+					}
+					snippet1Replace2Replace1 = sbTemp.ToString();
+					snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
+				}
+				else
+				{
+					string snippet1ReplaceFormat2 = "";
+					snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2);
+				}
+				string snippet1Replace3 = null;
+				if (pathVerbalizer.DynamicRuleHasDeleteSection)
+				{
+					string snippet1ReplaceFormat3 = snippets.GetSnippet(CoreVerbalizationSnippetType.DynamicRuleDeletions, isDeontic, isNegative);
+					string snippet1Replace3Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					IList<RolePathNode> pathNodes = pathVerbalizer.DynamicRuleDeleteNodes;
+					int pathNodeCount = pathNodes.Count;
+					for (int iNode = 0; iNode < pathNodeCount; ++iNode)
+					{
+						pathNode = pathNodes[iNode];
+						CoreVerbalizationSnippetType listSnippet;
+						if (iNode == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListOpen;
+						}
+						else if (iNode == pathNodeCount - 1)
+						{
+							if (iNode == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.MultilineIndentedCompoundListSeparator;
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						if ((pathedRole = pathNode) != null && pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+						{
+							snippet1Replace3Replace1 = pathVerbalizer.RenderPathFactType(pathNode, sbTemp);
+						}
+						else
+						{
+							string snippet1Replace3ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative);
+							string snippet1Replace3Replace1Replace1 = null;
+							snippet1Replace3Replace1Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(pathNode, null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead);
+							snippet1Replace3Replace1 = string.Format(writer.FormatProvider, snippet1Replace3ReplaceFormat1, snippet1Replace3Replace1Replace1);
+						}
+						sbTemp.Append(snippet1Replace3Replace1);
+						if (iNode == pathNodeCount - 1)
+						{
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.MultilineIndentedCompoundListClose, isDeontic, isNegative));
+						}
+					}
+					snippet1Replace3Replace1 = sbTemp.ToString();
+					snippet1Replace3 = string.Format(writer.FormatProvider, snippet1ReplaceFormat3, snippet1Replace3Replace1);
+				}
+				else
+				{
+					string snippet1ReplaceFormat3 = "";
+					snippet1Replace3 = string.Format(writer.FormatProvider, snippet1ReplaceFormat3);
+				}
+				string snippet1Replace4 = null;
+				if (pathVerbalizer.DynamicRuleHasConditionSection && !pathVerbalizer.DynamicRuleHasHeadSection)
+				{
+					string snippet1ReplaceFormat4 = snippets.GetSnippet(CoreVerbalizationSnippetType.DynamicRuleStandaloneCondition, isDeontic, isNegative);
+					string snippet1Replace4Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					snippet1Replace4Replace1 = pathVerbalizer.RenderPathVerbalization(this, sbTemp);
+					snippet1Replace4 = string.Format(writer.FormatProvider, snippet1ReplaceFormat4, snippet1Replace4Replace1);
+				}
+				else
+				{
+					string snippet1ReplaceFormat4 = "";
+					snippet1Replace4 = string.Format(writer.FormatProvider, snippet1ReplaceFormat4);
+				}
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2, snippet1Replace3, snippet1Replace4), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			#endregion // Pattern Matches
+			#region Error report
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			#endregion // Error report
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+		}
+	}
+	#endregion // DynamicRule verbalization
 	#region Role.ErrorReport verbalization
 	public partial class Role
 	{

@@ -443,6 +443,7 @@
 			<xs:enumeration value="DerivedFromList"/>
 			<xs:enumeration value="FactTypeList"/>
 			<xs:enumeration value="EqualsList"/>
+			<xs:enumeration value="IdentityList"/>
 			<xs:enumeration value="IdentityEqualityList"/>
 			<xs:enumeration value="IndentedCompoundList"/>
 			<xs:enumeration value="IndentedList"/>
@@ -665,6 +666,11 @@
 							<xs:documentation>True if there is a path-based subtype verbalization available for an object type.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="HasVerbalizableDynamicRulePath">
+						<xs:annotation>
+							<xs:documentation>True if the dynamic rule defines a verbalizable path.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 					<xs:enumeration value="HasStoredDerivationRule">
 						<xs:annotation>
 							<xs:documentation>True if there is a derivation rule defined that has a 'stored' setting.</xs:documentation>
@@ -693,6 +699,51 @@
 					<xs:enumeration value="DerivedSubtype">
 						<xs:annotation>
 							<xs:documentation>True if the current derived from element (meaning element is derived using the current context item) is an object type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicRuleHasAddSection">
+						<xs:annotation>
+							<xs:documentation>True if the dynamic rule being verbalized has nodes in the 'add' section.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicRuleHasConditionSection">
+						<xs:annotation>
+							<xs:documentation>True if the dynamic rule being verbalized has nodes remaining in the role path for the 'condition' section.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicRuleHasStandaloneConditionSection">
+						<xs:annotation>
+							<xs:documentation>True if the dynamic rule being verbalized has nodes remaining in the role path for the 'condition' section and there are no quantifiers.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicRuleHasDeleteSection">
+						<xs:annotation>
+							<xs:documentation>True if the dynamic rule being verbalized has nodes in the 'delete' section.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicRuleHasHeadSection">
+						<xs:annotation>
+							<xs:documentation>True if the dynamic rule being verbalized has quantifier nodes in the 'head' section.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicStateAdded">
+						<xs:annotation>
+							<xs:documentation>True if the dynamicState variable has an 'Added' dynamic state.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicStateDeleted">
+						<xs:annotation>
+							<xs:documentation>True if the dynamicState variable has an 'Deleted' dynamic state.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DynamicStateInitial">
+						<xs:annotation>
+							<xs:documentation>True if the dynamicState variable has an 'Initial' dynamic state.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="PathNodeFactTypeEntry">
+						<xs:annotation>
+							<xs:documentation>True if the path node represents a fact type entry.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 					<xs:enumeration value="HasPortableDataType">
@@ -1054,6 +1105,8 @@
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 			<xs:element name="IterateSequences" type="IterateSequencesType"/>
 			<xs:element name="IterateQueryParameters" type="IterateQueryParametersType"/>
+			<xs:element name="IteratePathNodes" type="IteratePathNodesType"/>
+			<xs:element name="IteratePathNodeLists" type="IteratePathNodeListsType"/>
 			<xs:element name="CompositeList" type="CompositeListType"/>
 			<xs:element name="DerivationPath" type="DerivationPathType"/>
 			<xs:element name="Fact" type="FactType"/>
@@ -1086,6 +1139,8 @@
 			<xs:element name="SubtypeId" type="ElementIdType"/>
 			<xs:element name="SupertypeName" type="SupertypeNameType"/>
 			<xs:element name="SupertypeId" type="ElementIdType"/>
+			<xs:element name="PathNodeVariable" type="PathNodeVariableType"/>
+			<xs:element name="PathNodeFactType" type="PathNodeFactTypeType"/>
 		</xs:choice>
 	</xs:group>
 	<xs:group name="ReplacementElementsWithConditionalMatchGroup">
@@ -1100,6 +1155,24 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="IterateRolesType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IteratePathNodes">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IteratePathNodesType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IteratePathNodeLists">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IteratePathNodeListsType">
 							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
 					</xs:complexContent>
@@ -1311,6 +1384,24 @@
 									<xs:documentation>Use the HasSingleLeadPreProjectionKey conditional match to provide a snippet used to quantify the lead variable.</xs:documentation>
 								</xs:annotation>
 							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PathNodeVariable">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="PathNodeVariableType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PathNodeFactType">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="PathNodeFactTypeType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>
@@ -1624,6 +1715,21 @@
 		<xs:annotation>
 			<xs:documentation>Defer to the path verbalizer to render the derivation path.</xs:documentation>
 		</xs:annotation>
+		<xs:attribute name="thisContext" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Use the current this context instead of the 'derivationRule' variable.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="PathNodeVariableType">
+		<xs:annotation>
+			<xs:documentation>Retrieve a variable name from the context path node and path verbalizer.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="PathNodeFactTypeType">
+		<xs:annotation>
+			<xs:documentation>Render a fact type for the context path node and path verbalizer.</xs:documentation>
+		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="RolePlayerReferenceModeType">
 		<xs:annotation>
@@ -1778,6 +1884,15 @@
 			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch" />
 			<xs:element name="ErrorReportHere" type="ErrorReportHereType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="DynamicRuleConstructType">
+		<xs:annotation>
+			<xs:documentation>Returns the full verbalization for a dynamic rule.</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded" minOccurs="0">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch" />
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ErrorReportHereType">
@@ -2054,6 +2169,63 @@
 				<xs:attribute name="listStyle" type="ListStyleEnumOrNull" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IteratePathNodeListsType">
+		<xs:annotation>
+			<xs:documentation>
+				Iterates lists of role path nodes.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
+			<xs:element name="ConditionalReplacement" type="ConditionalReplacementType"/>
+		</xs:choice>
+		<xs:attribute name="listStyle" type="ListStyleEnum"/>
+		<xs:attribute name="match">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="quantifiers">
+						<xs:annotation>
+							<xs:documentation>Iterate nodes from the head of the current dynamic role path. The items are in the two-item tuple form the dynamic state and path node lists.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IteratePathNodesType">
+		<xs:annotation>
+			<xs:documentation>
+				Iterates role path nodes.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
+			<xs:element name="ConditionalReplacement" type="ConditionalReplacementType"/>
+			<xs:element name="PathNodeVariable" type="PathNodeVariableType"/>
+		</xs:choice>
+		<xs:attribute name="listStyle" type="ListStyleEnum"/>
+		<xs:attribute name="match">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="pathNodeList">
+						<xs:annotation>
+							<xs:documentation>Iterate nodes the context pathNodeList variable, such as when supplied by IteratePathNodeLists.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="add">
+						<xs:annotation>
+							<xs:documentation>Iterate nodes from the 'add' section the current dynamic role path.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="delete">
+						<xs:annotation>
+							<xs:documentation>Iterate nodes from the 'delete' section the current dynamic role path.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="BaseReadingContextType">
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -2346,6 +2518,7 @@
 							<xs:element name="Note" type="NoteConstructType" />
 							<xs:element name="DerivationNote" type="DerivationExpressionConstructType"/>
 							<xs:element name="ORMModel" type="ModelConstructType"/>
+							<xs:element name="DynamicRule" type="DynamicRuleConstructType"/>
 							<xs:element name="ChildHelpers" type="ChildHelpersConstructType"/>
 							<xs:element name="ErrorReports" type="ErrorReportsType"/>
 						</xs:all>

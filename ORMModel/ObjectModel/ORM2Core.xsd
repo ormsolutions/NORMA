@@ -35,6 +35,7 @@
 			<xs:element name="Objects" type="ObjectTypesType" minOccurs="0"/>
 			<xs:element name="Facts" type="FactTypesType" minOccurs="0"/>
 			<xs:element name="Constraints" type="ConstraintsType" minOccurs="0"/>
+			<xs:element name="GeneralRules" type="GeneralRulesType" minOccurs="0"/>
 			<xs:element name="DataTypes" type="DataTypesType" minOccurs="0"/>
 			<xs:element name="Functions" type="FunctionsType" minOccurs="0"/>
 			<xs:element name="CustomReferenceModes" type="CustomReferenceModesType" minOccurs="0"/>
@@ -1506,6 +1507,11 @@
 				<xs:documentation>The path root is negated.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="DynamicState" type="DynamicRuleNodeState" use="optional" default="Current">
+			<xs:annotation>
+				<xs:documentation>The state of this object in a dynamic rule.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="RootObjectTypeRef">
 		<xs:annotation>
@@ -1536,6 +1542,11 @@
 		<xs:attribute name="IsNegated" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>The path step is treated as a negation.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="DynamicState" type="DynamicRuleNodeState" use="optional" default="Current">
+			<xs:annotation>
+				<xs:documentation>The state of this pathed role in a dynamic rule. For a SameFactType pathed role, this annotation is for the role player, not the fact type. On a join (entry) role, this applies to the fact type (the object type annotation is specified on the previous object type root or same fact type pathed role).</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
@@ -1643,6 +1654,97 @@
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
+	<xs:complexType name="GeneralRulesType">
+		<xs:annotation>
+			<xs:documentation>A container for rules that apply generally (not derivation rules or join paths).</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="GeneralRule"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="GeneralRule" type="GeneralRuleType" abstract="true"/>
+	<xs:complexType name="GeneralRuleType">
+		<xs:annotation>
+			<xs:documentation>A named rule.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Name" use="required" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The rule name. Validation errors will be present for any rule name that is not unique within the model.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="GeneralRuleRef">
+		<xs:annotation>
+			<xs:documentation>A reference to an general rule.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="DynamicRuleType">
+		<xs:annotation>
+			<xs:documentation>A rule that declares additions and deletions to a model in response to other additions and deletions.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="GeneralRuleType">
+				<xs:sequence>
+					<xs:element name="RuleDefinition" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Define the dynamic rule with an annotated role path.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="RolePath" type="LeadRolePathType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DynamicRule" type="DynamicRuleType" substitutionGroup="GeneralRule"/>
+	<xs:complexType name="DynamicRuleRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a dynamic rule.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:simpleType name="DynamicRuleNodeState">
+		<xs:annotation>
+			<xs:documentation>Annotation for root object type and pathed role indicating how nodes are used in a dynamic rule.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Current">
+				<xs:annotation>
+					<xs:documentation>The node exists in the current state, so it is initial or added.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Initial">
+				<xs:annotation>
+					<xs:documentation>The node existed in the initial state and is not added.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Added">
+				<xs:annotation>
+					<xs:documentation>The node did not exist in the initial state but exists in the current state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Deleted">
+				<xs:annotation>
+					<xs:documentation>The node existed in the initial state but was deleted.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Add">
+				<xs:annotation>
+					<xs:documentation>Add this node to the current state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Delete">
+				<xs:annotation>
+					<xs:documentation>Delete this node from the current state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="LeadRolePathType">
 		<xs:annotation>
 			<xs:documentation>A role path starting from a root object type.</xs:documentation>
@@ -2684,6 +2786,7 @@
 			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameErrorType"/>
 			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameErrorType"/>
 			<xs:element name="RecognizedPhraseDuplicateNameError" type="RecognizedPhraseDuplicateNameErrorType"/>
+			<xs:element name="GeneralRuleDuplicateNameError" type="GeneralRuleDuplicateNameErrorType"/>
 			<xs:element name="GroupDuplicateNameError" type="GroupDuplicateNameErrorType"/>
 			<xs:element name="FunctionDuplicateNameError" type="FunctionDuplicateNameErrorType"/>
 			<xs:element name="DuplicateReadingSignatureError" type="DuplicateReadingSignatureErrorType"/>
@@ -2760,6 +2863,16 @@
 			<xs:element name="DerivedFactTypeRoleProjectionCompatibilityError" type="DerivedFactTypeRoleProjectionCompatibilityErrorType"/>
 			<xs:element name="QueryRoleProjectionCompatibilityError" type="QueryRoleProjectionCompatibilityErrorType"/>
 			<xs:element name="JoinedConstraintRoleProjectionCompatibilityError" type="JoinedConstraintRoleProjectionCompatibilityErrorType"/>
+			<xs:element name="DynamicRuleRequiresEventAndActionError" type="DynamicRuleRequiresEventAndActionErrorType"/>
+			<xs:element name="DynamicRuleNoDisjunctiveOrNegatedActionError" type="DynamicRuleNoDisjunctiveOrNegatedActionErrorType"/>
+			<xs:element name="DynamicRuleDisjunctionRequiresPositiveEventError" type="DynamicRuleDisjunctionRequiresPositiveEventErrorType"/>
+			<xs:element name="MismatchedJoinDynamicStateError" type="MismatchedJoinDynamicStateErrorType"/>
+			<xs:element name="MismatchedRolePlayerDynamicStateError" type="MismatchedRolePlayerDynamicStateErrorType"/>
+			<xs:element name="DynamicAddFactTypeUnboundRolesError" type="DynamicAddFactTypeUnboundRolesErrorType"/>
+			<xs:element name="DynamicActionRoleUndeclaredObjectError" type="DynamicActionRoleUndeclaredObjectErrorType"/>
+			<xs:element name="ObjectUnifierMismatchedDynamicStateError" type="ObjectUnifierMismatchedDynamicStateErrorType"/>
+			<xs:element name="DynamicObjectAddPartialIdentifierError" type="DynamicObjectAddPartialIdentifierErrorType"/>
+			<xs:element name="DynamicObjectificationAddRequiresLinkFactTypesError" type="DynamicObjectificationAddRequiresLinkFactTypesErrorType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -2855,6 +2968,27 @@
 						<xs:complexType>
 							<xs:sequence minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="Function" type="FunctionRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GeneralRuleDuplicateNameErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple rules share the same name.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Rules">
+						<xs:annotation>
+							<xs:documentation>Like-named rules.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="Rule" type="GeneralRuleRef"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -3777,6 +3911,128 @@
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="ConstraintRoleProjection" type="ConstraintRoleProjectionRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DynamicRuleRequiresEventAndActionErrorType">
+		<xs:annotation>
+			<xs:documentation>A dynamic rule needs at least one triggering event (Added or Deleted state) and at least on action (Add or Delete state).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="DynamicRule" type="DynamicRuleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DynamicRuleNoDisjunctiveOrNegatedActionErrorType">
+		<xs:annotation>
+			<xs:documentation>Action nodes (Add or Delete state) in a dynamic rule cannot occur under disjunction or negation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="DynamicRule" type="DynamicRuleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DynamicRuleDisjunctionRequiresPositiveEventErrorType">
+		<xs:annotation>
+			<xs:documentation>Each disjunction path in a dynamic rule needs at least one non-negated event (Added or Deleted state).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="DynamicRule" type="DynamicRuleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MismatchedJoinDynamicStateErrorType">
+		<xs:annotation>
+			<xs:documentation>An object type in a dynamic rule is joined to a fact type with an incompatible dynamic state.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MismatchedRolePlayerDynamicStateErrorType">
+		<xs:annotation>
+			<xs:documentation>A fact type in a dynamic rule has a role player with an incompatible dynamic state.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DynamicAddFactTypeUnboundRolesErrorType">
+		<xs:annotation>
+			<xs:documentation>A fact type with an 'Add' state in a dynamic rule has one or more unbound roles.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DynamicActionRoleUndeclaredObjectErrorType">
+		<xs:annotation>
+			<xs:documentation>A role in a fact type with an 'Add' or 'Delete' state uses an object that is not declared in the same state or in a non-action node that is not undef negation and disjunction in a dynamic rule.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObjectUnifierMismatchedDynamicStateErrorType">
+		<xs:annotation>
+			<xs:documentation>An ObjectUnifier unifies path nodes with mismatched dynamic states.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ObjectUnifier" type="ObjectUnifierRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DynamicObjectAddPartialIdentifierErrorType">
+		<xs:annotation>
+			<xs:documentation>A dynamic Add object requires full identification in the Add state.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:choice>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+					<xs:element name="PathRoot" type="RootObjectTypeRef"/>
+					<xs:element name="ObjectUnifier" type="ObjectUnifierRef"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DynamicObjectificationAddRequiresLinkFactTypesErrorType">
+		<xs:annotation>
+			<xs:documentation>An objectified fact types with an 'Add' state has an external identifier and should be populated with 'add' link fact types instead of the objectified fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

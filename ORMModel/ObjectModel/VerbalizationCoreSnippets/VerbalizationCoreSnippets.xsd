@@ -137,7 +137,7 @@
 				</xs:enumeration>
 				<xs:enumeration value="DefiniteArticle">
 					<xs:annotation>
-						<xs:documentation>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.</xs:documentation>
+						<xs:documentation>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type. Format: that {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="RoleHeader">
@@ -192,6 +192,36 @@ Format negative: for some {0}, \n{1}</xs:documentation>
 				<xs:enumeration value="ExistentialQuantifier">
 					<xs:annotation>
 						<xs:documentation>Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExistentialAddedQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: Used for 'some' before the name of an object in the 'added' dynamic state to signify the context in which the object is being referred to.  Format: some added {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExistentialDeletedQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: Used for 'some' before the name of an object in the 'deleted' dynamic state to signify the context in which the object is being referred to.  Format: some deleted {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExistentialInitialQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: Used for 'some' before the name of an object in the 'initial' dynamic state to signify the context in which the object is being referred to.  Format: some initial {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeAddedState">
+					<xs:annotation>
+						<xs:documentation>Description: Used to indicate that a fact type is in the 'added' dynamic state.  Format: ({0}) is added</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeDeletedState">
+					<xs:annotation>
+						<xs:documentation>Description: Used to indicate that a fact type is in the 'initial' dynamic state.  Format: ({0}) is deleted</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FactTypeInitialState">
+					<xs:annotation>
+						<xs:documentation>Description: Used to indicate that a fact type is in the 'initial' dynamic state.  Format: ({0}) is initial</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="IdentityReferenceQuantifier">
@@ -1032,6 +1062,96 @@ Format: {0}=name, {1}=type name</xs:documentation>
 Format: {0}select {1} where {2}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="DynamicRuleVerbalization">
+					<xs:annotation>
+						<xs:documentation>Description: Root verbalization for a dynamic rule. Containers simple replacement fields for the four possible parts of a dynamic rule verbalization (quantifier + condition, additions, deletions, standalone conditions).
+Format: {0}{1}{2}{3}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DynamicRuleQuantifiers">
+					<xs:annotation>
+						<xs:documentation>Description: Dynamic rule quantification section. Contains quantifiers for body variables used in additions and deletions, plus remaining conditions from the path.
+Format: For each {0}{1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DynamicRuleAdditions">
+					<xs:annotation>
+						<xs:documentation>Description: Dynamic rule additions section. Specify instances and facts to add.
+Format: Add: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DynamicRuleDeletions">
+					<xs:annotation>
+						<xs:documentation>Description: Dynamic rule deletions section. Specify instances and facts to delete.
+Format: Remove: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DynamicRuleQuantifierCondition">
+					<xs:annotation>
+						<xs:documentation>Description: Dynamic rule conditions attached to the quanfiers section. Verbalize the path body (with additions and deletions filtered)
+Format: where {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DynamicRuleStandaloneCondition">
+					<xs:annotation>
+						<xs:documentation>Description: Dynamic rule conditions attached to the end of the rule when there are now to the quanfiers section. Verbalize the path body (with additions and deletions filtered)
+Format: When: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VariableAddedQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: A universally quanfied variable in a dynamic rule is part of the 'added' state.
+Format: added {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VariableDeletedQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: A universally quanfied variable in a dynamic rule is part of the 'deleted' state.
+Format: deleted {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VariableInitialQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: A universally quanfied variable in a dynamic rule is part of the 'initial' state.
+Format: initial {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VariableAddAction">
+					<xs:annotation>
+						<xs:documentation>Description: A decorated for a variable listed in the 'add' section of a dynamic rule.
+Format: new {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityListOpen">
+					<xs:annotation>
+						<xs:documentation>Description:  Text and formatting to begin a list of different-typed identifiers representating the same instance.
+Format: </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>Description:  Text and formatting to separate a two-item list of different-typed identifiers representating the same instance.
+Format: that is </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityListSeparator">
+					<xs:annotation>
+						<xs:documentation>Description:  Text and formatting to separate all but the last item of 3 or more items or different-typed identifiers representating the same instance.
+Format: that is </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>Description:  Text and formatting to separate the last pair of 3 or more items or different-typed identifiers representating the same instance.
+Format: that is </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IdentityListClose">
+					<xs:annotation>
+						<xs:documentation>Description:  Text and formatting to end a list of different-typed identifiers representating the same instance.
+Format: </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="FrequencyPopulation">
 					<xs:annotation>
 						<xs:documentation>Description: Used as for the main body text of a frequency constraint on one FactType.
@@ -1482,6 +1602,24 @@ Format: {0} exists</xs:documentation>
 						<xs:documentation>Description: Assert variable non-existence for an a previous declared variable in an existence statement.
 Note that VariableExistence can be used with a negated quantifier if the negated variable has not been previously introduced.
 Format: {0} does not exist</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="NegatedVariableExistenceAddedState">
+					<xs:annotation>
+						<xs:documentation>Description: Assert variable non-existence in the added state.
+Format: {0} does not exist in added state</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="NegatedVariableExistenceDeletedState">
+					<xs:annotation>
+						<xs:documentation>Description: Assert variable non-existence in the deleted state.
+Format: {0} does not in deleted state</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="NegatedVariableExistenceInitialState">
+					<xs:annotation>
+						<xs:documentation>Description: Assert variable non-existence in the initial state.
+Format: {0} does not exist in initial state</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="RolePathListCloseOutdentSnippets">
