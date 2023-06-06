@@ -16,25 +16,12 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Modeling.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Core.Shell;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 {
@@ -236,17 +223,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					}
 
 					IList<ObjectType> objectTypeList;
-					if (filteredList != null)
+					if (filteredList == null)
 					{
-						filteredList.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
-						objectTypeList = filteredList;
-						objectTypeCount = filteredList.Count;
+						filteredList = new List<ObjectType>(allObjectTypes); // A LinkedElementCollection cannot be sorted without a transaction, copy it.
 					}
-					else
-					{
-						allObjectTypes.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
-						objectTypeList = allObjectTypes;
-					}
+					filteredList.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
+					objectTypeList = filteredList;
+					objectTypeCount = filteredList.Count;
 
 					alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
 
@@ -353,17 +336,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						}
 					}
 
-					if (filteredList != null)
+					if (filteredList == null)
 					{
-						filteredList.Sort(NamedElementComparer<FactType>.CurrentCulture);
-						factTypeList = filteredList;
-						factTypeCount = filteredList.Count;
+						filteredList = new List<FactType>(allFactTypes); // A LinkedElementCollection cannot be sorted without a transaction, copy it.
 					}
-					else
-					{
-						allFactTypes.Sort(NamedElementComparer<FactType>.CurrentCulture);
-						factTypeList = allFactTypes;
-					}
+					filteredList.Sort(NamedElementComparer<FactType>.CurrentCulture);
+					factTypeList = filteredList;
+					factTypeCount = filteredList.Count;
 				}
 			}
 			#endregion // Collect Fact Types
