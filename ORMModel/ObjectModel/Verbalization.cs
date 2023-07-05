@@ -7937,6 +7937,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 						}
 						VerbalizationPlanNode.AddCalculatedConditionNode(pathConditions[i], false, initialPathContext, contextChainNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
+						processedPathConditions[i] = true;
 					}
 				}
 			}
