@@ -2008,6 +2008,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							extensibleObject.GetAutomationObject(extensionName, null, out retVal);
 						}
 					}
+					catch
+					{
+						// Swallow any exception. These are not uncommon, especially if document is not opened in a designer that recognizes
+						// the automatic object names.
+						retVal = null;
+					}
 					finally
 					{
 						if (punkDocData != IntPtr.Zero)
