@@ -867,6 +867,21 @@
 											</plx:return>
 										</plx:get>
 									</plx:property>
+									<xsl:if test="@autoGenerateStyle='Incremental'">
+										<plx:property name="AutoGenerationIncremental" modifier="override" visibility="public">
+											<plx:leadingInfo>
+												<plx:docComment>
+													<summary>This data type uses incremental auto generation.</summary>
+												</plx:docComment>
+											</plx:leadingInfo>
+											<plx:returns dataTypeName=".boolean"/>
+											<plx:get>
+												<plx:return>
+													<plx:trueKeyword/>
+												</plx:return>
+											</plx:get>
+										</plx:property>
+									</xsl:if>
 									<plx:function name="AutoGenerate" modifier="override" visibility="public">
 										<plx:leadingInfo>
 											<plx:docComment>

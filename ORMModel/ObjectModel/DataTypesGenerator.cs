@@ -426,6 +426,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return AutoGenerationSupport.Available;
 			}
 		}
+		/// <summary>This data type uses incremental auto generation.</summary>
+		public override bool AutoGenerationIncremental
+		{
+			get
+			{
+				return true;
+			}
+		}
 		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
 		public override string AutoGenerate(System.Collections.Generic.IEnumerable<string> existingValues)
 		{
@@ -576,6 +584,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return AutoGenerationSupport.Available;
 			}
 		}
+		/// <summary>This data type uses incremental auto generation.</summary>
+		public override bool AutoGenerationIncremental
+		{
+			get
+			{
+				return true;
+			}
+		}
 		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
 		public override string AutoGenerate(System.Collections.Generic.IEnumerable<string> existingValues)
 		{
@@ -724,6 +740,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return AutoGenerationSupport.Available;
+			}
+		}
+		/// <summary>This data type uses incremental auto generation.</summary>
+		public override bool AutoGenerationIncremental
+		{
+			get
+			{
+				return true;
 			}
 		}
 		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
@@ -1346,6 +1370,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return AutoGenerationSupport.Required;
+			}
+		}
+		/// <summary>This data type uses incremental auto generation.</summary>
+		public override bool AutoGenerationIncremental
+		{
+			get
+			{
+				return true;
 			}
 		}
 		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>

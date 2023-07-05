@@ -805,10 +805,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public virtual AutoGenerationSupport AutoGeneratable
 		{
-
 			get
 			{
 				return AutoGenerationSupport.Never;
+			}
+		}
+		/// <summary>
+		/// If auto generation is supported, is the identifier generated incrementally
+		/// or with a function? This is used well downstream when mapping where absorbing
+		/// incrementally incremented columns is limited.
+		/// </summary>
+		public virtual bool AutoGenerationIncremental
+		{
+			get
+			{
+				return false;
 			}
 		}
 		/// <summary>
