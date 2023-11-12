@@ -438,11 +438,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		protected static string AsFileName(string name)
 		{
 			string[] validNameParts = name.Split(InvalidFileChars, StringSplitOptions.RemoveEmptyEntries);
-			if (validNameParts.Length > 1)
+			switch (validNameParts.Length)
 			{
-				return string.Join(null, validNameParts);
+				case 0:
+					return name;
+				case 1:
+					return validNameParts[0];
+				default:
+					return string.Join(null, validNameParts);
 			}
-			return name;
 		}
 		/// <summary>
 		/// Gets the Fact Types for which the specified Object Type plays a role
