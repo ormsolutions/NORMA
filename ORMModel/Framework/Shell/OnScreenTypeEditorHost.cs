@@ -173,6 +173,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			base.OnHandleCreated(e);
 			AttachDropdownActivator(this);
 		}
+#if VISUALSTUDIO_16_0
+		/// <summary>
+		/// Open dropdown is no longer reliable in Visual Studio 2019 and higher.
+		/// Replace with equivalent keystrokes.
+		/// </summary>
+		public new void OpenDropDown()
+		{
+			SendKeys.Flush();
+			SendKeys.Send("{F2}%{DOWN}");
+		}
+#endif // VISUALSTUDIO_16_0
 		#endregion // Base override
 		#region OnScreenTypeEditorHostListBox class
 		/// <summary>
