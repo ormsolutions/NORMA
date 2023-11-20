@@ -685,6 +685,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											case DynamicRuleNodeState.Current:
 											case DynamicRuleNodeState.Initial:
 											case DynamicRuleNodeState.Deleted:
+											case DynamicRuleNodeState.Delete:
 												break;
 											default:
 												mismatch = true;
@@ -993,6 +994,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										case DynamicRuleNodeState.Current:
 										case DynamicRuleNodeState.Initial:
 										case DynamicRuleNodeState.Added:
+										case DynamicRuleNodeState.Deleted:
 											bodyDeclaration = true;
 											break;
 										case DynamicRuleNodeState.Delete:

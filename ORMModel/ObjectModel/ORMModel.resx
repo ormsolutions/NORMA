@@ -665,7 +665,7 @@
 		<comment>Allowed values for Current context state of joined dynamic state.</comment>
 	</data>
 	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDelete" xml:space="preserve">
-		<value>Valid fact type states are Delete, Current, Initial and Added.</value>
+		<value>Valid fact type states are Delete, Deleted, Current, Initial and Added.</value>
 		<comment>Allowed values for Delete context state of joined dynamic state.</comment>
 	</data>
 	<data name="ModelError.DynamicRule.MismatchedJoinDynamicState.AllowedForDeleted" xml:space="preserve">
@@ -701,7 +701,7 @@
 		<comment>Allowed values for Delete context state of role player dynamic state.</comment>
 	</data>
 	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForDeleted" xml:space="preserve">
-		<value>Valid role player states are Deleted, Current and Initial.</value>
+		<value>Valid role player states are Deleted, Delete, Current and Initial.</value>
 		<comment>Allowed values for Deleted context state of role player dynamic state.</comment>
 	</data>
 	<data name="ModelError.DynamicRule.MismatchedRolePlayerDynamicState.AllowedForInitial" xml:space="preserve">
