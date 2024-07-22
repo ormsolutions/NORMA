@@ -36,7 +36,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		}
 		private bool ShouldIgnoreFactType(FactType factType)
 		{
-			return ORMElementGateway.IsElementExcluded(factType) || factType is QueryBase || factType is IHasAlternateOwner<FactType> || (null != factType.Objectification && factType.UnaryRole == null);
+			return ORMElementGateway.IsElementExcluded(factType) || factType is QueryBase || factType is IHasAlternateOwner<FactType> || null != factType.Objectification;
 		}
 		#endregion // ORM Error Filtering Methods
 		#region ORMElementGateway class
@@ -439,8 +439,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (forceCreate ||
 					null == ExcludedORMModelElement.GetAbstractionModel(factType))
 				{
-					if (!(factType is QueryBase) &&
-						(null == factType.Objectification || factType.UnaryRole != null))
+					if (!(factType is QueryBase) && null == factType.Objectification)
 					{
 						new ExcludedORMModelElement(factType, model);
 					}
@@ -780,26 +779,22 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			}
 			private static void ProcessFactTypeForObjectificationAdded(FactType factType)
 			{
-				if (factType.UnaryRole == null)
+				ExcludedORMModelElement excludedLink = ExcludedORMModelElement.GetLinkToAbstractionModel(factType);
+				if (excludedLink != null)
 				{
-					ExcludedORMModelElement excludedLink = ExcludedORMModelElement.GetLinkToAbstractionModel(factType);
-					if (excludedLink != null)
-					{
-						// We don't keep the exclusion link on objectified FactTypes, but deleting
-						// it does not imply any additional processing because we we're already not
-						// considering this FactType
-						excludedLink.Delete();
-					}
-					else
-					{
-						FilterModifiedFactType(factType, false, false); // filterImpliedFactTypes = false because new implied FactTypes will get notifications on their own
-					}
+					// We don't keep the exclusion link on objectified FactTypes, but deleting
+					// it does not imply any additional processing because we we're already not
+					// considering this FactType
+					excludedLink.Delete();
+				}
+				else
+				{
+					FilterModifiedFactType(factType, false, false); // filterImpliedFactTypes = false because new implied FactTypes will get notifications on their own
 				}
 			}
 			private static void ProcessFactTypeForObjectificationDeleted(FactType factType)
 			{
-				if (!factType.IsDeleted &&
-					factType.UnaryRole == null)
+				if (!factType.IsDeleted)
 				{
 					FilterModifiedFactType(factType, false, true); // filterImpliedFactTypes = false because there are no implied facttypes without an objectification
 				}

@@ -2621,6 +2621,115 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return GetRoleCollection<DslModeling::LinkedElementCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild>, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild>(element, ColumnDomainRoleId);
 		}
 		#endregion
+		#region AbsorptionIndicator domain property code
+		
+		/// <summary>
+		/// AbsorptionIndicator domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid AbsorptionIndicatorDomainPropertyId = new global::System.Guid(0x6d4c221c, 0x9e0d, 0x4e66, 0x94, 0x3b, 0x16, 0x0f, 0xd2, 0x24, 0x55, 0xcd);
+		
+		/// <summary>
+		/// Storage for AbsorptionIndicator
+		/// </summary>
+		private global::System.Boolean absorptionIndicatorPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of AbsorptionIndicator domain property.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.AbsorptionIndicator
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/AbsorptionIndicator.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/AbsorptionIndicator.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("6d4c221c-9e0d-4e66-943b-160fd22455cd")]
+		public global::System.Boolean AbsorptionIndicator
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return absorptionIndicatorPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				AbsorptionIndicatorPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ColumnHasConceptTypeChild.AbsorptionIndicator domain property.
+		/// </summary>
+		internal sealed partial class AbsorptionIndicatorPropertyHandler : DslModeling::DomainPropertyValueHandler<ColumnHasConceptTypeChild, global::System.Boolean>
+		{
+			private AbsorptionIndicatorPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ColumnHasConceptTypeChild.AbsorptionIndicator domain property value handler.
+			/// </summary>
+			public static readonly AbsorptionIndicatorPropertyHandler Instance = new AbsorptionIndicatorPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ColumnHasConceptTypeChild.AbsorptionIndicator domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return AbsorptionIndicatorDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ColumnHasConceptTypeChild element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.absorptionIndicatorPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ColumnHasConceptTypeChild element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.absorptionIndicatorPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Accessors for roles that this REL plays in other RELs
+		#region InverseConceptTypeChild opposite domain role accessor
+		/// <summary>
+		/// Gets or sets InverseConceptTypeChild.
+		/// </summary>
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild InverseConceptTypeChild
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.ColumnChildNodeDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.ColumnChildNodeDomainRoleId, value);
+			}
+		}
+		#endregion
+		#endregion
 		#region Column link accessor
 		/// <summary>
 		/// Get the list of ColumnHasConceptTypeChild links to a Column.
@@ -2663,6 +2772,244 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 			return outLinks.AsReadOnly();
 		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
+{
+	/// <summary>
+	/// DomainRelationship ColumnHasInverseConceptTypeChild
+	/// Description for
+	/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("594910c7-141e-4236-8487-90356a7f8172")]
+	public partial class ColumnHasInverseConceptTypeChild : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ColumnHasInverseConceptTypeChild domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x594910c7, 0x141e, 0x4236, 0x84, 0x87, 0x90, 0x35, 0x6a, 0x7f, 0x81, 0x72);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ColumnHasInverseConceptTypeChild link in the same Partition as the given ColumnHasConceptTypeChild
+		/// </summary>
+		/// <param name="source">ColumnHasConceptTypeChild to use as the source of the relationship.</param>
+		/// <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
+		public ColumnHasInverseConceptTypeChild(ColumnHasConceptTypeChild source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ColumnHasInverseConceptTypeChild.ColumnChildNodeDomainRoleId, source), new DslModeling::RoleAssignment(ColumnHasInverseConceptTypeChild.InverseConceptTypeChildDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ColumnHasInverseConceptTypeChild(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ColumnHasInverseConceptTypeChild(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ColumnHasInverseConceptTypeChild(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ColumnHasInverseConceptTypeChild(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ColumnChildNode domain role code
+		
+		/// <summary>
+		/// ColumnChildNode domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ColumnChildNodeDomainRoleId = new global::System.Guid(0x322c6b8c, 0x3b60, 0x41c5, 0x83, 0x7b, 0xcc, 0xec, 0x15, 0xa1, 0x90, 0x02);
+		
+		/// <summary>
+		/// DomainRole ColumnChildNode
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/ColumnChildNode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/ColumnChildNode.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InverseConceptTypeChild", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/ColumnChildNode.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("322c6b8c-3b60-41c5-837b-ccec15a19002")]
+		public virtual ColumnHasConceptTypeChild ColumnChildNode
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ColumnHasConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ColumnChildNodeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ColumnChildNodeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access InverseChildNode of a ConceptTypeChild
+		/// <summary>
+		/// Gets a list of InverseChildNode.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ColumnHasConceptTypeChild> GetInverseChildNode(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild element)
+		{
+			return GetRoleCollection<DslModeling::LinkedElementCollection<ColumnHasConceptTypeChild>, ColumnHasConceptTypeChild>(element, InverseConceptTypeChildDomainRoleId);
+		}
+		#endregion
+		#region InverseConceptTypeChild domain role code
+		
+		/// <summary>
+		/// InverseConceptTypeChild domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid InverseConceptTypeChildDomainRoleId = new global::System.Guid(0xa6754ed9, 0x4c00, 0x4986, 0xb0, 0xdc, 0x56, 0x33, 0x31, 0x07, 0x9f, 0x35);
+		
+		/// <summary>
+		/// DomainRole InverseConceptTypeChild
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/InverseConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/InverseConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "InverseChildNode", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/InverseConceptTypeChild.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("a6754ed9-4c00-4986-b0dc-563331079f35")]
+		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild InverseConceptTypeChild
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, InverseConceptTypeChildDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, InverseConceptTypeChildDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access InverseConceptTypeChild of a ColumnHasConceptTypeChild
+		/// <summary>
+		/// Gets InverseConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild GetInverseConceptTypeChild(ColumnHasConceptTypeChild element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ColumnChildNodeDomainRoleId) as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild;
+		}
+		
+		/// <summary>
+		/// Sets InverseConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetInverseConceptTypeChild(ColumnHasConceptTypeChild element, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild newInverseConceptTypeChild)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ColumnChildNodeDomainRoleId, newInverseConceptTypeChild);
+		}
+		#endregion
+		#region ColumnChildNode link accessor
+		/// <summary>
+		/// Get the ColumnHasInverseConceptTypeChild link to a ColumnHasConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild GetLinkToInverseConceptTypeChild (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild columnChildNodeInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild>(columnChildNodeInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.ColumnChildNodeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ColumnChildNode not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region InverseConceptTypeChild link accessor
+		/// <summary>
+		/// Get the list of ColumnHasInverseConceptTypeChild links to a ConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild> GetLinksToInverseChildNode ( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild inverseConceptTypeChildInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild>(inverseConceptTypeChildInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.InverseConceptTypeChildDomainRoleId);
+		}
+		#endregion
+		#region ColumnHasInverseConceptTypeChild instance accessors
+		
+		/// <summary>
+		/// Get any ColumnHasInverseConceptTypeChild links between a given ColumnHasConceptTypeChild and a ConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.ColumnChildNodeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild link in links )
+			{
+				if ( target.Equals(link.InverseConceptTypeChild) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ColumnHasInverseConceptTypeChild link between a given ColumnHasConceptTypeChildand a ConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.ColumnChildNodeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild link in links )
+			{
+				if ( target.Equals(link.InverseConceptTypeChild) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
 		#endregion
 	}
 }

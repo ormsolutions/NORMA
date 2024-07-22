@@ -43,6 +43,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				MaxValueMismatchError max;
 				MinValueMismatchError min;
+				ValueRangeOutOfRangeError range;
 				if (null != (max = MaxValueMismatchError))
 				{
 					yield return max;
@@ -50,6 +51,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (min = MinValueMismatchError))
 				{
 					yield return min;
+				}
+				if (null != (range = OutOfRangeError))
+				{
+					yield return range;
 				}
 			}
 
@@ -502,21 +507,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IDefaultNamePattern Implementation
 		#region ValueMatch Validation
-		private static void VerifyValueMatch(ValueRange range, DataType dataType, INotifyElementAdded notifyAdded)
+		/// <summary>
+		/// Determine if the range endpoints satisfy the data type and manage mismatch errors
+		/// </summary>
+		/// <param name="range">The range to validate</param>
+		/// <param name="dataType">The context data type</param>
+		/// <param name="contextValueConstraint">The nearest context value constraint.</param>
+		/// <param name="notifyAdded">Set during deserialization</param>
+		private static void VerifyValueMatch(ValueRange range, DataType dataType, ValueConstraint contextValueConstraint, INotifyElementAdded notifyAdded)
 		{
 			bool needMinError = false;
 			bool needMaxError = false;
+			bool needRangeError = false;
 			MinValueMismatchError minMismatch;
 			MaxValueMismatchError maxMismatch;
+			ValueRangeOutOfRangeError outOfRange;
 			if (dataType != null)
 			{
 				string min = range.MinValue;
 				bool haveMin = min.Length != 0;
 				string max = range.MaxValue;
 				bool haveMax = max.Length != 0;
-				string normalizedParsedForm;
+				string normalizedParsedForm = "";
 				if ((haveMin && !dataType.ParseNormalizeValue(min, range.InvariantMinValue, out normalizedParsedForm)) ||
-					(!haveMin && !haveMax && !(dataType is TextDataType)))
+					(!haveMin && !haveMax && !dataType.CanParseAnyValue))
 				{
 					needMinError = true;
 					minMismatch = range.MinValueMismatchError;
@@ -531,10 +545,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							notifyAdded.ElementAdded(minMismatch, true);
 						}
 					}
-					minMismatch.GenerateErrorText();
+					else
+					{
+						minMismatch.GenerateErrorText();
+					}
 				}
+				else if (contextValueConstraint != null)
+				{
+					needRangeError = !contextValueConstraint.IsInRange(normalizedParsedForm, dataType);
+				}
+
 				if (min != max)
 				{
+					normalizedParsedForm = "";
 					if (haveMax && !dataType.ParseNormalizeValue(max, range.InvariantMaxValue, out normalizedParsedForm))
 					{
 						needMaxError = true;
@@ -550,7 +573,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								notifyAdded.ElementAdded(maxMismatch, true);
 							}
 						}
-						maxMismatch.GenerateErrorText();
+						else
+						{
+							maxMismatch.GenerateErrorText();
+						}
+					}
+					else if (!needRangeError && contextValueConstraint != null)
+					{
+						needRangeError = !contextValueConstraint.IsInRange(normalizedParsedForm, dataType);
 					}
 				}
 			}
@@ -561,6 +591,61 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!needMaxError && null != (maxMismatch = range.MaxValueMismatchError))
 			{
 				maxMismatch.Delete();
+			}
+
+			if (needRangeError)
+			{
+				outOfRange = range.OutOfRangeError;
+				if (outOfRange == null)
+				{
+					outOfRange = new ValueRangeOutOfRangeError(range.Partition);
+					outOfRange.ValueRange = range;
+					outOfRange.Model = dataType.Model;
+					outOfRange.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(outOfRange, true);
+					}
+				}
+				else
+				{
+					outOfRange.GenerateErrorText();
+				}
+			}
+			else if (null != (outOfRange = range.OutOfRangeError))
+			{
+				outOfRange.Delete();
+			}
+		}
+		/// <summary>
+		/// Register descended value constraints and values for validation when
+		/// a value constraint or default value changes.
+		/// </summary>
+		/// <param name="element">A <see cref="Role"/> or <see cref="ObjectType"/> with a modified value constraint or default value.</param>
+		private static void DelayValidateDescendedValues(ModelElement element)
+		{
+			if (element.IsDeleted)
+			{
+				return;
+			}
+			ObjectType valueType;
+			Role role;
+			if (null != (valueType = element as ObjectType))
+			{
+				role = null;
+			}
+			else if (null != (role = element as Role))
+			{
+				valueType = role.ValueRoleValueType;
+			}
+
+			if (valueType != null)
+			{
+				// This could be slightly more efficient if we validate from a specific role.
+				// However, a role needs to reverse walk value roles anyway to resolve the default
+				// value and value constraints, so there is little benefit on starting part way down
+				// a chain that is rarely more than a couple of links long.
+				DelayValidateDescendedValueConstraints(valueType, null, null, false);
 			}
 		}
 		/// <summary>
@@ -581,7 +666,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			bool updateInvariant = !dataType.CanParseAnyValue && dataType.IsCultureSensitive;
 			foreach (ValueRange valueRange in valueConstraint.ValueRangeCollection)
 			{
-				if (!dataType.CanParseAnyValue && dataType.IsCultureSensitive)
+				if (updateInvariant)
 				{
 					string value = valueRange.MinValue;
 					if (dataType.ParseNormalizeValue(value, valueRange.InvariantMinValue, out value))
@@ -601,11 +686,276 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Synchronize <see cref="ObjectType.InvariantDefaultValue"/> values and downstream
+		/// <see cref="Role.InvariantDefaultValue"/> settings for a modified data type.
+		/// If neither the culture-specific nor invariant form of the data matches then do not toss
+		/// either piece of data.
+		/// </summary>
+		[DelayValidatePriority(1)]
+		private static void DelayValidateValueTypeInvariantDefaultValues(ModelElement element)
+		{
+			ObjectType valueType;
+			DataType dataType;
+			if (element.IsDeleted ||
+				null == (dataType = (valueType = (ObjectType)element).DataType))
+			{
+				return;
+			}
+
+			ValueRoleVisitor roleVisitor;
+			if (!dataType.CanParseAnyValue && dataType.IsCultureSensitive)
+			{
+				string value = valueType.DefaultValue;
+				if (dataType.ParseNormalizeValue(value, valueType.InvariantDefaultValue, out value))
+				{
+					valueType.InvariantDefaultValue = value;
+				}
+
+				roleVisitor = delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)
+				{
+					if (role != null)
+					{
+						role.InvariantDefaultValue = "";
+					}
+					return true;
+				};
+			}
+			else
+			{
+				valueType.InvariantDefaultValue = "";
+				roleVisitor = delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)
+				{
+					if (role != null)
+					{
+						string value = valueType.DefaultValue;
+						if (dataType.ParseNormalizeValue(value, role.InvariantDefaultValue, out value))
+						{
+							role.InvariantDefaultValue = value;
+						}
+					}
+					return true;
+				};
+			}
+
+			Role.WalkDescendedValueRoles(valueType, null, null, roleVisitor);
+		}
 		[DelayValidatePriority(2)] // We want this after reference scheme validation and invariant value validation
 		private static void DelayValidateValueRangeValues(ModelElement element)
 		{
 			((ValueConstraint)element).VerifyValueRangeValues(null);
 		}
+
+		[DelayValidatePriority(4)] // We want this after all value constraints are verified
+		private static void DelayValidateValueTypeDefaultValue(ModelElement element)
+		{
+			ValidateValueTypeDefaultValue((ObjectType)element, null);
+		}
+
+		[DelayValidatePriority(4)] // We want this after all value constraints are verified
+		private static void DelayValidateRoleDefaultValue(ModelElement element)
+		{
+			ValidateRoleDefaultValue((Role)element, null);
+		}
+
+		/// <summary>
+		/// Verify the default value state, adding and removing errors as apropriate
+		/// </summary>
+		public static void ValidateValueTypeDefaultValue(ObjectType valueType, INotifyElementAdded notifyAdded)
+		{
+			if (valueType.IsDeleted)
+			{
+				return;
+			}
+
+			DataType dataType = valueType.DataType;
+			DefaultValueMismatchError mismatchError = valueType.DefaultValueMismatchError;
+			DefaultValueOutOfRangeError rangeError = valueType.DefaultValueOutOfRangeError;
+			bool hasMismatchError = false;
+			bool hasRangeError = false;
+
+			if (dataType != null)
+			{
+				string defaultValue = valueType.ResolvedDirectDefaultValue;
+				if (defaultValue != null)
+				{
+					hasMismatchError = !dataType.ParseNormalizeValue(defaultValue, valueType.InvariantDefaultValue, out defaultValue);
+
+					ValueConstraint valueConstraint;
+					if (!hasMismatchError && null != (valueConstraint = valueType.ValueConstraint))
+					{
+						hasRangeError = !valueConstraint.IsInRange(defaultValue, dataType);
+					}
+				}
+			}
+
+			if (hasMismatchError)
+			{
+				if (mismatchError == null)
+				{
+					mismatchError = new DefaultValueMismatchError(valueType.Partition);
+					mismatchError.ValueType = valueType;
+					mismatchError.Model = valueType.Model;
+					mismatchError.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(mismatchError, true);
+					}
+				}
+				else if (notifyAdded != null)
+				{
+					mismatchError.GenerateErrorText();
+				}
+			}
+			else if (mismatchError != null)
+			{
+				mismatchError.Delete();
+			}
+
+			if (hasRangeError)
+			{
+				if (rangeError == null)
+				{
+					rangeError = new DefaultValueOutOfRangeError(valueType.Partition);
+					rangeError.ValueType = valueType;
+					rangeError.Model = valueType.Model;
+					rangeError.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(rangeError, true);
+					}
+				}
+				else if (notifyAdded != null)
+				{
+					rangeError.GenerateErrorText();
+				}
+			}
+			else if (rangeError != null)
+			{
+				rangeError.Delete();
+			}
+		}
+
+		/// <summary>
+		/// Verify the default value state, adding and removing errors as apropriate
+		/// </summary>
+		public static void ValidateRoleDefaultValue(Role role, INotifyElementAdded notifyAdded)
+		{
+			if (role.IsDeleted)
+			{
+				return;
+			}
+
+			FactType factType = role.FactType;
+			bool hasMismatchError = false;
+			bool hasRangeError = false;
+			bool hasDetachedError = false;
+			DefaultValueMismatchError mismatchError = role.DefaultValueMismatchError;
+			DefaultValueOutOfRangeError rangeError = role.DefaultValueOutOfRangeError;
+			DefaultValueValueTypeDetachedError detachedError = role.DefaultValueValueTypeDetachedError;
+
+			// Unary defaults are managed implicitly by responding to changes in the UnaryPattern property.
+			// They are also displayed as read only. It is not worth doing extra validation on this. If
+			// we want to add it, use factType.ResolvedModel.GetPortableDataType(PortableDataType.LogicalTrueOrFalse)
+			// to retrieve the data type to validate the default values.
+			if (factType.UnaryPattern == UnaryValuePattern.NotUnary)
+			{
+				ObjectType valueType = role.ValueRoleValueType;
+				DataType dataType;
+				if (valueType == null)
+				{
+					hasDetachedError = role.ResolvedDefaultValue != null;
+				}
+				else if (null != (dataType = valueType.DataType))
+				{
+					string defaultValue = role.ResolvedDefaultValue;
+					if (defaultValue != null)
+					{
+						hasMismatchError = !dataType.ParseNormalizeValue(defaultValue, role.InvariantDefaultValue, out defaultValue);
+
+						ValueConstraint valueConstraint;
+						if (!hasMismatchError && null != (valueConstraint = role.NearestAlethicValueConstraint))
+						{
+							hasRangeError = !valueConstraint.IsInRange(defaultValue, dataType);
+						}
+					}
+				}
+			}
+
+			ORMModel model = null;
+			if (hasMismatchError)
+			{
+				if (mismatchError == null)
+				{
+					mismatchError = new DefaultValueMismatchError(role.Partition);
+					mismatchError.Role = role;
+					mismatchError.Model = model ?? (model = role.FactType.ResolvedModel);
+					mismatchError.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(mismatchError, true);
+					}
+				}
+				else if (notifyAdded != null)
+				{
+					mismatchError.GenerateErrorText();
+				}
+			}
+			else if (mismatchError != null)
+			{
+				mismatchError.Delete();
+			}
+
+			if (hasRangeError)
+			{
+				if (rangeError == null)
+				{
+					rangeError = new DefaultValueOutOfRangeError(role.Partition);
+					rangeError.Role = role;
+					rangeError.Model = model ?? (model = role.FactType.ResolvedModel);
+					rangeError.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(rangeError, true);
+					}
+				}
+				else if (notifyAdded != null)
+				{
+					rangeError.GenerateErrorText();
+				}
+			}
+			else if (rangeError != null)
+			{
+				rangeError.Delete();
+			}
+
+			if (hasDetachedError)
+			{
+				if (detachedError == null)
+				{
+					detachedError = new DefaultValueValueTypeDetachedError(role.Partition);
+					detachedError.Role = role;
+					detachedError.Model = model ?? role.FactType.ResolvedModel;
+					detachedError.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(detachedError, true);
+					}
+				}
+				else if (notifyAdded != null)
+				{
+					detachedError.GenerateErrorText();
+				}
+			}
+			else if (detachedError != null)
+			{
+				detachedError.Delete();
+			}
+		}
+
+		/// <summary>
+		/// Determine if value ranges are valid and manage range and value type detached errors.
+		/// </summary>
 		private void VerifyValueRangeValues(INotifyElementAdded notifyAdded)
 		{
 			if (IsDeleted)
@@ -617,11 +967,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (dataType != null)
 			{
 				hasError = false;
+				ValueConstraint contextValueConstraint = null;
+				RoleValueConstraint roleConstraint;
+				if (null != (roleConstraint = this as RoleValueConstraint))
+				{
+					ValueConstraint deonticDummy;
+					contextValueConstraint = roleConstraint.Role.RolePlayer.GetNearestValueConstraint(out deonticDummy);
+				}
 				LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
 				int rangesCount = ranges.Count;
 				for (int i = 0; i < rangesCount; ++i)
 				{
-					VerifyValueMatch(ranges[i], dataType, notifyAdded);
+					VerifyValueMatch(ranges[i], dataType, contextValueConstraint, notifyAdded);
 				}
 			}
 			else if (this is ValueTypeValueConstraint)
@@ -630,6 +987,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// this will change
 				hasError = false;
 			}
+
 			ValueConstraintValueTypeDetachedError error = ValueTypeDetachedError;
 			if (hasError)
 			{
@@ -663,12 +1021,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return;
 			}
-			DelayValidateValueConstraint(valueType.ValueConstraint, true);
-			Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			DelayValidateValueConstraint(valueType.ValueConstraint, true, false);
+			DelayValidateDefaultValue(valueType, true, false);
+			Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)
 			{
-				DelayValidateValueConstraint(currentValueConstraint, true);
+				DelayValidateValueConstraint(currentValueConstraint, true, false);
 				if (pathedRole == null && pathRoot == null)
 				{
+					if (defaultValue != null)
+					{
+						DelayValidateDefaultValue(role, true, false);
+					}
 					ValueComparisonConstraint.DelayValidateAttachedConstraint(role);
 				}
 				return true;
@@ -680,7 +1043,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="valueConstraint">A <see cref="ValueConstraint"/> to validate. Can be null.</param>
 		/// <param name="checkForDataTypeChange"><see langword="true"/> if the data type of the associated constraint
 		/// may have changed.</param>
-		public static void DelayValidateValueConstraint(ValueConstraint valueConstraint, bool checkForDataTypeChange)
+		/// <param name="checkDescendants">Validate downstream constraints and default values.</param>
+		public static void DelayValidateValueConstraint(ValueConstraint valueConstraint, bool checkForDataTypeChange, bool checkDescendants)
 		{
 			if (valueConstraint != null && !valueConstraint.IsDeleting && !valueConstraint.IsDeleted)
 			{
@@ -700,6 +1064,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					valueConstraint.OnTextChanged();
 				}
 				FrameworkDomainModel.DelayValidateElement(valueConstraint, DelayValidateValueRangeOverlapError);
+				if (checkDescendants)
+				{
+					RoleValueConstraint roleValueConstraint = valueConstraint as RoleValueConstraint;
+					FrameworkDomainModel.DelayValidateElement(roleValueConstraint != null ? (ModelElement)roleValueConstraint.Role : ((ValueTypeValueConstraint)valueConstraint).ValueType, DelayValidateDescendedValues);
+				}
+			}
+		}
+		/// <summary>
+		/// Validate default value errors for a value type
+		/// </summary>
+		/// <param name="valueType">An <see cref="ObjectType"/> to validate. Can be null.</param>
+		/// <param name="checkForDataTypeChange"><see langword="true"/> if the data type of the value type
+		/// may have changed.</param>
+		/// <param name="checkDescendants">Validate downstream constraints and default values.</param>
+		/// <remarks>Default value processing is very similar to value constraint processing so is
+		/// maintained in this file.</remarks>
+		public static void DelayValidateDefaultValue(ObjectType valueType, bool checkForDataTypeChange, bool checkDescendants)
+		{
+			if (valueType != null && !valueType.IsDeleted && !valueType.IsDeleting)
+			{
+				if (checkForDataTypeChange)
+				{
+					FrameworkDomainModel.DelayValidateElement(valueType, DelayValidateValueTypeInvariantDefaultValues);
+				}
+				FrameworkDomainModel.DelayValidateElement(valueType, DelayValidateValueTypeDefaultValue);
+				if (checkDescendants)
+				{
+					FrameworkDomainModel.DelayValidateElement(valueType, DelayValidateDescendedValues);
+				}
+			}
+		}
+		/// <summary>
+		/// Validate default value errors for a role
+		/// </summary>
+		/// <param name="role">An <see cref="Role"/> to validate. Can be null.</param>
+		/// <param name="checkInvariant">The invariant value should be validated. This should
+		/// be set if the value itself changed or the data type changed</param>
+		/// <param name="checkDescendants">Validate downstream constraints and default values.</param>
+		public static void DelayValidateDefaultValue(Role role, bool checkInvariant, bool checkDescendants)
+		{
+			if (role != null && !role.IsDeleted && !role.IsDeleting)
+			{
+				if (checkInvariant)
+				{
+					ObjectType valueType;
+					DataType dataType;
+					if (null != (valueType = role.ValueRoleValueType) &&
+						null != (dataType = valueType.DataType))
+					{
+						string newDefault = role.DefaultValue;
+						string invariantDefault = null;
+						if (!string.IsNullOrEmpty(newDefault) && !dataType.CanParseAnyValue && dataType.IsCultureSensitive)
+						{
+							dataType.TryConvertToInvariant(newDefault, out invariantDefault);
+						}
+						role.InvariantDefaultValue = invariantDefault ?? "";
+					}
+				}
+
+				FrameworkDomainModel.DelayValidateElement(role, DelayValidateRoleDefaultValue);
+				if (checkDescendants)
+				{
+					FrameworkDomainModel.DelayValidateElement(role, DelayValidateDescendedValues);
+				}
 			}
 		}
 		/// <summary>
@@ -709,13 +1137,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="anchorType">The <see cref="ObjectType"/> to begin walking from</param>
 		/// <param name="unattachedRole">The alternate role</param>
 		/// <param name="unattachedPreferredIdentifier">The alternate preferred identifier</param>
-		private static void DelayValidateDescendedValueConstraints(ObjectType anchorType, Role unattachedRole, UniquenessConstraint unattachedPreferredIdentifier)
+		/// <param name="checkForDataTypeChange"><see langword="true"/> if the data type of the associated constraint
+		/// may have changed.</param>
+		private static void DelayValidateDescendedValueConstraints(ObjectType anchorType, Role unattachedRole, UniquenessConstraint unattachedPreferredIdentifier, bool checkForDataTypeChange)
 		{
-			Role.WalkDescendedValueRoles(anchorType, unattachedRole, unattachedPreferredIdentifier, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+			if (anchorType.ResolvedDirectDefaultValue != null && anchorType.ValueConstraint != null)
 			{
-				DelayValidateValueConstraint(currentValueConstraint, true);
+				// For validation purposed, the default value of the anchor type is a
+				// descendant of a value constraint on the value type.
+				DelayValidateDefaultValue(anchorType, true, false);
+			}
+			Role.WalkDescendedValueRoles(anchorType, unattachedRole, unattachedPreferredIdentifier, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)
+			{
+				DelayValidateValueConstraint(currentValueConstraint, checkForDataTypeChange, false);
 				if (pathedRole == null && pathRoot == null)
 				{
+					if (defaultValue != null)
+					{
+						DelayValidateDefaultValue(role, true, false);
+					}
 					ValueComparisonConstraint.DelayValidateAttachedConstraint(role);
 				}
 				return true; // Continue walking
@@ -749,20 +1189,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!oldValueType.IsDeleting)
 			{
 				ValueTypeHasValueConstraint valueTypeConstraintLink = ValueTypeHasValueConstraint.GetLinkToValueConstraint(oldValueType);
-				bool hasValueConstraint = valueTypeConstraintLink != null;
-				if (!hasValueConstraint)
+				bool hasValueConstraintOrDefaultValue = valueTypeConstraintLink != null || oldValueType.ResolvedDirectDefaultValue != null;
+				if (!hasValueConstraintOrDefaultValue)
 				{
-					Role.WalkDescendedValueRoles(oldValueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles(oldValueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)
 					{
-						if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+						if ((currentValueConstraint != null && !currentValueConstraint.IsDeleting) || defaultValue != null)
 						{
-							hasValueConstraint = true;
+							hasValueConstraintOrDefaultValue = true;
 							return false; // Stop walking
 						}
 						return true;
 					});
 				}
-				if (hasValueConstraint)
+				if (hasValueConstraintOrDefaultValue)
 				{
 					// Convert this value type into an entity type with a reference mode
 					IHasAlternateOwner<ObjectType> toAlternateOwner;
@@ -812,6 +1252,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							partition,
 							new RoleAssignment[] { new RoleAssignment(ValueTypeHasDataType.ValueTypeDomainRoleId, newValueType), new RoleAssignment(ValueTypeHasDataType.DataTypeDomainRoleId, link.DataType) },
 							new PropertyAssignment[] { new PropertyAssignment(ValueTypeHasDataType.ScaleDomainPropertyId, link.Scale), new PropertyAssignment(ValueTypeHasDataType.LengthDomainPropertyId, link.Length) });
+
+						// Transfer default value settings
+						switch (oldValueType.DefaultState)
+						{
+							case DefaultValueState.UseValue:
+								newValueType.DefaultValue = oldValueType.DefaultValue;
+								break;
+							case DefaultValueState.EmptyValue:
+								newValueType.DefaultState = DefaultValueState.EmptyValue;
+								break;
+						}
 
 						// Change the old ValueTypeValueConstraint to a new RoleValueConstraint
 						RoleValueConstraint newValueConstraint = null;
@@ -879,7 +1330,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-				DelayValidateDescendedValueConstraints(oldValueType, null, null);
+				DelayValidateDescendedValueConstraints(oldValueType, null, null, true);
 			}
 		}
 		#endregion // DataTypeDeletingRule
@@ -899,48 +1350,76 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // DataTypeChangeRule
-		#region ValueConstraintAddRule
+		#region ValueTypeValueConstraintAddedRule
 		/// <summary>
 		/// AddRule: typeof(ValueTypeHasValueConstraint)
 		/// Checks if the new value range definition matches the data type
 		/// </summary>
-		private static void ValueConstraintAddRule(ElementAddedEventArgs e)
+		private static void ValueTypeValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
 			ValueConstraint valueConstraint = ((ValueTypeHasValueConstraint)e.ModelElement).ValueConstraint;
-			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0, true);
 		}
-		#endregion // ValueConstraintAddRule
+		#endregion // ValueTypeValueConstraintAddedRule
+		#region ValueTypeValueConstraintDeletedRule
+		/// <summary>
+		/// Delete: typeof(ValueTypeHasValueConstraint)
+		/// Checks if the new value range definition matches the data type
+		/// </summary>
+		private static void ValueTypeValueConstraintDeletedRule(ElementDeletedEventArgs e)
+		{
+			ObjectType valueType = ((ValueTypeHasValueConstraint)e.ModelElement).ValueType;
+			if (!valueType.IsDeleted)
+			{
+				DelayValidateDefaultValue(valueType, false, true);
+			}
+		}
+		#endregion // ValueTypeValueConstraintDeletedRule
 		#region RoleValueConstraintAddedRule
 		/// <summary>
 		/// AddRule: typeof(RoleHasValueConstraint)
-		/// Checks if the the value range matches the specified date type
+		/// Checks if the value range matches the specified date type
 		/// </summary>
 		private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
 			ValueConstraint valueConstraint = ((RoleHasValueConstraint)e.ModelElement).ValueConstraint;
-			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0, true);
+		}
+		#endregion // RoleValueConstraintAddedRule
+		#region RoleValueConstraintDeletedRule
+		/// <summary>
+		/// DeleteRule: typeof(RoleHasValueConstraint)
+		/// Checks if default value error status changes without a role value constraint
+		/// </summary>
+		private static void RoleValueConstraintDeletedRule(ElementDeletedEventArgs e)
+		{
+			Role role = ((RoleHasValueConstraint)e.ModelElement).Role;
+			if (!role.IsDeleted)
+			{
+				DelayValidateDefaultValue(role, false, true);
+			}
 		}
 		#endregion // RoleValueConstraintAddedRule
 		#region  PathConditionRoleValueConstraintAddedRule
 		/// <summary>
 		/// AddRule: typeof(PathedRoleHasValueConstraint)
-		/// Checks if the the value range matches the specified date type
+		/// Checks if the value range matches the specified date type
 		/// </summary>
 		private static void PathConditionRoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
 			ValueConstraint valueConstraint = ((PathedRoleHasValueConstraint)e.ModelElement).ValueConstraint;
-			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0, false);
 		}
 		#endregion // PathConditionRoleValueConstraintAddedRule
 		#region  PathConditionRootValueConstraintAddedRule
 		/// <summary>
 		/// AddRule: typeof(RolePathRootHasValueConstraint)
-		/// Checks if the the value range matches the specified date type
+		/// Checks if the value range matches the specified date type
 		/// </summary>
 		private static void PathConditionRootValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
 			ValueConstraint valueConstraint = ((RolePathRootHasValueConstraint)e.ModelElement).ValueConstraint;
-			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0);
+			DelayValidateValueConstraint(valueConstraint, valueConstraint.ValueRangeCollection.Count != 0, false);
 		}
 		#endregion // PathConditionRootValueConstraintAddedRule
 		#region ObjectTypeRoleAdded
@@ -972,7 +1451,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string minInvariant = null;
 				string maxInvariant = null;
 				ValueRange range = link.ValueRange;
-				if (dataType.IsCultureSensitive)
+				if (!dataType.CanParseAnyValue && dataType.IsCultureSensitive)
 				{
 					dataType.TryConvertToInvariant(range.MinValue, out minInvariant);
 					dataType.TryConvertToInvariant(range.MaxValue, out maxInvariant);
@@ -980,7 +1459,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				range.InvariantMinValue = minInvariant ?? "";
 				range.InvariantMaxValue = maxInvariant ?? "";
 			}
-			DelayValidateValueConstraint(valueConstraint, false);
+			DelayValidateValueConstraint(valueConstraint, false, true);
 		}
 		#endregion // ValueRangeAddedRule
 		#region ValueRangeChangeRule
@@ -1002,6 +1481,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string invariantForm = null;
 					DataType dataType = valueConstraint.DataType;
 					if (null != (dataType = valueConstraint.DataType) &&
+						!dataType.CanParseAnyValue &&
 						dataType.IsCultureSensitive)
 					{
 						dataType.TryConvertToInvariant((string)e.NewValue, out invariantForm);
@@ -1015,7 +1495,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						range.InvariantMaxValue = invariantForm ?? "";
 					}
 				}
-				DelayValidateValueConstraint(valueConstraint, false);
+				DelayValidateValueConstraint(valueConstraint, false, true);
 			}
 		}
 		#endregion // ValueRangeChangeRule
@@ -1068,7 +1548,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (!objectType.IsDeleting)
 			{
-				DelayValidateDescendedValueConstraints(objectType, null, preferredIdentifier);
+				DelayValidateDescendedValueConstraints(objectType, null, preferredIdentifier, true);
 			}
 		}
 		#endregion // PreferredIdentifierDeletingRule
@@ -1083,12 +1563,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (e.DomainRole.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId)
 			{
 				ProcessPreferredIdentifierDeleting(link, (ObjectType)e.OldRolePlayer, null);
-				DelayValidateDescendedValueConstraints((ObjectType)e.NewRolePlayer, null, null);
+				DelayValidateDescendedValueConstraints((ObjectType)e.NewRolePlayer, null, null, true);
 			}
 			else
 			{
 				ProcessPreferredIdentifierDeleting(link, null, (UniquenessConstraint)e.OldRolePlayer);
-				DelayValidateDescendedValueConstraints(link.PreferredIdentifierFor, null, null);
+				DelayValidateDescendedValueConstraints(link.PreferredIdentifierFor, null, null, true);
 			}
 		}
 		#endregion // PreferredIdentifierRolePlayerChangeRule
@@ -1119,7 +1599,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RoleProxy proxyRole;
 				Role oppositeRole;
 				if (null != (originalRolePlayer = originalRole.RolePlayer) &&
-					null != (oppositeRoleBase = (null != (proxyRole = originalRole.Proxy)) ? proxyRole.OppositeRole : originalRole.OppositeRole) &&
+					null != (oppositeRoleBase = (null != (proxyRole = originalRole.Proxy)) ? proxyRole.OppositeRole : originalRole.OppositeOrUnaryRole) &&
 					null != (oppositeRole = oppositeRoleBase.Role))
 				{
 					// This assert can fail incorrectly during element merge
@@ -1132,7 +1612,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (testRole != oppositeRole)
 						{
 							// Test by skipping the binary fact for the old part of the preferred identifier
-							DelayValidateDescendedValueConstraints(originalRolePlayer, testRole, null);
+							DelayValidateDescendedValueConstraints(originalRolePlayer, testRole, null, true);
 						}
 					}
 				}
@@ -1147,7 +1627,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RolePlayerDeletingRule(ElementDeletingEventArgs e)
 		{
-			DelayValidateDescendedValueConstraints(((ObjectTypePlaysRole)e.ModelElement).RolePlayer, null, null);
+			DelayValidateDescendedValueConstraints(((ObjectTypePlaysRole)e.ModelElement).RolePlayer, null, null, true);
 		}
 		#endregion // RolePlayerDeletingRule
 		#region RolePlayerRolePlayerChangeRule
@@ -1168,15 +1648,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// If the old configuration did not have the changed role as a value
 					// role then there will be no value roles descended from it.
 					bool visited = false;
-					Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+					Role.WalkDescendedValueRoles((ObjectType)e.NewRolePlayer, changedRole, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)
 					{
 						// If we get any callback here, then the role can still be a value role
 						visited = true;
 						// Make sure that this value constraint is compatible with
 						// other constraints above it.
-						DelayValidateValueConstraint(currentValueConstraint, true);
+						DelayValidateValueConstraint(currentValueConstraint, true, false);
 						if (pathedRole == null && pathRoot == null)
 						{
+							if (defaultValue != null)
+							{
+								DelayValidateDefaultValue(role, true, false);
+							}
 							ValueComparisonConstraint.DelayValidateAttachedConstraint(role);
 						}
 						return true;
@@ -1184,8 +1668,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (!visited)
 					{
 						// The old role player supported values, the new one does not.
-						// Delete any downstream value constraints.
-						DelayValidateDescendedValueConstraints(oldRolePlayer, changedRole, null);
+						// A downstream value constraints and defaults need an error state.
+						DelayValidateDescendedValueConstraints(oldRolePlayer, changedRole, null, true);
 					}
 				}
 			}
@@ -1449,6 +1933,112 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				error.Delete();
 			}
 		}
+
+		/// <summary>
+		/// Determine if a value is valid for this value constraint.
+		/// </summary>
+		/// <param name="normalizedValue">The value to test. dataType.ParseNormalizeValue has already been applied to this value.</param>
+		/// <param name="dataType">The resolve data type.</param>
+		public bool IsInRange(string normalizedValue, DataType dataType)
+		{
+			bool inRange = true;
+			if (dataType == null)
+			{
+				dataType = DataType;
+			}
+			if (dataType != null &&
+				dataType.CanCompare &&
+				!(inRange = normalizedValue.Length == 0))
+			{
+				DataTypeRangeSupport rangeSupport = dataType.RangeSupport;
+				LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
+				int rangeCount = ranges.Count;
+				string minValue;
+				string maxValue;
+				ValueRange range;
+				switch (rangeSupport)
+				{
+					case DataTypeRangeSupport.None:
+						{
+							inRange = false;
+							for (int i = 0; i < rangeCount; ++i)
+							{
+								range = ranges[i];
+
+								// The lower node is sufficient
+								minValue = range.MinValue;
+								if ((minValue.Length == 0 || !dataType.ParseNormalizeValue(minValue, range.InvariantMinValue, out minValue)) &&
+									minValue == normalizedValue)
+								{
+									inRange = true;
+									break;
+								}
+							}
+							break;
+						}
+					case DataTypeRangeSupport.ContinuousEndPoints:
+					case DataTypeRangeSupport.DiscontinuousEndPoints:
+						{
+							bool adjustEndPoints = rangeSupport == DataTypeRangeSupport.DiscontinuousEndPoints;
+							bool isOpen;
+							inRange = false;
+							for (int i = 0; i < rangeCount; ++i)
+							{
+								range = ranges[i];
+								minValue = range.MinValue;
+								maxValue = range.MaxValue;
+								if (minValue.Length != 0 && dataType.ParseNormalizeValue(minValue, range.InvariantMinValue, out minValue))
+								{
+									isOpen = range.MinInclusion == RangeInclusion.Open;
+									if (adjustEndPoints && !dataType.AdjustDiscontinuousLowerBound(ref minValue, ref isOpen))
+									{
+										continue;
+									}
+
+									int minCompare = dataType.Compare(minValue, normalizedValue);
+
+									if (isOpen ? minCompare < 0 : minCompare <= 0)
+									{
+										if (maxValue.Length == 0)
+										{
+											inRange = true;
+											break;
+										}
+										else if (dataType.ParseNormalizeValue(maxValue, range.InvariantMaxValue, out maxValue))
+										{
+											isOpen = range.MaxInclusion == RangeInclusion.Open;
+											if (!adjustEndPoints || dataType.AdjustDiscontinuousUpperBound(ref maxValue, ref isOpen))
+											{
+												int maxCompare = dataType.Compare(normalizedValue, maxValue);
+												if (isOpen ? maxCompare < 0 : maxCompare <= 0)
+												{
+													inRange = true;
+													break;
+												}
+											}
+										}
+									}
+								}
+								else if (maxValue.Length != 0 && dataType.ParseNormalizeValue(maxValue, range.InvariantMaxValue, out maxValue))
+								{
+									isOpen = range.MaxInclusion == RangeInclusion.Open;
+									if (!adjustEndPoints || dataType.AdjustDiscontinuousUpperBound(ref maxValue, ref isOpen))
+									{
+										int maxCompare = dataType.Compare(normalizedValue, maxValue);
+										if (isOpen ? maxCompare < 0 : maxCompare <= 0)
+										{
+											inRange = true;
+											break;
+										}
+									}
+								}
+							}
+						}
+						break;
+				}
+			}
+			return inRange;
+		}
 		#endregion // VerifyValueRangeOverlapError
 		#region CustomStorage handlers
 		/// <summary>
@@ -1603,6 +2193,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 					DataType dataType;
 					if (null != (dataType = element.DataType) &&
+						!dataType.CanParseAnyValue &&
 						dataType.IsCultureSensitive)
 					{
 						foreach (ValueRange valueRange in ranges)
@@ -1622,6 +2213,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								valueRange.InvariantMaxValue = invariantValue;
 							}
 						}
+
+						// See comments in ValueTypeInstance.InvariantValueFixupListener regarding invariant forms of default values.
 					}
 				}
 			}
@@ -1935,11 +2528,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				DataType retVal = null;
 				Role role;
-				Role[] valueRoles;
+				ObjectType valueType;
 				if (null != (role = Role) &&
-					null != (valueRoles = role.GetValueRoles()))
+					null != (valueType = role.ValueRoleValueType))
 				{
-					retVal = valueRoles[0].RolePlayer.DataType;
+					retVal = valueType.DataType;
 				}
 				return retVal;
 			}
@@ -2008,11 +2601,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				DataType retVal = null;
 				PathedRole pathedRole;
-				Role[] valueRoles;
+				ObjectType valueType;
 				if (null != (pathedRole = PathedRole) &&
-					null != (valueRoles = pathedRole.Role.GetValueRoles()))
+					null != (valueType = pathedRole.Role.ValueRoleValueType))
 				{
-					retVal = valueRoles[0].RolePlayer.DataType;
+					retVal = valueType.DataType;
 				}
 				return retVal;
 			}
@@ -2085,14 +2678,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RolePathObjectTypeRoot pathRoot;
 				if (null != (pathRoot = PathRoot))
 				{
-					ObjectType rootObjectType = pathRoot.RootObjectType;
-					retVal = rootObjectType.DataType;
-					Role[] valueRoles;
-					if (retVal == null &&
-						null != (valueRoles = rootObjectType.GetIdentifyingValueRoles()))
-					{
-						retVal = valueRoles[0].RolePlayer.DataType;
-					}
+					retVal = pathRoot.RootObjectType.SingleValueDataType;
 				}
 				return retVal;
 			}
@@ -2352,4 +2938,200 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Base overrides
 	}
 	#endregion // ValueRangeOverlapError
+	#region DefaultValueMismatchError class
+	/// <summary>
+	/// DefaultValueMismatchError class
+	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
+	partial class DefaultValueMismatchError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Regenerate error text on owner and model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = (IModelErrorDisplayContext)Role ?? ValueType;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDefaultValueMismatch, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorDefaultValueMismatchCompact;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
+		/// </summary>
+		protected new ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { (ModelElement)Role ?? ValueType };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion // DefaultValueMismatchError class
+	#region DefaultValueOutOfRangeError class
+	/// <summary>
+	/// DefaultValueOutOfRangeError class
+	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
+	partial class DefaultValueOutOfRangeError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Regenerate error text on owner and model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = (IModelErrorDisplayContext)Role ?? ValueType;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDefaultValueOutOfRange, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorDefaultValueOutOfRangeCompact;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
+		/// </summary>
+		protected new ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { (ModelElement)Role ?? ValueType };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion // DefaultValueOutOfRangeError class
+	#region DefaultValueValueTypeDetachedError class
+	/// <summary>
+	/// DefaultValueValueTypeDetachedError class
+	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
+	partial class DefaultValueValueTypeDetachedError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Regenerate error text on owner and model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = Role;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDefaultValueValueTypeDetached, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorDefaultValueValueTypeDetachedCompact;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements <see cref="IRepresentModelElements.GetRepresentedElements"/>
+		/// </summary>
+		protected new ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { Role };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion // DefaultValueValueTypeDetachedError class
+	#region ValueConstraintOutOfRangeError class
+	/// <summary>
+	/// This is the model error message for value ranges that overlap
+	/// </summary>
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
+	partial class ValueRangeOutOfRangeError
+	{
+		#region Base overrides
+		/// <summary>
+		/// GenerateErrorText
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ValueConstraint valueConstraint = ValueRange.ValueConstraint;
+			IModelErrorDisplayContext displayContext = valueConstraint != null ? valueConstraint.ErrorDisplayContext : null;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeOutOfRangeError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorValueRangeOutOfRangeErrorCompact;
+			}
+		}
+		/// <summary>
+		/// Get the associated <see cref="ValueConstraint"/>
+		/// </summary>
+		public override ValueConstraint ContextValueConstraint
+		{
+			get
+			{
+				return ValueRange.ValueConstraint;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // ValueConstraintOutOfRangeError class
 }

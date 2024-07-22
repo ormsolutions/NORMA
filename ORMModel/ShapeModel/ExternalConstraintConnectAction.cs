@@ -227,33 +227,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						// The single-column constraint is its own role set, just add the roles.
 						modifyRoleSequence = setConstraint;
-						switch (constraint.ConstraintType)
-						{
-							case ConstraintType.ExternalUniqueness:
-							case ConstraintType.Frequency:
-								// Translate selected unary roles back to the implied role
-								bool duplicatedSelectedRoles = false;
-								for (int i = 0; i < rolesCount; ++i)
-								{
-									Role testRole = selectedRoles[i];
-									Role oppositeRole;
-									ObjectType oppositeRolePlayer;
-									if (null != (oppositeRole = testRole.OppositeRole as Role) &&
-										null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
-										oppositeRolePlayer.IsImplicitBooleanValue)
-									{
-										if (!duplicatedSelectedRoles)
-										{
-											duplicatedSelectedRoles = true;
-											Role[] dupRoles = new Role[rolesCount];
-											selectedRoles.CopyTo(dupRoles, 0);
-											selectedRoles = dupRoles;
-										}
-										selectedRoles[i] = oppositeRole;
-									}
-								}
-								break;
-						}
 					}
 					if (modifyRoleSequence != null)
 					{
@@ -868,20 +841,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							forceAsColumnForSubtype = value is MandatoryConstraint;
 						}
 					}
-					Role roleToAdd = role;
-					ObjectType rolePlayer;
-					if (null != (rolePlayer = role.RolePlayer) &&
-						rolePlayer.IsImplicitBooleanValue)
-					{
-						roleToAdd = role.OppositeRole.Role;
-					}
+
 					if (forceAsColumnForSubtype &&
-						roleToAdd is SupertypeMetaRole)
+						role is SupertypeMetaRole)
 					{
 						++supertypeRoleCount;
 					}
-					selectedRoleCollection.Add(roleToAdd);
-					initialRoles.Add(roleToAdd);
+					selectedRoleCollection.Add(role);
+					initialRoles.Add(role);
 				}
 				mySelectedSupertypeRoleCount = supertypeRoleCount;
 				if (supertypeRoleCount != 0)

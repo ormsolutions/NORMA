@@ -30,6 +30,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
@@ -76,9 +77,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// </summary>
 		LinkInfo = 0x08,
 		/// <summary>
-		/// The CustomSerializedChildRoleComparer method is supported
+		/// The CustomSerializedChildElementComparer method is supported
 		/// </summary>
-		CustomSortChildRoles = 0x10,
+		CustomSortChildElements = 0x10,
 		/// <summary>
 		/// Set if some of the properties are written as elements and others are written as properties.
 		/// </summary>
@@ -412,12 +413,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		public CustomSerializedPropertyInfo(string customPrefix, string customName, string customNamespace, bool writeCustomStorage, CustomSerializedAttributeWriteStyle writeStyle, string doubleTagName)
 			: base(customPrefix, customName, customNamespace, doubleTagName)
 		{
-			myWriteCustomStorage = writeCustomStorage;
-			myWriteStyle = writeStyle;
+			myWriteStyle = (CustomSerializedAttributeWriteStyle)((int)writeStyle | (writeCustomStorage ? WriteCustomStorageFlag : 0));
 		}
 
-		private bool myWriteCustomStorage;
-		private CustomSerializedAttributeWriteStyle myWriteStyle;
+		private static int WriteCustomStorageFlag = 0x100;
+		private static int ExtraFlags = WriteCustomStorageFlag; // This had multiple flags at one point, but NotSorted was not needed. I'm keeping it to simplifying adding other flags if needed.
+		private CustomSerializedAttributeWriteStyle myWriteStyle; // Includes extra flags
 
 		/// <summary>
 		/// Default CustomSerializedPropertyInfo
@@ -430,17 +431,31 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <value>true to write when custom storage.</value>
 		public bool WriteCustomStorage
 		{
-			get { return myWriteCustomStorage; }
-			set { myWriteCustomStorage = value; }
+			get { return 0 != ((int)myWriteStyle & WriteCustomStorageFlag); }
+			set
+			{
+				if (value)
+				{
+					myWriteStyle = (CustomSerializedAttributeWriteStyle)((int)myWriteStyle | WriteCustomStorageFlag);
+				}
+				else
+				{
+					myWriteStyle = (CustomSerializedAttributeWriteStyle)((int)myWriteStyle & ~WriteCustomStorageFlag);
+				}
+			}
 		}
+
 		/// <summary>
 		/// The style to use when writting.
 		/// </summary>
 		/// <value>The style to use when writting.</value>
 		public CustomSerializedAttributeWriteStyle WriteStyle
 		{
-			get { return myWriteStyle; }
-			set { myWriteStyle = value; }
+			get { return (CustomSerializedAttributeWriteStyle)((int)myWriteStyle & ~ExtraFlags); }
+			set
+			{
+				myWriteStyle = (CustomSerializedAttributeWriteStyle)((int)value | ((int)myWriteStyle & ExtraFlags));
+			}
 		}
 	}
 	#endregion // CustomSerializedPropertyInfo class
@@ -1578,7 +1593,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// Get a comparer to sort custom role elements. Affects the element order
 		/// for nested child (aggregated) and link (referenced) elements
 		/// </summary>
-		IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer { get;}
+		IComparer<DomainObjectInfo> CustomSerializedChildElementComparer { get;}
 		/// <summary>
 		/// Attempt to map an element name to a custom serialized child element.
 		/// </summary>
@@ -1723,23 +1738,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		protected abstract string GetRootSchemaFileName();
 
 		/// <summary>
-		/// Used for sorting.
-		/// </summary>
-		/// <param name="writeStyle">An property write style.</param>
-		/// <returns>A number to sort with.</returns>
-		private static int PropertyWriteStylePriority(CustomSerializedAttributeWriteStyle writeStyle)
-		{
-			switch (writeStyle)
-			{
-				case CustomSerializedAttributeWriteStyle.Attribute:
-					return 0;
-				case CustomSerializedAttributeWriteStyle.Element:
-				case CustomSerializedAttributeWriteStyle.DoubleTaggedElement:
-					return 1;
-			}
-			return 2;
-		}
-		/// <summary>
 		/// Used for serializing properties.
 		/// </summary>
 		/// <param name="guid">The GUID to convert.</param>
@@ -1834,60 +1832,64 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			return -1;
 		}
 		/// <summary>
-		/// Sorts mixed typed properties.
+		/// Separate properties based on how they are written
 		/// </summary>
 		/// <param name="customElement">The element.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
 		/// <param name="properties">The element's properties.</param>
-		private static void SortProperties(ICustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, ref IList<DomainPropertyInfo> properties)
+		/// <param name="attributes">Returns the properties to write as attributes.</param>
+		/// <param name="elements">Returns properties to write as elements.</param>
+		private static void ClassifyProperties(ICustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, IList<DomainPropertyInfo> properties, out IList<DomainPropertyInfo> attributes, out IList<DomainPropertyInfo> elements)
 		{
-			int propertyCount = properties.Count;
-			if (propertyCount > 1)
-			{
-				CustomSerializedPropertyInfo[] customInfo = new CustomSerializedPropertyInfo[propertyCount];
-				int[] indices = new int[propertyCount];
-				for (int i = 0; i < propertyCount; ++i)
-				{
-					indices[i] = i;
-					customInfo[i] = customElement.GetCustomSerializedPropertyInfo(properties[i], rolePlayedInfo);
-				}
-				Array.Sort<int>(indices, delegate(int index1, int index2)
-				{
-					CustomSerializedPropertyInfo customInfo1 = customInfo[index1];
-					CustomSerializedPropertyInfo customInfo2 = customInfo[index2];
-					int ws0 = PropertyWriteStylePriority(customInfo1.WriteStyle);
-					int ws1 = PropertyWriteStylePriority(customInfo2.WriteStyle);
+			attributes = null;
+			elements = null;
 
-					if (ws0 > ws1)
-					{
-						return 1;
-					}
-					else if (ws0 < ws1)
-					{
-						return -1;
-					}
-					if (ws0 == 1)
-					{
-						// Sort attributes rendered as elements in model definition order.
-						return index1.CompareTo(index2);
-					}
-					return 0;
-				});
+			int propertyCount = properties != null ? properties.Count : 0;
+			if (propertyCount != 0)
+			{
+				List<DomainPropertyInfo> attributeList = null;
+				List<DomainPropertyInfo> elementList = null;
 				for (int i = 0; i < propertyCount; ++i)
 				{
-					if (indices[i] != i)
+					DomainPropertyInfo property = properties[i];
+					CustomSerializedPropertyInfo customInfo = customElement.GetCustomSerializedPropertyInfo(property, rolePlayedInfo);
+					if (customInfo != null)
 					{
-						DomainPropertyInfo[] reorderedList = new DomainPropertyInfo[propertyCount];
-						for (int j = 0; j < propertyCount; ++j)
+						switch (customInfo.WriteStyle)
 						{
-							reorderedList[indices[j]] = properties[j];
+							case CustomSerializedAttributeWriteStyle.Attribute:
+								if (elementList != null)
+								{
+									(attributeList ?? (attributeList = new List<DomainPropertyInfo>())).Add(property);
+								}
+								break;
+							case CustomSerializedAttributeWriteStyle.Element:
+							case CustomSerializedAttributeWriteStyle.DoubleTaggedElement:
+								if (elementList == null)
+								{
+									elementList = new List<DomainPropertyInfo>();
+									if (i != 0)
+									{
+										attributeList = new List<DomainPropertyInfo>(properties.Take(i));
+									}
+								}
+
+								elementList.Add(property);
+								break;
 						}
-						properties = reorderedList;
-						break;
 					}
+				}
+
+				if (elementList != null)
+				{
+					attributes = attributeList;
+					elements = elementList;
+				}
+				else
+				{
+					attributes = properties;
 				}
 			}
-			return;
 		}
 		/// <summary>
 		/// Used to defer writing custom elements. This can return false to force unwind of the calling function.
@@ -2094,10 +2096,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <param name="customElement">The element as a custom element.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
 		/// <param name="property">The element's property to write.</param>
-		/// <param name="isCustomProperty">true if the property has custom info.</param>
-		private static void SerializeProperties(XmlWriter file, ModelElement element, ICustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, DomainPropertyInfo property, bool isCustomProperty)
+		/// <param name="checkCustomization">true if the property has custom info.</param>
+		private static void SerializeProperty(XmlWriter file, ModelElement element, ICustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, DomainPropertyInfo property, bool checkCustomization)
 		{
-			if (!isCustomProperty)
+			if (!checkCustomization)
 			{
 				if (property.Kind == DomainPropertyKind.Normal)
 				{
@@ -2182,7 +2184,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			{
 				DomainPropertyInfo property = properties[index];
 
-				SerializeProperties
+				SerializeProperty
 				(
 					file,
 					element,
@@ -2247,13 +2249,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				defaultPrefix = DefaultElementPrefix(rolePlayer);
 			}
 
+			IList<DomainPropertyInfo> attributeProperties = null;
+			IList<DomainPropertyInfo> elementProperties = null;
 			if (customElement != null)
 			{
 				supportedOperations = customElement.SupportedCustomSerializedOperations;
 
 				if (0 != (supportedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes) && properties != null)
 				{
-					SortProperties(customElement, rolePlayedInfo, ref properties);
+					ClassifyProperties(customElement, rolePlayedInfo, properties, out attributeProperties, out elementProperties);
+				}
+				else
+				{
+					attributeProperties = properties;
 				}
 				hasCustomAttributes = (supportedOperations & CustomSerializedElementSupportedOperations.PropertyInfo) != 0;
 
@@ -2284,6 +2292,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					return;
 				}
 #endif // WRITE_ALL_DEFAULT_LINKS
+			}
+			else
+			{
+				attributeProperties = properties;
 			}
 			// UNDONE: Write start element off roleplayer, not link, for standalone primary link element
 			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, standaloneLink ? link.GetDomainClass().Name : string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name), ref deferWrite))
@@ -2318,7 +2330,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					file.WriteAttributeString("ref", ToXml(oppositeRolePlayer.Id));
 				}
 
-				SerializeProperties(file, link, customElement, rolePlayedInfo, properties, hasCustomAttributes);
+				if (attributeProperties != null)
+				{
+					SerializeProperties(file, link, customElement, rolePlayedInfo, attributeProperties, hasCustomAttributes);
+				}
 
 				if (writeChildren)
 				{
@@ -2328,7 +2343,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					childElementInfo = ((groupRoles = (0 != (supportedOperations & CustomSerializedElementSupportedOperations.ChildElementInfo))) ? customElement.GetCustomSerializedChildElementInfo() : null);
 
 					//write children
-					SerializeChildElements(file, link, customElement, childElementInfo, rolesPlayed, 0 != (supportedOperations & CustomSerializedElementSupportedOperations.CustomSortChildRoles), groupRoles, defaultPrefix);
+					SerializeChildElements(file, link, customElement, rolePlayedInfo, childElementInfo, rolesPlayed, 0 != (supportedOperations & CustomSerializedElementSupportedOperations.CustomSortChildElements), groupRoles, defaultPrefix, elementProperties);
 				}
 			}
 			else if (!standaloneLink)
@@ -2485,109 +2500,165 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			}
 			return ret;
 		}
-		private void SerializeChildElements(XmlWriter file, ModelElement element, ICustomSerializedElement customElement, CustomSerializedContainerElementInfo[] childElementInfo, IList<DomainRoleInfo> rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
+		private void SerializeChildElements(XmlWriter file, ModelElement element, ICustomSerializedElement customElement, DomainRoleInfo elementRolePlayedInfo, CustomSerializedContainerElementInfo[] childElementInfo, IList<DomainRoleInfo> rolesPlayed, bool sortElements, bool groupRoles, string defaultPrefix, IList<DomainPropertyInfo> elementProperties)
 		{
 			int rolesPlayedCount = rolesPlayed.Count;
+			int elementCount = rolesPlayedCount;
 			ICustomSerializedDomainModel parentModel = GetParentModel(element);
+			IReadOnlyList<DomainObjectInfo> elementInfos = (IReadOnlyList<DomainObjectInfo>)rolesPlayed;
 
 			//sort played roles
-			if (sortRoles && rolesPlayedCount != 0)
+			if (sortElements && (rolesPlayedCount != 0 || elementProperties != null))
 			{
-				IComparer<DomainRoleInfo> comparer = customElement.CustomSerializedChildRoleComparer;
+				IComparer<DomainObjectInfo> comparer = customElement.CustomSerializedChildElementComparer;
+				List<DomainObjectInfo> infoList = null;
+				if (elementProperties != null)
+				{
+					if (rolesPlayedCount != 0)
+					{
+						infoList = new List<DomainObjectInfo>();
+						infoList.AddRange(elementProperties);
+						infoList.AddRange(elementInfos);
+						elementInfos = infoList;
+						elementCount = elementInfos.Count;
+					}
+					else
+					{
+						elementInfos = (IReadOnlyList<DomainObjectInfo>)elementProperties;
+						elementCount = elementProperties.Count;
+					}
+				}
+
 				if (comparer != null)
 				{
-					((List<DomainRoleInfo>)(rolesPlayed = new List<DomainRoleInfo>(rolesPlayed))).Sort(comparer);
+					if (infoList == null)
+					{
+						elementInfos = infoList = new List<DomainObjectInfo>(elementInfos);
+					}
+					infoList.Sort(comparer);
 				}
+			}
+
+			if (!sortElements && elementProperties != null)
+			{
+				SerializeProperties(file, element, customElement, elementRolePlayedInfo, elementProperties, (customElement != null ? customElement.SupportedCustomSerializedOperations & CustomSerializedElementSupportedOperations.PropertyInfo : 0) != 0);
 			}
 
 			//write children
 			if (groupRoles)
 			{
-				const byte PENDING = 0;
-				const byte PROCESSED = 1;
-				const byte CONTAINERWRITTEN = 2;
-				byte[] written = new byte[rolesPlayedCount];
+				BitTracker processed = new BitTracker(elementCount);
+				BitTracker containerWritten = new BitTracker(elementCount);
 				int writeEndElementCount = 0;
 				CustomSerializedContainerElementInfo lastCustomChildInfo = null;
 
-				for (int index0 = 0; index0 < rolesPlayedCount; ++index0)
+				for (int index0 = 0; index0 < elementCount; ++index0)
 				{
-					if (written[index0] == PENDING)
+					if (!processed[index0] && !containerWritten[index0])
 					{
-						DomainRoleInfo rolePlayedInfo = rolesPlayed[index0];
-						if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
-						{
-							written[index0] = PROCESSED;
-							continue;
-						}
-						DomainRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
-						int childIndex = FindGuid(childElementInfo, oppositeRoleInfo.Id);
-						CustomSerializedContainerElementInfo customChildInfo = (childIndex >= 0) ? childElementInfo[childIndex] : null;
-						string defaultChildPrefix = (customChildInfo != null) ? defaultPrefix : null;
-						CustomSerializedContainerElementInfo outerCustomChildInfo = (customChildInfo != null) ? customChildInfo.OuterContainer : null;
-						int outerIndex = (outerCustomChildInfo == null) ? -1 : ((IList<CustomSerializedContainerElementInfo>)childElementInfo).IndexOf(outerCustomChildInfo);
+						DomainObjectInfo elementInfo = elementInfos[index0];
+						DomainRoleInfo rolePlayedInfo;
+						DomainPropertyInfo propertyInfo;
 
-						bool containerAlreadyOpen = false;
-						if (writeEndElementCount != 0 && outerCustomChildInfo == null)
+						if (null != (rolePlayedInfo = elementInfo as DomainRoleInfo))
 						{
-							while (writeEndElementCount != 0)
+							if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
 							{
-								if (customChildInfo != null && lastCustomChildInfo == customChildInfo)
-								{
-									containerAlreadyOpen = true;
-									break;
-								}
-								WriteCustomizedEndElement(file, lastCustomChildInfo);
-								lastCustomChildInfo = (lastCustomChildInfo != null) ? lastCustomChildInfo.OuterContainer : null;
-								--writeEndElementCount;
+								processed[index0] = true;
+								containerWritten[index0] = false;
+								continue;
 							}
-						}
-						lastCustomChildInfo = customChildInfo;
-						int writeEndElementCount0 = writeEndElementCount;
+							DomainRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
+							int childIndex = FindGuid(childElementInfo, oppositeRoleInfo.Id);
+							CustomSerializedContainerElementInfo customChildInfo = (childIndex >= 0) ? childElementInfo[childIndex] : null;
+							string defaultChildPrefix = (customChildInfo != null) ? defaultPrefix : null;
+							CustomSerializedContainerElementInfo outerCustomChildInfo = (customChildInfo != null) ? customChildInfo.OuterContainer : null;
+							int outerIndex = (outerCustomChildInfo == null) ? -1 : ((IList<CustomSerializedContainerElementInfo>)childElementInfo).IndexOf(outerCustomChildInfo);
 
-						written[index0] = PROCESSED;
-						bool writeOuter = outerIndex != -1 && written[outerIndex] < CONTAINERWRITTEN;
-						if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, writeOuter ? outerCustomChildInfo : null, defaultChildPrefix, !containerAlreadyOpen))
-						{
-							if (writeOuter)
+							bool containerAlreadyOpen = false;
+							if (writeEndElementCount != 0 && outerCustomChildInfo == null)
 							{
-								written[outerIndex] = CONTAINERWRITTEN;
+								while (writeEndElementCount != 0)
+								{
+									if (customChildInfo != null && lastCustomChildInfo == customChildInfo)
+									{
+										containerAlreadyOpen = true;
+										break;
+									}
+									WriteCustomizedEndElement(file, lastCustomChildInfo);
+									lastCustomChildInfo = (lastCustomChildInfo != null) ? lastCustomChildInfo.OuterContainer : null;
+									--writeEndElementCount;
+								}
+							}
+							lastCustomChildInfo = customChildInfo;
+							int writeEndElementCount0 = writeEndElementCount;
+
+							processed[index0] = true;
+							containerWritten[index0] = false;
+							bool writeOuter = outerIndex != -1 && !containerWritten[outerIndex];
+							if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, writeOuter ? outerCustomChildInfo : null, defaultChildPrefix, !containerAlreadyOpen))
+							{
+								if (writeOuter)
+								{
+									containerWritten[outerIndex] = true;
+									++writeEndElementCount;
+								}
+								containerWritten[index0] = true;
 								++writeEndElementCount;
 							}
-							written[index0] = CONTAINERWRITTEN;
-							++writeEndElementCount;
-						}
 
-						if (customChildInfo != null)
-						{
-							for (int index1 = index0 + 1; index1 < rolesPlayedCount; ++index1)
+							if (customChildInfo != null)
 							{
-								if (written[index1] == PENDING)
+								for (int index1 = index0 + 1; index1 < elementCount; ++index1)
 								{
-									rolePlayedInfo = rolesPlayed[index1];
-									if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
+									if (!processed[index1] && !containerWritten[index1])
 									{
-										written[index1] = PROCESSED;
-										continue;
-									}
-									oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
-
-									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
-									{
-										written[index1] = PROCESSED;
-										writeOuter = outerIndex != -1 && written[outerIndex] < CONTAINERWRITTEN;
-										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, writeOuter ? outerCustomChildInfo : null, defaultChildPrefix, !containerAlreadyOpen && (writeEndElementCount == writeEndElementCount0)))
+										elementInfo = elementInfos[index1];
+										if (null != (rolePlayedInfo = elementInfo as DomainRoleInfo))
 										{
-											if (writeOuter)
+											if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
 											{
-												written[outerIndex] = CONTAINERWRITTEN;
-												++writeEndElementCount;
+												processed[index1] = true;
+												containerWritten[index1] = true;
+												continue;
 											}
-											written[index1] = CONTAINERWRITTEN;
-											++writeEndElementCount;
+											oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
+
+											if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
+											{
+												processed[index1] = true;
+												containerWritten[index1] = false;
+												writeOuter = outerIndex != -1 && !containerWritten[outerIndex];
+												if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, writeOuter ? outerCustomChildInfo : null, defaultChildPrefix, !containerAlreadyOpen && (writeEndElementCount == writeEndElementCount0)))
+												{
+													if (writeOuter)
+													{
+														containerWritten[outerIndex] = true;
+														++writeEndElementCount;
+													}
+													containerWritten[index1] = true;
+													++writeEndElementCount;
+												}
+											}
 										}
 									}
 								}
+							}
+						}
+						else if (null != (propertyInfo = elementInfo as DomainPropertyInfo))
+						{
+							if (!processed[index0] && !containerWritten[index0])
+							{
+								while (writeEndElementCount != 0)
+								{
+									WriteCustomizedEndElement(file, lastCustomChildInfo);
+									lastCustomChildInfo = (lastCustomChildInfo != null) ? lastCustomChildInfo.OuterContainer : null;
+									--writeEndElementCount;
+								}
+
+								processed[index0] = true;
+								containerWritten[index0] = false;
+								SerializeProperty(file, element, customElement, elementRolePlayedInfo, propertyInfo, true);
 							}
 						}
 					}
@@ -2603,16 +2674,26 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			}
 			else
 			{
-				for (int index = 0; index < rolesPlayedCount; ++index)
+				for (int index = 0; index < elementCount; ++index)
 				{
-					DomainRoleInfo rolePlayedInfo = rolesPlayed[index];
-					if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
+					DomainObjectInfo elementInfo = elementInfos[index];
+					DomainRoleInfo rolePlayedInfo;
+					DomainPropertyInfo propertyInfo;
+					if (null != (rolePlayedInfo = elementInfo as DomainRoleInfo))
 					{
-						continue;
+						if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
+						{
+							continue;
+						}
+
+						if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeDomainRole, null, null, null, true))
+						{
+							WriteCustomizedEndElement(file, null);
+						}
 					}
-					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeDomainRole, null, null, null, true))
+					else if (null != (propertyInfo = elementInfo as DomainPropertyInfo))
 					{
-						WriteCustomizedEndElement(file, null);
+						SerializeProperty(file, element, customElement, elementRolePlayedInfo, propertyInfo, (customElement != null ? customElement.SupportedCustomSerializedOperations & CustomSerializedElementSupportedOperations.PropertyInfo : 0) != 0);
 					}
 				}
 			}
@@ -2670,13 +2751,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			bool isCustom = (customElement != null);
 
 			//load custom information
+			IList<DomainPropertyInfo> attributeProperties = null;
+			IList<DomainPropertyInfo> elementProperties = null;
 			if (isCustom)
 			{
 				supportedOperations = customElement.SupportedCustomSerializedOperations;
 
 				if (0 != (supportedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes))
 				{
-					SortProperties(customElement, null, ref properties);
+					ClassifyProperties(customElement, null, properties, out attributeProperties, out elementProperties);
+				}
+				else
+				{
+					attributeProperties = properties;
 				}
 				if (roleGrouping = (0 != (supportedOperations & CustomSerializedElementSupportedOperations.ChildElementInfo)))
 				{
@@ -2699,6 +2786,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			{
 				supportedOperations = CustomSerializedElementSupportedOperations.None;
 				customInfo = CustomSerializedElementInfo.Default;
+				attributeProperties = properties;
 			}
 
 			//write container begin element
@@ -2722,19 +2810,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				serializeExtraAttributes(file);
 			}
 
-			//write properties
-			SerializeProperties
-			(
-				file,
-				element,
-				customElement,
-				null,
-				properties,
-				(supportedOperations & CustomSerializedElementSupportedOperations.PropertyInfo) != 0
-			);
+			//write attribute properties
+			if (attributeProperties != null)
+			{
+				SerializeProperties
+				(
+					file,
+					element,
+					customElement,
+					null,
+					attributeProperties,
+					(supportedOperations & CustomSerializedElementSupportedOperations.PropertyInfo) != 0
+				);
+			}
 
 			//write children
-			SerializeChildElements(file, element, customElement, childElementInfo, rolesPlayed, 0 != (supportedOperations & CustomSerializedElementSupportedOperations.CustomSortChildRoles), roleGrouping, defaultPrefix);
+			SerializeChildElements(file, element, customElement, null, childElementInfo, rolesPlayed, 0 != (supportedOperations & CustomSerializedElementSupportedOperations.CustomSortChildElements), roleGrouping, defaultPrefix, elementProperties);
 
 			//write end element tag
 			WriteCustomizedEndElement(file, customInfo);

@@ -55,6 +55,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		double OffsetBy { get;}
 	}
 	#endregion // ILinkDecoratorSettings interface
+	#region ILinkDecoratorRenderingState interface
+	/// <summary>
+	/// Implement on a decorator to collect additional rendering information
+	/// while the decorator is being drawn.
+	/// </summary>
+	public interface ILinkDecoratorRenderingState
+	{
+		/// <summary>
+		/// The rotation angle applied to the graphics matrix before calling LinkDecorator.DoPaintShape.
+		/// </summary>
+		float RotationRadians { set; }
+	}
+	#endregion // ILinkDecoratorRenderingState interface
 	#region ORMBaseBinaryLinkShape class
 	/// <summary>
 	/// A base link shape class for sharing common code and for reimplementing
@@ -297,6 +310,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Graphics g = e.Graphics;
 			RectangleD boundingRect = new RectangleD(centerRight.X - size.Width, centerRight.Y - (size.Height / 2), size.Width, size.Height);
 			Matrix rotationMatrix = g.Transform;
+			Matrix restoreMatrix = rotationMatrix.Clone(); // Copy to obviate the need to invert the transform
 			float offsetX = 0f;
 			float offsetY = 0f;
 			if (doOffset)
@@ -308,13 +322,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			rotationMatrix.RotateAt(rotation, PointD.ToPointF(centerRight));
 			g.Transform = rotationMatrix;
-			decorator.DoPaintShape(boundingRect, geometryHost, e);
-			rotationMatrix.RotateAt(-rotation, PointD.ToPointF(centerRight));
-			if (doOffset)
+			ILinkDecoratorRenderingState renderingState = decorator as ILinkDecoratorRenderingState;
+			if (renderingState != null)
 			{
-				rotationMatrix.Translate(-offsetX, -offsetY);
+				renderingState.RotationRadians = rotation;
 			}
-			g.Transform = rotationMatrix;
+			decorator.DoPaintShape(boundingRect, geometryHost, e);
+			g.Transform = restoreMatrix;
 		}
 		/// <summary>
 		/// Replacement for LinkShapeGeometry.CalculateRotationAngle

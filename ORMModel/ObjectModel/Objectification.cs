@@ -414,36 +414,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RuleManager ruleManager = null;
 				try
 				{
-					int? unaryRoleIndex = FactType.GetUnaryRoleIndex(roles);
-					Role unaryRole = (unaryRoleIndex.HasValue) ? roles[unaryRoleIndex.Value].Role : null;
 					for (int i = 0; i < roleCount; ++i)
 					{
 						Role role = roles[i].Role;
-						RoleProxy proxy;
-						ObjectifiedUnaryRole objectifiedUnaryRole;
-						if (unaryRole == null)
+						RoleProxy proxy = role.Proxy;
+						if (proxy == null)
 						{
-							objectifiedUnaryRole = null;
-							proxy = role.Proxy;
-						}
-						else
-						{
-							if (unaryRole != role)
-							{
-								continue;
-							}
-							objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole;
-							proxy = null;
-						}
-						if (proxy == null && objectifiedUnaryRole == null)
-						{
-							CreateImpliedFactTypeForRole(model, alternateFactTypeOwner, nestingType, role, objectification, unaryRole != null);
+							CreateImpliedFactTypeForRole(model, alternateFactTypeOwner, nestingType, role, objectification);
 						}
 						else
 						{
 							RoleBase oppositeRoleBase;
 							Role oppositeRole;
-							if (null != (oppositeRoleBase = ((RoleBase)proxy ?? objectifiedUnaryRole).OppositeRole) &&
+							if (null != (oppositeRoleBase = proxy.OppositeRole) &&
 								null != (oppositeRole = oppositeRoleBase as Role) &&
 								(nestingType != oppositeRole.RolePlayer))
 							{
@@ -451,7 +434,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (ruleManager == null)
 								{
 									ruleManager = objectification.Store.RuleManager;
-									ruleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
 									ruleManager.DisableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
 								}
 								oppositeRole.RolePlayer = nestingType;
@@ -463,7 +445,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (ruleManager != null)
 					{
-						ruleManager.EnableRule(typeof(RolePlayerAddedRuleClass));
 						ruleManager.EnableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
 					}
 				}
@@ -702,7 +683,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							IHasAlternateOwner<ObjectType> toAlternateOwner;
 							IAlternateElementOwner<FactType> alternateFactTypeOwner = (null != (toAlternateOwner = nestingType as IHasAlternateOwner<ObjectType>)) ? toAlternateOwner.AlternateOwner as IAlternateElementOwner<FactType> : null;
-							CreateImpliedFactTypeForRole(alternateFactTypeOwner == null ? nestingType.Model : null, alternateFactTypeOwner, nestingType, nestedRole, objectificationLink, unaryRole != null);
+							CreateImpliedFactTypeForRole(alternateFactTypeOwner == null ? nestingType.Model : null, alternateFactTypeOwner, nestingType, nestedRole, objectificationLink);
 						}
 					}
 				}
@@ -774,12 +755,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							disallowed = true;
 							RoleBase nestedRoleBase = factRoleLink.Role;
 							RoleProxy proxy;
-							ObjectifiedUnaryRole objectifiedUnaryRole;
 							Role targetRole;
-							if ((null != (proxy = nestedRoleBase as RoleProxy) &&
-								null != (targetRole = proxy.Role)) ||
-								(null != (objectifiedUnaryRole = nestedRoleBase as ObjectifiedUnaryRole) &&
-								null != (targetRole = objectifiedUnaryRole.TargetRole)))
+							if (null != (proxy = nestedRoleBase as RoleProxy) &&
+								null != (targetRole = proxy.Role))
 							{
 								disallowed = !targetRole.IsDeleting;
 							}
@@ -794,14 +772,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								myAllowModification = true;
 								Role nestedRole = factRoleLink.Role.Role;
 								RoleProxy proxyRole;
-								ObjectifiedUnaryRole objectifiedUnaryRole;
 								if (null != (proxyRole = nestedRole.Proxy))
 								{
 									proxyRole.FactType.Delete();
-								}
-								else if (null != (objectifiedUnaryRole = nestedRole.ObjectifiedUnaryRole))
-								{
-									objectifiedUnaryRole.FactType.Delete();
 								}
 							}
 							finally
@@ -820,41 +793,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // RoleDeletingRule
-		#region RolePlayerAddedRule
-		/// <summary>
-		/// AddRule: typeof(ObjectTypePlaysRole)
-		/// Synchronize implied fact types when a role player is
-		/// set on an objectified role
-		/// </summary>
-		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
-		{
-			ModelElement element = e.ModelElement;
-			if (CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.Integrating)
-			{
-				return;
-			}
-			ObjectTypePlaysRole link = (ObjectTypePlaysRole)element;
-			Role role = link.PlayedRole;
-			FactType factType = role.FactType;
-			if (factType != null)
-			{
-				ObjectifiedUnaryRole objectifiedUnaryRole;
-				if (null != factType.ImpliedByObjectification)
-				{
-					if (null == (objectifiedUnaryRole = role as ObjectifiedUnaryRole) ||
-						null == (role = objectifiedUnaryRole.TargetRole) ||
-						role.RolePlayer != link.RolePlayer)
-					{
-						throw BlockedByObjectificationPatternException();
-					}
-				}
-				else if (null != (objectifiedUnaryRole = role.ObjectifiedUnaryRole))
-				{
-					objectifiedUnaryRole.RolePlayer = link.RolePlayer;
-				}
-			}
-		}
-		#endregion // RolePlayerAddedRule
 		#region RolePlayerDeletingRule
 		/// <summary>
 		/// DeletingRule: typeof(ObjectTypePlaysRole)
@@ -867,85 +805,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Role role = link.PlayedRole;
 			ObjectType rolePlayer = link.RolePlayer;
 			FactType factType;
-			Objectification objectification;
-			if (rolePlayer.IsImplicitBooleanValue)
-			{
-				// The standard code to debinarize a FactType detaches the role first
-				// so that we can distinguish here whether we need to rebuild an implied
-				// FactType for the role. If the role is deleting before the implied value,
-				// then assume the implied value will be deleted right after this call as well.
-				if (null != (factType = role.FactType) &&
-					null != (objectification = factType.Objectification))
-				{
-					bool removeRolePlayer = role.IsDeleting && !(rolePlayer.IsDeleted || rolePlayer.IsDeleting);
-					foreach (RoleBase otherRoleBase in factType.RoleCollection)
-					{
-						// Find the old unary role and modify its implied FactType
-						Role objectifiedUnaryRole;
-						FactType impliedFactType;
-						Role otherRole;
-						if (otherRoleBase != role &&
-							!otherRoleBase.IsDeleting &&
-							null != (objectifiedUnaryRole = (otherRole = otherRoleBase.Role).ObjectifiedUnaryRole) &&
-							!objectifiedUnaryRole.IsDeleting &&
-							null != (impliedFactType = objectifiedUnaryRole.FactType))
-						{
-							IHasAlternateOwner<FactType> toAlternateOwner;
-							IAlternateElementOwner<FactType> alternateOwner = (null != (toAlternateOwner = impliedFactType as IHasAlternateOwner<FactType>)) ? toAlternateOwner.AlternateOwner : null;
-							ORMModel model = (alternateOwner == null) ? impliedFactType.Model : null;
-							RuleManager ruleManager = impliedFactType.Store.RuleManager;
-							try
-							{
-								ruleManager.DisableRule(typeof(RoleDeletingRuleClass));
-								impliedFactType.Delete();
-							}
-							finally
-							{
-								ruleManager.EnableRule(typeof(RoleDeletingRuleClass));
-							}
-							ObjectType nestingType = objectification.NestingType;
-							CreateImpliedFactTypeForRole(model, alternateOwner, nestingType, otherRole, objectification, false);
-							// Note that even if this role is not currently being deleted it will be soon. There
-							// is no reason to keep these. Anything we create here will simply be deleted
-							if (!role.IsDeleting && role.Proxy == null)
-							{
-								CreateImpliedFactTypeForRole(model, alternateOwner, nestingType, role, objectification, false);
-							}
-							break;
-						}
-					}
-					if (removeRolePlayer)
-					{
-						rolePlayer.Delete();
-					}
-				}
-			}
-			else if (!(rolePlayer.IsDeleted || rolePlayer.IsDeleting) &&
+			if (!(rolePlayer.IsDeleted || rolePlayer.IsDeleting) &&
 				null != (factType = role.FactType))
 			{
 				SubtypeMetaRole subtypeRole;
-				ObjectifiedUnaryRole objectifiedUnaryRole;
-				if (null != (objectification = factType.ImpliedByObjectification))
-				{
-					Role targetRole;
-					ObjectTypePlaysRole targetLink;
-					if (!(objectification.IsDeleting || role.IsDeleting) &&
-						(null == (objectifiedUnaryRole = role as ObjectifiedUnaryRole) ||
-						null == (targetRole = objectifiedUnaryRole.TargetRole) ||
-						(null != (targetLink = ObjectTypePlaysRole.GetLinkToRolePlayer(targetRole)) && !targetLink.IsDeleting)))
-					{
-						throw BlockedByObjectificationPatternException();
-					}
-				}
-				else if (null != (subtypeRole = role as SubtypeMetaRole))
+				if (null != (subtypeRole = role as SubtypeMetaRole))
 				{
 					// We don't force preferred identifiers when supertypes are in place.
 					// If this is the last supertype then we need to revalidate for preferred identification.
 					FrameworkDomainModel.DelayValidateElement(rolePlayer, DelayProcessObjectifyingTypeForPreferredIdentifier);
-				}
-				else if (null != (objectifiedUnaryRole = role.ObjectifiedUnaryRole))
-				{
-					objectifiedUnaryRole.RolePlayer = null;
 				}
 			}
 		}
@@ -963,24 +831,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				bool disallowed = false;
 				Objectification objectification;
-				ObjectifiedUnaryRole objectifiedUnaryRole;
 				if (null != (objectification = factType.ImpliedByObjectification))
 				{
-					if (null != (objectifiedUnaryRole = role.ObjectifiedUnaryRole))
-					{
-						objectifiedUnaryRole.RolePlayer = link.RolePlayer;
-					}
-					else if (null != (objectifiedUnaryRole = role as ObjectifiedUnaryRole))
-					{
-						if (objectifiedUnaryRole.TargetRole.RolePlayer != link.RolePlayer)
-						{
-							disallowed = true;
-						}
-					}
-					else
-					{
-						disallowed = true;
-					}
+					disallowed = true;
 				}
 				else if (null != (objectification = factType.Objectification))
 				{
@@ -992,18 +845,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (impliedOppositeRole.RolePlayer != objectification.NestingType)
 						{
 							disallowed = true;
-						}
-					}
-					else if (null != (objectifiedUnaryRole = role.ObjectifiedUnaryRole))
-					{
-						if (null != (impliedOppositeRole = objectifiedUnaryRole.OppositeRole as Role) &&
-							impliedOppositeRole.RolePlayer != objectification.NestingType)
-						{
-							disallowed = true;
-						}
-						else
-						{
-							objectifiedUnaryRole.RolePlayer = link.RolePlayer;
 						}
 					}
 				}
@@ -1099,86 +940,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						foreach (RoleBase testRole in roles)
 						{
-							if (testRole is RoleProxy || testRole is ObjectifiedUnaryRole)
+							if (testRole is RoleProxy)
 							{
 								return;
 							}
 						}
 					}
 
-					ObjectType rolePlayer = playedRole.RolePlayer;
+					ObjectType rolePlayer;
 					Objectification objectification;
-					if (rolePlayer != null)
+					if (null != (rolePlayer = playedRole.RolePlayer) &&
+						null != (objectification = rolePlayer.Objectification) &&
+						objectification.IsImplied)
 					{
-						if (rolePlayer.IsImplicitBooleanValue)
-						{
-							if (null != (objectification = playedFactType.Objectification) &&
-								!objectification.IsImplied)
-							{
-								// Note that implied objectification will be cleared out with a different
-								// code path because unary objectification is never implied
-								LinkedElementCollection<FactType> impliedFactTypes = objectification.ImpliedFactTypeCollection;
-								bool haveImplicitForUnary = false;
-								RuleManager disabledByRuleManager = null;
-								try
-								{
-									for (int i = impliedFactTypes.Count - 1; i >= 0; --i)
-									{
-										FactType impliedFactType = impliedFactTypes[i];
-										bool sawProxy = false;
-										foreach (RoleBase role in impliedFactType.RoleCollection)
-										{
-											if (role is RoleProxy)
-											{
-												sawProxy = true;
-												if (disabledByRuleManager == null)
-												{
-													disabledByRuleManager = impliedFactType.Store.RuleManager;
-													disabledByRuleManager.DisableRule(typeof(RoleDeletingRuleClass));
-													impliedFactType.Delete();
-												}
-												break;
-											}
-										}
-										if (!sawProxy)
-										{
-											haveImplicitForUnary = true;
-										}
-									}
-								}
-								finally
-								{
-									if (disabledByRuleManager != null)
-									{
-										disabledByRuleManager.EnableRule(typeof(RoleDeletingRuleClass));
-									}
-								}
-								if (!haveImplicitForUnary)
-								{
-									if (roles.Count == 2)
-									{
-										foreach (RoleBase role in roles)
-										{
-											if (role != playedRole)
-											{
-												IHasAlternateOwner<FactType> toAlternateOwner;
-												IAlternateElementOwner<FactType> alternateOwner = (null != (toAlternateOwner = playedFactType as IHasAlternateOwner<FactType>)) ? toAlternateOwner.AlternateOwner : null;
-												CreateImpliedFactTypeForRole(alternateOwner == null ? playedFactType.Model : null, alternateOwner, objectification.NestingType, role.Role, objectification, true);
-												break;
-											}
-										}
-									}
-								}
-							}
-						}
-						else if (null != (objectification = rolePlayer.Objectification) &&
-							objectification.IsImplied)
-						{
-							// The newly-played role is in a non-implied fact, so the objectification is no longer implied
-							objectification.IsImplied = false;
-						}
+						// The newly-played role is in a non-implied fact, so the objectification is no longer implied
+						objectification.IsImplied = false;
 					}
-
 				}
 			}
 		}
@@ -1471,9 +1248,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="nestingType">The objectifying object type</param>
 		/// <param name="nestedRole">The role associated with this element</param>
 		/// <param name="objectification">The Objectification that implies the FactType</param>
-		/// <param name="roleIsUnary">The <paramref name="nestedRole"/> parameter is a unary role, create a pattern with no proxy and an equality constraint</param>
 		/// <returns>The created fact type</returns>
-		private static FactType CreateImpliedFactTypeForRole(ORMModel model, IAlternateElementOwner<FactType> alternateFactTypeOwner, ObjectType nestingType, Role nestedRole, Objectification objectification, bool roleIsUnary)
+		private static FactType CreateImpliedFactTypeForRole(ORMModel model, IAlternateElementOwner<FactType> alternateFactTypeOwner, ObjectType nestingType, Role nestedRole, Objectification objectification)
 		{
 			// Create the implied fact and attach roles to it
 			Partition partition = nestingType.Partition;
@@ -1498,22 +1274,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				impliedFactType = new FactType(partition);
 			}
-			RoleBase nearRole;
-			if (roleIsUnary)
-			{
-				ObjectifiedUnaryRole objectifiedNearRole = new ObjectifiedUnaryRole(partition);
-				objectifiedNearRole.TargetRole = nestedRole;
-				nearRole = objectifiedNearRole;
-			}
-			else
-			{
-				RoleProxy nearRoleProxy = new RoleProxy(partition);
-				nearRoleProxy.TargetRole = nestedRole;
-				nearRole = nearRoleProxy;
-			}
+
+			RoleProxy nearRoleProxy = new RoleProxy(partition);
+			nearRoleProxy.TargetRole = nestedRole;
+
 			Role farRole = new Role(partition);
 			LinkedElementCollection<RoleBase> impliedRoles = impliedFactType.RoleCollection;
-			impliedRoles.Add(nearRole);
+			impliedRoles.Add(nearRoleProxy);
 			impliedRoles.Add(farRole);
 
 			// Add standard constraints and role players
@@ -1521,25 +1288,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			new ConstraintRoleSequenceHasRole(UniquenessConstraint.CreateInternalUniquenessConstraint(impliedFactType), farRole);
 			farRole.RolePlayer = nestingType;
 
-			if (roleIsUnary)
-			{
-				Role nearRoleRole = nearRole.Role;
-				UniquenessConstraint unaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(impliedFactType);
-				new ConstraintRoleSequenceHasRole(unaryUniqueness, nearRoleRole);
-				if (nestingType.PreferredIdentifier == null)
-				{
-					nestingType.PreferredIdentifier = unaryUniqueness;
-				}
-				nearRoleRole.RolePlayer = nestedRole.RolePlayer;
-			}
-
 			// Add forward reading
 			LinkedElementCollection<ReadingOrder> readingOrders = impliedFactType.ReadingOrderCollection;
 			ReadingOrder order = new ReadingOrder(partition);
 			LinkedElementCollection<RoleBase> orderRoles;
 			readingOrders.Add(order);
 			orderRoles = order.RoleCollection;
-			orderRoles.Add(nearRole);
+			orderRoles.Add(nearRoleProxy);
 			orderRoles.Add(farRole);
 			Reading reading = new Reading(partition);
 			reading.ReadingOrder = order;
@@ -1550,7 +1305,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			readingOrders.Add(order);
 			orderRoles = order.RoleCollection;
 			orderRoles.Add(farRole);
-			orderRoles.Add(nearRole);
+			orderRoles.Add(nearRoleProxy);
 			reading = new Reading(partition);
 			reading.ReadingOrder = order;
 			reading.Text = ResourceStrings.ImpliedFactTypePredicateInverseReading;
@@ -1630,13 +1385,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						oldObjectification.Delete();
 					}
 					objectification.NestingType = nestingType;
-					bool addRuleDisabled = false;
 					bool rolePlayerChangedRuleDisabled = false;
 					bool removingRuleDisabled = false;
 					try
 					{
-						ruleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
-						addRuleDisabled = true;
 						ruleManager.DisableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
 						rolePlayerChangedRuleDisabled = true;
 						ruleManager.DisableRule(typeof(RolePlayerDeletingRuleClass));
@@ -1657,10 +1409,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					finally
 					{
-						if (addRuleDisabled)
-						{
-							ruleManager.EnableRule(typeof(RolePlayerAddedRuleClass));
-						}
 						if (rolePlayerChangedRuleDisabled)
 						{
 							ruleManager.EnableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
@@ -1947,29 +1695,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (preferredIdentifier == null)
 				{
 					UniquenessConstraint useConstraint = null;
-					Role unaryRole;
-					if (null != (unaryRole = nestedFactType.UnaryRole))
+					foreach (UniquenessConstraint testConstraint in nestedFactType.GetInternalConstraints<UniquenessConstraint>())
 					{
-						if (null != (unaryRole = unaryRole.ObjectifiedUnaryRole))
+						if (testConstraint.RoleCollection.Count != 0 && testConstraint.Modality == ConstraintModality.Alethic)
 						{
-							useConstraint = unaryRole.SingleRoleAlethicUniquenessConstraint;
-						}
-					}
-					else
-					{
-						foreach (UniquenessConstraint testConstraint in nestedFactType.GetInternalConstraints<UniquenessConstraint>())
-						{
-							if (testConstraint.RoleCollection.Count != 0 && testConstraint.Modality == ConstraintModality.Alethic)
+							if (useConstraint == null)
 							{
-								if (useConstraint == null)
-								{
-									useConstraint = testConstraint;
-								}
-								else
-								{
-									useConstraint = null;
-									break;
-								}
+								useConstraint = testConstraint;
+							}
+							else
+							{
+								useConstraint = null;
+								break;
 							}
 						}
 					}
@@ -2069,49 +1806,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ObjectType nestingType = element.NestingType;
 				LinkedElementCollection<RoleBase> factRoles = nestedFact.RoleCollection;
 				int factRolesCount = factRoles.Count;
-				int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
-				Role unaryRole = unaryRoleIndex.HasValue ? factRoles[unaryRoleIndex.Value].Role : null;
 
-				// Make sure each of the facts has a properly constructed role proxy or objectified unary role
+				// Make sure each of the facts has a properly constructed role proxy
 				for (int i = 0; i < factRolesCount; ++i)
 				{
 					Role factRole = (Role)factRoles[i];
 					Role farRole = null; // The role on the implied fact with the nesting type as a role player
 					FactType impliedFact = null;
-					RoleBase nearRole = null;
-					RoleProxy proxy = factRole.Proxy;
-					ObjectifiedUnaryRole objectifiedUnaryRole = factRole.ObjectifiedUnaryRole;
-					FactType mismatchedFactType;
-					if (unaryRole != null)
-					{
-						if (proxy != null &&
-							null != (mismatchedFactType = proxy.FactType))
-						{
-							UniquenessConstraint pid;
-							LinkedElementCollection<Role> pidRoles;
-							if (null != (pid = nestingType.PreferredIdentifier) &&
-								1 == (pidRoles = pid.RoleCollection).Count &&
-								pidRoles[0] == factRole)
-							{
-								// The preferred identifier points straight to
-								// the unary role via the proxy. We'll hook it
-								// back up to the uniqueness constraint on the
-								// objectified unary role below.
-								nestingType.PreferredIdentifier = null;
-							}
-							RemoveFactType(mismatchedFactType);
-						}
-						nearRole = objectifiedUnaryRole;
-					}
-					else
-					{
-						if (objectifiedUnaryRole != null &&
-							null != (mismatchedFactType = objectifiedUnaryRole.FactType))
-						{
-							RemoveFactType(mismatchedFactType);
-						}
-						nearRole = proxy;
-					}
+					RoleBase nearRole = factRole.Proxy;
 					if (nearRole != null)
 					{
 						// Make sure the element is appropriate
@@ -2119,13 +1821,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (impliedFact == null)
 						{
 							nearRole.Delete();
-							nearRole = null;
-						}
-						else if ((unaryRole != null && unaryRole != factRole) || impliedFact.ImpliedByObjectification != element)
-						{
-							RemoveFactType(impliedFact);
-							impliedFact = null;
-							Debug.Assert(nearRole.IsDeleted); // Goes away with delete propagation on the fact
 							nearRole = null;
 						}
 						else
@@ -2140,7 +1835,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							else
 							{
 								farRole = impliedRoles[0] as Role;
-								if (farRole == null || farRole is ObjectifiedUnaryRole)
+								if (farRole == null)
 								{
 									farRole = impliedRoles[1] as Role;
 									Debug.Assert(farRole != null);
@@ -2170,28 +1865,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (nearRole == null)
 					{
-						if (unaryRole != null)
-						{
-							if (factRole != unaryRole)
-							{
-								continue;
-							}
-
-							// Create the objectified unary role
-							objectifiedUnaryRole = new ObjectifiedUnaryRole(partition);
-							objectifiedUnaryRole.TargetRole = factRole;
-							objectifiedUnaryRole.RolePlayer = factRole.RolePlayer;
-							notifyAdded.ElementAdded(objectifiedUnaryRole, true);
-							nearRole = objectifiedUnaryRole;
-						}
-						else
-						{
-							// Create the proxy role
-							proxy = new RoleProxy(partition);
-							proxy.TargetRole = factRole;
-							notifyAdded.ElementAdded(proxy, true);
-							nearRole = proxy;
-						}
+						// Create the proxy role
+						RoleProxy proxy = new RoleProxy(partition);
+						proxy.TargetRole = factRole;
+						notifyAdded.ElementAdded(proxy, true);
+						nearRole = proxy;
 
 						// Create the non-proxy role
 						farRole = new Role(partition);
@@ -2233,17 +1911,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						notifyAdded.ElementAdded(impliedFact, true);
 
-						if (objectifiedUnaryRole != null)
-						{
-							UniquenessConstraint objectifiedUnaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(impliedFact);
-							new ConstraintRoleSequenceHasRole(objectifiedUnaryUniqueness, objectifiedUnaryRole);
-							if (nestingType.PreferredIdentifier == null)
-							{
-								nestingType.PreferredIdentifier = objectifiedUnaryUniqueness;
-							}
-							notifyAdded.ElementAdded(objectifiedUnaryUniqueness, true);
-						}
-
 						// Add forward reading
 						LinkedElementCollection<ReadingOrder> readingOrders = impliedFact.ReadingOrderCollection;
 						ReadingOrder order = new ReadingOrder(partition);
@@ -2270,10 +1937,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						notifyAdded.ElementAdded(order, true);
 						notifyAdded.ElementAdded(reading, false);
 					}
-					else if (unaryRole != null && unaryRole != factRole)
-					{
-						continue;
-					}
 
 					// Make sure the internal constraint pattern is correct on the far role
 					EnsureSingleColumnUniqueAndMandatory(impliedFact, farRole, notifyAdded);
@@ -2282,11 +1945,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Verify that that are no innapropriate implied facts are attached to the objectification
 				LinkedElementCollection<FactType> impliedFacts = element.ImpliedFactTypeCollection;
 				int impliedFactCount = impliedFacts.Count;
-				int expectedImpliedCount = (unaryRole == null) ? factRolesCount : 1;
-				if (impliedFactCount != expectedImpliedCount)
+				if (impliedFactCount != factRolesCount)
 				{
-					int leftToRemove = impliedFactCount - expectedImpliedCount;
-					Debug.Assert(impliedFactCount > expectedImpliedCount); // We verified and/or added at least this many earlier
+					int leftToRemove = impliedFactCount - factRolesCount;
 					for (int i = impliedFactCount - 1; i >= 0 && leftToRemove != 0; --i)
 					{
 						FactType impliedFact = impliedFacts[i];
@@ -2299,19 +1960,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						else
 						{
 							RoleBase testRole = impliedRoles[0];
-							RoleProxy proxy;
-							ObjectifiedUnaryRole objectifiedUnaryRole = null;
-							if (null == (proxy = testRole as RoleProxy) &&
-								null == (objectifiedUnaryRole = testRole as ObjectifiedUnaryRole) &&
-								null == (proxy = (testRole = impliedRoles[1]) as RoleProxy))
-							{
-								objectifiedUnaryRole = testRole as ObjectifiedUnaryRole;
-								Debug.Assert(objectifiedUnaryRole != null, "At least one role in an implied fact should be a proxy or objectified unary role.");
-							}
+							RoleProxy proxy = testRole as RoleProxy ?? impliedRoles[1] as RoleProxy;
+							Debug.Assert(proxy != null, "At least one role in an implied fact should be a proxy.");
 
 							Role targetRole;
-							if ((proxy == null && objectifiedUnaryRole == null) ||
-								null == (targetRole = (proxy != null ? proxy.Role : objectifiedUnaryRole.TargetRole)) ||
+							if (proxy == null ||
+								null == (targetRole = proxy.Role) ||
 								nestedFact != targetRole.FactType)
 							{
 								RemoveFactType(impliedFact);
@@ -2327,7 +1981,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool canBeImplied = true;
 					UniquenessConstraint preferredIdentifier;
 					if (factRolesCount < 2 ||
-						unaryRole != null ||
 						nestingType.PlayedRoleCollection.Count > factRolesCount ||
 						(!nestingType.IsIndependent &&
 						(null != (preferredIdentifier = nestingType.PreferredIdentifier) &&

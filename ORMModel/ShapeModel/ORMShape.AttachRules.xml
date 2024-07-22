@@ -66,9 +66,6 @@
 			<arg:ChangeRule methodName="FactTypeShapeChangeRule">
 				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
 			</arg:ChangeRule>
-			<arg:DeleteRule methodName="ImplicitBooleanValueTypeDeletedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
-			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ObjectificationIsImpliedChangeRule">
 				<arg:RuleOn targetType="Objectification" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:ChangeRule>
@@ -333,6 +330,11 @@
 		<arg:RuleContainer class="RingConstraintShape">
 			<arg:ChangeRule methodName="RingConstraintPropertyChangeRule">
 				<arg:RuleOn targetType="RingConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
+		<arg:RuleContainer class="RolePlayerLink">
+			<arg:ChangeRule methodName="FactTypeChangedRule">
+				<arg:RuleOn targetType="FactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ValueComparisonConstraintShape">

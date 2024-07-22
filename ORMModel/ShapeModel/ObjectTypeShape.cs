@@ -764,7 +764,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (rolePlayerLink == null)
 				{
 					Role oppositeRole;
-					if (null == (oppositeRole = constraint.RoleCollection[0].OppositeRole as Role) ||
+					if (null == (oppositeRole = constraint.RoleCollection[0].OppositeOrUnaryRole as Role) ||
 						null == (rolePlayerLink = ObjectTypePlaysRole.GetLink(oppositeRole, preferredIdentifierFor)))
 					{
 						return;

@@ -285,9 +285,54 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				instance.ReadingText = readingText;
 				//Checks if the fact is a binary fact type with a forward AND reverse reading, denoted by the presence of the "/"
 				//Then it splits the text into representations of two seperate readings
-				if (nrObjects == 2 && readingText.Contains("/"))
+				if (nrObjects == 2)
 				{
-					string[] splitReadings = readingText.Split(new char[] { '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
+					if (readingText.Contains("/"))
+					{
+						string[] splitReadings = readingText.Split(new char[] { '/' }, 2, StringSplitOptions.RemoveEmptyEntries);
+						if (splitReadings.Length == 2)
+						{
+							string leftText = splitReadings[0];
+							string rightText = splitReadings[1];
+							if (leftText.Contains("{0}") && rightText.Contains("{1}")) // Sanity check
+							{
+								// Set the reading text strings to empty instead of null to indicate
+								// that the readings (especially the reverse) were specified with empty content
+								string trimmed = leftText.Trim();
+								instance.ReadingText = (trimmed == "{0}") ? "" : (trimmed + " {1}");
+								trimmed = rightText.Trim();
+								instance.ReverseReadingText = (trimmed == "{1}") ? "" : ("{0} " + trimmed);
+							}
+						}
+					}
+				}
+				else if (nrObjects == 1 && readingText.Contains("~"))
+				{
+					string[] splitReadings = readingText.Split(new char[] { '~' }, 2, StringSplitOptions.RemoveEmptyEntries);
+					// With one role player, the inverse text is the part separated from the role player, so {0} r~s has s as
+					// the inverse, but u~t {0} has u as the inverse.
+					switch (splitReadings.Length)
+					{
+						case 1:
+							// There is no text before or after the inverse. The reading with the text is positive Clear the reading opposite the selected paired unary
+							instance.ReadingText = splitReadings[0].Trim();
+							instance.ReverseReadingText = string.Empty;
+							break;
+						case 2:
+							string leftText = splitReadings[0];
+							string rightText = splitReadings[1];
+							if (leftText.Contains("{0}"))
+							{
+								instance.ReadingText = leftText.Trim();
+								instance.ReverseReadingText = "{0} " + rightText.Trim();
+							}
+							else if (rightText.Contains("{0}"))
+							{
+								instance.ReadingText = rightText.Trim();
+								instance.ReverseReadingText = leftText.Trim() + " {0}";
+							}
+							break;
+					}
 					if (splitReadings.Length == 2)
 					{
 						string leftText = splitReadings[0];
@@ -338,6 +383,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			/// <summary>
 			/// The reverse reading text used only for binary fact readings, e.g. {0} is of {1}
+			/// If the fact arity is 1 then this refers to the inverse reading of the selected unary fact type.
 			/// </summary>
 			public string ReverseReadingText
 			{

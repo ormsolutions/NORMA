@@ -115,6 +115,9 @@
 			<arg:RolePlayerChangeRule methodName="DataTypeRolePlayerChangedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="FactTypeChangedRule">
+				<arg:RuleOn targetType="FactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
 			<arg:ChangeRule methodName="ObjectTypeChangedRule">
 				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>

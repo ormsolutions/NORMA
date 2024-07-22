@@ -37,10 +37,12 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Framework.Diagrams.Design;
 using ORMSolutions.ORMArchitect.Core.Load;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
+using System.Runtime.CompilerServices;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
@@ -138,6 +140,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
 		private const string REGISTRYVALUE_TOOLBOXREVISION_OBSOLETESINGLEVALUE = "ToolboxRevision";
 		private const string REGISTRYKEY_TOOLBOXREVISIONS = "ToolboxRevisions";
+		private const string REGISTRYKEY_UPGRADEMESSAGES = "UpgradeMessages";
 #if VISUALSTUDIO_15_0 && VSIX_Per_User
 		private const string REGISTRYKEY_SCHEMACATALOGS = "SchemaCatalogs";
 		private const string REGISTRYKEY_PLIX_FORMATTERS = @"Neumont\PLiX\Formatters"; // Used to deduce schema location
@@ -160,6 +163,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 #endif
 		private IDictionary<string, ToolboxProviderInfo> myToolboxProviderInfoMap;
 		private ExtensionLoader myExtensionLoader;
+		private bool myFirstUserLoad;
+		private bool myUpgradeCheckPending;
 		private static ORMDesignerPackage mySingleton;
 #endregion
 #region Construction/destruction
@@ -444,6 +449,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			if (!SetupMode)
 			{
+				using (RegistryKey key = this.UserRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE_USER, RegistryKeyPermissionCheck.ReadSubTree))
+				{
+					this.myFirstUserLoad = key == null;
+				}
+				this.myUpgradeCheckPending = true;
+
 				((IServiceContainer)this).AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService = new ORMDesignerFontsAndColors(this), true);
 
 				FactEditorLanguageService managedLanguageService = new FactEditorLanguageService();
@@ -468,6 +479,44 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				GetDialogPage(typeof(OptionsPage));
 
 				InitializeToolbox();
+
+				IMonitorSelectionService monitor = base.GetService(typeof(IMonitorSelectionService)) as IMonitorSelectionService;
+				if (monitor != null)
+				{
+					EventHandler<MonitorSelectionEventArgs> handler = null;
+					monitor.SelectionChanged += handler = (o, e) =>
+					{
+						try
+						{
+							if (monitor.CurrentSelectionContainer is IORMSelectionContainer)
+							{
+								monitor.SelectionChanged -= handler;
+								Action<IServiceProvider> showMessages = DelayShowPendingUpgradeMessages();
+
+								if (showMessages != null)
+								{
+									// Other responders to this event (toolwindow initialization, etc.) may be blocked
+									// if we immediately show a modal dialog. Put in a slight delay.
+									Timer timer = new Timer();
+									timer.Interval = 500;
+									EventHandler tickHandler = null;
+									timer.Tick += tickHandler = (t, et) =>
+									{
+										timer.Tick -= tickHandler;
+										timer.Stop();
+										showMessages(this);
+									};
+									timer.Start();
+								}
+							}
+						}
+						catch (System.Runtime.InteropServices.COMException)
+						{
+							// MonitorSelection can be fickle and throw exceptions if not all of the data is available yet.
+							// Just swallow the failure.
+						}
+					};
+				}
 			}
 
 		}
@@ -934,6 +983,128 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return retVal;
 			}
+		}
+		/// <summary>
+		/// Display any upgrade messages that are pending.
+		/// </summary>
+		private static Action<IServiceProvider> DelayShowPendingUpgradeMessages()
+		{
+			ORMDesignerPackage package = mySingleton;
+			if (package == null)
+			{
+				return null;
+			}
+
+			if (package.myUpgradeCheckPending) // This is always true when the package is newly loaded
+			{
+				package.myUpgradeCheckPending = false;
+				if (package.myFirstUserLoad)
+				{
+					package.myFirstUserLoad = false;
+
+					// We don't show upgrade messages if there is no upgrade. Set all upgrade messages to read status.
+					RegistryKey messagesKey = null;
+					RegistryKey typeKey = null;
+					string lastTypeName = null;
+					try
+					{
+						UpgradeMessageProviderAttribute.GetPendingMessages(
+							package.myExtensionLoader.AvailableDomainModels,
+							(domainModelType, messageName) =>
+							{
+								if (messagesKey == null)
+								{
+									messagesKey = package.UserRegistryRoot.CreateSubKey(REGISTRYROOT_PACKAGE_USER + "\\" + REGISTRYKEY_UPGRADEMESSAGES, RegistryKeyPermissionCheck.ReadWriteSubTree);
+								}
+
+								string typeName = domainModelType.FullName;
+								if (typeName != lastTypeName)
+								{
+									if (typeKey != null)
+									{
+										typeKey.Dispose();
+									}
+									lastTypeName = typeName;
+									typeKey = messagesKey.CreateSubKey(typeName, RegistryKeyPermissionCheck.ReadWriteSubTree);
+								}
+
+								typeKey.SetValue(messageName, 1);
+								return false;
+							},
+
+							// This will only get used if the first callback can return true.
+							null);
+					}
+					finally
+					{
+						if (typeKey != null)
+						{
+							typeKey.Dispose();
+						}
+						if (messagesKey != null)
+						{
+							messagesKey.Dispose();
+						}
+					}
+				}
+				else
+				{
+					Action<IServiceProvider> dialogRunner = null;
+					RegistryKey messagesKey = null;
+					RegistryKey typeKey = null;
+					string lastTypeName = null;
+					try
+					{
+						dialogRunner = UpgradeMessageProviderAttribute.GetPendingMessages(
+							package.myExtensionLoader.AvailableDomainModels,
+							(domainModelType, messageName) =>
+							{
+								if (messagesKey == null)
+								{
+									messagesKey = package.UserRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE_USER + "\\" + REGISTRYKEY_UPGRADEMESSAGES, RegistryKeyPermissionCheck.ReadSubTree);
+									if (messagesKey == null)
+									{
+										return true;
+									}
+								}
+
+								string typeName = domainModelType.FullName;
+								if (typeName != lastTypeName)
+								{
+									if (typeKey != null)
+									{
+										typeKey.Dispose();
+									}
+									lastTypeName = typeName;
+									typeKey = messagesKey.OpenSubKey(typeName, RegistryKeyPermissionCheck.ReadSubTree);
+								}
+
+								return typeKey == null || typeKey.GetValue(messageName) == null;
+							},
+							(domainModelType, messageName) =>
+							{
+								using (RegistryKey hasBeenReadKey = package.UserRegistryRoot.CreateSubKey(REGISTRYROOT_PACKAGE_USER + "\\" + REGISTRYKEY_UPGRADEMESSAGES + "\\" + domainModelType.FullName, RegistryKeyPermissionCheck.ReadWriteSubTree))
+								{
+									hasBeenReadKey.SetValue(messageName, 1);
+								}
+							});
+
+						return dialogRunner;
+					}
+					finally
+					{
+						if (typeKey != null)
+						{
+							typeKey.Dispose();
+						}
+						if (messagesKey != null)
+						{
+							messagesKey.Dispose();
+						}
+					}
+				}
+			}
+			return null;
 		}
 		private class ToolboxProviderInfo
 		{

@@ -27,6 +27,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Framework;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -42,8 +43,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// <param name="dataTypeLink">The link to the data type</param>
 	/// <param name="currentValueConstraint">The value constraint for the current role or pathed role.</param>
 	/// <param name="previousValueConstraint">The last value constraint encountered during the walk</param>
+	/// <param name="defaultValue">The current default value. null if not set. Set for a role.</param>
 	/// <returns>true to continue walking</returns>
-	public delegate bool ValueRoleVisitor(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
+	public delegate bool ValueRoleVisitor(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue);
 	#endregion // ValueRoleVisitor delegate definition
 	#region ReferenceSchemePattern enum
 	/// <summary>
@@ -198,7 +200,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (oppositeRoleBase = OppositeRole))
 			{
 				Role oppositeRole;
-				if (null == (oppositeRole = oppositeRoleBase as Role) || oppositeRole is ObjectifiedUnaryRole)
+				if (null == (oppositeRole = oppositeRoleBase as Role))
 				{
 					// These roles always have the same pattern, no need to look any farther
 					return ReferenceSchemeRolePattern.ImpliedObjectificationRole;
@@ -402,7 +404,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (fact != null)
 			{
 				LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
-				if (roles.Count == 2 && !FactType.GetUnaryRoleIndex(roles).HasValue)
+				if (roles.Count == 2)
 				{
 					Role oppositeRole = roles[0].Role;
 					if (oppositeRole == this)
@@ -539,10 +541,95 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public Role[] GetValueRoles()
 		{
 			Role[] retVal;
-			GetValueRoles(this, this.RolePlayer, 0, out retVal);
+			ObjectType valueTypeDummy;
+			ValueConstraint valueConstraintDummy;
+			GetValueRoles(this, this.RolePlayer, 0, out retVal, out valueTypeDummy, out valueConstraintDummy);
 			return retVal;
 		}
 
+		/// <summary>
+		/// Get the default value is defined directly on this role.
+		/// </summary>
+		public string ResolvedDirectDefaultValue
+		{
+			get
+			{
+				switch (this.DefaultState)
+				{
+					case DefaultValueState.EmptyValue:
+						return string.Empty;
+					case DefaultValueState.IgnoreContext:
+						return null; // No reason to pull value roles just to ignore them
+				}
+				string retVal = this.DefaultValue;
+				return !string.IsNullOrEmpty(retVal) ? retVal : null;
+			}
+		}
+		/// <summary>
+		/// Get the default value for this role with context defaults considered.
+		/// Return <see langword="null"/> if there is no current default.
+		/// </summary>
+		public string ResolvedDefaultValue
+		{
+			get
+			{
+				switch (this.DefaultState)
+				{
+					case DefaultValueState.EmptyValue:
+						return "";
+					case DefaultValueState.IgnoreContext:
+						return null; // No reason to pull value roles just to ignore them
+				}
+				string retVal = this.DefaultValue;
+				if (string.IsNullOrEmpty(retVal))
+				{
+					retVal = null;
+					// Do a basic preliminary check before pulling value roles
+					ObjectType rolePlayer = this.RolePlayer;
+					if (rolePlayer != null)
+					{
+						if (rolePlayer.DataType != null)
+						{
+							return rolePlayer.ResolvedDirectDefaultValue;
+						}
+						Role[] valueRoles = GetValueRoles();
+						ObjectType lastValueType = null;
+						if (valueRoles != null)
+						{
+							// The last role is currently role, which we've already checked.
+							for (int i = valueRoles.Length - 2 ; i >= 0; --i)
+							{
+								Role testRole = valueRoles[i];
+								switch (testRole.DefaultState)
+								{
+									case DefaultValueState.EmptyValue:
+										return "";
+									case DefaultValueState.IgnoreContext:
+										return null; // No reason to pull value roles just to ignore them
+								}
+
+								if (!string.IsNullOrEmpty(retVal = testRole.DefaultValue))
+								{
+									break;
+								}
+
+								retVal = null;
+								if (i == 0)
+								{
+									lastValueType = testRole.RolePlayer;
+								}
+							}
+
+							if (lastValueType != null)
+							{
+								retVal = lastValueType.ResolvedDirectDefaultValue;
+							}
+						}
+					}
+				}
+				return retVal;
+			}
+		}
 		/// <summary>
 		/// True if a ValueConstraint may be attached to this role. This
 		/// duplicates the work of <see cref="GetValueRoles()"/> without actually
@@ -555,7 +642,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				Role[] dummy;
-				return GetValueRoles(this, this.RolePlayer, -1, out dummy);
+				ObjectType valueTypeDummy;
+				ValueConstraint valueConstraintDummy;
+				return GetValueRoles(this, this.RolePlayer, -1, out dummy, out valueTypeDummy, out valueConstraintDummy);
+			}
+		}
+		/// <summary>
+		/// Return the value type that provides the structure of the data for a value role.
+		/// This is similar to <see cref="IsValueRole"/> but returns the value type.
+		/// </summary>
+		public ObjectType ValueRoleValueType
+		{
+			get
+			{
+				Role[] dummy;
+				ObjectType valueType;
+				ValueConstraint valueConstraintDummy;
+				GetValueRoles(this, this.RolePlayer, -1, out dummy, out valueType, out valueConstraintDummy);
+				return valueType;
+			}
+		}
+		/// <summary>
+		/// Return the closest alethic value constraint that restricts this role.
+		/// </summary>
+		public ValueConstraint NearestAlethicValueConstraint
+		{
+			get
+			{
+				Role[] dummy;
+				ObjectType valueTypeDummy;
+				ValueConstraint alethicValueConstraint;
+				GetValueRoles(this, this.RolePlayer, -1, out dummy, out valueTypeDummy, out alethicValueConstraint);
+				return alethicValueConstraint;
 			}
 		}
 		/// <summary>
@@ -567,7 +685,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public bool IsValueRoleForAlternateRolePlayer(ObjectType alternateRolePlayer)
 		{
 			Role[] dummy;
-			return GetValueRoles(this, alternateRolePlayer, -1, out dummy);
+			ObjectType valueTypeDummy;
+			ValueConstraint valueConstraintDummy;
+			return GetValueRoles(this, alternateRolePlayer, -1, out dummy, out valueTypeDummy, out valueConstraintDummy);
 		}
 		/// <summary>
 		/// Recursively retrieve a sequence of roles that are
@@ -579,19 +699,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// roles and 0 to seed recursion.</param>
 		/// <param name="roles">An array of roles. The roles are in reverse order, so
 		/// roles[0] will always have a ValueType as its RolePlayer.</param>
+		/// <param name="valueType">The resolved value type, matches the role player of role[0] (if the roles are returned)</param>
+		/// <param name="nearestAlethicValueConstraint">The alethic value constraint closest to this role.</param>
 		/// <returns>true if the current role can have a value constraint</returns>
-		private static bool GetValueRoles(Role currentRole, ObjectType rolePlayer, int depth, out Role[] roles)
+		private static bool GetValueRoles(Role currentRole, ObjectType rolePlayer, int depth, out Role[] roles, out ObjectType valueType, out ValueConstraint nearestAlethicValueConstraint)
 		{
 			roles = null;
+			valueType = null;
+			nearestAlethicValueConstraint = null;
 			if (depth == 100 || depth == -101)
 			{
 				// Cycling
 				return false;
 			}
+
 			if (rolePlayer != null)
 			{
 				if (rolePlayer.IsValueType)
 				{
+					valueType = rolePlayer;
+					nearestAlethicValueConstraint = (ValueConstraint)currentRole.ValueConstraint;
+					if (nearestAlethicValueConstraint != null && nearestAlethicValueConstraint.Modality != ConstraintModality.Alethic)
+					{
+						nearestAlethicValueConstraint = null;
+					}
+
+					if (nearestAlethicValueConstraint == null)
+					{
+						nearestAlethicValueConstraint = rolePlayer.ValueConstraint;
+						if (nearestAlethicValueConstraint != null && nearestAlethicValueConstraint.Modality != ConstraintModality.Alethic)
+						{
+							nearestAlethicValueConstraint = null;
+						}
+					}
 					if (depth < 0)
 					{
 						return true;
@@ -612,10 +752,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (depth < 0)
 						{
-							return GetValueRoles(nextRole, nextRole.RolePlayer, depth - 1, out roles);
+							if (GetValueRoles(nextRole, nextRole.RolePlayer, depth - 1, out roles, out valueType, out nearestAlethicValueConstraint))
+							{
+								ValueConstraint nearerConstraint = currentRole.ValueConstraint;
+								if (nearerConstraint != null && nearerConstraint.Modality == ConstraintModality.Alethic)
+								{
+									nearestAlethicValueConstraint = nearerConstraint;
+								}
+								return true;
+							}
+							return false;
 						}
-						if (GetValueRoles(nextRole, nextRole.RolePlayer, depth + 1, out roles))
+
+						if (GetValueRoles(nextRole, nextRole.RolePlayer, depth + 1, out roles, out valueType, out nearestAlethicValueConstraint))
 						{
+							ValueConstraint nearerConstraint = currentRole.ValueConstraint;
+							if (nearerConstraint != null && nearerConstraint.Modality == ConstraintModality.Alethic)
+							{
+								nearestAlethicValueConstraint = nearerConstraint;
+							}
 							roles[roles.Length - depth - 1] = currentRole;
 						}
 					}
@@ -647,6 +802,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RolePathObjectTypeRoot.GetLinksToRolePathCollection(anchorType),
 					dataTypeLink,
 					anchorType.ValueConstraint,
+					anchorType.ResolvedDirectDefaultValue,
 					null,
 					(null == unattachedRole || null == (unattachedRolePlayer = unattachedRole.RolePlayer)) ? false : !unattachedRolePlayer.IsValueType,
 					visitor);
@@ -663,13 +819,49 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (valueRoles != null)
 					{
 						ValueConstraint nearestValueConstraint = null;
+						string nearestDefaultValue = null;
 						int valueRolesCount = valueRoles.Length;
+						bool resolvedDefaultValue = false;
 						for (int i = valueRolesCount - 1; i >= 0; --i)
 						{
-							nearestValueConstraint = valueRoles[i].ValueConstraint;
+							Role valueRole = valueRoles[i];
 							if (nearestValueConstraint != null)
 							{
-								break;
+								nearestValueConstraint = valueRole.ValueConstraint;
+								if (nearestValueConstraint != null && resolvedDefaultValue)
+								{
+									break;
+								}
+							}
+
+							if (!resolvedDefaultValue)
+							{
+								switch (valueRole.DefaultState)
+								{
+									case DefaultValueState.UseValue:
+										nearestDefaultValue = "";
+										resolvedDefaultValue = true;
+										break;
+									case DefaultValueState.IgnoreContext:
+										nearestDefaultValue = null;
+										resolvedDefaultValue = true;
+										break;
+									default:
+										{
+											string testDefaultValue = valueRole.DefaultValue;
+											if (!string.IsNullOrEmpty(testDefaultValue))
+											{
+												nearestDefaultValue = testDefaultValue;
+												resolvedDefaultValue = true;
+											}
+										}
+										break;
+								}
+
+								if (resolvedDefaultValue && nearestValueConstraint != null)
+								{
+									break;
+								}
 							}
 						}
 						ObjectType valueType = valueRoles[0].RolePlayer;
@@ -677,6 +869,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (nearestValueConstraint == null)
 						{
 							nearestValueConstraint = valueType.ValueConstraint;
+						}
+						if (!resolvedDefaultValue)
+						{
+							nearestDefaultValue = valueType.ResolvedDirectDefaultValue;
 						}
 						RoleBase nextSkipRole = currentRole.OppositeRoleAlwaysResolveProxy;
 						if (nextSkipRole != null)
@@ -686,6 +882,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								RolePathObjectTypeRoot.GetLinksToRolePathCollection(anchorType),
 								dataTypeLink,
 								nearestValueConstraint,
+								nearestDefaultValue,
 								nextSkipRole.Role,
 								true,
 								visitor);
@@ -705,19 +902,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// with the root path.</param>
 		/// <param name="previousValueConstraint">The value constraint nearest this value role.
 		/// Any value constraint on the current set of roles must be a subset of the previousValueConstraint.</param>
+		/// <param name="defaultValue">The context default value</param>
 		/// <param name="skipRole">A role to skip. If the playedRoles came from a preferred identifier,
 		/// then the skipRole is the opposite role.</param>
 		/// <param name="walkSubtypes">true to walk subtypes. Should be true if the playedRoles come from an
 		/// EntityType and false if they come from a ValueType</param>
 		/// <param name="visitor">The callback delegate</param>
 		/// <returns>true to continue iteration</returns>
-		private static bool WalkDescendedValueRoles(IList<Role> playedRoles, IList<RolePathObjectTypeRoot> pathRoots, ValueTypeHasDataType dataTypeLink, ValueConstraint previousValueConstraint, Role skipRole, bool walkSubtypes, ValueRoleVisitor visitor)
+		private static bool WalkDescendedValueRoles(IList<Role> playedRoles, IList<RolePathObjectTypeRoot> pathRoots, ValueTypeHasDataType dataTypeLink, ValueConstraint previousValueConstraint, string defaultValue, Role skipRole, bool walkSubtypes, ValueRoleVisitor visitor)
 		{
 			int count = pathRoots.Count;
 			for (int i = 0; i < count; ++i)
 			{
 				RolePathObjectTypeRoot pathRoot = pathRoots[i];
-				if (!visitor(null, null, pathRoot, dataTypeLink, pathRoot.ValueConstraint, previousValueConstraint))
+				if (!visitor(null, null, pathRoot, dataTypeLink, pathRoot.ValueConstraint, previousValueConstraint, null))
 				{
 					return false;
 				}
@@ -741,7 +939,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							null != (subtype = subtypeFact.Subtype) &&
 							subtype.PreferredIdentifier == null)
 						{
-							if (!WalkDescendedValueRoles(subtype.PlayedRoleCollection, RolePathObjectTypeRoot.GetLinksToRolePathCollection(subtype), dataTypeLink, previousValueConstraint, null, true, visitor))
+							if (!WalkDescendedValueRoles(subtype.PlayedRoleCollection, RolePathObjectTypeRoot.GetLinksToRolePathCollection(subtype), dataTypeLink, previousValueConstraint, defaultValue, null, true, visitor))
 							{
 								return false;
 							}
@@ -751,14 +949,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else if (!(role is SubtypeMetaRole))
 				{
 					RoleValueConstraint currentValueConstraint = role.ValueConstraint;
-					if (!visitor(role, null, null, dataTypeLink, currentValueConstraint, previousValueConstraint))
+					// Do not use ResolvedDefaultValue, which walks back up the path we are currently walking down.
+					string currentDefaultValue;
+					switch (role.DefaultState)
+					{
+						case DefaultValueState.EmptyValue:
+							currentDefaultValue = "";
+							break;
+						case DefaultValueState.IgnoreContext:
+							currentDefaultValue = null;
+							break;
+						default:
+							if (string.IsNullOrEmpty(currentDefaultValue = role.DefaultValue))
+							{
+								currentDefaultValue = defaultValue;
+							}
+							break;
+					}
+
+					if (!visitor(role, null, null, dataTypeLink, currentValueConstraint, previousValueConstraint, currentDefaultValue))
 					{
 						return false;
 					}
+
 					if (currentValueConstraint != null && !currentValueConstraint.IsDeleted)
 					{
 						previousValueConstraint = currentValueConstraint;
 					}
+
 					foreach (PathedRole pathedRole in PathedRole.GetLinksToRolePathCollection(role))
 					{
 						// UNDONE: VALUEROLE This does not correctly report a value constraint from a previous
@@ -770,7 +988,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 						// Note that we visit for the pathed role even if no value constraint is present
 						// to allow processing for this pathed role.
-						if (!visitor(role, pathedRole, null, dataTypeLink, pathedRole.ValueConstraint, previousValueConstraint))
+						if (!visitor(role, pathedRole, null, dataTypeLink, pathedRole.ValueConstraint, previousValueConstraint, currentDefaultValue))
 						{
 							return false;
 						}
@@ -793,7 +1011,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								return false;
 							}
-							if (!WalkDescendedValueRoles(identifierFor.PlayedRoleCollection, RolePathObjectTypeRoot.GetLinksToRolePathCollection(identifierFor), dataTypeLink, previousValueConstraint, nextSkipRole.Role, true, visitor))
+							if (!WalkDescendedValueRoles(identifierFor.PlayedRoleCollection, RolePathObjectTypeRoot.GetLinksToRolePathCollection(identifierFor), dataTypeLink, previousValueConstraint, currentDefaultValue, nextSkipRole.Role, true, visitor))
 							{
 								return false;
 							}
@@ -815,7 +1033,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid attributeGuid = e.DomainProperty.Id;
 			if (attributeGuid == Role.ValueRangeTextDomainPropertyId)
 			{
-				Role role = e.ModelElement as Role;
+				Role role = (Role)e.ModelElement;
 				RoleValueConstraint valueConstraint = role.ValueConstraint;
 				if (valueConstraint == null)
 				{
@@ -823,10 +1041,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				valueConstraint.Text = (string)e.NewValue;
 			}
+			else if (attributeGuid == Role.DefaultStateDomainPropertyId)
+			{
+				Role role = (Role)e.ModelElement;
+				DefaultValueState newState = role.DefaultState;
+				switch (newState)
+				{
+					case DefaultValueState.EmptyValue:
+					case DefaultValueState.IgnoreContext:
+						if (!string.IsNullOrEmpty(role.DefaultValue))
+						{
+							// This will notify through the DefaultValue property
+							role.DefaultValue = "";
+						}
+						else
+						{
+							ObjectModel.ValueConstraint.DelayValidateDefaultValue(role, true, true);
+						}
+						break;
+				}
+			}
+			else if (attributeGuid == Role.DefaultValueDomainPropertyId)
+			{
+				Role role = (Role)e.ModelElement;
+				if (!string.IsNullOrEmpty(role.DefaultValue))
+				{
+					role.DefaultState = DefaultValueState.UseValue; // This does not trigger any code in the DefaultState handler
+				}
+
+				ObjectModel.ValueConstraint.DelayValidateDefaultValue(role, true, true);
+			}
 			#region Handle IsMandatory property changes
 			else if (attributeGuid == Role.IsMandatoryDomainPropertyId)
 			{
-				Role role = e.ModelElement as Role;
+				Role role = (Role)e.ModelElement;
 				if ((bool)e.NewValue)
 				{
 					// Add a mandatory constraint
@@ -858,7 +1106,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Handle MandatoryConstraintName property changes
 			else if (attributeGuid == Role.MandatoryConstraintNameDomainPropertyId)
 			{
-				Role role = e.ModelElement as Role;
+				Role role = (Role)e.ModelElement;
 				MandatoryConstraint smc = role.SimpleMandatoryConstraint;
 				if (smc != null)
 				{
@@ -888,7 +1136,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						factRoles = factType.RoleCollection;
 					}
-					if (factType == null || factRoles.Count != 2 || FactType.GetUnaryRoleIndex(factRoles).HasValue)
+					if (factType == null || factRoles.Count != 2)
 					{
 						return; // Ignore the request
 					}
@@ -1171,7 +1419,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Handle MandatoryConstraintModality property changes
 			else if (attributeGuid == Role.MandatoryConstraintModalityDomainPropertyId)
 			{
-				Role role = e.ModelElement as Role;
+				Role role = (Role)e.ModelElement;
 				MandatoryConstraint smc = role.SimpleMandatoryConstraint;
 				if (smc != null)
 				{
@@ -1182,7 +1430,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Handle ObjectificationOppositeRoleName property changes
 			else if (attributeGuid == Role.ObjectificationOppositeRoleNameDomainPropertyId)
 			{
-				RoleProxy roleProxy = (e.ModelElement as Role).Proxy;
+				RoleProxy roleProxy = ((Role)e.ModelElement).Proxy;
 				Role oppositeRole;
 				if (roleProxy != null && (oppositeRole = roleProxy.OppositeRole as Role) != null)
 				{
@@ -1219,6 +1467,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							yield return populationMandatoryError;
 						}
 					}
+				}
+
+				DefaultValueMismatchError defaultValueMismatch = DefaultValueMismatchError;
+				if (defaultValueMismatch != null)
+				{
+					yield return defaultValueMismatch;
+				}
+
+				DefaultValueOutOfRangeError defaultValueRangeError = DefaultValueOutOfRangeError;
+				if (defaultValueRangeError != null)
+				{
+					yield return defaultValueRangeError;
+				}
+
+				DefaultValueValueTypeDetachedError defaultValueDetachedError = DefaultValueValueTypeDetachedError;
+				if (defaultValueDetachedError != null)
+				{
+					yield return defaultValueDetachedError;
 				}
 			}
 			if (filter == (ModelErrorUses)(-1))
@@ -1268,6 +1534,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRolePlayerRequiredForRule(notifyAdded);
 			ValidatePopulationUniquenessError(notifyAdded);
+			ObjectModel.ValueConstraint.ValidateRoleDefaultValue(this, notifyAdded);
+
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -1280,6 +1548,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRolePlayerRequiredError);
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidatePopulationUniquenessError);
+			ObjectModel.ValueConstraint.DelayValidateDefaultValue(this, true, true);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -1566,7 +1835,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return !string.IsNullOrEmpty(this.Name) ?
+				return (!string.IsNullOrEmpty(this.Name) || !string.IsNullOrEmpty(this.ResolvedDefaultValue)) ?
 					VerbalizationSelfFilter.Verbalize :
 					VerbalizationSelfFilter.VerbalizeIfChildren;
 			}
@@ -1794,10 +2063,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Used as a shortcut to find the the binarized version of the FactType that this
-		/// role belongs to.
+		/// Used as a shortcut to find the the binarized version of the FactType that
+		/// this role belongs to, or the fact type itself if not available. This will
+		/// return a unary fact type.
 		/// </summary>
-		public FactType BinarizedFactType
+		public FactType BinarizedOrSameFactType
 		{
 			get
 			{
@@ -1814,8 +2084,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					proxy = this as RoleProxy;
-					Debug.Assert(proxy != null);
+					proxy = (RoleProxy)this;
 					return proxy.FactType;
 				}
 			}
@@ -1832,6 +2101,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				FactType factType = this.FactType;
 				if (factType != null)
 				{
+					LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+					if (roles.Count == 2)
+					{
+						// loop over the collection and get the other role
+						RoleBase oppositeRole = roles[0];
+						if (oppositeRole == this)
+						{
+							return roles[1];
+						}
+						return oppositeRole;
+					}
+				}
+				return null;
+			}
+		}
+		/// <summary>
+		/// Used as a shortcut to find the opposite RoleBase in a binary FactType,
+		/// or the unary role if this is unary.
+		/// Returns null if the FactType is not binary or unary.
+		/// </summary>
+		public RoleBase OppositeOrUnaryRole
+		{
+			get
+			{
+				// Only do this if it's a binary fact
+				FactType factType = this.FactType;
+				if (factType != null)
+				{
+					if (factType.UnaryPattern != UnaryValuePattern.NotUnary)
+					{
+						return this;
+					}
+
 					LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 					if (roles.Count == 2)
 					{

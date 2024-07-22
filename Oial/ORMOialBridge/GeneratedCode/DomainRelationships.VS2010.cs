@@ -1389,7 +1389,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.InformationTypeFormatIsForValueType/InformationTypeFormat.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("e7453c11-962f-4d37-9e69-f01e83810cc8")]
 		public virtual global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat InformationTypeFormat
 		{

@@ -561,7 +561,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				FactTypeHasRole link = (FactTypeHasRole)element;
 				FactType factType = link.FactType;
 				RoleBase newRoleBase = link.Role;
-				ObjectType rolePlayer = null;
 
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
@@ -574,12 +573,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 						if (factType.UnaryRole != null)
 						{
-							if (!(null != (rolePlayer ?? (rolePlayer = newRoleBase.Role.RolePlayer)) && rolePlayer.IsImplicitBooleanValue))
+							if (!roles.Contains(newRoleBase))
 							{
-								if (!roles.Contains(newRoleBase))
-								{
-									roles.Add(newRoleBase);
-								}
+								roles.Add(newRoleBase);
 							}
 							return;
 						}
@@ -1485,8 +1481,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					foreach (ObjectType objectType in elementDir.FindElements<ObjectType>(false))
 					{
 						Objectification objectification;
-						if (!objectType.IsImplicitBooleanValue &&
-							(null == (objectification = objectType.Objectification) || !objectification.IsImplied))
+						if (null == (objectification = objectType.Objectification) || !objectification.IsImplied)
 						{
 							if (null != (shape = element.FixUpLocalDiagram(element, objectType)))
 							{

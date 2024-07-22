@@ -580,6 +580,26 @@
 						<DomainEnumerationMoniker Name="DerivationExpressionStorageType"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="DefaultValue" DefaultValue="" DisplayName="DefaultValue" Id="765608BE-82FB-4A12-96C8-2C361C9BE669" Description="The default value for this value type.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="InvariantDefaultValue" DefaultValue="" DisplayName="InvariantDefaultValue" IsBrowsable="false" Id="6E1796FA-4429-43F5-B1A2-9EC6BCD441BC" Description="The culture-invariant form of the default value property.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="ValueTypeDefaultValue" DefaultValue="" DisplayName="ValueTypeDefaultValue" Id="E58275A9-77A5-441E-9E65-B9966DE6517D" Kind="CustomStorage" Description="The DefaultValue property for the ValueType that identifies this EntityType.&#xd;&#xa;    The DefaultValue property of an EntityType is applied to the identifying role, not directly to the identifying ValueType. This allows EntityType DefaultValue to be specified independently for multiple EntityTypes identified with the same unit-based or general reference mode patterns.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DefaultState" DefaultValue="UseValue" DisplayName="DefaultState" Kind="CustomStorage" IsBrowsable="false" Id="80CC08E5-F40B-411D-AE92-0C874A38C0AC" Description="Specify how the DefaultValue is interpreted.">
+					<Type>
+						<DomainEnumerationMoniker Name="DefaultValueState"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 
@@ -646,6 +666,11 @@
 					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="UnaryPattern" DefaultValue="NotUnary" DisplayName="UnaryPattern" Id="DDFE356E-7A5E-4958-98FC-D5E2476B8E6D" Description="Specify unary fact type negation, constraint and default value pattern.">
+					<Type>
+						<DomainEnumerationMoniker Name="UnaryValuePattern"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="GeneratedName" DefaultValue="" DisplayName="GeneratedName" IsElementName="false" Id="F6FC3149-2ED8-458D-A29C-FD640A810A79" IsBrowsable="false" Kind="CustomStorage" GetterAccessModifier="Private" SetterAccessModifier="Private">
@@ -801,6 +826,21 @@
 					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DefaultValue" DefaultValue="" DisplayName="DefaultValue" Id="EA46DEBD-3560-4B4A-9DC7-8250105FD4AC" Description="The default value for this role.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="InvariantDefaultValue" DefaultValue="" DisplayName="InvariantDefaultValue" IsBrowsable="false" Id="70F07A83-7AEE-4038-95CD-A3CE9E84100D" Description="The culture-invariant form of the default value property.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DefaultState" DefaultValue="UseValue" DisplayName="DefaultState" IsBrowsable="false" Id="614B1936-5C38-4B08-82BA-D7F386C3BA42" Description="Specify how the DefaultValue is interpreted.">
+					<Type>
+						<DomainEnumerationMoniker Name="DefaultValueState"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -1973,6 +2013,13 @@
 			</BaseClass>
 		</DomainClass>
 
+		<!-- Note that this is an implicit data type. It is not serialized and is not in the schema. It is used as a pseudo data type for a non-negated unary. -->
+		<DomainClass Name="TrueLogicalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D88CD3F4-CFAD-486C-857F-F22ED0A2E6FE" DisplayName="TrueLogicalDataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="LogicalDataType"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="YesOrNoLogicalDataType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7E694D96-8444-4007-BFEB-C1B0BD3F96DE" DisplayName="YesOrNoLogicalDataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="LogicalDataType"/>
@@ -2349,6 +2396,24 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="DefaultValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="35D67F39-3C1B-4735-93E3-4C5EB7CDC950" DisplayName="Default Value Invalid for DataType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="DefaultValueValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4271E695-1088-459E-88E1-0C30DD4F9467" DisplayName="Default Value Detached from Identifying ValueType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="DefaultValueOutOfRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A197D25D-A586-472E-A2B3-BBE3F062FC8E" DisplayName="Default Value Violates Value Constraint" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="SubtypeMetaRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4AD109E1-3AB4-4F8A-A862-1694AEE06289" DisplayName="SubtypeMetaRole" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="Role"/>
@@ -2449,7 +2514,13 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Path to Identifying ValueType Detached" Description="">
+		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Value Constraint Detached from Identifying ValueType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ValueConstraintError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="ValueRangeOutOfRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="87BB13F4-6CEC-4490-A976-548BE754E0E1" DisplayName="Value Range Violates Context Value Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueConstraintError"/>
 			</BaseClass>
@@ -3409,6 +3480,66 @@
 				<DomainRole Name="ExclusionConstraint" PropertyName="ExclusiveOrMandatoryConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExclusiveOrMandatoryConstraint" Id="6413EE7E-A13F-4330-A45E-79727EA49A30">
 					<RolePlayer>
 						<DomainClassMoniker Name="ExclusionConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ExclusionConstraintAllowsUnaryFactTypeNegation" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="44352494-CDEE-4868-B2C8-4F71130A88A0">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="UnaryFactType" PropertyName="NegationExclusionConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NegationExclusionConstraint" Id="C7385165-7C5F-4D2C-ABE0-3D3328E436D2">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ExclusionConstraint" PropertyName="ControlledByUnaryFactType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ControlledByUnaryFactType" Id="35D6AF5A-1B05-4FA9-8D58-4E83B6B3691A">
+					<RolePlayer>
+						<DomainClassMoniker Name="ExclusionConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="MandatoryConstraintClosesUnaryFactType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="7A9C54B1-B141-43F9-8355-8A1E35000967">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="UnaryFactType" PropertyName="NegationMandatoryConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NegationMandatoryConstraint" Id="08DA30E8-4C8E-460D-8313-E09D90411C93">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="MandatoryConstraint" PropertyName="ClosesUnaryFactType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ClosesUnaryFactType" Id="EFF82E4D-C5D9-4F8D-825D-B1E8EBAE79EB">
+					<RolePlayer>
+						<DomainClassMoniker Name="MandatoryConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="UnaryFactTypeHasNegationFactType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="15FC86C6-4A17-4800-B2DE-2051741D3014">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="PositiveFactType" PropertyName="NegationUnaryFactType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NegationUnaryFactType" Id="98D8F56A-BD1D-4E7A-AB99-531061E33C25">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="NegativeFactType" PropertyName="PositiveUnaryFactType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PositiveUnaryFactType" Id="34074688-7B99-4464-9E93-8AA26E08CC68">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -4665,6 +4796,106 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="RoleHasDefaultValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4454ABD8-F5AB-4305-A816-37D0F2DC4BA5">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Role" PropertyName="DefaultValueMismatchError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="B0BAC0E7-EA5A-45E6-9C0F-B5223E010DC7">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DefaultValueMismatchError" PropertyName="Role" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DefaultValueMismatchError" Id="6BEF6676-D684-403B-B18C-C9A804D94886">
+					<RolePlayer>
+						<DomainClassMoniker Name="DefaultValueMismatchError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="RoleHasDefaultValueOutOfRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2E8B2BDF-0EE8-4B97-94B4-F349378C2313">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Role" PropertyName="DefaultValueOutOfRangeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="A6B42E73-CF37-4935-A8CE-1A900CD55A61">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DefaultValueOutOfRangeError" PropertyName="Role" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DefaultValueOutOfRangeError" Id="3DA07861-CFB1-4073-B71B-6C23E83EC96B">
+					<RolePlayer>
+						<DomainClassMoniker Name="DefaultValueOutOfRangeError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="RoleHasDefaultValueValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="905D3125-01CD-4993-9A1A-4CFEBFDF1FDE">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Role" PropertyName="DefaultValueValueTypeDetachedError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="12A0624A-2CE3-4F55-8DE7-076D35210291">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DefaultValueValueTypeDetachedError" PropertyName="Role" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DefaultValueValueTypeDetachedError" Id="9B99D9A5-399A-4092-8394-390ACF04CFF6">
+					<RolePlayer>
+						<DomainClassMoniker Name="DefaultValueValueTypeDetachedError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ValueTypeHasDefaultValueMismatchError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A6850EAC-CB41-4BE6-8BEB-99824030345E">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ValueType" PropertyName="DefaultValueMismatchError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="6AA24CF8-DA3B-4ABC-A07C-1431ED44637D">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DefaultValueMismatchError" PropertyName="ValueType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DefaultValueMismatchError" Id="1D804527-96C9-4C9A-9BCE-FAE61C3DF249">
+					<RolePlayer>
+						<DomainClassMoniker Name="DefaultValueMismatchError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ValueTypeHasDefaultValueOutOfRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2EC0FC90-6F0D-45E1-ACD1-13DCC070007F">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ValueType" PropertyName="DefaultValueOutOfRangeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="8E1708EC-2BBF-4FE8-946F-E810A297CA23">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DefaultValueOutOfRangeError" PropertyName="ValueType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DefaultValueOutOfRangeError" Id="5DFC8C98-AF2A-40DD-AD19-FABEC911A4A8">
+					<RolePlayer>
+						<DomainClassMoniker Name="DefaultValueOutOfRangeError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ModelHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BC513C18-D426-4E5E-907C-1CD0C87732F1">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -5272,6 +5503,26 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="ValueRangeHasOutOfRangeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EA2C3B42-2373-4C9A-9384-40E70B77459C">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ValueRange" PropertyName="OutOfRangeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueRange" Id="54B00071-26A0-47CA-81D1-2EA6F61D574C">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueRange"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="OutOfRangeError" PropertyName="ValueRange" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="OutOfRangeError" Id="EE1EC121-DDCB-4E82-A631-BDE36E027CE2">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueRangeOutOfRangeError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="FactTypeHasRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="40F02204-F32A-4424-9FD5-5B6B943C603A">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -5555,6 +5806,23 @@
 				<DomainRole Name="RoleInstance" PropertyName="EntityTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="C85848F4-9E45-44E7-AAAF-5E632CAB6D09">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="EntityTypeRoleInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="EntityTypeInstancePopulatesUnaryRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="FB8F62AE-53D4-42CF-AEA1-3CB8AC9F28FE">
+			<Source>
+				<DomainRole Name="EntityTypeInstance" PropertyName="UnaryRoleInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeInstance" Id="2F088568-CEEB-4B68-8C48-DFBCD59F31C4">
+					<RolePlayer>
+						<DomainClassMoniker Name="EntityTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="UnaryRole" PropertyName="EntityInstancesForUnary" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="UnaryRole" Id="099F0092-23BA-48FC-A47B-CA419F979CCB">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -8004,6 +8272,53 @@
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="UnaryValuePattern" Description="Specify a standard negation, constraint and default pattern for a unary fact type.">
+			<Literals>
+				<EnumerationLiteral Name="NotUnary" Value="0" Description="This is not a unary fact type.">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Browsable">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+				</EnumerationLiteral>
+				<EnumerationLiteral Name="Negation" Value="1" Description="This is the negation of a unary fact type. All other pattern values are reflected on the paired positive fact type.">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Browsable">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+				</EnumerationLiteral>
+				<EnumerationLiteral Name="OptionalWithoutNegation" Value="2" Description="The unary fact type can only represent a true or unknown state."/>
+				<EnumerationLiteral Name="OptionalWithoutNegationDefaultTrue" Value="3" Description="The unary fact type can only represent a true or unknown state. The default value is 'true'."/>
+				<EnumerationLiteral Name="OptionalWithNegation" Value="4" Description="The unary fact type is paired with a unary that negates it to support true, false and unknown states."/>
+				<EnumerationLiteral Name="OptionalWithNegationDefaultTrue" Value="5" Description="The unary fact type is paired with a unary that negates it to support true, false and unknown states. The default value is 'true'."/>
+				<EnumerationLiteral Name="OptionalWithNegationDefaultFalse" Value="6" Description="The unary fact type is paired with a unary that negates it to support true, false and unknown states. The default value is 'false'."/>
+				<EnumerationLiteral Name="RequiredWithNegation" Value="7" Description="The unary fact type is paired with a unary that negates it to support true and false states."/>
+				<EnumerationLiteral Name="RequiredWithNegationDefaultTrue" Value="8" Description="The unary fact type is paired with a unary that negates it to support true and false states. The default value is 'true'."/>
+				<EnumerationLiteral Name="RequiredWithNegationDefaultFalse" Value="9" Description="The unary fact type is paired with a unary that negates it to support true and false states. The default value is 'false'."/>
+				<EnumerationLiteral Name="DeonticRequiredWithNegation" Value="10" Description="The unary fact type is paired with a unary that negates it to support true and false states. The user is obligated to provide a value."/>
+				<EnumerationLiteral Name="DeonticRequiredWithNegationDefaultTrue" Value="11" Description="The unary fact type is paired with a unary that negates it to support true and false states. The user is obligated to provide a value. The default value is 'true'."/>
+				<EnumerationLiteral Name="DeonticRequiredWithNegationDefaultFalse" Value="12" Description="The unary fact type is paired with a unary that negates it support true and false states. The user is obligated to provide a value. The default value is 'false'."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;UnaryValuePattern, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="DefaultValueState" Description="Specify how a default value should be used.">
+			<Literals>
+				<EnumerationLiteral Name="UseValue" Value="0" Description="Use the DefaultValue property."/>
+				<EnumerationLiteral Name="EmptyValue" Value="1" Description="Use an empty value as the default. Applies to string values."/>
+				<EnumerationLiteral Name="IgnoreContext" Value="2" Description="Turn off a default that is in context from the value type or identifying role."/>
+			</Literals>
 		</DomainEnumeration>
 	</Types>
 

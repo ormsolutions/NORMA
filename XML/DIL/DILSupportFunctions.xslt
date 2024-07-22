@@ -238,8 +238,8 @@
 			/*@if (@_jscript_version >= 7) System.Collections.Hashtable @end@*/ (identifierCaches[maxLength])[originalName] = name;
 			return name;
 		}
-		
-		
+
+
 		/*@if (@_jscript_version >= 7)
 		System.Diagnostics.DebuggerStepThroughAttribute
 		private static @end@*/ function isDelimited(identifier /*@if (@_jscript_version >= 7) : System.String) : System.Boolean { @else@*/ )
@@ -391,6 +391,19 @@
 
 			return /*@if (@_jscript_version >= 7) System.String @end@*/ (identifierCache[originalName]);
 		}
+
+		/*@if (@_jscript_version >= 7)
+		System.Diagnostics.DebuggerStepThroughAttribute
+		public static function coalesce(primaryName : System.String, secondaryName : System.String) : System.String
+		{
+			return !System.String.IsNullOrEmpty(primaryName) ? primaryName : secondaryName;
+		}
+		@else@*/
+		function coalesce(primaryName, secondaryName)
+		{
+			return primaryName || secondaryName;
+		}
+		/*@end@*/
 
 
 		/*@if (@_jscript_version >= 7)

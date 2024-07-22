@@ -29,9 +29,9 @@
 					<CommandName>ORMDesignerContextMenu</CommandName>
 				</Strings>
 			</Menu>
-			<Menu guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar" priority="0x0000" type="ToolWindowToolbar">
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolbar" priority="0x0000" type="ToolWindowToolbar">
 				<!-- UNDONE: Should this really be its own parent? -->
-				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolbar"/>
 				<Strings>
 					<ButtonText>ORM Verbalization Toolbar</ButtonText>
 					<CommandName>ORMDesignerVerbalizationToolbar</CommandName>
@@ -100,7 +100,7 @@
 					<CommandName>&amp;Groups</CommandName>
 				</Strings>
 			</Menu>
-			<Menu guid="guidORMDesignerCommandSet" id="menuIdZoomCommands" priority="0x0600" type="Context">
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdZoomCommands" priority="0x0700" type="Context">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
 				<Strings>
 					<ButtonText>Zoom</ButtonText>
@@ -137,11 +137,11 @@
 				</Strings>
 			</Menu>
 
-			<Menu guid="guidORMDesignerCommandSet" id="menuIdFactEditorContextMenu" priority="0x0000" type="Context">
-				<Parent guid="guidORMDesignerCommandSet" id="0"/>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdFactEditorToolbar" priority="0x0000" type="ToolWindowToolbar">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdFactEditorToolbar"/>
 				<Strings>
-					<ButtonText>ORM Fact Editor Context Menu</ButtonText>
-					<CommandName>ORMFactEditorContextMenu</CommandName>
+					<ButtonText>ORM Fact Editor Toolbar</ButtonText>
+					<CommandName>ORMFactEditorToolbar</CommandName>
 				</Strings>
 			</Menu>
 		</Menus>
@@ -182,11 +182,11 @@
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdVerbalizationCommands" priority="0x0010">
-				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolbar"/>
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdVerbalizationOptions" priority="0x0020">
-				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolBar"/>
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolbar"/>
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextAddDelete" priority="0x0009">
@@ -272,7 +272,7 @@
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdToolWindows"/>
 			</Group>
 			<Group guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands" priority="0x0010">
-				<Parent guid="guidORMDesignerCommandSet" id="menuIdFactEditorContextMenu"/>
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdFactEditorToolbar"/>
 			</Group>
 			<Group Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs"/>
 		</Groups>
@@ -377,6 +377,14 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<ButtonText>Unob&amp;jectify Fact Type</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDragInverseUnaryFactType" priority="0x0040" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Drag &amp;Unary Inverse</ButtonText>
 				</Strings>
 			</Button>
 
@@ -691,6 +699,15 @@
 				</Strings>
 			</Button>
 
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDiagramSpyAllDiagrams" priority="0x0600" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Show &amp;All Diagrams</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdCopyImage" priority="0x0200" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
 				<Icon guid="guidCommandIcons" id="bmpIdCamera"/>
@@ -759,6 +776,14 @@
 				<CommandFlag>TextChanges</CommandFlag>
 				<Strings>
 					<ButtonText>Move Role Rig&amp;ht</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDragLinkFactType" priority="0x0070" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Drag &amp;Link Fact Type</ButtonText>
 				</Strings>
 			</Button>
 
@@ -861,10 +886,18 @@
 				</Strings>
 			</Button>
 
-			<Button guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLine" priority="0x010" type="Button">
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLineAutoShapes" priority="0x010" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands"/>
+				<Icon guid="guidCommandIcons" id="bmpIdFactEditorAutoShapes"/>
 				<Strings>
-					<ButtonText>&amp;Commit FactType Definition</ButtonText>
+					<ButtonText>Commit, Auto Create Shapes</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLineDragShapes" priority="0x020" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands"/>
+				<Icon guid="guidCommandIcons" id="bmpIdFactEditorDragShapes"/>
+				<Strings>
+					<ButtonText>Commit, Click to Create Shapes</ButtonText>
 				</Strings>
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" priority="0x0010" type="Button">
@@ -1006,7 +1039,7 @@
 		<Bitmaps>
 			<Bitmap guid="guidORMVerbalizationToolbarImages" href="../../Resources/VerbalizationToolbarImages.png" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization, bmpIdVerbalizationHyperlinkToDiagramSpy"/>
 			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons.png" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor, bmpIdToolWindowPopulationEditor, bmpIdToolWindowContextWindow, bmpIdToolWindowDescriptionEditor, bmpIdToolWindowDiagramSpy"/>
-			<Bitmap guid="guidCommandIcons" href="../../Resources/Commands.ImageStrip.png" usedList="bmpIdDelete, bmpIdCamera, bmpIdUpArrow, bmpIdDownArrow, bmpIdLeftArrow, bmpIdRightArrow"/>
+			<Bitmap guid="guidCommandIcons" href="../../Resources/Commands.ImageStrip.png" usedList="bmpIdDelete, bmpIdCamera, bmpIdUpArrow, bmpIdDownArrow, bmpIdLeftArrow, bmpIdRightArrow, bmpIdFactEditorAutoShapes, bmpIdFactEditorDragShapes"/>
 		</Bitmaps>
 
 	</Commands>
@@ -1055,7 +1088,8 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomOut" editor="guidORMDesignerEditor" key1="189" mod1="Control Shift"/>
 
 		<!-- Fact editor key bindings-->
-		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLine" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLineAutoShapes" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLineDragShapes" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Alt"/>
 
 		<!--
 		//****************************-
@@ -1167,14 +1201,14 @@
 
 			<!-- Menus (0x01__) -->
 			<IDSymbol value="0x0100" name="menuIdContextMenu"/>
-			<IDSymbol value="0x0101" name="menuIdVerbalizationToolBar"/>
+			<IDSymbol value="0x0101" name="menuIdVerbalizationToolbar"/>
 			<IDSymbol value="0x0102" name="menuIdErrorList"/>
 			<IDSymbol value="0x0103" name="menuIdReadingEditorContextMenu"/>
 			<IDSymbol value="0x0104" name="menuIdDisplayOrientation"/>
 			<IDSymbol value="0x0105" name="menuIdToolWindows"/>
 			<IDSymbol value="0x0106" name="menuIdDiagramList"/>
 			<IDSymbol value="0x0107" name="menuIdReportGeneratorList"/>
-			<IDSymbol value="0x0108" name="menuIdFactEditorContextMenu"/>
+			<IDSymbol value="0x0108" name="menuIdFactEditorToolbar"/>
 			<IDSymbol value="0x0109" name="menuIdDiagramSpyDiagramList"/>
 			<IDSymbol value="0x010A" name="menuIdGroupCommands"/>
 			<IDSymbol value="0x010B" name="menuIdIncludeInGroup"/>
@@ -1269,7 +1303,7 @@
 			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
 			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
 			<IDSymbol value="0x292A" name="cmdIdViewInformalDescriptionWindow"/>
-			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLine"/>
+			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLineAutoShapes"/>
 			<IDSymbol value="0x292C" name="cmdIdViewDiagramSpyWindow"/>
 			<IDSymbol value="0x292D" name="cmdIdVerbalizationHyperlinkToDiagramSpy"/>
 			<IDSymbol value="0x292E" name="cmdIdSelectInDiagramSpy"/>
@@ -1294,6 +1328,10 @@
 			<IDSymbol value="0x2941" name="cmdIdZoomOut"/>
 			<IDSymbol value="0x2942" name="cmdIdLoadNORMASchemas"/>
 			<IDSymbol value="0x2943" name="cmdIdORMDesignerOptions"/>
+			<IDSymbol value="0x2944" name="cmdIdDragInverseUnaryFactType"/>
+			<IDSymbol value="0x2945" name="cmdIdDragLinkFactType"/>
+			<IDSymbol value="0x2946" name="cmdIdFactEditorCommitLineDragShapes"/>
+			<IDSymbol value="0x2947" name="cmdIdDiagramSpyAllDiagrams"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
@@ -1350,6 +1388,8 @@
 			<IDSymbol value="0x0004" name="bmpIdDownArrow"/>
 			<IDSymbol value="0x0005" name="bmpIdLeftArrow"/>
 			<IDSymbol value="0x0006" name="bmpIdRightArrow"/>
+			<IDSymbol value="0x0007" name="bmpIdFactEditorAutoShapes"/>
+			<IDSymbol value="0x0008" name="bmpIdFactEditorDragShapes"/>
 		</GuidSymbol>
 		<!-- The XML values were obtained using the vsct.exe tool to decompile the CTMENU resource
 		extracted from the XML Editor localization assembly. I could not find them in the VSSDK. -->

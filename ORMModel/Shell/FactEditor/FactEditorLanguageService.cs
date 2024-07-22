@@ -19,6 +19,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -93,6 +94,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						IVsWindowFrame frame = (IVsWindowFrame)Marshal.GetObjectForIUnknown(pFrame);
 						tempGuid = typeof(ORMFactEditorEditorFactory).GUID;
 						hr = frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref tempGuid);
+						object toolbarHost;
+						if (VSConstants.S_OK == frame.GetProperty((int)__VSFPROPID.VSFPROPID_ToolbarHost, out toolbarHost) && toolbarHost != null)
+						{
+							CommandID command = ORMDesignerDocView.ORMDesignerCommandIds.FactEditorToolbar;
+							Guid commandGuid = command.Guid;
+							((IVsToolWindowToolbarHost)toolbarHost).AddToolbar(VSTWT_LOCATION.VSTWT_LEFT, ref commandGuid, (uint)command.ID);
+						}
 					}
 					finally
 					{
@@ -113,7 +121,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		private class FactEditorViewFilter : ViewFilter
 		{
-			private const uint cmdIdFactEditorCommitLine = 0x292b; // Keep in sync with PkgCmd.vsct
+			// Keep in sync with PkgCmd.vsct
+			private const uint cmdIdFactEditorCommitLineAutoShapes = 0x292b;
+			private const uint cmdIdFactEditorCommitLineDragShapes = 0x2946;
 
 			public FactEditorViewFilter(CodeWindowManager mgr, IVsTextView view)
 				: base(mgr, view)
@@ -121,7 +131,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			protected override int QueryCommandStatus(ref Guid guidCmdGroup, uint nCmdId)
 			{
-				if (nCmdId == cmdIdFactEditorCommitLine && guidCmdGroup == typeof(ORMDesignerDocView.ORMDesignerCommandIds).GUID)
+				if ((nCmdId == cmdIdFactEditorCommitLineAutoShapes || nCmdId == cmdIdFactEditorCommitLineDragShapes) && guidCmdGroup == typeof(ORMDesignerDocView.ORMDesignerCommandIds).GUID)
 				{
 					Source source = Source;
 					// Supported=1, Enabled=2, Invisible=0x10
@@ -131,7 +141,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			public override bool HandlePreExec(ref Guid guidCmdGroup, uint nCmdId, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
 			{
-				if (nCmdId == cmdIdFactEditorCommitLine && guidCmdGroup == typeof(ORMDesignerDocView.ORMDesignerCommandIds).GUID)
+				bool dragShapes = false;
+				if ((nCmdId == cmdIdFactEditorCommitLineAutoShapes || (dragShapes = nCmdId == cmdIdFactEditorCommitLineDragShapes)) && guidCmdGroup == typeof(ORMDesignerDocView.ORMDesignerCommandIds).GUID)
 				{
 					Source source = this.Source;
 					FactEditorLanguageService languageService = (FactEditorLanguageService)source.LanguageService;
@@ -161,7 +172,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							activeFactType,
 							activeReadingOrder,
 							activeRoleOrder,
-							parsedFactType);
+							parsedFactType,
+							dragShapes);
 						source.SetText((readingOrder != null) ? HeadReading(GetHeadText(readingOrder.ReadingText), readingOrder) : "");
 					}
 				}
@@ -186,10 +198,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						if (replaceIndex == 0)
 						{
 							IList<RoleBase> roles = readingOrder.RoleCollection;
-							// Note that sending the defaultRoleOrder based on the
-							// reading order means that the isUnaryRole parameter is
-							// meaningless.
-							return FormatReplacementField(roles[0], roles, false);
+							return FormatReplacementField(roles[0], roles);
 						}
 						return "";
 					});
@@ -506,7 +515,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		#endregion // Overridden Methods
 		#region Helper Methods
-		private static string FormatReplacementField(RoleBase role, IList<RoleBase> defaultRoleOrder, bool isUnaryRole)
+		private static string FormatReplacementField(RoleBase role, IList<RoleBase> defaultRoleOrder)
 		{
 			string retVal = null;
 			ObjectType player = role.Role.RolePlayer;
@@ -530,14 +539,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			else
 			{
-				retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.FactEditorMissingRolePlayerFormatString, isUnaryRole ? 1 : (defaultRoleOrder.IndexOf(role) + 1));
+				retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.FactEditorMissingRolePlayerFormatString, defaultRoleOrder.IndexOf(role));
 			}
 			return retVal;
 		}
 		/// <summary>
-		/// <see cref="StringBuilder"/> based version of <see cref="FormatReplacementField(RoleBase, IList{RoleBase}, bool)"/>
+		/// <see cref="StringBuilder"/> based version of <see cref="FormatReplacementField(RoleBase, IList{RoleBase})"/>
 		/// </summary>
-		private static void FormatReplacementField(StringBuilder builder, RoleBase role, IList<RoleBase> defaultRoleOrder, bool isUnaryRole)
+		private static void FormatReplacementField(StringBuilder builder, RoleBase role, IList<RoleBase> defaultRoleOrder)
 		{
 			ObjectType player = role.Role.RolePlayer;
 			if (player != null)
@@ -546,7 +555,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			else
 			{
-				builder.AppendFormat(CultureInfo.InvariantCulture, ResourceStrings.FactEditorMissingRolePlayerFormatString, isUnaryRole ? 1 : (defaultRoleOrder.IndexOf(role) + 1));
+				builder.AppendFormat(CultureInfo.InvariantCulture, ResourceStrings.FactEditorMissingRolePlayerFormatString, defaultRoleOrder.IndexOf(role) + 1);
 			}
 		}
 		/// <summary>
@@ -627,6 +636,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// regardless of the selected role order.
 			/// </summary>
 			private IList<RoleBase> myDefaultRoleOrder;
+			/// <summary>
+			/// The selected unary fact type (positive or negative) has an inverse
+			/// unary fact type AND either no reading or a reading that starts or
+			/// ends with {0}
+			/// </summary>
+			private bool myDisplayUnaryInverse;
 			/// <summary>
 			/// Cached objects written to the Fact Editor window
 			/// </summary>
@@ -774,6 +789,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				propertyInfo = directory.FindDomainProperty(Reading.TextDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingTextChanged), action);
 
+				// Unary negation add/delete
+				classInfo = directory.FindDomainRelationship(UnaryFactTypeHasNegationFactType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(UnaryNegationAdded), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(UnaryNegationDeleted), action);
+
 				// DisplayOrder added/delete/reorder
 				classInfo = directory.GetDomainRelationship(FactTypeShapeHasRoleDisplayOrder.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RoleDisplayOrderAdded), action);
@@ -839,11 +859,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ReadingOrder reverseReadingOrder = null;
 				RoleBase leadRole = null;
 				RoleBase[] roleOrder = null;
-				RoleBase unaryRole = null;
 				string forwardReadingText = null;
 				string reverseReadingOrderText = null;
 
 				IList<RoleBase> defaultOrder = null;
+				bool displayUnaryInverse = false;
 				int openRoleIndex = 0;
 				IORMSelectionContainer selectionContainer;
 				ORMDesignerDocData docData;
@@ -951,43 +971,33 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 								if (testFactType != null)
 								{
-									if (unaryRole == null)
+									if (factRoles == null)
 									{
-										if (factRoles == null)
+										factRoles = testFactType.RoleCollection;
+										fullOrderRoleCount = factRoles.Count;
+									}
+
+									RoleBase currentRole = element as RoleBase;
+									if (currentRole != null)
+									{
+										if (leadRole == null)
 										{
-											factRoles = testFactType.RoleCollection;
-											fullOrderRoleCount = factRoles.Count;
-											int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
-											if (unaryRoleIndex.HasValue)
+											leadRole = currentRole;
+										}
+										else if (roleOrder == null)
+										{
+											if (currentRole != leadRole)
 											{
-												unaryRole = factRoles[unaryRoleIndex.Value];
-												fullOrderRoleCount -= 1;
-												leadRole = unaryRole;
-												continue;
+												roleOrder = new RoleBase[fullOrderRoleCount];
+												roleOrder[0] = leadRole;
+												roleOrder[1] = currentRole;
+												openRoleIndex = 2;
 											}
 										}
-										RoleBase currentRole = element as RoleBase;
-										if (currentRole != null)
+										else if (Array.IndexOf<RoleBase>(roleOrder, currentRole) == -1)
 										{
-											if (leadRole == null)
-											{
-												leadRole = currentRole;
-											}
-											else if (roleOrder == null)
-											{
-												if (currentRole != leadRole)
-												{
-													roleOrder = new RoleBase[fullOrderRoleCount];
-													roleOrder[0] = leadRole;
-													roleOrder[1] = currentRole;
-													openRoleIndex = 2;
-												}
-											}
-											else if (Array.IndexOf<RoleBase>(roleOrder, currentRole) == -1)
-											{
-												roleOrder[openRoleIndex] = currentRole;
-												++openRoleIndex;
-											}
+											roleOrder[openRoleIndex] = currentRole;
+											++openRoleIndex;
 										}
 									}
 								}
@@ -1047,7 +1057,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									break;
 								}
-								if (defaultOrder == null && unaryRole == null)
+								if (defaultOrder == null)
 								{
 									defaultOrder = factRoles;
 								}
@@ -1060,7 +1070,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									if (openRoleIndex < fullOrderRoleCount)
 									{
-										Debug.Assert(defaultOrder != null && unaryRole == null && defaultOrder.Count == fullOrderRoleCount);
 										if (leadRole == defaultOrder[fullOrderRoleCount - 1])
 										{
 											// Fill in backwards on the default order
@@ -1141,6 +1150,33 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 								}
 							}
+							else if (fullOrderRoleCount == 1)
+							{
+								FactType inverseUnary;
+								LinkedElementCollection<ReadingOrder> inverseOrders;
+								if (null != (inverseUnary = currentFactType.InverseUnaryFactType))
+								{
+									displayUnaryInverse = true;
+									if (0 != (inverseOrders = inverseUnary.ReadingOrderCollection).Count)
+									{
+										reverseReadingOrder = inverseOrders[0];
+										reverseReadingOrderText = reverseReadingOrder.ReadingText;
+										if (string.IsNullOrEmpty(reverseReadingOrderText) ||
+											!(reverseReadingOrderText.StartsWith("{0}") || reverseReadingOrderText.EndsWith("{0}")) ||
+											Reading.ReplaceFields(reverseReadingOrderText, "").Trim().Length == 0)
+										{
+											// Pattern fails, do not display the unary inverse
+											reverseReadingOrderText = null;
+											reverseReadingOrder = null;
+											displayUnaryInverse = false;
+										}
+									}
+									else if (currentReadingOrder == null)
+									{
+										displayUnaryInverse = false;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -1153,6 +1189,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					mySelectedReadingOrderText != currentReadingOrderText ||
 					mySelectedReverseReadingOrder != reverseReadingOrder ||
 					mySelectedReverseReadingOrderText != reverseReadingOrderText ||
+					myDisplayUnaryInverse != displayUnaryInverse ||
 					!ListEquals(mySelectedRoleOrder, roleOrder) ||
 					!ListEquals(myDefaultRoleOrder, defaultOrder) ||
 					mySelectedObjectTypeCount != selectedObjectTypeCount ||
@@ -1160,6 +1197,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					mySelectedRoleOrder = (roleOrder == null) ? null : Array.AsReadOnly<RoleBase>(roleOrder);
 					myDefaultRoleOrder = defaultOrder;
+					myDisplayUnaryInverse = displayUnaryInverse;
 					mySelectedReadingOrder = currentReadingOrder;
 					mySelectedReadingOrderText = currentReadingOrderText;
 					mySelectedReverseReadingOrder = reverseReadingOrder;
@@ -1182,6 +1220,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								forwardReadingText = currentReadingOrder.ReadingText;
 							}
+
+							if (displayUnaryInverse)
+							{
+								if (reverseReadingOrderText != null)
+								{
+									if (reverseReadingOrderText.StartsWith("{0}"))
+									{
+										forwardReadingText += "~" + reverseReadingOrderText.Substring(3).Trim();
+									}
+									else
+									{
+										forwardReadingText = reverseReadingOrderText.Substring(0, reverseReadingOrderText.Length - 3).Trim() + "~" + forwardReadingText;
+									}
+								}
+								else if (forwardReadingText.EndsWith("{0}"))
+								{
+									// Make the same pattern easier
+									forwardReadingText = "~" + forwardReadingText;
+								}
+								else
+								{
+									forwardReadingText += "~";
+								}
+							}
 							else if (reverseReadingOrderText != null)
 							{
 								reverseReadingOrderText = reverseReadingOrderText.Substring(3, reverseReadingOrderText.Length - 6).Trim();
@@ -1198,7 +1260,51 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									if (replaceIndex < replaceRoleCount)
 									{
-										return FormatReplacementField(currentReadingOrderRoles[replaceIndex], defaultOrder, unaryRole != null);
+										return FormatReplacementField(currentReadingOrderRoles[replaceIndex], defaultOrder);
+									}
+									return null;
+								});
+						}
+						else if (displayUnaryInverse)
+						{
+							// With no current reading order the reverse order and text are validated to exist
+							bool caretAfterReplacement = false;
+							int insertAfter;
+							if (reverseReadingOrderText.StartsWith("{0}"))
+							{
+								// The inverse is after the ~
+								insertAfter = 3;
+								while (char.IsWhiteSpace(reverseReadingOrderText[insertAfter]))
+								{
+									++insertAfter;
+								}
+								reverseReadingOrderText= reverseReadingOrderText.Insert(insertAfter, "~");
+								caretAfterReplacement = true;
+							}
+							else
+							{
+								// The inverse is before the ~
+								insertAfter = reverseReadingOrderText.Length - 3;
+								while (char.IsWhiteSpace(reverseReadingOrderText[insertAfter - 1]))
+								{
+									--insertAfter;
+								}
+								reverseReadingOrderText = reverseReadingOrderText.Insert(insertAfter, "~");
+								newCaretPosition = insertAfter + 1;
+							}
+							newSourceText = Reading.ReplaceFields(
+								reverseReadingOrderText,
+								delegate (int replaceIndex)
+								{
+									if (replaceIndex == 0)
+									{
+										LinkedElementCollection<RoleBase> roles = reverseReadingOrder.RoleCollection;
+										string replacementField = FormatReplacementField(roles[0], roles);
+										if (caretAfterReplacement)
+										{
+											newCaretPosition = replacementField.Length + insertAfter - 3;
+										}
+										return replacementField;
 									}
 									return null;
 								});
@@ -1225,7 +1331,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										// replace as if the opposite direction were selected. However, with the
 										// added slash, the replacement fields are backwards, so we translate the
 										// requested index against the known order.
-										string replacementField = FormatReplacementField(reverseReadingOrderRoles[(replaceIndex + 1) % 2], reverseReadingOrderRoles, false);
+										string replacementField = FormatReplacementField(reverseReadingOrderRoles[(replaceIndex + 1) % 2], reverseReadingOrderRoles);
 										if (replaceIndex == 0)
 										{
 											newCaretPosition = replacementField.Length + insertAfter - 3;
@@ -1251,7 +1357,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									sb.Append(' ', 2);
 								}
-								FormatReplacementField(sb, roleOrder[i], defaultOrder, unaryRole != null);
+								FormatReplacementField(sb, roleOrder[i], defaultOrder);
 							}
 							if (i == 1)
 							{
@@ -1328,6 +1434,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				mySelectedReverseReadingOrderText = null;
 				mySelectedRoleOrder = null;
 				myDefaultRoleOrder = null;
+				myDisplayUnaryInverse = false;
 			}
 			#endregion // Selection Handling Methods
 			#region Event Handlers
@@ -1422,6 +1529,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						UpdateSelection();
 					}
+				}
+			}
+			private void UnaryNegationAdded(object sender, ElementAddedEventArgs e)
+			{
+				FactType currentFactType = mySelectedFactType;
+				UnaryFactTypeHasNegationFactType negationLink;
+				if (currentFactType != null && ((negationLink = (UnaryFactTypeHasNegationFactType)e.ModelElement).PositiveFactType == currentFactType || negationLink.NegativeFactType == currentFactType))
+				{
+					UpdateSelection();
+				}
+			}
+			private void UnaryNegationDeleted(object sender, ElementDeletedEventArgs e)
+			{
+				FactType currentFactType = mySelectedFactType;
+				UnaryFactTypeHasNegationFactType negationLink;
+				if (currentFactType != null && !currentFactType.IsDeleted && ((negationLink = (UnaryFactTypeHasNegationFactType)e.ModelElement).PositiveFactType == currentFactType || negationLink.NegativeFactType == currentFactType))
+				{
+					UpdateSelection();
 				}
 			}
 			private void FactTypeShapeDisplayedAsObjectTypeChanged(object sender, ElementPropertyChangedEventArgs e)

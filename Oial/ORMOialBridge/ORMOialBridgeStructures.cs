@@ -75,6 +75,22 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// calculated automatically in the constructor.
 			/// </summary>
 			FromPreferredIdentifier = 0x100,
+			/// <summary>
+			/// The InverseFactType is the positive form of this negation.
+			/// </summary>
+			FactTypeIsNegation = 0x200,
+			/// <summary>
+			/// This fact type paired with the inverse is mandatory in the parent.
+			/// </summary>
+			InversePairIsMandatory = 0x400,
+			/// <summary>
+			/// The from role has a single-role preferred identifier
+			/// </summary>
+			FromRoleSimplePreferred = 0x800,
+			/// <summary>
+			/// The towards role has a single-role preferred identifier
+			/// </summary>
+			TowardsRoleSimplePreferred = 0x1000,
 		}
 		/// <summary>
 		/// Indicates towards which <see cref="Role"/> a binary <see cref="FactType"/> is mapped,
@@ -88,6 +104,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		private sealed class FactTypeMapping
 		{
 			private readonly FactType myFactType;
+			private readonly FactType myInverseFactType;
 			private readonly Role myFromRole;
 			private readonly Role myTowardsRole;
 			private readonly ObjectType myFromObjectType;
@@ -100,6 +117,17 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			public FactType FactType
 			{
 				get { return myFactType; }
+			}
+
+			/// <summary>
+			/// The mapped inverse fact type for paired positive/negative unary fact types.
+			/// Note that this may be the link fact type for the unary role in case of objectification.
+			/// If the <see cref="FactTypeMappingFlags.FactTypeIsNegation"/> is set, then this is
+			/// the positive fact type and <see cref="p:FactType"/> is the negation.
+			/// </summary>
+			public FactType InverseFactType
+			{
+				get { return myInverseFactType; }
 			}
 
 			/// <value>
@@ -184,17 +212,21 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				get { return myFlags; }
 			}
 
-			public FactTypeMapping(FactType factType, Role fromRole, Role towardsRole, FactTypeMappingFlags flags)
+			public FactTypeMapping(FactType factType, Role fromRole, Role towardsRole, FactType inverseFactType, FactTypeMappingFlags flags)
 			{
 				myFactType = factType;
-				myFromRole = fromRole;
+				myInverseFactType = inverseFactType;
 				myTowardsRole = towardsRole;
-				myFromObjectType = fromRole.RolePlayer;
 				myTowardsObjectType = towardsRole.RolePlayer;
-				if (0 == (flags & FactTypeMappingFlags.FromPreferredIdentifier) &&
-					DetermineWhetherFromIsPreferredIdentifier())
+				if (fromRole != null)
 				{
-					flags |= FactTypeMappingFlags.FromPreferredIdentifier;
+					myFromRole = fromRole;
+					myFromObjectType = fromRole.RolePlayer;
+					if (0 == (flags & FactTypeMappingFlags.FromPreferredIdentifier) &&
+						(0 != (flags & FactTypeMappingFlags.FromRoleSimplePreferred) || DetermineWhetherFromIsPreferredIdentifier()))
+					{
+						flags |= FactTypeMappingFlags.FromPreferredIdentifier;
+					}
 				}
 				myFlags = flags;
 			}
@@ -529,6 +561,16 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 										return true;
 									}
 									return false;
+								},
+								delegate(FactTypeMapping mapping)
+								{
+									// If a non-subtype fact type can deep map towards a simple identifier then choose that mapping.
+									// This cal only be true for one of the mappings on a fact type so we ignore previous tests, and
+									// this is ignored for later conditions.
+
+									// This covers unary and functional objectifications with an internal objectification identifier.
+									FactTypeMappingFlags mappingFlags = mapping.Flags;
+									return (mappingFlags & (FactTypeMappingFlags.DeepMapping | FactTypeMappingFlags.TowardsRoleSimplePreferred)) != (FactTypeMappingFlags.DeepMapping | FactTypeMappingFlags.TowardsRoleSimplePreferred);
 								},
 								delegate(FactTypeMapping mapping)
 								{

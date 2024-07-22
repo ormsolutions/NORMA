@@ -13,7 +13,7 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-using System;
+using sys = System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
@@ -42,7 +42,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 		{
 			#region Abstraction model modification rules
 			// For now, the abstraction model is fully regenerated whenever
-			// an potential mapping change occurs. If there were any
+			// any potential mapping change occurs. If there were any
 			// concept types in the model they will be deleted and regenerated,
 			// so it is currently sufficient to listen to a limited number of changes
 			// and fully regenerate below the schema. The added rules are only needed
@@ -53,10 +53,27 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 			/// </summary>
 			private static void ConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
 			{
-				//if (e.DomainProperty.Id == ConceptTypeChild.IsMandatoryDomainPropertyId)
-				//{
-				//    ValidateAssociatedColumnsIsNullable((ConceptTypeChild)e.ModelElement);
-				//}
+				if (e.DomainProperty.Id == ConceptTypeChild.IsMandatoryDomainPropertyId)
+				{
+					CheckMandatoryForAssociatedAttributes((ConceptTypeChild)e.ModelElement);
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild)
+			/// </summary>
+			private static void InverseConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == InverseConceptTypeChild.PairIsMandatoryDomainPropertyId)
+				{
+					InverseConceptTypeChild inverseChild = (InverseConceptTypeChild)e.ModelElement;
+					InformationType positiveChild;
+					// This only affects paired information types. These attributes are associated with the positive information type.
+					if (null != (positiveChild = inverseChild.PositiveChild as InformationType) &&
+						inverseChild.NegativeChild is InformationType)
+					{
+						CheckMandatoryForAssociatedAttributes(positiveChild);
+					}
+				}
 			}
 			/// <summary>
 			/// AddRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
@@ -81,6 +98,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 					FrameworkDomainModel.DelayValidateElement(model, RebuildForAbstractionModelDelayed);
 				}
 			}
+			private static void CheckMandatoryForAssociatedAttributes(ConceptTypeChild conceptTypeChild)
+			{
+				foreach (Attribute attr in AttributeHasConceptTypeChild.GetAttribute(conceptTypeChild))
+				{
+					FrameworkDomainModel.DelayValidateElement(attr, DelayValidateAttributeMandatory);
+				}
+			}
 			[DelayValidatePriority(DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void RebuildForAbstractionModelDelayed(ModelElement element)
 			{
@@ -96,6 +120,15 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 
 						FullyGenerateBarkerERModel(barkerModel, model, null);
 					}
+				}
+			}
+			[DelayValidatePriority(10, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateAttributeMandatory(ModelElement element)
+			{
+				// Run this after regenerating the full model
+				if (!element.IsDeleted)
+				{
+					CheckAttributeConstraint((Attribute)element, null);
 				}
 			}
 			#endregion // Abstraction model modification rules

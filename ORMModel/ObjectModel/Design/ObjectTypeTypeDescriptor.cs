@@ -24,7 +24,6 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
@@ -77,6 +76,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			else if (propertyId == ObjectType.ReferenceModeDisplayDomainPropertyId)
 			{
 				return new AutomatedElementFilterPropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+			}
+			else if (propertyId == ObjectType.DefaultValueDomainPropertyId)
+			{
+				return new DefaultValuePropertyDescriptor(this, requestor, domainPropertyInfo, attributes, false);
+			}
+			else if (propertyId == ObjectType.ValueTypeDefaultValueDomainPropertyId)
+			{
+				return new DefaultValuePropertyDescriptor(this, requestor, domainPropertyInfo, attributes, true);
 			}
 			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
 		}
@@ -214,7 +221,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				DataType dataType = objectType.DataType ?? (objectType.HasReferenceMode ? objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.DataType : null);
 				return dataType != null && dataType.AutoGeneratable != AutoGenerationSupport.Never;
 			}
-			else if (propertyId == ObjectType.ValueTypeValueRangeTextDomainPropertyId)
+			else if (propertyId == ObjectType.ValueTypeValueRangeTextDomainPropertyId ||
+				propertyId == ObjectType.ValueTypeDefaultValueDomainPropertyId)
 			{
 				return objectType.HasReferenceMode;
 			}
@@ -234,6 +242,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				// UNDONE: Support IsExternal
 				return false;
+			}
+			else if (propertyId == ObjectType.ValueRangeTextDomainPropertyId ||
+				propertyId == ObjectType.DefaultValueDomainPropertyId)
+			{
+				return objectType.IsValueType || objectType.HasReferenceMode;
 			}
 			else
 			{
@@ -364,17 +377,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			ObjectType objectType = ModelElement;
 			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
-			if (objectType.IsImplicitBooleanValue)
-			{
-				return true;
-			}
-			else if (propertyId == ObjectType.IsValueTypeDomainPropertyId)
+			if (propertyId == ObjectType.IsValueTypeDomainPropertyId)
 			{
 				return objectType.NestedFactType != null || objectType.PreferredIdentifier != null || objectType.IsSubtypeOrSupertype;
-			}
-			else if (propertyId == ObjectType.ValueRangeTextDomainPropertyId)
-			{
-				return !(objectType.IsValueType || objectType.HasReferenceMode);
 			}
 			else if (propertyId == ObjectType.IsIndependentDomainPropertyId)
 			{

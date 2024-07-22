@@ -105,6 +105,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#endregion // Static Fields
 		#region Instance Fields
 		private readonly FactType myFactType;
+		private readonly Role myContextRole;
 		private readonly FactType myImpliedFactType;
 		private readonly IList<RoleBase> myDisplayOrder;
 		#endregion // Instance Fields
@@ -113,34 +114,39 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Set the active fact type to just use the native role order for its display order
 		/// </summary>
 		/// <param name="factType">A fact type. Can be null.</param>
-		public ActiveFactType(FactType factType) : this(factType, null, null) { }
+		/// <param name="contextRole">The role used to select the fact type. Can be null.</param>
+		public ActiveFactType(FactType factType, Role contextRole) : this(factType, contextRole, null, null) { }
 		/// <summary>
 		/// Set the active fact type to just use the native role order for its display order
 		/// </summary>
 		/// <param name="factType">A fact type. Can be null.</param>
+		/// <param name="contextRole">The role used to select the fact type. Can be null.</param>
 		/// <param name="displayOrder">A custom order representing
 		/// the display order for a graphical representation of the fact</param>
-		public ActiveFactType(FactType factType, IList<RoleBase> displayOrder) : this(factType, null, displayOrder) { }
+		public ActiveFactType(FactType factType, Role contextRole, IList<RoleBase> displayOrder) : this(factType, contextRole, null, displayOrder) { }
 		/// <summary>
 		/// Set the active fact type and an implied fact to just use the native role order for its display order
 		/// </summary>
 		/// <param name="factType">A fact type. Can be null.</param>
+		/// <param name="contextRole">The role used to select the fact type. Can be null.</param>
 		/// <param name="impliedFactType">A fact type implied by the main fact type. Can be null;</param>
-		public ActiveFactType(FactType factType, FactType impliedFactType) : this(factType, impliedFactType, null) { }
+		public ActiveFactType(FactType factType, Role contextRole, FactType impliedFactType) : this(factType, contextRole, impliedFactType, null) { }
 		/// <summary>
 		/// Set the active fact type to just use the native role order for its display order
 		/// </summary>
 		/// <param name="factType">A fact type. Can be null.</param>
+		/// <param name="contextRole">The role used to select the fact type. Can be null.</param>
 		/// <param name="impliedFactType">A fact type implied by the main fact type. Can be null;</param>
 		/// <param name="displayOrder">A custom order representing
 		/// the display order for a graphical representation of the fact</param>
-		public ActiveFactType(FactType factType, FactType impliedFactType, IList<RoleBase> displayOrder)
+		public ActiveFactType(FactType factType, Role contextRole, FactType impliedFactType, IList<RoleBase> displayOrder)
 		{
 			myFactType = factType;
+			myContextRole = contextRole;
 			if (factType != null)
 			{
 				myImpliedFactType = impliedFactType;
-				myDisplayOrder = (displayOrder != null) ? displayOrder : GetReadingRoleCollection(factType, true);
+				myDisplayOrder = (displayOrder != null) ? displayOrder : factType.RoleCollection.ToArray(); // Snapshot, order can be modified
 			}
 			else
 			{
@@ -168,6 +174,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			get
 			{
 				return myFactType;
+			}
+		}
+		/// <summary>
+		/// Get the current context role
+		/// </summary>
+		public Role ContextRole
+		{
+			get
+			{
+				return myContextRole;
 			}
 		}
 		/// <summary>
@@ -220,6 +236,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			return IsEmpty ? obj.IsEmpty :
 				(myFactType == obj.myFactType &&
+				myContextRole == obj.myContextRole &&
 				myImpliedFactType == obj.myImpliedFactType &&
 				AreDisplayOrdersEqual(myDisplayOrder, obj.myDisplayOrder));
 		}
@@ -251,6 +268,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public override int GetHashCode()
 		{
 			FactType factType = myFactType;
+			Role role;
 			int hashCode = 0;
 			if (factType != null)
 			{
@@ -261,35 +279,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					hashCode ^= Utility.RotateRight(order[i].GetHashCode(), i);
 				}
+				count = count == 0 ? 1 : count;
 				factType = myImpliedFactType;
 				if (factType != null)
 				{
-					hashCode ^= Utility.RotateRight(factType.GetHashCode(), (count == 0) ? 1 : count);
+					hashCode ^= Utility.RotateRight(factType.GetHashCode(), count);
+					++count;
+				}
+				role = myContextRole;
+				if (role != null)
+				{
+					hashCode ^= Utility.RotateRight(role.GetHashCode(), count);
 				}
 			}
 			return hashCode;
 		}
 		#endregion // Equality Methods
-		#region Reading role order collection helper
-		private static IList<RoleBase> GetReadingRoleCollection(FactType factType)
-		{
-			return GetReadingRoleCollection(factType, false);
-		}
-		private static IList<RoleBase> GetReadingRoleCollection(FactType factType, bool snapshot)
-		{
-			// Return a single-element collection for binarized unaries
-			Role unaryRole = factType.UnaryRole;
-			if (unaryRole != null)
-			{
-				return new RoleBase[] { unaryRole };
-			}
-			else if (snapshot)
-			{
-				return factType.RoleCollection.ToArray();
-			}
-			return factType.RoleCollection;
-		}
-		#endregion // Reading role order collection helper
 	}
 	#endregion // ActiveFactType structure
 	public partial class ReadingEditor : UserControl
@@ -847,13 +852,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#region Member Variables
 		private ORMReadingEditorToolWindow myToolWindow;
 		private FactType myFactType;
-		private FactType mySecondaryFactType;
+		private Role myContextRole; // The selected role.
+		private FactType myImpliedFactType;
+		private FactType myInverseFactType;
 		private IList<RoleBase> myDisplayRoleOrder;
 		private ImageList myImageList;
 		private ReadingEditorCommands myVisibleCommands;
 		private bool myInEvents;
 		private bool myWideHeader; // The 'wideHeader' parameter was set in the last call to SetHeaders
 		private bool myExpandImpliedBranch; // True if the implied fact types branch should be expanded automatically
+		private bool myExpandInverseBranch; // True if the inverse fact types branch should be expanded automatically
 		private PropertyDescriptorCollection myExtensionProperties;
 		#endregion // Member Variables
 		#region Constructor
@@ -953,32 +961,61 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			get
 			{
-				return new ActiveFactType(myFactType, mySecondaryFactType, myDisplayRoleOrder);
+				return new ActiveFactType(myFactType, myContextRole, myImpliedFactType, myDisplayRoleOrder);
 			}
 			set
 			{
 				// Get the current store settings
 				FactType factType = myFactType;
+				Role newContextRole = value.ContextRole;
+				if (new ActiveFactType(factType, newContextRole, myImpliedFactType, myDisplayRoleOrder).Equals(value))
+				{
+					// The selections are equivalent except for the context role, which is only used for change tracking.
+					// Just keep the new role.
+					myContextRole = newContextRole;
+					return;
+				}
+
 				Store previousStore = factType != null ? Utility.ValidateStore(factType.Store) : null;
 
-				// Check if the implied fact type branch is expanded so we can restore
+				// Check if the implied and inverse fact type branches are expanded so we can restore
 				// the current expansion settings for a new branch.
-				factType = mySecondaryFactType;
 				ITree tree;
 				VirtualTreeCoordinate coordinate;
-				if (null != factType &&
-					null != (tree = vtrReadings.Tree) &&
-					(coordinate = tree.LocateObject(null, factType, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
+				if (null != (tree = vtrReadings.Tree))
 				{
-					myExpandImpliedBranch = tree.IsExpanded(coordinate.Row, coordinate.Column);
+					if (null != (factType = myImpliedFactType) && (coordinate = tree.LocateObject(null, factType, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
+					{
+						myExpandImpliedBranch = tree.IsExpanded(coordinate.Row, coordinate.Column);
+					}
+
+					if (null != (factType = myInverseFactType) && (coordinate = tree.LocateObject(null, factType, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
+					{
+						myExpandInverseBranch = tree.IsExpanded(coordinate.Row, coordinate.Column);
+					}
 				}
 
 				// Get the new information
 				myFactType = factType = value.FactType;
-				mySecondaryFactType = value.ImpliedFactType;
+				myContextRole = value.ContextRole;
+				myImpliedFactType = value.ImpliedFactType;
 				myDisplayRoleOrder = value.DisplayOrder;
+
 				if (factType != null)
 				{
+					switch (factType.UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+							myInverseFactType = null;
+							break;
+						case UnaryValuePattern.Negation:
+							myInverseFactType = factType.PositiveUnaryFactType;
+							break;
+						default:
+							myInverseFactType = factType.NegationUnaryFactType;
+							break;
+					}
+
 					Store currentStore = factType.Store;
 					if (currentStore != previousStore)
 					{
@@ -1002,6 +1039,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else
 				{
+					myInverseFactType = null;
 					if (previousStore != null)
 					{
 						RememberDisplaySettings(previousStore);
@@ -1111,7 +1149,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (myDisplayRoleOrder != null)
 			{
 				LinkedElementCollection<RoleBase> roles = myFactType.RoleCollection;
-				if ((FactType.GetUnaryRoleIndex(roles).HasValue ? 1 : roles.Count) != myDisplayRoleOrder.Count)
+				if (roles.Count != myDisplayRoleOrder.Count)
 				{
 					myDisplayRoleOrder = null;
 				}
@@ -1144,14 +1182,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			object expandToObject = null;
-			if (mySecondaryFactType != null)
+			object expandToObject1 = null;
+			object expandToObject2 = null;
+			if (myImpliedFactType != null || myInverseFactType != null)
 			{
 				this.SetHeaders(storeChanged, true);
 				myMainBranch = new FactTypeBranch(this);
 				if (myExpandImpliedBranch)
 				{
-					expandToObject = mySecondaryFactType;
+					expandToObject1 = myImpliedFactType;
+				}
+
+				if (myExpandInverseBranch)
+				{
+					expandToObject2 = myInverseFactType;
 				}
 			}
 			else
@@ -1159,6 +1203,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				this.SetHeaders(storeChanged, false);
 				myMainBranch = new ReadingOrderBranch(this, myFactType, myDisplayRoleOrder);
 			}
+
 			ITree tree;
 			if (recreateTree)
 			{
@@ -1176,11 +1221,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 
 			VirtualTreeCoordinate coordinate;
-			if (expandToObject != null &&
-				(coordinate = tree.LocateObject(null, expandToObject, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
+			if (expandToObject1 != null &&
+				(coordinate = tree.LocateObject(null, expandToObject1, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
 			{
 				tree.ToggleExpansion(coordinate.Row, coordinate.Column);
 			}
+
+			if (expandToObject2 != null &&
+				(coordinate = tree.LocateObject(null, expandToObject2, (int)ObjectStyle.TrackingObject, 1 /* Special flag to change behavior */)).IsValid)
+			{
+				tree.ToggleExpansion(coordinate.Row, coordinate.Column);
+			}
+
 			if (tree.IsExpandable(0, 0))
 			{
 				tree.ToggleExpansion(0, 0); //expand ReadingOrderBranch by default
@@ -1198,21 +1250,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		#endregion // PopulateControl and helpers
-		#region Reading role order collection helper
-		private static IList<RoleBase> GetReadingRoleCollection(FactType factType)
-		{
-			// Return a single-element collection for binarized unaries
-			Role unaryRole = factType.UnaryRole;
-			if (unaryRole != null)
-			{
-				return new RoleBase[] { unaryRole };
-			}
-			else
-			{
-				return factType.RoleCollection;
-			}
-		}
-		#endregion // Reading role order collection helper
 		#region Reading activation helper
 		/// <summary>
 		/// Select the current reading in the window. The
@@ -1225,7 +1262,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			FactType factType;
 			if (null != (order = reading.ReadingOrder)
 				&& null != (factType = order.FactType)
-				&& (factType == myFactType || factType == mySecondaryFactType))
+				&& (factType == myFactType || factType == myImpliedFactType || factType == myInverseFactType))
 			{
 				if (TreeControl.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
 				{
@@ -1243,9 +1280,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="factType">FactType</param>
 		public void ActivateReading(FactType factType)
 		{
-			if (factType == myFactType || factType == mySecondaryFactType)
+			if (factType == myFactType || factType == myImpliedFactType || factType == myInverseFactType)
 			{
-				myMainBranch.EditReadingOrder(GetReadingRoleCollection(factType));
+				myMainBranch.EditReadingOrder(factType.RoleCollection);
 			}
 		}
 		/// <summary>
@@ -1264,7 +1301,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		private void UpdateMenuItems()
 		{
-			if (TreeControl.CurrentIndex != -1) //make sure somthing is selected
+			if (TreeControl.CurrentIndex != -1) //make sure something is selected
 			{
 				VirtualTreeItemInfo itemInfo;
 				if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
@@ -1434,6 +1471,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), action);
 
+			// Track unary negation links
+			classInfo = dataDirectory.FindDomainRelationship(UnaryFactTypeHasNegationFactType.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasNegationAddedOrDeletedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasNegationAddedOrDeletedEvent), action);
+
+			// Track objectification removal
+			classInfo = dataDirectory.FindDomainRelationship(ObjectificationImpliesFactType.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ImpliedLinkFactTypeAddedOrDeletedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ImpliedLinkFactTypeAddedOrDeletedEvent), action);
+
 			// Track role player changes
 			classInfo = dataDirectory.FindDomainRelationship(ObjectTypePlaysRole.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RolePlayerAddedOrDeletedEvent), action);
@@ -1500,7 +1547,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				ReadingOrder readingOrder = link.ReadingOrder;
 				FactType factType = readingOrder.FactType;
-				if (factType == selectedFactType || factType == mySecondaryFactType)
+				if (factType == selectedFactType || factType == myImpliedFactType || factType == myInverseFactType)
 				{
 					myMainBranch.OnReadingAdded(link.Reading);
 				}
@@ -1520,7 +1567,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (!readingOrder.IsDeleted)
 			{
 				FactType factType = readingOrder.FactType;
-				if (factType == selectedFactType || factType == mySecondaryFactType)
+				if (factType == selectedFactType || factType == myImpliedFactType || factType == myInverseFactType)
 				{
 					myMainBranch.OnReadingRemoved(link.Reading, readingOrder); //UNDONE: use interface and locate object
 				}
@@ -1539,7 +1586,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (!(reading = (Reading)e.ModelElement).IsDeleted &&
 				!reading.IsDeleting &&
 				null != (readingOrder = reading.ReadingOrder) &&
-				((factType = readingOrder.FactType) == selectedFactType || factType == mySecondaryFactType))
+				((factType = readingOrder.FactType) == selectedFactType || factType == myImpliedFactType || factType == myInverseFactType))
 			{
 				myMainBranch.OnReadingUpdated(reading);
 			}
@@ -1563,7 +1610,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			FactType selectedFactType;
 			FactType factType;
 			if (null != (selectedFactType = myFactType) &&
-				((factType = link.FactType) == selectedFactType || factType == mySecondaryFactType) &&
+				((factType = link.FactType) == selectedFactType || factType == myImpliedFactType || factType == myInverseFactType) &&
 				!factType.IsDeleting &&
 				!factType.IsDeleted)
 			{
@@ -1591,6 +1638,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				this.PopulateControl(false);
 			}
+		}
+		private void FactTypeHasNegationAddedOrDeletedEvent(object sender, ElementEventArgs e)
+		{
+			FactType selectedFactType;
+			UnaryFactTypeHasNegationFactType link;
+			if (null != (selectedFactType = myFactType) &&
+				!selectedFactType.IsDeleted &&
+				!selectedFactType.IsDeleting &&
+				(selectedFactType == (link = (UnaryFactTypeHasNegationFactType)e.ModelElement).NegativeFactType || selectedFactType == link.PositiveFactType))
+			{
+				myInverseFactType = selectedFactType.InverseUnaryFactType;
+				this.PopulateControl(false);
+			}
+		}
+		private void ImpliedLinkFactTypeAddedOrDeletedEvent(object sender, ElementEventArgs e)
+		{
+			FactType selectedFactType;
+			ObjectificationImpliesFactType link;
+			if (null != (selectedFactType = myFactType) &&
+				!selectedFactType.IsDeleted &&
+				!selectedFactType.IsDeleting &&
+				selectedFactType == (link= (ObjectificationImpliesFactType)e.ModelElement).ImpliedByObjectification.NestedFactType) // Note that objectification is also a link, so this will be set even if deleted
+			{
+				if (link.IsDeleted && link.ImpliedFactType == myImpliedFactType)
+				{
+					myImpliedFactType = null;
+					this.PopulateControl(false);
+				}
+				else if (link.ImpliedFactType == myContextRole?.Proxy?.FactType)
+				{
+					myImpliedFactType = link.ImpliedFactType;
+					this.PopulateControl(false);
+				}
+			}
+
 		}
 		private void FactTypeRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
@@ -1657,7 +1739,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				!rolePlayer.IsDeleting)
 			{
 				bool updateRequired = false;
-				if (mySecondaryFactType != null &&
+				if (myImpliedFactType != null &&
 					rolePlayer == selectedFactType.NestingType)
 				{
 					updateRequired = true;
@@ -1703,11 +1785,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			#region Constants
 			private const int OrderBranchRow = 0;
-			private const int ImpliedBranchRow = 1;
 			#endregion // Constants
 			#region Member Variables
 			private ReadingOrderBranch myReadingOrderBranch;
 			private ReadingOrderBranch myImpliedFactTypeBranch;
+			private ReadingOrderBranch myInverseFactTypeBranch;
 			private ReadingEditor myEditor;
 			#endregion // Member Variables
 			#region Constructor
@@ -1717,6 +1799,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Constructor
 			#region Accessor Properties
+			private int ImpliedBranchRow
+			{
+				get
+				{
+					return myEditor.myImpliedFactType != null ? 1 : -1;
+				}
+			}
+			private int InverseBranchRow
+			{
+				get
+				{
+					ReadingEditor editor = myEditor;
+					return editor.myInverseFactType != null ? (editor.myImpliedFactType != null ? 2 : 1) : -1;
+				}
+			}
 			private FactType FactType
 			{
 				get
@@ -1728,7 +1825,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				get
 				{
-					return myEditor.mySecondaryFactType;
+					return myEditor.myImpliedFactType;
+				}
+			}
+			private FactType InverseFactType
+			{
+				get
+				{
+					return myEditor.myInverseFactType;
 				}
 			}
 			#endregion // Accessor Properties
@@ -1752,14 +1856,31 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					return OrderBranch;
 				}
-				else
+				else if (row == ImpliedBranchRow)
 				{
 					return ImpliedBranch;
 				}
+				else if (row == InverseBranchRow)
+				{
+					return InverseBranch;
+				}
+				return null;
 			}
 			string IBranch.GetText(int row, int column)
 			{
-				return (row == OrderBranchRow) ? ResourceStrings.ModelReadingEditorPrimaryFactTypeReadingsText : ResourceStrings.ModelReadingEditorImpliedFactTypeReadingsText;
+				if (row == OrderBranchRow)
+				{
+					return ResourceStrings.ModelReadingEditorPrimaryFactTypeReadingsText;
+				}
+				else if (row == ImpliedBranchRow)
+				{
+					return ResourceStrings.ModelReadingEditorImpliedFactTypeReadingsText;
+				}
+				else if (row == InverseBranchRow)
+				{
+					return InverseFactType.UnaryPattern == UnaryValuePattern.Negation ? ResourceStrings.ModelReadingEditorInverseNegationFactTypeReadingsText : ResourceStrings.ModelReadingEditorInversePositiveFactTypeReadingsText;
+				}
+				return null;
 			}
 			bool IBranch.IsExpandable(int row, int column)
 			{
@@ -1778,31 +1899,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							order = reading.ReadingOrder;
 							factType = order.FactType;
 						}
-						else
+						else if (null != (factType = obj as FactType) && locateOptions != 0)
 						{
-							factType = (obj as FactType);
-							if (locateOptions != 0)
+							// Special request to get the fact type branch itself, not the first reading
+							if (factType == FactType)
 							{
-								// Special request to get the fact type branch itself, not the first reading
-								if (factType == FactType)
-								{
-									return new LocateObjectData(OrderBranchRow, 0, (int)TrackingObjectAction.ThisLevel);
-								}
-								else if (factType == SecondaryFactType)
-								{
-									return new LocateObjectData(ImpliedBranchRow, 0, (int)TrackingObjectAction.ThisLevel);
-								}
-								break;
+								return new LocateObjectData(OrderBranchRow, 0, (int)TrackingObjectAction.ThisLevel);
 							}
+							else if (factType == SecondaryFactType)
+							{
+								return new LocateObjectData(ImpliedBranchRow, 0, (int)TrackingObjectAction.ThisLevel);
+							}
+							else if (factType == InverseFactType)
+							{
+								return new LocateObjectData(InverseBranchRow, 0, (int)TrackingObjectAction.ThisLevel);
+							}
+							break;
 						}
 
-						if (factType == FactType)
+						if (null != factType || null != (factType = ReadingOrderBranch.ResolveTrackingFactType(obj)))
 						{
-							return new LocateObjectData(OrderBranchRow, 0, (int)TrackingObjectAction.NextLevel);
-						}
-						else if (factType == SecondaryFactType)
-						{
-							return new LocateObjectData(ImpliedBranchRow, 0, (int)TrackingObjectAction.NextLevel);
+							if (factType == FactType)
+							{
+								return new LocateObjectData(OrderBranchRow, 0, (int)TrackingObjectAction.NextLevel);
+							}
+							else if (factType == SecondaryFactType)
+							{
+								return new LocateObjectData(ImpliedBranchRow, 0, (int)TrackingObjectAction.NextLevel);
+							}
+							else if (factType == InverseFactType)
+							{
+								return new LocateObjectData(InverseBranchRow, 0, (int)TrackingObjectAction.NextLevel);
+							}
 						}
 						break;
 				}
@@ -1812,7 +1940,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				get
 				{
-					return 2;
+					int result = 1;
+					ReadingEditor editor = myEditor;
+					if (editor.myImpliedFactType != null)
+					{
+						++result;
+					}
+
+					if (editor.myInverseFactType != null)
+					{
+						++result;
+					}
+
+					return result;
 				}
 			}
 			#endregion // IBranch Implementation
@@ -1837,6 +1977,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (retVal == null)
 					{
 						myImpliedFactTypeBranch = retVal = new ReadingOrderBranch(myEditor, SecondaryFactType, null);
+					}
+					return retVal;
+				}
+			}
+			private ReadingOrderBranch InverseBranch
+			{
+				get
+				{
+					ReadingOrderBranch retVal = myInverseFactTypeBranch;
+					if (retVal == null)
+					{
+						myInverseFactTypeBranch = retVal = new ReadingOrderBranch(myEditor, InverseFactType, null);
 					}
 					return retVal;
 				}
@@ -1880,6 +2032,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				else if (factType == SecondaryFactType)
 				{
 					return myImpliedFactTypeBranch;
+				}
+				else if (factType == InverseFactType)
+				{
+					return myInverseFactTypeBranch;
 				}
 				return null;
 			}
@@ -1941,6 +2097,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					ImpliedBranch.EditReadingOrder(collection);
 				}
+				else if (matchFactType == InverseFactType)
+				{
+					InverseBranch.EditReadingOrder(collection);
+				}
 			}
 			public override void OnReadingOrderLocationUpdated(ReadingOrder order)
 			{
@@ -1978,7 +2138,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myEditor = editor;
 				myFactType = factType;
 				myReadingOrderKeyedCollection = new ReadingOrderInformationCollection();
-				myRoleDisplayOrder = roleDisplayOrder != null && roleDisplayOrder.Count > 0 ? roleDisplayOrder : GetReadingRoleCollection(factType);
+				myRoleDisplayOrder = roleDisplayOrder != null && roleDisplayOrder.Count > 0 ? roleDisplayOrder : factType.RoleCollection;
 				this.PopulateReadingOrderInfo(-1); //Populate for all readings
 			}
 			#endregion // Constructor
@@ -2392,11 +2552,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ReadingOrderInformation orderInfo = new ReadingOrderInformation(this, roles);
 				if (!myReadingOrderKeyedCollection.Contains(orderInfo))
 				{
-					int newOrder = this.ShowNewOrder(roles);
+					this.ShowNewOrder(roles);
 				}
 
 				VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
-				if (control.SelectObject(this, orderInfo, (int)ObjectStyle.TrackingObject, 0))
+				// Do not send this branch in here. It may be unexpanded in a container FactTypeBranch,
+				// in which case the tree will not know about it yet. Passing in null always resolves
+				// from the root branch.
+				if (control.SelectObject(null, orderInfo, (int)ObjectStyle.TrackingObject, 0))
 				{
 					control.BeginLabelEdit();
 				}
@@ -2525,14 +2688,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return retval;
 			}
-			#endregion //ReadingOrder Branch Methods
+#endregion //ReadingOrder Branch Methods
 			#region Branch Helper Functions
 			private string[] GetRoleNames()
 			{
 				string[] retVal = myRoleNames;
 				if (retVal == null)
 				{
-					IList<RoleBase> factRoles = GetReadingRoleCollection(myFactType);
+					IList<RoleBase> factRoles = myFactType.RoleCollection;
 					ObjectType rolePlayer;
 					int factArity = factRoles.Count;
 					if (factArity == 1)
@@ -2585,7 +2748,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return retVal;
 			}
-			private int ShowNewOrder(IList<RoleBase> order)
+			private void ShowNewOrder(IList<RoleBase> order)
 			{
 				ReadingOrderInformation info = new ReadingOrderInformation(this, order as RoleBase[]);
 				if (!myReadingOrderKeyedCollection.Contains(order))
@@ -2597,7 +2760,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						modify(this, BranchModificationEventArgs.InsertItems(this, myReadingOrderKeyedCollection.Count - 1, 1));
 					}
 				}
-				return myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[info.RoleOrder]);
 			}
 			/// <summary>
 			/// Populates the tree
@@ -2886,6 +3048,25 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return Text;
 				}
 			}
+			/// <summary>
+			/// Give this branch a chance to interpret a tracking object that a parent
+			/// branch does not recognize.
+			/// </summary>
+			/// <param name="trackingObject">An unrecognized tracking object.</param>
+			/// <returns>A <see cref="FactType"/>, if recognized.</returns>
+			public static FactType ResolveTrackingFactType(object trackingObject)
+			{
+				ReadingOrderInformation info;
+				if (null != (info = trackingObject as ReadingOrderInformation))
+				{
+					IList<RoleBase> roles = info.RoleOrder;
+					if (roles != null && roles.Count != 0)
+					{
+						return roles[0].FactType;
+					}
+				}
+				return null;
+			}
 			#endregion // ReadingOrderInformation class
 			#region ReadingOrderInformationCollection class
 			private sealed class ReadingOrderInformationCollection : KeyedCollection<IList<RoleBase>, ReadingOrderInformation>
@@ -3058,7 +3239,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else
 					{
-						branchLocation = myBranch.ShowNewOrder(info.RoleOrder);
+						myBranch.ShowNewOrder(info.RoleOrder);
 					}
 					VirtualTreeControl control = ReadingEditor.Instance.TreeControl;
 					control.SelectObject(myBranch, info, (int)ObjectStyle.TrackingObject, 0);
@@ -3730,7 +3911,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // ReadingBranch class
 		}
-		#endregion // ReadingOrderBranch class
+#endregion // ReadingOrderBranch class
 		#region ReadingVirtualTree class
 		private sealed class ReadingVirtualTree : StandardMultiColumnTree
 		{

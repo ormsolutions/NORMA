@@ -68,8 +68,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			// We are redirected to this point by the associated Column element
 			Column column = this.Column;
 			bool firstWrite = true;
-			foreach (ConceptTypeChild child in ColumnHasConceptTypeChild.GetConceptTypeChildPath(this.Column))
+			foreach (ColumnHasConceptTypeChild childLink in ColumnHasConceptTypeChild.GetLinksToConceptTypeChildPath(this.Column))
 			{
+				ConceptTypeChild child = childLink.ConceptTypeChild;
 				foreach (FactType factType in ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(child))
 				{
 					if (firstWrite)
@@ -80,7 +81,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					{
 						writer.WriteLine();
 					}
-					verbalizationContext.DeferVerbalization(factType, DeferVerbalizationOptions.MultipleVerbalizations, null);
+
+					FactType renderFactType = factType;
+					if (null != childLink.InverseConceptTypeChild && factType.UnaryPattern == UnaryValuePattern.Negation)
+					{
+						// If an inverse is available, then the name generation will always use the positive
+						// form even if the negative form is in the path. This happens, for example, if the
+						// positive fact type is objectified and the negation is not.
+						renderFactType = renderFactType.PositiveUnaryFactType ?? renderFactType;
+					}
+					verbalizationContext.DeferVerbalization(renderFactType, DeferVerbalizationOptions.MultipleVerbalizations, null);
 				}
 			}
 			return false;

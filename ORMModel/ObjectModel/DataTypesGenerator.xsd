@@ -148,6 +148,11 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="implicitType" default="false" use="optional" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>This type is used solely as an implicit type. It is a defined and available data type, but is never associated with a value type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="DataTypeGroupType">
 		<xs:annotation>

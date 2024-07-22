@@ -735,6 +735,12 @@ Format: the possible value of {0} is {1}</xs:documentation>
 Format: the possible values of {0} are {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="DefaultValuePrefix">
+					<xs:annotation>
+						<xs:documentation>Description: Used to verbalize a default value.
+Format: default value: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="SelfReference">
 					<xs:annotation>
 						<xs:documentation>Description: Allows the snippet replacement to verbalize itself. Format: {0}</xs:documentation>
@@ -1708,6 +1714,16 @@ Format: \n and</xs:documentation>
 				<xs:enumeration value="ChainedListClose"/>
 				<xs:enumeration value="NegatedChainedListOpen"/>
 				<xs:enumeration value="NegatedChainedListClose"/>
+				<xs:enumeration value="KnownFalseChainedListOpen">
+					<xs:annotation>
+						<xs:documentation>This is closed by NegatedChainedListClose and should have the same format as NegatedChainedListOpen.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="KnownNotFalseChainedListOpen">
+					<xs:annotation>
+						<xs:documentation>This is closed by NegatedChainedListClose and should have the same format as NegatedChainedListOpen.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="AndLeadListOpen"/>
 				<xs:enumeration value="AndLeadListSeparator"/>
 				<xs:enumeration value="AndLeadListClose"/>

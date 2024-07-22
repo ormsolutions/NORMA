@@ -185,8 +185,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			}
 			return CustomSerializedElementInfo.Default;
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
@@ -325,19 +325,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>

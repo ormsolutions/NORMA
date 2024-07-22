@@ -202,6 +202,7 @@
 						<xs:documentation>This element may only be present if @isIdentity is false.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
+				<xs:element ref="dil:defaultClause" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
 			<xs:attribute name="name" use="required" type="ddt:identifier">
 				<xs:annotation>
@@ -214,7 +215,7 @@
 					<xs:documentation>Is NULL a valid value for this column?</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isIdentity" use="required" type="xs:boolean">
+			<xs:attribute name="isIdentity" use="optional" type="xs:boolean" default="false">
 				<xs:annotation>
 					<xs:documentation>Is this an IDENTITY column?</xs:documentation>
 					<xs:documentation>If 'true' is specified for this attribute, the generationCode element must not be present.</xs:documentation>

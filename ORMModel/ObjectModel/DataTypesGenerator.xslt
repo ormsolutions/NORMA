@@ -109,6 +109,13 @@
 										</plx:docComment>
 									</plx:leadingInfo>
 								</xsl:if>
+								<xsl:if test="@implicitType[.='true' or .='1']">
+									<plx:attribute dataTypeName="Browsable" dataTypeQualifier="System.ComponentModel">
+										<plx:passParam>
+											<plx:falseKeyword/>
+										</plx:passParam>
+									</plx:attribute>
+								</xsl:if>
 							</plx:enumItem>
 						</xsl:for-each>
 					</xsl:for-each>
@@ -204,6 +211,7 @@
 							</xsl:variable>
 							<xsl:variable name="typeDiscontinuousRangePattern" select="string($typeDiscontinuousRangePatternFragment)"/>
 							<xsl:variable name="typeCultureSensitive" select="@cultureSensitive='true' or @cultureSensitive='1' or ($groupCultureSensitive and not(@cultureSensitive='false' or @cultureSensitive='0'))"/>
+							<xsl:variable name="implicitType" select="@implicitType='true' or @implicitType='1'"/>
 							<xsl:variable name="numberStyles" select="normalize-space(@numberStyles)"/>
 							<xsl:variable name="numberStylesFragment">
 								<xsl:if test="$numberStyles">
@@ -349,6 +357,21 @@
 										<plx:leadingInfo>
 											<plx:docComment>
 												<summary>The string form of data for this data type is culture-dependent.</summary>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:returns dataTypeName=".boolean"/>
+										<plx:get>
+											<plx:return>
+												<plx:trueKeyword/>
+											</plx:return>
+										</plx:get>
+									</plx:property>
+								</xsl:if>
+								<xsl:if test="$implicitType">
+									<plx:property name="ImplicitOnly" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<summary>This type cannot be used as the data type of a value type.</summary>
 											</plx:docComment>
 										</plx:leadingInfo>
 										<plx:returns dataTypeName=".boolean"/>
@@ -1017,6 +1040,19 @@
 						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
+				<xsl:variable name="implicitTypeCount" select="count(dtg:DataTypeGroup/dtg:DataType[@implicitType[.='true' or .= '1']])"/>
+				<plx:class name="DataType" visibility="public" partial="true">
+					<plx:field name="ImplicitDataTypeCount" const="true" dataTypeName=".i4" visibility="public">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>The total number of implicit types.</summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:initialize>
+							<plx:value type="i4" data="{$implicitTypeCount}"/>
+						</plx:initialize>
+					</plx:field>
+				</plx:class>
 			</plx:namespace>
 		</plx:root>
 	</xsl:template>

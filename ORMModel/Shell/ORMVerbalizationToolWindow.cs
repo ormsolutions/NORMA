@@ -144,7 +144,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Debug.Assert(host != null); // Should be set with HasToolbar true
 			if (host != null)
 			{
-				CommandID command = ORMDesignerDocView.ORMDesignerCommandIds.VerbalizationToolBar;
+				CommandID command = ORMDesignerDocView.ORMDesignerCommandIds.VerbalizationToolbar;
 				Guid commandGuid = command.Guid;
 				host.AddToolbar(VSTWT_LOCATION.VSTWT_LEFT, ref commandGuid, (uint)command.ID);
 			}

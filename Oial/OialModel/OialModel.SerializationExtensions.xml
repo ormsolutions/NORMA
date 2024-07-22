@@ -35,12 +35,20 @@
 		<se:Container Name="conceptTypes">
 			<se:Embed RelationshipName="AbstractionModelHasConceptType" RoleName="ConceptType"/>
 		</se:Container>
+		<se:Link Name="_PositiveUnary" RelationshipName="AbstractionModelHasPositiveUnaryInformationTypeFormat" RoleName="InformationTypeFormat" WriteStyle="NotWritten"/>
+		<se:Link Name="_NegativeUnary" RelationshipName="AbstractionModelHasNegativeUnaryInformationTypeFormat" RoleName="InformationTypeFormat" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- InformationTypeFormats -->
 	<se:Element Class="InformationTypeFormat" Prefix="odt" Override="false" Name="dataType">
 		<se:Attribute Name="name" ID="Name"/>
 		<se:Link Name="ConceptType" RelationshipName="InformationType" RoleName="ConceptType" WriteStyle="NotWritten"/>
 		<se:Link Name="Parent" RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="PositiveUnaryInformationTypeFormat" Prefix="odt" Override="true" Name="booleanTrue">
+		<se:Link Name="_PositiveUnary" RelationshipName="AbstractionModelHasPositiveUnaryInformationTypeFormat" RoleName="Model" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="NegativeUnaryInformationTypeFormat" Prefix="odt" Override="true" Name="booleanFalse">
+		<se:Link Name="_NegativeUnary" RelationshipName="AbstractionModelHasNegativeUnaryInformationTypeFormat" RoleName="Model" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- Uniqueness elements -->
 	<se:Element Class="Uniqueness" Name="uniquenessConstraint" SortChildElements="false" Override="false" Sealed="true">
@@ -93,6 +101,17 @@
 		<se:Attribute Name="name" ID="Name"/>
 		<se:Link RelationshipName="UniquenessIncludesConceptTypeChild" RoleName="Uniqueness" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConceptTypeHasChildAsPartOfAssociation" RoleName="Parent" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="InverseConceptTypeChild" RoleName="NegativeChild" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="InverseConceptTypeChild" RoleName="PositiveChild" Name="negatesChild" WriteStyle="PrimaryLinkElement"/>
+	</se:Element>
+	<se:Element Class="InverseConceptTypeChild" LinkOnly="true" Sealed="true">
+		<se:Attribute ID="PairIsMandatory" Name="pairIsMandatory">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="PairIsMandatory" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 	</se:Element>
 	<se:Element Class="InformationType" Name="informationType" SortChildElements="false" Override="true" LinkOnly="true" Sealed="true"/>
 	<se:Element Class="ConceptTypeReferencesConceptType" SortChildElements="false" Override="true" LinkOnly="true">

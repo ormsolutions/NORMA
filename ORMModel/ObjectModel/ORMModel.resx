@@ -235,9 +235,9 @@
 		<value>ExclusiveOrConstraint</value>
 		<comment>Text used as the class name, displayed in the properties window.</comment>
 	</data>
-	<data name="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName" xml:space="preserve">
-		<value>ExclusionConstraintName</value>
-		<comment>Text used as the name for Name property of the coupled exclusion constraint, displayed in the properties window.</comment>
+	<data name="ExclusiveOrConstraint.ExclusionConstraint.SurveyNameFormat" xml:space="preserve">
+		<value>{0} (Exclusion)</value>
+		<comment>Text used to modify the survey name (model browser) display of the exclusion constraint for an exclusive or. This is only displayed as a reference, but looks exactly like the coupled mandatory otherwise.</comment>
 	</data>
 	<data name="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName" xml:space="preserve">
 		<value>MandatoryConstraintName</value>
@@ -266,18 +266,6 @@
 	<data name="GroupingMembershipTypeCompliance.FullyApproved" xml:space="preserve">
 		<value>Approved by All Types</value>
 		<comment>Displayed enum value for group membership type compliance. Allow all elements that are approved by all associated GroupTypes.</comment>
-	</data>
-	<data name="ImplicitBooleanValueType.PropertyRestriction" xml:space="preserve">
-		<value>The modification of the IsImplicitBooleanValue property on a ValueType is not allowed.</value>
-		<comment>Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</comment>
-	</data>
-	<data name="ImplicitBooleanValueType.Restriction" xml:space="preserve">
-		<value>The modification of properties on an Implicit Boolean ValueType is not allowed.</value>
-		<comment>Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</comment>
-	</data>
-	<data name="ImplicitBooleanValueType.NoReadingFormatString" xml:space="preserve">
-		<value>{0}Value</value>
-		<comment>The format string for naming an implicit boolean value type when there are no readings on the fact type.</comment>
 	</data>
 	<data name="ImpliedFactType.PredicateInverseReading" xml:space="preserve">
 		<value>{0} involves {1}</value>
@@ -595,6 +583,31 @@
 	<data name="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text" xml:space="preserve">
 		<value>{0} must project all constrained roles from each projected join path.</value>
 		<comment>Model validation error text for a constraint join path projection that does not project all constraint roles. {0}=error display context</comment>
+	</data>
+
+	<data name="ModelError.DefaultValueMismatchError.CompactMessage" xml:space="preserve">
+		<value>Default value does not match the specified data type.</value>
+		<comment>DefaultValueMismatchError text. Compact form.</comment>
+	</data>
+	<data name="ModelError.DefaultValueMismatchError.Message" xml:space="preserve">
+		<value>the default value for {0} does not match the specified data type.</value>
+		<comment>DefaultValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
+	</data>
+	<data name="ModelError.DefaultValueOutOfRangeError.CompactMessage" xml:space="preserve">
+		<value>Default value violates the closest value constraint.</value>
+		<comment>DefaultValueOutOfRangeError text. Compact form.</comment>
+	</data>
+	<data name="ModelError.DefaultValueOutOfRangeError.Message" xml:space="preserve">
+		<value>the default value for {0} violates the closest value constraint.</value>
+		<comment>DefaultValueOutOfRangeError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
+	</data>
+	<data name="ModelError.DefaultValueValueTypeDetachedError.CompactMessage" xml:space="preserve">
+		<value>Default value requires an associated value type.</value>
+		<comment>DefaultValueTypeDetachedError text. Compact form.</comment>
+	</data>
+	<data name="ModelError.DefaultValueValueTypeDetachedError.Message" xml:space="preserve">
+		<value>{0} has a default value with no associated value type.</value>
+		<comment>DefaultValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
 	</data>
 	<data name="ModelError.DerivedRoleProjection.IncompatibleProjection.CompactText" xml:space="preserve">
 		<value>A role player is incompatible with the derivation rule projection.</value>
@@ -1112,6 +1125,14 @@
 		<value>{0} has a minimum value that does not match the specified data type.</value>
 		<comment>MinValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
 	</data>
+	<data name="ModelError.ValueRange.OutOfRangeError.CompactMessage" xml:space="preserve">
+		<value>Value range violates a context value constraint.</value>
+		<comment>ValueRangeOutOfRangeError text. Compact form.</comment>
+	</data>
+	<data name="ModelError.ValueRange.OutOfRangeError.Message" xml:space="preserve">
+		<value>{0} has a range that violates a context value constraint.</value>
+		<comment>ValueRangeOutOfRangeError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
+	</data>
 	<data name="ModelError.ValueType.DataTypeNotSpecified.CompactMessage" xml:space="preserve">
 		<value>A data type must be specified for a value type.</value>
 		<comment>Text displayed for an unspecified data type. Compact form.</comment>
@@ -1219,10 +1240,6 @@
 	<data name="ModelException.Fact.AddReading.InvalidReadingText" xml:space="preserve">
 		<value>Reading text is not in a valid format.</value>
 		<comment>The error message that is returned when attempting to add a new reading to a fact type and the text is not valid. Validate reading text must have the number of placeholders equal to the number of roles in the FactType. The replacement fields must be ordered and identified using String.Format replacement syntax. For example: "{0} has {1}".</comment>
-	</data>
-	<data name="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange" xml:space="preserve">
-		<value>The role associated with an implicit boolean value type cannot be changed.</value>
-		<comment>Exception message when an attempt is made to modify a role player associated with an implicit boolean value.</comment>
 	</data>
 	<data name="ModelException.FactType.EnforceNoRoleMigration" xml:space="preserve">
 		<value>A Role must remain with the FactType it was originally associated with.</value>
@@ -1440,6 +1457,14 @@
 		<value>Implied Fact Type Readings</value>
 		<comment>Text used as the header row for the implied readings in the reading editor for a role selection on an objectified fact type.</comment>
 	</data>
+	<data name="ModelReadingEditor.InverseNegationFactTypeReadingsText" xml:space="preserve">
+		<value>Unary Negation Readings</value>
+		<comment>Text used as the header row for the inverse readings when a positive unary is selected.</comment>
+	</data>
+	<data name="ModelReadingEditor.InversePositiveFactTypeReadingsText" xml:space="preserve">
+		<value>Positive Unary Readings</value>
+		<comment>Text used as the header row for the inverse readings when a negation unary is selected.</comment>
+	</data>
 	<data name="ModelReadingEditor.MissingRolePlayerText" xml:space="preserve">
 		<value>[Missing]</value>
 		<comment>Text to display in the reading editor when the role has no roleplayer to substitute into the text.</comment>
@@ -1544,6 +1569,14 @@
 		<value>{0} ({1})</value>
 		<comment>The format string for the reference mode display text in the reference mode picker</comment>
 	</data>
+	<data name="ModelSamplePopulationEditor.AddObjectInstanceReferenceTransactionText" xml:space="preserve">
+		<value>Add Reference To '{0}' Instance '{1}' From '{2}'</value>
+		<comment>Text used to describe the transaction when a reference to an object instance is added. {0}=referenced type name {1}=referenced instance name {2}=referencing instance name.</comment>
+	</data>
+	<data name="ModelSamplePopulationEditor.AddUnaryRoleInstanceTransactionText" xml:space="preserve">
+		<value>Add '{0}' Instance To '{1}'</value>
+		<comment>Text used to describe the transaction when adding a unary role instance. {0}=unary fact type name {1}=instance name.</comment>
+	</data>
 	<data name="ModelSamplePopulationEditor.EditInstanceTransactionText" xml:space="preserve">
 		<value>Edit '{0}' Instance '{1}'</value>
 		<comment>Text used to describe the transaction when editing an instance.  {0}=ObjectType or FactType name, {1}=instance name</comment>
@@ -1581,12 +1614,16 @@
 		<comment>Text used to describe the transaction when removing a fact instance. {0}=instance name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RemoveObjectInstanceReferenceTransactionText" xml:space="preserve">
-		<value>Remove Reference To '{0}' Instance '{1}'</value>
-		<comment>Text used to describe the transaction when a reference an object instance is removed. {0}=type name {1}=instance name.</comment>
+		<value>Remove Reference To '{0}' Instance '{1}' From '{2}'</value>
+		<comment>Text used to describe the transaction when a reference to an object instance is removed. {0}=referenced type name {1}=referenced instance name {2}=referencing instance name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RemoveObjectInstanceTransactionText" xml:space="preserve">
 		<value>Remove '{0}' Instance '{1}'</value>
 		<comment>Text used to describe the transaction when removing an object instance. {0}=type name {1}=instance name.</comment>
+	</data>
+	<data name="ModelSamplePopulationEditor.RemoveUnaryRoleInstanceTransactionText" xml:space="preserve">
+		<value>Remove '{0}' Instance From '{1}'</value>
+		<comment>Text used to describe the transaction when removing a unary role instance. {0}=unary fact type name {1}=instance name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText" xml:space="preserve">
 		<value>Separate '{0}' Identifier '{1}' from Objectified Instance '{2}'</value>
@@ -1846,6 +1883,10 @@
 		<value>The total number of all digits allowed in a value with this DataType.</value>
 		<comment>An alternate description for the DataType.Length property.</comment>
 	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Logical.True.Text" xml:space="preserve">
+		<value>Logical: True</value>
+		<comment>A true-only logical data type</comment>
+	</data>
 	<data name="ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text" xml:space="preserve">
 		<value>Logical: True or False</value>
 		<comment>A true or false logical data type</comment>
@@ -1970,6 +2011,14 @@
 		<value>&lt;Data Type Not Set&gt;</value>
 		<comment>The descriptive text for a PortableDataType of Unspecified.</comment>
 	</data>
+	<data name="ObjectModel.Editors.DefaultValuePicker.NoDefaultValueText" xml:space="preserve">
+		<value>&lt;No&#xa0;Default Value&gt;</value>
+		<comment>The name displayed to represent the lack of a default value for a role or value type.</comment>
+	</data>
+	<data name="ObjectModel.Editors.DefaultValuePicker.ContextDefaultValueFormat" xml:space="preserve">
+		<value>&lt;Context Default Value&gt;&#xa0;= {0}</value>
+		<comment>The name displayed to use the context default value. Replacement fields: 0=context default</comment>
+	</data>
 	<data name="ObjectModel.Editors.NestedFactTypePicker.NullItemText" xml:space="preserve">
 		<value>&lt;Not Objectified&gt;</value>
 		<comment>The name displayed to represent null in the nested fact type picker</comment>
@@ -1990,6 +2039,14 @@
 		<value>EntityType{0}</value>
 		<comment>The base name used to create a name for a new EntityType. This is a format string</comment>
 	</data>
+	<data name="ObjectModel.FactType.UnaryNegation.Description" xml:space="preserve">
+		<value>This unary fact type is a negation. The UnaryPattern property applies applies to both the positive and negative fact types.</value>
+		<comment>Description for the UnaryNegation property displayed when a unary negation fact type is selected.</comment>
+	</data>
+	<data name="ObjectModel.FactType.UnaryNegation.DisplayName" xml:space="preserve">
+		<value>UnaryNegation</value>
+		<comment>Display name for the UnaryNegation property displayed when a unary negation fact type is selected.</comment>
+	</data>
 	<data name="ObjectModel.ImpliedMandatoryConstraint" xml:space="preserve">
 		<value>ImpliedMandatoryConstraint</value>
 		<comment>The display name used for an implied mandatory constraint</comment>
@@ -1999,13 +2056,13 @@
 		<comment>The display name used for an internal uniqueness constraint</comment>
 	</data>
 	<data name="ObjectModel.Model.ModelErrorDisplayFilterDisplay.Description" xml:space="preserve">
-    <value>Validation error display options for this model. Control error display by category and individually.</value>
+		<value>Validation error display options for this model. Control error display by category and individually.</value>
 		<comment>Description for &lt;see cref=&quot;P:ObjectModel.ORMModel.ModelErrorDisplayFilterDisplay&quot;/&gt;</comment>
-  </data>
+	</data>
 	<data name="ObjectModel.Model.ModelErrorDisplayFilterDisplay.DisplayName" xml:space="preserve">
-    <value>ErrorDisplay</value>
+		<value>ErrorDisplay</value>
 		<comment>Display name for &lt;see cref=&quot;P:ObjectModel.ORMModel.ModelErrorDisplayFilterDisplay&quot;/&gt;</comment>
-  </data>
+	</data>
 	<data name="ObjectModel.Model.Name.Description" xml:space="preserve">
 		<value>The name of the ORM model.</value>
 		<comment>The description for the Name property of an ORMModel.</comment>
@@ -2052,13 +2109,13 @@
 		<comment>Display name for the &lt;see cref=&quot;ObjectModel.ObjectType.CardinalityDisplay&quot;/&gt;</comment>
 	</data>
 	<data name="ObjectModel.Role.RolePlayerDisplay.Description" xml:space="preserve">
-    <value>The ObjectType that plays this Role.</value>
+	<value>The ObjectType that plays this Role.</value>
 		<comment>Description for &lt;see cref=&quot;ObjectModel.Role.RolePlayerDisplay&quot;/&gt;</comment>
-  </data>
+	</data>
 	<data name="ObjectModel.Role.RolePlayerDisplay.DisplayName" xml:space="preserve">
-    <value>RolePlayer</value>
+	<value>RolePlayer</value>
 		<comment>Display name for &lt;see cref=&quot;ObjectModel.Role.RolePlayerDisplay&quot;/&gt;</comment>
-  </data>
+	</data>
 	<data name="ObjectModel.SimpleMandatoryConstraint" xml:space="preserve">
 		<value>SimpleMandatoryConstraint</value>
 		<comment>The display name used for a simple mandatory constraint</comment>
@@ -2137,7 +2194,7 @@ The remaining replacements are trimmed for leading/trailing whitespace
 		<comment xml:space="preserve">The display name for the dynamic model browser background color.</comment>
 	</data>
 	<data name="ORMModelBrowserDynamicColor.Background.Description">
-		<value xml:space="preserve">The background color  in the ORM model browser for elements in this group.</value>
+		<value xml:space="preserve">The background color in the ORM model browser for elements in this group.</value>
 		<comment xml:space="preserve">The description of the dynamic background color in the ORM model browser.</comment>
 	</data>
 	<data name="ORMModelBrowserDynamicColor.Category">
@@ -2223,6 +2280,67 @@ The remaining replacements are trimmed for leading/trailing whitespace
 	</data>
 	<data name="SurveyFactTypeDetailType.ImpliedFactType" xml:space="preserve">
 		<value>Implied Fact Types</value>
+	</data>
+	<data name="SurveyFactTypeDetailType.ImpliedUnaryConstraint" xml:space="preserve">
+		<value>Implied Constraints</value>
+	</data>
+	<data name="SurveyFactTypeDetailType.UnaryNegationFactType" xml:space="preserve">
+		<value>Unary Negation Fact Type</value>
+	</data>
+	<data name="UnaryFactTypeNegation.DefaultFullPredicateFormat" xml:space="preserve">
+		<value>~({0})</value>
+		<comment>The format string used to wrap a full positive predicate that does not start with {0}.</comment>
+	</data>
+	<data name="UnaryFactTypeNegation.DefaultPredicatePartFormat" xml:space="preserve">
+		<value>~{0}</value>
+		<comment>The format string used to wrap the positive predicate part for a default negated fact type reading. This is used if the positive format string starts with {0} and is applied after any space. It is not used if it is empty.</comment>
+	</data>
+	<data name="UnaryValuePattern.DeonticRequiredWithNegation" xml:space="preserve">
+		<value>True/False obligatory</value>
+	</data>
+	<data name="UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue" xml:space="preserve">
+		<value>True/False obligatory (default True)</value>
+	</data>
+	<data name="UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse" xml:space="preserve">
+		<value>True/False obligatory (default False)</value>
+	</data>
+	<data name="UnaryValuePattern.Negation" xml:space="preserve">
+		<value>Negation Fact Type</value>
+	</data>
+	<data name="UnaryValuePattern.NotUnary" xml:space="preserve">
+		<value>Not Unary</value>
+	</data>
+	<data name="UnaryValuePattern.OptionalWithNegation" xml:space="preserve">
+		<value>True/False/Unspecified</value>
+	</data>
+	<data name="UnaryValuePattern.OptionalWithNegationDefaultFalse" xml:space="preserve">
+		<value>True/False/Unspecified (default False)</value>
+	</data>
+	<data name="UnaryValuePattern.OptionalWithNegationDefaultTrue" xml:space="preserve">
+		<value>True/False/Unspecified (default True)</value>
+	</data>
+	<data name="UnaryValuePattern.OptionalWithoutNegation" xml:space="preserve">
+		<value>True/Unspecified</value>
+	</data>
+	<data name="UnaryValuePattern.OptionalWithoutNegationDefaultTrue" xml:space="preserve">
+		<value>True/Unspecified (default True)</value>
+	</data>
+	<data name="UnaryValuePattern.RequiredWithNegation" xml:space="preserve">
+		<value>True/False</value>
+	</data>
+	<data name="UnaryValuePattern.RequiredWithNegationDefaultFalse" xml:space="preserve">
+		<value>True/False (default False)</value>
+	</data>
+	<data name="UnaryValuePattern.RequiredWithNegationDefaultTrue" xml:space="preserve">
+		<value>True/False (default True)</value>
+	</data>
+	<data name="UpgradeMessage.DebinarizeUnary" xml:space="preserve">
+		<value><![CDATA[<html><body>
+<p>This upgraded version of NORMA contains a full rewrite of unary fact types to allow full control over negated (known false) states. This is done by automatically creating paired unary negation fact types in response to setting the <em>UnaryPattern</em> property. These changes are detailed on the @ORMSolutions YouTube channel with in the @ORMSolutions YouTube channel in the <a href="https://youtu.be/5HZUjjDlFwg">Unary Negation Overview</a> video and a parallel (more detailed) whitepaper at <a href="https://ormsolutions.com/whitepapers/NORMAJuly2024Release_UnaryNegationEtc">NORMA July 2024 Release, Unary Negation, etc.</a>. Other changes are detailed in the July 2024 <a href="https://ormsolutions.com/NORMA/readme.htm">NORMA Readme</a>.</p>
+<p>After opening previous .ORM models you will see a new annotation (a black + sign in a light grey circle) on your unary fact types. This indicates that the UnaryPattern has been migrated to True/False/Unspecified, which matches how the previous unary fact types were mapped to the relational model. We recommend opening the Fact Types section in the ORM Model Browser and visually scanning for unary fact types. Select each unary fact type and verify that the pattern is correct. In many cases, you may find that that the <em>False</em> state is not actually needed. If you keep the negation, you also have the option of making the pair (positive and negative states) mandatory and adding default true/false values.</p>
+<p>There are other changes relating to generating extra <em>isSUBTYPE</em> changes for absorbed subtypes. Be sure to regenerate your (using <em>Run Custom Tool</em> on the .ORM file context menu in the Solution Explorer) and carefully compare the changes. The relational DDL may change even without any unary fact type changes.</p>
+<p>This message is shown once on upgrade (unless it is left unread), not for each .ORM file that has not been upgraded.</p>
+</body></html>]]></value>
 	</data>
 	<data name="ValueComparisonOperator.Undefined" xml:space="preserve">
 		<value>Undefined</value>

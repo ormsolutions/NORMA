@@ -30,6 +30,7 @@ using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Framework.Diagnostics;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -62,6 +63,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	[VerbalizationOptionProvider("VerbalizationOptions")]
+	[UpgradeMessageProvider("UpgradeMessages")]
 	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider, IDynamicColorSetConsumer, IRegisterSignalChanges, IShapeFreeDataObjectProvider
 	{
 		#region Static Survey Data
@@ -378,7 +380,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				IElementDirectory elementDirectory = Store.ElementDirectory;
 				foreach (FactType element in elementDirectory.FindElements<FactType>(true))
 				{
-					if (null == element.ImpliedByObjectification && !(element is QueryBase))
+					if (null == element.ImpliedByObjectification && !(element is QueryBase) && element.UnaryPattern != UnaryValuePattern.Negation)
 					{
 						yield return element;
 					}
@@ -386,7 +388,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ObjectType element in elementDirectory.FindElements<ObjectType>(true))
 				{
 					Objectification objectification;
-					if (!element.IsImplicitBooleanValue && (null == (objectification = element.Objectification) || !objectification.IsImplied))
+					if (null == (objectification = element.Objectification) || !objectification.IsImplied)
 					{
 						yield return element;
 					}
@@ -395,7 +397,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (SetConstraint element in elementDirectory.FindElements<SetConstraint>(true))
 				{
 					IConstraint constraint = (IConstraint)element;
-					if (!constraint.ConstraintIsInternal && constraint.ConstraintType != ConstraintType.ImpliedMandatory)
+					ConstraintType constraintType;
+					if (!constraint.ConstraintIsInternal && (constraintType = constraint.ConstraintType) != ConstraintType.ImpliedMandatory && (constraintType != ConstraintType.DisjunctiveMandatory || null == ((MandatoryConstraint)element).ClosesUnaryFactType))
 					{
 						yield return element;
 					}
@@ -405,7 +408,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ExclusionConstraint exclusion;
 					if (null == (exclusion = element as ExclusionConstraint) ||
-						null == exclusion.ExclusiveOrMandatoryConstraint)
+						(null == exclusion.ExclusiveOrMandatoryConstraint && null == exclusion.ControlledByUnaryFactType))
 					{
 						yield return element;
 					}
@@ -431,19 +434,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					foreach (RoleBase roleBase in factType.RoleCollection)
 					{
-						Role role;
-						ObjectType player;
-						if (null != (role = roleBase as Role) &&
-							null != (player = role.RolePlayer) &&
-							player.IsImplicitBooleanValue)
-						{
-							continue;
-						}
 						yield return roleBase;
 					}
 					foreach (SetConstraint element in factType.GetInternalConstraints<SetConstraint>())
 					{
 						yield return element;
+					}
+					switch (factType.UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+						case UnaryValuePattern.Negation:
+							break;
+						default:
+							{
+								FactType negationFactType = factType.NegationUnaryFactType;
+								if (negationFactType != null)
+								{
+									yield return negationFactType;
+								}
+
+								ExclusionConstraint exclusion = null;
+								MandatoryConstraint mandatory = factType.NegationMandatoryConstraint;
+								if (mandatory != null)
+								{
+									yield return mandatory;
+									exclusion = mandatory.ExclusiveOrExclusionConstraint;
+								}
+
+								if (exclusion == null && null != (exclusion = factType.NegationExclusionConstraint))
+								{
+									yield return exclusion;
+								}
+							}
+							break;
 					}
 					Objectification objectification = factType.Objectification;
 					if (objectification != null)
@@ -591,7 +614,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				ObjectType objectType = ((ModelHasObjectType)element).ObjectType;
 				Objectification objectification;
-				if (!objectType.IsImplicitBooleanValue && (null == (objectification = objectType.Objectification) || !objectification.IsImplied))
+				if (null == (objectification = objectType.Objectification) || !objectification.IsImplied)
 				{
 					eventNotify.ElementAdded(objectType, null);
 				}
@@ -626,8 +649,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				FactType factType = ((ModelHasFactType)element).FactType;
+				FactType contextFactType = null;
 				Objectification objectification = factType.ImpliedByObjectification;
-				eventNotify.ElementAdded(factType, (objectification != null) ? objectification.NestedFactType : null);
+				if (objectification != null)
+				{
+					contextFactType = objectification.NestedFactType;
+				}
+				else if (factType.UnaryPattern == UnaryValuePattern.Negation) // Check the cheaper property first
+				{
+					contextFactType = factType.PositiveUnaryFactType;
+				}
+				eventNotify.ElementAdded(factType, contextFactType);
 			}
 		}
 		/// <summary>
@@ -640,6 +672,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				SetConstraint constraint = ((ModelHasSetConstraint)element).SetConstraint;
+				FactType contextFactType = null;
 				switch (((IConstraint)constraint).ConstraintType)
 				{
 					case ConstraintType.SimpleMandatory:
@@ -651,11 +684,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							eventNotify.ElementAdded(constraint, factTypes[0]);
 						}
 						return;
+					case ConstraintType.DisjunctiveMandatory:
+						contextFactType = ((MandatoryConstraint)constraint).ClosesUnaryFactType;
+						break;
 					case ConstraintType.ImpliedMandatory:
 						// Do not add implied constraints
 						return;
 				}
-				eventNotify.ElementAdded(constraint, null);
+				eventNotify.ElementAdded(constraint, contextFactType);
 			}
 		}
 		/// <summary>
@@ -669,12 +705,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				SetComparisonConstraint constraint = ((ModelHasSetComparisonConstraint)element).SetComparisonConstraint;
 				ExclusionConstraint exclusion;
-				//do not add the exclusion constraint if its part of ExclusiveOr. 
-				if (null != (exclusion = constraint as ExclusionConstraint) && null != exclusion.ExclusiveOrMandatoryConstraint)
+				FactType contextFactType = null;
+				// Do not add the exclusion constraint if it is part of an ExclusiveOr.
+				if (null != (exclusion = constraint as ExclusionConstraint))
 				{
-					return;
+					if (null != exclusion.ExclusiveOrMandatoryConstraint)
+					{
+						return;
+					}
+
+					contextFactType = exclusion.ControlledByUnaryFactType;
 				}
-				eventNotify.ElementAdded(constraint, null);
+				eventNotify.ElementAdded(constraint, contextFactType);
 			}
 		}
 		/// <summary>
@@ -928,20 +970,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Role role = link.PlayedRole;
 				if (!role.IsDeleted)
 				{
-					if (link.RolePlayer.IsImplicitBooleanValue)
-					{
-						eventNotify.ElementDeleted(role);
-					}
-					else
-					{
-						eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
-						eventNotify.ElementRenamed(role);
-					}
-				}
-
-				if (link.RolePlayer.IsImplicitBooleanValue && !(role = link.PlayedRole).IsDeleted)
-				{
-					eventNotify.ElementDeleted(role);
+					eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
+					eventNotify.ElementRenamed(role);
 				}
 			}
 		}
@@ -959,15 +989,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Role role = link.PlayedRole;
 				if (!role.IsDeleted)
 				{
-					if (link.RolePlayer.IsImplicitBooleanValue)
-					{
-						eventNotify.ElementAdded(role, role.FactType);
-					}
-					else
-					{
-						eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
-						eventNotify.ElementRenamed(role);
-					}
+					eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
+					eventNotify.ElementRenamed(role);
 				}
 			}
 		}
@@ -1195,6 +1218,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				MandatoryConstraint mandatory = coupler.MandatoryConstraint;
 				eventNotify.ElementDeleted(exclusion);
 				eventNotify.ElementChanged(exclusion, SurveyGlyphQuestionTypes); // Modifies references to the hidden exclusion
+				eventNotify.ElementRenamed(exclusion); // The name is shown only for a reference and needs to be updated in case the reference is still displayed.
 				eventNotify.ElementRenamed(mandatory);
 				eventNotify.ElementChanged(mandatory, SurveyGlyphQuestionTypes);
 			}
@@ -1214,7 +1238,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!exclusion.IsDeleted)
 				{
 					eventNotify.ElementChanged(exclusion, SurveyGlyphQuestionTypes); // Modifies references to the hidden exclusion
-					eventNotify.ElementAdded(exclusion, null);
+					eventNotify.ElementRenamed(exclusion); // The name is shown only for a reference and needs to be updated in case the reference is still displayed.
+					eventNotify.ElementAdded(exclusion, exclusion.ControlledByUnaryFactType); // Places globally if controlling unary is null
 				}
 				if (!mandatory.IsDeleted)
 				{
@@ -1503,6 +1528,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // IShapeFreeDataObjectProvider Implementation
+		#region IUpgradeMessageProvider Implementation
+		private class UpgradeMessages : IUpgradeMessageProvider
+		{
+			IEnumerable<string> IUpgradeMessageProvider.UpgradeMessageNames
+			{
+				get
+				{
+					return new string[] { "DebinarizeUnary" };
+				}
+			}
+			string IUpgradeMessageProvider.GetUpgradeMessage(string messageName)
+			{
+				if (messageName == "DebinarizeUnary")
+				{
+					return ResourceStrings.UpgradeMessageDebinarizeUnary;
+				}
+				return null;
+			}
+		}
+		#endregion // IUpgradeMessageProvider Implementation
 	}
 	#region IModelErrorOwner Implementations
 	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath

@@ -247,6 +247,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnStatusUnobjectifyFactType), 
 						new EventHandler(OnMenuUnobjectifyFactType),
 						ORMDesignerCommandIds.UnobjectifyFactType)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDragInverseUnaryFactType),
+						new EventHandler(OnMenuDragInverseUnaryFactType),
+						ORMDesignerCommandIds.DragInverseUnaryFactType)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDragLinkFactType),
+						new EventHandler(OnMenuDragLinkFactType),
+						ORMDesignerCommandIds.DragLinkFactType)
 						// Alignment Commands
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusAlignShapes),
@@ -304,6 +312,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnStatusSelectInDocumentWindow),
 						new EventHandler(OnMenuSelectInDocumentWindow),
 						ORMDesignerCommandIds.SelectInDocumentWindow)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDiagramSpyAllDiagrams),
+						new EventHandler(OnMenuDiagramSpyAllDiagrams),
+						ORMDesignerCommandIds.DiagramSpyAllDiagrams)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusIncludeInNewGroup),
 						new EventHandler(OnMenuIncludeInNewGroup),
@@ -1004,6 +1016,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					designerView.CommandManager.OnMenuUnobjectifyFactType();
 				}
 			}
+			private void OnStatusDragInverseUnaryFactType(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DragInverseUnaryFactType);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDragInverseUnaryFactType(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuDragInverseUnaryFactType();
+				}
+			}
+			private void OnStatusDragLinkFactType(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DragLinkFactType);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDragLinkFactType(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuDragLinkFactType();
+				}
+			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
@@ -1373,6 +1417,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (designerView != null)
 				{
 					designerView.CommandManager.OnMenuSelectInDocumentWindow();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusDiagramSpyAllDiagrams(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DiagramSpyAllDiagrams);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDiagramSpyAllDiagrams(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					designerView.CommandManager.OnMenuDiagramSpyAllDiagrams();
 				}
 			}
 			/// <summary>
@@ -1968,6 +2030,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Unobjectifies the fact type.
 			/// </summary>
 			public static readonly CommandID UnobjectifyFactType = new CommandID(guidORMDesignerCommandSet, cmdIdUnobjectifyFactType);
+			/// <summary>
+			/// Place the inverse unary fact type in drag mode
+			/// </summary>
+			public static readonly CommandID DragInverseUnaryFactType = new CommandID(guidORMDesignerCommandSet, cmdIdDragInverseUnaryFactType);
+			/// <summary>
+			/// Place the link fact type in drag mode
+			/// </summary>
+			public static readonly CommandID DragLinkFactType = new CommandID(guidORMDesignerCommandSet, cmdIdDragLinkFactType);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -1981,7 +2051,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// The toolbar for the verbalization window
 			/// </summary>
-			public static readonly CommandID VerbalizationToolBar = new CommandID(guidORMDesignerCommandSet, menuIdVerbalizationToolBar);
+			public static readonly CommandID VerbalizationToolbar = new CommandID(guidORMDesignerCommandSet, menuIdVerbalizationToolbar);
+			/// <summary>
+			/// The toolbar for the fact editor
+			/// </summary>
+			public static readonly CommandID FactEditorToolbar = new CommandID(guidORMDesignerCommandSet, menuIdFactEditorToolbar);
 			/// <summary>
 			/// Available on any role belonging to the active RoleSequence in the active MCEC or SCEC.
 			/// </summary>
@@ -2050,6 +2124,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Activate the selected display element in the document window.
 			/// </summary>
 			public static readonly CommandID SelectInDocumentWindow = new CommandID(guidORMDesignerCommandSet, cmdIdSelectInDocumentWindow);
+			/// <summary>
+			/// Show the 'All Diagrams' page in the diagram spy window (enabled in diagram spy)
+			/// </summary>
+			public static readonly CommandID DiagramSpyAllDiagrams = new CommandID(guidORMDesignerCommandSet, cmdIdDiagramSpyAllDiagrams);
 			/// <summary>
 			/// Activate the selected display element in the model browser.
 			/// </summary>
@@ -2300,11 +2378,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// The toolbar for the verbalization window
 			/// </summary>
-			private const int menuIdVerbalizationToolBar = 0x0101;
+			private const int menuIdVerbalizationToolbar = 0x0101;
 			/// <summary>
 			/// The context menu for the New Reading Editor
 			/// </summary>
 			private const int menuIdReadingEditorContextMenu = 0x0103;
+			/// <summary>
+			/// The toolbar for the fact editor
+			/// </summary>
+			private const int menuIdFactEditorToolbar = 0x0108;
 			/// <summary>
 			/// Moves the role to the left in its order with the fact type.
 			/// </summary>
@@ -2491,6 +2573,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// NORMA Options page
 			/// </summary>
 			private const int cmdIdORMDesignerOptions = 0x2943;
+			/// <summary>
+			/// Place the inverse unary fact type in drag mode
+			/// </summary>
+			private const int cmdIdDragInverseUnaryFactType = 0x2944;
+			/// <summary>
+			/// Place the link fact type in drag mode
+			/// </summary>
+			private const int cmdIdDragLinkFactType = 0x2945;
+			/// <summary>
+			/// Show the 'All Diagrams' page in the diagram spy window (enabled in diagram spy)
+			/// </summary>
+			private const int cmdIdDiagramSpyAllDiagrams = 0x2947;
 			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>

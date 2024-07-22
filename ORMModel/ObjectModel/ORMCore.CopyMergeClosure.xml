@@ -205,8 +205,11 @@
 			</cmc:ClosureRole>
 			<cmc:ClosureRole relationship="ObjectificationImpliesFactType" role="ImpliedFactType" closureBehavior="ExternalCompositePart"/>
 			<cmc:ClosureRole relationship="ObjectificationImpliesFactType" role="ImpliedByObjectification" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="UnaryFactTypeHasNegationFactType" role="PositiveFactType" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="UnaryFactTypeHasNegationFactType" role="NegativeFactType" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="ExclusionConstraintAllowsUnaryFactTypeNegation" role="ExclusionConstraint" closureBehavior="ExternalCompositePart"/>
+			<cmc:ClosureRole relationship="MandatoryConstraintClosesUnaryFactType" role="MandatoryConstraint" closureBehavior="ExternalCompositePart"/>
 			<cmc:ClosureRole relationship="RoleProxyHasRole" role="TargetRole" closureBehavior="ExternalCompositePart"/>
-			<cmc:ClosureRole relationship="ObjectifiedUnaryRoleHasRole" role="TargetRole" closureBehavior="ExternalCompositePart"/>
 			<cmc:ClosureRole relationship="ObjectTypePlaysRole" role="PlayedRole" explicitToRoleClass="SubtypeMetaRole" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="GroupingElementRelationship" role="Element" closureBehavior="ExternalReferencedPart" rootElementOnly="true"/>
 			<cmc:ClosureRole relationship="GroupingElementRelationship" role="Grouping" closureBehavior="ExternalReferencedPart"/>

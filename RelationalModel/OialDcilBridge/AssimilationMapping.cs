@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Security.Permissions;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -150,33 +151,201 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// Given a <see cref="ConceptTypeAssimilatesConceptType"/> relationship, determine the current
 		/// <see cref="AssimilationAbsorptionChoice"/> for that assimilation
 		/// </summary>
-		public static AssimilationAbsorptionChoice GetAbsorptionChoiceFromAssimilation(ConceptTypeAssimilatesConceptType assimilation, bool blockGhostAbsorption)
+		public static AssimilationAbsorptionChoice GetAbsorptionChoiceFromAssimilation(ConceptTypeAssimilatesConceptType assimilation)
 		{
 			LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation);
-			AssimilationAbsorptionChoice retVal = AssimilationAbsorptionChoice.Absorb;
-			if (factTypes.Count == 1)
-			{
-				retVal = GetAbsorptionChoiceFromFactType(factTypes[0]);
-				if (blockGhostAbsorption &&
-					retVal == AssimilationAbsorptionChoice.Absorb &&
-					ConceptTypeChild.GetLinksToTargetCollection(assimilation.AssimilatedConceptType).Count == 0)
-				{
-					// Ignore the absorb request if there will be no evidence of the assimilated concept type after absorption
-					retVal = AssimilationAbsorptionChoice.Separate;
-				}
-			}
-			return retVal;
+			return factTypes.Count == 1 ? GetAbsorptionChoiceFromFactType(factTypes[0]) : AssimilationAbsorptionChoice.Absorb;
+		}
+
+		/// <summary>
+		/// Possible states for an assimilation absorbed into a parent table.
+		/// </summary>
+		public enum AssimilationEvidence
+		{
+			/// <summary>
+			/// There is no evidence of the assimilation anywhere in the parent table or referencing tables. The assimilation is not self-evident.
+			/// </summary>
+			NoEvidence,
+			/// <summary>
+			/// There is optional evidence for the assimilation in the parent table. The assimilation is sometimes self-evident.
+			/// </summary>
+			OptionalEvidence,
+			/// <summary>
+			/// The assimilated type is always self-evident for the assimilation in the parent table.
+			/// </summary>
+			MandatoryEvidence,
 		}
 		/// <summary>
-		/// Given a <see cref="ConceptTypeAssimilatesConceptType"/> relationship, determine the current
-		/// <see cref="AssimilationMapping"/> for that assimilation
+		/// Determine if the existense of an assimilation in a parent table can be determined
+		/// by associated columns and/or references to the assimilated concept type. From an
+		/// ORM perspective, this means that the concept type plays at least one simple mandatory
+		/// role or plays all of the roles in a disjunctive mandatory constraint.
 		/// </summary>
-		public static AssimilationMapping GetAssimilationMappingFromAssimilation(ConceptTypeAssimilatesConceptType assimilation)
+		/// <remarks>This does not test if the assimilated type can be determined solely from the
+		/// assimilating table.</remarks>
+		public static AssimilationEvidence AssimilationIsSelfEvident(ConceptTypeAssimilatesConceptType assimilation)
 		{
-			LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation);
-			return (factTypes.Count == 1) ?
-				AssimilationMappingCustomizesFactType.GetAssimilationMapping(factTypes[0]) :
-				null;
+			// See if an absorption marker column is needed. These are added if the absorbed concept type
+			// plays no mandatory roles. The initial check here is within the absorption model for simple
+			// mandatory states. However, the broader check for disjunctive mandatory states and mandatory
+			// settings on elements referencing the assimilated concept type requires a drill down to the
+			// underlying ORM model.
+			ConceptType assimilatedConceptType = assimilation.AssimilatedConceptType;
+			bool seenMandatory = false; // A mandatory means the state of the assimilation can be deduced with out additional data
+			bool seenData = false;
+
+			Dictionary<ConstraintRoleSequenceHasRole, MandatoryConstraint> constrainedRoleToMandatory = null; // Map unseen role to constraint, or null if we've already seen this one.
+			Dictionary<MandatoryConstraint, int> unseenRolesByMandatory = null; // Track the number of unseen roles by mandatory constraint. When one of these gets to zero we know there is at least one mandatory.
+			Func<Role, bool> completesDisjunctiveMandatoryConstraint = verifyRole =>
+			{
+				if (verifyRole == null)
+				{
+					return false; // Sanity check
+				}
+
+				foreach (ConstraintRoleSequenceHasRole constrainedRole in ConstraintRoleSequenceHasRole.GetLinksToConstraintRoleSequenceCollection(verifyRole))
+				{
+					MandatoryConstraint mandatoryConstraint;
+					if (null != (mandatoryConstraint = constrainedRole.ConstraintRoleSequence as MandatoryConstraint) &&
+						!mandatoryConstraint.IsSimple && // Simple will be covered by the basic MandatoryPattern checks before this call
+						mandatoryConstraint.Modality == ConstraintModality.Alethic)
+					{
+						ReadOnlyCollection<ConstraintRoleSequenceHasRole> mandatoryRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(mandatoryConstraint);
+						int constraintArity = mandatoryRoles.Count;
+						if (constraintArity == 1)
+						{
+							return true;
+						}
+
+						MandatoryConstraint trackedMandatory = null;
+						if (null == constrainedRoleToMandatory)
+						{
+							constrainedRoleToMandatory = new Dictionary<ConstraintRoleSequenceHasRole, MandatoryConstraint>();
+							unseenRolesByMandatory = new Dictionary<MandatoryConstraint, int>();
+						}
+						else if (constrainedRoleToMandatory.TryGetValue(constrainedRole, out trackedMandatory))
+						{
+							// We need to count this role
+							if (trackedMandatory != null)
+							{
+								int remaining = unseenRolesByMandatory[trackedMandatory];
+								if (remaining == 1)
+								{
+									// The mandatory constraint is complete
+									return true;
+								}
+
+								unseenRolesByMandatory[trackedMandatory] = remaining - 1;
+								constrainedRoleToMandatory[constrainedRole] = null;
+							}
+							continue;
+						}
+
+						unseenRolesByMandatory[mandatoryConstraint] = constraintArity - 1;
+						for (int i = 0; i < constraintArity; ++i)
+						{
+							ConstraintRoleSequenceHasRole mandatoryRole = mandatoryRoles[i];
+							constrainedRoleToMandatory[mandatoryRole] = mandatoryRole == constrainedRole ? null : mandatoryConstraint;
+						}
+					}
+				}
+				return false;
+			};
+
+			foreach (ConceptTypeChild child in ConceptTypeChild.GetLinksToTargetCollection(assimilatedConceptType))
+			{
+				// Check children first, then non-assimilated references to this concept type. We're only looking at the first fact types
+				// in the path. Fact types beyond this will be chained parts of identifiers.
+				FactType childFactType = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(child).FirstOrDefault();
+				if (childFactType != null)
+				{
+					seenData = true;
+
+					// A unary fact type pattern with a required pattern is sufficient. The negation-implied disjunctive mandatory
+					// here may be spread out across direct roles and assimilated objectifications, but we know from the 'required' pattern
+					// how the story will end (disjunctive mandatory or not). However, either of the unaries may still be involved
+					// in other disjunctive mandatory constraints outside the pattern.
+					switch (childFactType.UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+							{
+								// The towards role should always be played by this role (first fact type) or something directly chained.
+								// We just need to check the mandatory state on the towards side.
+								FactTypeMapsTowardsRole towardsLink = FactTypeMapsTowardsRole.GetLinkToTowardsRole(childFactType);
+								switch (towardsLink.MandatoryPattern)
+								{
+									case MappingMandatoryPattern.TowardsRoleMandatory:
+									case MappingMandatoryPattern.BothRolesMandatory:
+										seenMandatory = true;
+										break;
+									default:
+										seenMandatory = completesDisjunctiveMandatoryConstraint(towardsLink.TowardsRole.Role);
+										break;
+								}
+							}
+							break;
+						case UnaryValuePattern.Negation:
+							{
+								switch (childFactType.PositiveUnaryFactType?.UnaryPattern ?? UnaryValuePattern.NotUnary)
+								{
+									case UnaryValuePattern.RequiredWithNegation:
+									case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+									case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+										seenMandatory = true;
+										break;
+									default:
+										seenMandatory = completesDisjunctiveMandatoryConstraint(childFactType.UnaryRole);
+										break;
+								}
+							}
+							break;
+						case UnaryValuePattern.RequiredWithNegation:
+						case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+						case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+							seenMandatory = true;
+							break;
+						default:
+							seenMandatory = completesDisjunctiveMandatoryConstraint(childFactType.UnaryRole);
+							break;
+					}
+
+					if (seenMandatory)
+					{
+						break;
+					}
+				}
+			}
+
+			if (!seenMandatory)
+			{
+				// Check references to this assimilation
+				foreach (ConceptTypeRelatesToConceptType reference in ConceptTypeRelatesToConceptType.GetLinksToRelatingConceptTypeCollection(assimilatedConceptType))
+				{
+					// There is no need to check unaries here. These will always be assimilated (for objectification case) or InformationType instances.
+					FactType referencingFactType;
+					if (null != (referencingFactType = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(reference).FirstOrDefault()))
+					{
+						seenData = true;
+						FactTypeMapsTowardsRole towardsLink = FactTypeMapsTowardsRole.GetLinkToTowardsRole(referencingFactType);
+						switch (towardsLink.MandatoryPattern)
+						{
+							case MappingMandatoryPattern.OppositeRoleMandatory:
+							case MappingMandatoryPattern.BothRolesMandatory:
+								seenMandatory = true;
+								break;
+							default:
+								seenMandatory = completesDisjunctiveMandatoryConstraint(towardsLink.TowardsRole.OppositeRoleAlwaysResolveProxy?.Role);
+								break;
+						}
+
+						if (seenMandatory)
+						{
+							break;
+						}
+					}
+				}
+			}
+			return seenMandatory ? AssimilationEvidence.MandatoryEvidence : (seenData ? AssimilationEvidence.OptionalEvidence : AssimilationEvidence.NoEvidence);
 		}
 		/// <summary>
 		/// Given a <see cref="FactType"/>, determine the stored <see cref="AssimilationAbsorptionChoice"/>.
@@ -475,7 +644,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
 							{
-								switch (GetAbsorptionChoiceFromAssimilation(assimilation, false))
+								switch (GetAbsorptionChoiceFromAssimilation(assimilation))
 								{
 									case AssimilationAbsorptionChoice.Absorb:
 										seenAbsorb = true;
@@ -604,7 +773,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					// anthing else upstream
 					ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType);
 					if (assimilations.Count != 0 &&
-						GetAbsorptionChoiceFromAssimilation(assimilations[0], false) == AssimilationAbsorptionChoice.Partition)
+						GetAbsorptionChoiceFromAssimilation(assimilations[0]) == AssimilationAbsorptionChoice.Partition)
 					{
 						return ObjectTypeAbsorptionChoice.Partitioned;
 					}
@@ -620,7 +789,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
 							{
-								switch (GetAbsorptionChoiceFromAssimilation(assimilation, false))
+								switch (GetAbsorptionChoiceFromAssimilation(assimilation))
 								{
 									case AssimilationAbsorptionChoice.Absorb:
 										seenAbsorb = true;
@@ -787,7 +956,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							if (firstAbsorbedAssimilation == null)
 							{
-								if (GetAbsorptionChoiceFromAssimilation(assimilation, false) == AssimilationAbsorptionChoice.Absorb)
+								if (GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
 								{
 									firstAbsorbedAssimilation = assimilation;
 								}
@@ -873,7 +1042,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				{
 					return true;
 				}
-				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation, true);
+				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation);
 				return myIgnoreInitialAbsorptionChoices ?
 					choice != AssimilationAbsorptionChoice.Partition :
 					choice == AssimilationAbsorptionChoice.Absorb;
@@ -887,7 +1056,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				{
 					return true;
 				}
-				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation, true);
+				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation);
 				return myIgnoreAllAbsorptionChoices ?
 					choice != AssimilationAbsorptionChoice.Partition :
 					choice == AssimilationAbsorptionChoice.Absorb;
@@ -1272,7 +1441,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			ConceptType assimilatedConceptType = assimilation.AssimilatedConceptType;
 			foreach (ConceptTypeAssimilatesConceptType childAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(assimilatedConceptType))
 			{
-				if (GetAbsorptionChoiceFromAssimilation(childAssimilation, false) == AssimilationAbsorptionChoice.Partition) // Partition is not overridden, do not do the extra work to check ghosts
+				if (GetAbsorptionChoiceFromAssimilation(childAssimilation) == AssimilationAbsorptionChoice.Partition) // Partition is not overridden, do not do the extra work to check ghosts
 				{
 					if (!throwOnFailure)
 					{
@@ -1559,7 +1728,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			if (assimilationsDictionary == null || !assimilationsDictionary.ContainsKey(assimilation))
 			{
-				if (topLevel || GetAbsorptionChoiceFromAssimilation(assimilation, true) == AssimilationAbsorptionChoice.Absorb)
+				if (topLevel || GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
 				{
 					ConceptType assimilatedConceptType = assimilation.AssimilatedConceptType;
 					if (!topLevel)
@@ -1581,7 +1750,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			foreach (ConceptTypeAssimilatesConceptType assimilator in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
-				if (GetAbsorptionChoiceFromAssimilation(assimilator, true) == AssimilationAbsorptionChoice.Absorb)
+				if (GetAbsorptionChoiceFromAssimilation(assimilator) == AssimilationAbsorptionChoice.Absorb)
 				{
 					if (upstreamConceptTypesDictionary == null)
 					{
@@ -1690,7 +1859,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				AssimilationMapping mapping;
 				ObjectType rolePlayer;
 				ConceptType conceptType;
-				if (null != (factType = role.BinarizedFactType) &&
+				if (null != (factType = role.BinarizedOrSameFactType) &&
 					null != (mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType)) &&
 					mapping.AbsorptionChoice == AssimilationAbsorptionChoice.Partition &&
 					null != (rolePlayer = role.RolePlayer) &&
@@ -1722,7 +1891,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				!(sequence = link.ConstraintRoleSequence).IsDeleted &&
 				null != (mandatoryConstraint = sequence as MandatoryConstraint) &&
 				null != mandatoryConstraint.ExclusiveOrExclusionConstraint &&
-				null != (factType = role.BinarizedFactType) &&
+				null != (factType = role.BinarizedOrSameFactType) &&
 				null != (mapping = AssimilationMappingCustomizesFactType.GetAssimilationMapping(factType)) &&
 				mapping.AbsorptionChoice == AssimilationAbsorptionChoice.Partition &&
 				null != (rolePlayer = role.RolePlayer) &&
@@ -1747,7 +1916,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			if (null != (assimilation = GetAssimilationFromFactType(factType)) &&
 				null != (customizationModel = MappingCustomizationModel.GetMappingCustomizationModel(factType.Store, false)))
 			{
-				if (GetAbsorptionChoiceFromAssimilation(assimilation, true) == AssimilationAbsorptionChoice.Absorb)
+				if (GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
 				{
 					SetPrimaryAbsorptionChoice(factType, AssimilationAbsorptionChoice.Separate);
 				}

@@ -4847,24 +4847,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (factTypeRoleCount == 0)
 				{
 					LinkedElementCollection<RoleBase> factTypeRoles = FactType.RoleCollection;
-					int? unaryRoleIndex;
 					factTypeRoleCount = factTypeRoles.Count;
 					Role role;
-					if (factTypeRoleCount == 2 &&
-						(unaryRoleIndex = FactType.GetUnaryRoleIndex(factTypeRoles)).HasValue)
+					roleInfo = new AutoProjectedRoleInfo[factTypeRoleCount];
+					for (int i = 0; i < factTypeRoleCount; ++i)
 					{
-						factTypeRoleCount = 1;
-						role = factTypeRoles[unaryRoleIndex.Value].Role;
-						roleInfo = new AutoProjectedRoleInfo[] { new AutoProjectedRoleInfo(role, role.RolePlayer) };
-					}
-					else
-					{
-						roleInfo = new AutoProjectedRoleInfo[factTypeRoleCount];
-						for (int i = 0; i < factTypeRoleCount; ++i)
-						{
-							role = factTypeRoles[i].Role;
-							roleInfo[i] =  new AutoProjectedRoleInfo(role, role.RolePlayer);
-						}
+						role = factTypeRoles[i].Role;
+						roleInfo[i] =  new AutoProjectedRoleInfo(role, role.RolePlayer);
 					}
 				}
 				RoleSetDerivationProjection projectionSet = RoleSetDerivationProjection.GetLink(this, leadRolePath);
@@ -5117,11 +5106,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					LinkedElementCollection<RoleBase> factTypeRoles = FactType.RoleCollection;
 					factTypeRoleCount = factTypeRoles.Count;
-					if (factTypeRoleCount == 2 &&
-						FactType.GetUnaryRoleIndex(factTypeRoles).HasValue)
-					{
-						factTypeRoleCount = 1;
-					}
 				}
 				int projectedRoleCount;
 				if (notifyAdded != null)
@@ -7753,6 +7737,41 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // RoleSubPath class
+	#region PathedRoleNegationState enum
+	/// <summary>
+	/// Describe how path negation is handled. Affects a negated pathed roles or
+	/// a negatable unary fact type. This setting can override the <see cref="PathedRole.IsNegated"/>
+	/// state depending on the <see cref="FactType.UnaryPattern"/> and availability of a negated reading.
+	/// </summary>
+	[Flags]
+	public enum PathedRoleNegationState
+	{
+		/// <summary>
+		/// The pathed role should not be treated as negated
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// Use standard 'it is not true that' phrase
+		/// </summary>
+		Negation = 1,
+		/// <summary>
+		/// Use 'it is known to be false that' phrase
+		/// </summary>
+		KnownFalse = 2,
+		/// <summary>
+		/// Use 'it is not known to be false that' phrase
+		/// </summary>
+		KnownNotFalse = 4,
+		/// <summary>
+		/// Combination flag containing all of the negated states
+		/// </summary>
+		NegatedStates = Negation | KnownFalse | KnownNotFalse,
+		/// <summary>
+		/// Use a reading from the inverse unary fact type
+		/// </summary>
+		InvertUnary = 8,
+	}
+	#endregion // PathedRoleNegationState enum
 	#region PathedRole class
 	partial class PathedRole : IElementLinkRoleHasIndirectModelErrorOwner, IModelErrorDisplayContext
 	{
@@ -7798,6 +7817,76 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						return pathedRoles[index - 1];
 				}
 				return RolePathNode.Empty;
+			}
+		}
+		/// <summary>
+		/// Determine alternate negation state for a unary pathed role
+		/// </summary>
+		public PathedRoleNegationState NegationState
+		{
+			get
+			{
+				FactType factType;
+				if (null != (factType = this.Role.FactType))
+				{
+					FactType negatedFactType = null;
+					UnaryValuePattern unaryPattern = factType.UnaryPattern;
+					switch (unaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+						case UnaryValuePattern.OptionalWithoutNegation:
+						case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+							return this.IsNegated ? PathedRoleNegationState.Negation : PathedRoleNegationState.None;
+						case UnaryValuePattern.Negation:
+							negatedFactType = factType;
+							if (null == (factType = factType.PositiveUnaryFactType))
+							{
+								return this.IsNegated ? PathedRoleNegationState.Negation : PathedRoleNegationState.None; // Defensive, missing positive fact type should be impossible
+							}
+							unaryPattern = factType.UnaryPattern;
+							break;
+					}
+
+					switch (unaryPattern)
+					{
+						case UnaryValuePattern.RequiredWithNegation:
+						case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+						case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+							// Switch readings if available to eliminate a negation, or
+							// add a negation phrase if a reading is not available.
+							if (this.IsNegated)
+							{
+								if (negatedFactType != null || factType.NegationUnaryFactType?.ReadingOrderCollection.Count != 0)
+								{
+									// Use the inverse reading without a negation phrase
+									return PathedRoleNegationState.InvertUnary;
+								}
+								return PathedRoleNegationState.Negation;
+							}
+							else if (negatedFactType != null && negatedFactType.ReadingOrderCollection.Count == 0)
+							{
+								return PathedRoleNegationState.Negation | PathedRoleNegationState.InvertUnary;
+							}
+							break;
+						default:
+							// Use the positive reading if the negative reading is not available.
+							if (negatedFactType != null)
+							{
+								if (negatedFactType.ReadingOrderCollection.Count != 0)
+								{
+									// Negation reading available
+									return this.IsNegated ? PathedRoleNegationState.Negation : PathedRoleNegationState.None;
+								}
+								return PathedRoleNegationState.InvertUnary | (this.IsNegated ? PathedRoleNegationState.KnownNotFalse : PathedRoleNegationState.KnownFalse);
+							}
+							else if (this.IsNegated)
+							{
+								return PathedRoleNegationState.Negation;
+							}
+							break;
+					}
+				}
+				return PathedRoleNegationState.None;
 			}
 		}
 		#endregion // Accessor Properties

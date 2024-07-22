@@ -77,6 +77,18 @@
 			<arg:DeleteRule methodName="InformationTypeFormatDeletedRule">
 				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:DeleteRule>
+			<arg:ChangeRule methodName="InverseConceptTypeChildChangedRule">
+				<arg:RuleOn targetType="InverseConceptTypeChild" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="MandatoryChangedRule">
+				<arg:RuleOn targetType="MandatoryConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="MandatoryRoleAddedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="MandatoryRoleDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="NameGeneratorSettingsChangedRule">
 				<arg:RuleOn targetType="NameGenerator" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>

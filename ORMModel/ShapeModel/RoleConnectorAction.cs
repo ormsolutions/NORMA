@@ -92,22 +92,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						if (sticky.StickySelectable(role))
 						{
 							IConstraint constraint = constraintShape.AssociatedConstraint;
-							Role constraintRole = role;
-							switch (constraint.ConstraintType)
-							{
-								case ConstraintType.ExternalUniqueness:
-								case ConstraintType.Frequency:
-									Role oppositeRole;
-									ObjectType oppositeRolePlayer;
-									if (null != (oppositeRole = role.OppositeRole as Role) &&
-										null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
-										oppositeRolePlayer.IsImplicitBooleanValue)
-									{
-										constraintRole = oppositeRole;
-									}
-									break;
-							}
-							foreach (ConstraintRoleSequence sequence in constraintRole.ConstraintRoleSequenceCollection)
+							foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 							{
 								if (constraint == sequence.Constraint)
 								{

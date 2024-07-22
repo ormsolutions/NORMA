@@ -171,6 +171,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ICollection selectedObjects = base.GetSelectedComponents();
 				FactType theFact = null;
 				FactType secondaryFact = null;
+				Role contextRole = null;
 				if (selectedObjects != null)
 				{
 					foreach (object element in selectedObjects)
@@ -183,16 +184,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							theFact = testFact;
 							Role testImpliedRole;
 							RoleProxy proxy;
-							ObjectifiedUnaryRole objectifiedUnaryRole;
 							if (null != (testImpliedRole = element as Role))
 							{
+								contextRole = testImpliedRole;
 								if (null != (proxy = testImpliedRole.Proxy))
 								{
 									secondaryFact = proxy.FactType;
-								}
-								else if (null != (objectifiedUnaryRole = testImpliedRole.ObjectifiedUnaryRole))
-								{
-									secondaryFact = objectifiedUnaryRole.FactType;
 								}
 							}
 						}
@@ -216,6 +213,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ActiveFactType activeFact = EditingFactType;
 
 				FactType currentFact = activeFact.FactType;
+				Role currentRole = activeFact.ContextRole;
 				FactType currentImpliedFact = activeFact.ImpliedFactType;
 
 				if (theFact == null && currentFact != null)
@@ -223,7 +221,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					EditingFactType = ActiveFactType.Empty;
 				}
 				//selection could change between the shapes that are related to the fact
-				else if (theFact != currentFact || secondaryFact != currentImpliedFact)
+				else if (theFact != currentFact || secondaryFact != currentImpliedFact || currentRole != contextRole)
 				{
 					ReadOnlyCollection<RoleBase> displayOrder = null;
 					IORMDesignerView designerView;
@@ -268,7 +266,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 						}
 					}
-					EditingFactType = new ActiveFactType(theFact, secondaryFact, displayOrder);
+					EditingFactType = new ActiveFactType(theFact, contextRole, secondaryFact, displayOrder);
 				}
 			}
 			else

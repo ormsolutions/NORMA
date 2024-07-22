@@ -45,6 +45,13 @@
 	<xsl:variable name="Document" select="."/>
 	<xsl:key name="KeyedConceptTypes" match="ormRoot:ORM2/oial:model/oial:conceptTypes/oial:conceptType" use="@id"/>
 	<xsl:key name="KeyedConceptTypeChildren" match="ormRoot:ORM2/oial:model/oial:conceptTypes/oial:conceptType/oial:children/oial:*" use="@id"/>
+	<xsl:key name="KeyedFactTypes" match="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:*" use="@id"/>
+	<xsl:key name="KeyedFactTypeNegationLink" match="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:NegatedByUnaryFactType" use="@ref"/>
+	<xsl:key name="KeyedRoles" match="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:*/orm:FactRoles/orm:*" use="@id"/>
+	<xsl:key name="KeyedObjectTypes" match="ormRoot:ORM2/orm:ORMModel/orm:Objects/orm:*" use="@id"/>
+	<xsl:key name="KeyedObjectTypeByConceptType" match="ormRoot:ORM2/ormtooial:Bridge/ormtooial:ConceptTypeIsForObjectType" use="@ConceptType"/>
+	<xsl:key name="KeyedPathFactTypes" match="ormRoot:ORM2/ormtooial:Bridge/ormtooial:ConceptTypeChildHasPathFactType" use="@ConceptTypeChild"/>
+	<xsl:key name="KeyedTowardsRole" match="ormRoot:ORM2/ormtooial:Bridge/ormtooial:FactTypeMapsTowardsRole" use="@FactType"/>
 	<xsl:template match="ormRoot:ORM2">
 		<xsl:apply-templates select="rcd:Catalog/rcd:Schemas/rcd:Schema"/>
 	</xsl:template>
@@ -55,6 +62,8 @@
 		<xsl:variable name="oialModel" select="$root/oial:model[@id = $oialDcilBridge/oialtocdb:SchemaIsForAbstractionModel[@Schema = current()/@id]/@AbstractionModel]"/>
 		<xsl:variable name="ormModel" select="$root/orm:ORMModel[@id = $ormOialBridge/ormtooial:AbstractionModelIsForORMModel[@AbstractionModel = $oialModel/@id]/@ORMModel]"/>
 		<xsl:variable name="mappedValueTypes" select="$ormModel/orm:Objects/orm:ValueType[@id = $ormOialBridge/ormtooial:InformationTypeFormatIsForValueType[@InformationTypeFormat = $oialModel/oial:informationTypeFormats/child::*/@id]/@ValueType]"/>
+		<xsl:variable name="booleanFormats" select="$oialModel/oial:informationTypeFormats/odt:*[self::odt:booleanTrue | self::odt:booleanFalse]"/>
+		<xsl:variable name="unaryInformationTypeIds" select="$oialModel/oial:conceptTypes/oial:conceptType/oial:children/oial:informationType[@ref=$booleanFormats/@id]/@id"/>
 		<xsl:variable name="initialDataTypeMappingsFragment">
 			<xsl:for-each select="$mappedValueTypes">
 				<DataTypeMapping id="{@id}">
@@ -63,6 +72,29 @@
 					</xsl:apply-templates>
 				</DataTypeMapping>
 			</xsl:for-each>
+			<!-- Always add a mapping for boolean. This is ignored if it isn't used because it doesn't have a domain. -->
+			<DataTypeMapping id="__BOOLEAN">
+				<dcl:predefinedDataType name="BOOLEAN" />
+			</DataTypeMapping>
+			<xsl:if test="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@AbsorptionIndicator[.='true' or .='1'] or @ConceptTypeChild=$unaryInformationTypeIds][not(oialtocdb:InverseConceptTypeChild)]">
+				<DataTypeMapping id="__BOOLEAN_TRUE">
+					<dcl:domain>
+						<xsl:call-template name="AddNameAttributes">
+							<xsl:with-param name="requestedName" select="'BOOLEAN_TRUE'"/>
+						</xsl:call-template>
+						<dcl:predefinedDataType name="BOOLEAN" />
+						<dcl:checkConstraint>
+							<xsl:call-template name="AddNameAttributes">
+								<xsl:with-param name="requestedName" select="'BOOLEAN_TRUE_CHK'"/>
+							</xsl:call-template>
+							<dep:comparisonPredicate operator="equals">
+								<dep:valueKeyword />
+								<ddt:booleanLiteral value="TRUE"/>
+							</dep:comparisonPredicate>
+						</dcl:checkConstraint>
+					</dcl:domain>
+				</DataTypeMapping>
+			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="initialDataTypeMappings" select="exsl:node-set($initialDataTypeMappingsFragment)/child::*"/>
 		<xsl:variable name="dataTypeMappingsFragment">
@@ -87,21 +119,23 @@
 			<xsl:copy-of select="$initialDataTypeMappings/dcl:domain"/>
 			<xsl:apply-templates mode="GenerateSchemaContent" select="rcd:Tables/rcd:Table">
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
-				<xsl:with-param name="ormOialBridge" select="$ormOialBridge"/>
 				<xsl:with-param name="oialModel" select="$oialModel"/>
 				<xsl:with-param name="ormModel" select="$ormModel"/>
 				<xsl:with-param name="dataTypeMappings" select="$dataTypeMappings"/>
 				<xsl:with-param name="initialDataTypeMappings" select="$initialDataTypeMappings"/>
+				<xsl:with-param name="booleanFormats" select="$booleanFormats"/>
+				<xsl:with-param name="unaryInformationTypeIds" select="$unaryInformationTypeIds"/>
 			</xsl:apply-templates>
 		</dcl:schema>
 	</xsl:template>
 	<xsl:template match="rcd:Table" mode="GenerateSchemaContent">
 		<xsl:param name="oialDcilBridge"/>
-		<xsl:param name="ormOialBridge"/>
 		<xsl:param name="oialModel"/>
 		<xsl:param name="ormModel"/>
 		<xsl:param name="dataTypeMappings"/>
 		<xsl:param name="initialDataTypeMappings"/>
+		<xsl:param name="booleanFormats"/>
+		<xsl:param name="unaryInformationTypeIds"/>
 		<xsl:variable name="rawTableName" select="string(@Name)"/>
 		<dcl:table>
 			<xsl:call-template name="AddNameAttributes">
@@ -110,148 +144,252 @@
 			<xsl:variable name="uniquenessConstraints" select="rcd:Constraints/rcd:UniquenessConstraint"/>
 			<xsl:apply-templates mode="GenerateTableContent" select="rcd:Columns/rcd:Column">
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
-				<xsl:with-param name="ormOialBridge" select="$ormOialBridge"/>
 				<xsl:with-param name="oialModel" select="$oialModel"/>
 				<xsl:with-param name="ormModel" select="$ormModel"/>
 				<xsl:with-param name="dataTypeMappings" select="$dataTypeMappings"/>
 				<xsl:with-param name="initialDataTypeMappings" select="$initialDataTypeMappings"/>
+				<xsl:with-param name="unaryInformationTypeIds" select="$unaryInformationTypeIds"/>
+				<xsl:with-param name="booleanFormats" select="$booleanFormats"/>
 				<xsl:with-param name="rawTableName" select="$rawTableName"/>
 			</xsl:apply-templates>
 			<xsl:apply-templates mode="GenerateTableContent" select="rcd:Constraints/rcd:*"/>
 			<xsl:apply-templates mode="GenerateAbsorptionConstraints" select=".">
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
-				<xsl:with-param name="oialModel" select="$oialModel"/>
+				<xsl:with-param name="booleanFormats" select="$booleanFormats"/>
 			</xsl:apply-templates>
 		</dcl:table>
 	</xsl:template>
 	<xsl:template match="rcd:Column" mode="GenerateTableContent">
 		<xsl:param name="oialDcilBridge"/>
-		<xsl:param name="ormOialBridge"/>
 		<xsl:param name="oialModel"/>
 		<xsl:param name="ormModel"/>
 		<xsl:param name="dataTypeMappings"/>
 		<xsl:param name="initialDataTypeMappings"/>
+		<xsl:param name="booleanFormats"/>
+		<xsl:param name="unaryInformationTypeIds"/>
 		<xsl:param name="rawTableName"/>
 
+		<xsl:variable name="column" select="."/>
+
+		<!-- Get the ordered child path -->
 		<xsl:variable name="conceptTypeChildPath" select="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@Column = current()/@id]"/>
-		<xsl:variable name="factTypePath" select="$ormOialBridge/ormtooial:ConceptTypeChildHasPathFactType[@ConceptTypeChild = $conceptTypeChildPath/@ConceptTypeChild]"/>
-		<xsl:variable name="fromRolePathFragment">
-			<xsl:for-each select="$ormModel/orm:Facts/orm:*[@id = $factTypePath/@PathFactType]">
-				<xsl:variable name="factTypeMapping" select="$ormOialBridge/ormtooial:FactTypeMapsTowardsRole[@FactType = current()/@id]"/>
-				<xsl:variable name="fromRoleOrProxy" select="orm:FactRoles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
-				<xsl:choose>
-					<xsl:when test="$fromRoleOrProxy/self::orm:RoleProxy">
-						<xsl:copy-of select="$ormModel/orm:Facts/orm:*/orm:FactRoles/orm:Role[@id = $fromRoleOrProxy/orm:Role/@ref]"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:copy-of select="$fromRoleOrProxy"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:for-each>
-		</xsl:variable>
-		<xsl:variable name="fromRolePath" select="exsl:node-set($fromRolePathFragment)/child::*"/>
-		<xsl:variable name="valueTypeId">
-			<xsl:variable name="informationTypeId" select="$conceptTypeChildPath[last()]/@ConceptTypeChild"/>
-			<xsl:variable name="factTypeId" select="$factTypePath[@ConceptTypeChild = $informationTypeId][last()]/@PathFactType"/>
-			<xsl:choose>
-				<xsl:when test="string-length($factTypeId)">
-					<xsl:variable name="factTypeMapping" select="$ormOialBridge/ormtooial:FactTypeMapsTowardsRole[@FactType = $factTypeId]"/>
-					<xsl:variable name="factType" select="$ormModel/orm:Facts/orm:*[@id = $factTypeId]"/>
-					<xsl:variable name="roleOrProxy" select="$factType/orm:FactRoles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
-					<xsl:if test="count($roleOrProxy) != 1">
-						<xsl:message terminate="yes">
-							<xsl:text>SANITY CHECK: Found no or multiple roles for column "</xsl:text>
-							<xsl:value-of select="@Name"/>
-							<xsl:text>" in table "</xsl:text>
-							<xsl:value-of select="parent::rcd:Columns/parent::rcd:Table/@Name"/>
-							<xsl:text>".</xsl:text>
-						</xsl:message>
-					</xsl:if>
+
+		<!-- Get all fact types for easier lookup. This will be ordered per child, but the selected fact type order order may not be in the child path. -->
+		<xsl:variable name="pathFactTypes" select="key('KeyedPathFactTypes',$conceptTypeChildPath/@ConceptTypeChild)"/>
+
+		<!-- Extract value constraint and default value information from the path by looking at opposite roles and unary patterns. -->
+		<xsl:variable name="valueDataFragment">
+			<xsl:for-each select="$conceptTypeChildPath">
+				<xsl:variable name="childPathNode" select="."/>
+				<xsl:variable name="childId" select="string(@ConceptTypeChild)"/>
+				<xsl:variable name="conceptTypeChild" select="key('KeyedConceptTypeChildren',$childId)"/>
+
+				<!-- Do a preliminary test on how to handle defaults. Role value constraints can always be propagated
+				up through the stack, but a default value can only be used if a reference constraint is complete
+				and an assimilation is mandatory. We never want to implicitly type an element as a subtype
+				by defaulting an assimilated column at the database level, leaving defaults in the model to be
+				applied in different parts of the application.
+				r=default and value constraint from opposite role
+				b=block default
+				t=true default
+				f=false default
+				-->
+				<xsl:variable name="valueStyleFragment">
 					<xsl:choose>
-						<xsl:when test="$roleOrProxy/self::orm:Role">
-							<xsl:value-of select="$roleOrProxy/orm:RolePlayer/@ref"/>
+						<xsl:when test="$conceptTypeChild[self::oial:relatedConceptType]">
+							<!-- A default value is available if this reference maps to an item with a single-valued
+							identifier. There are numerous recursive ways to determine this back through the ORM model,
+							but we already have the answer in the table based on the number of column references in
+							the reference constraint. Even without a default possible, a role value constraint
+							may still be possible from the downstream path. -->
+							<xsl:choose>
+								<xsl:when test="count($column/../../rcd:Constraints/rcd:ReferenceConstraint/rcd:ColumnReferences[rcd:ColumnReference[@SourceColumn=$column/@id]]/rcd:ColumnReference)=1">
+									<xsl:text>r</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>b</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
-						<xsl:when test="$roleOrProxy/self::orm:RoleProxy">
-							<xsl:value-of select="$ormModel/orm:Facts/orm:*/orm:FactRoles/orm:Role[@id = $roleOrProxy/orm:Role/@ref]/orm:RolePlayer/@ref"/>
+						<xsl:when test="$conceptTypeChild[self::oial:assimilatedConceptType]">
+							<xsl:choose>
+								<xsl:when test="$childPathNode[@AbsorptionIndicator[.='true' or .='1']]">
+									<!-- This is either an extra column added for a subtype-style assimilation or
+									an indicator column used when paired unaries are both objectified. Only the unary
+									case can have default values and value constraints. All other case will have BOOLEAN_TRUE
+									types without a default or constraint. -->
+									<xsl:choose>
+										<xsl:when test="not($conceptTypeChild/@refersToSubtype)">
+											<!-- Look for objectified unary -->
+											<xsl:variable name="objectifiedFactType" select="key('KeyedFactTypes', key('KeyedObjectTypes',key('KeyedObjectTypeByConceptType',$conceptTypeChild/@ref)/@ObjectType)[self::orm:ObjectifiedType]/orm:NestedPredicate/@ref)"/>
+											<xsl:choose>
+												<xsl:when test="count($objectifiedFactType/orm:FactRoles/orm:*)=1">
+													<xsl:call-template name="ColumnDefaultFromUnaryFactType">
+														<xsl:with-param name="columnPathNode" select="$childPathNode"/>
+														<xsl:with-param name="factType" select="$objectifiedFactType"/>
+													</xsl:call-template>
+												</xsl:when>
+											</xsl:choose>
+										</xsl:when>
+									</xsl:choose>
+								</xsl:when>
+								<xsl:when test="not($conceptTypeChild[@isMandatory[.='true' or .='1']])">
+									<!-- We can't use relational defaults for optional secondary types in the table. -->
+									<xsl:text>b</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>r</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:when test="$conceptTypeChild[self::oial:informationType]">
+							<xsl:choose>
+								<xsl:when test="$conceptTypeChild/@ref=$booleanFormats/@id">
+									<xsl:call-template name="ColumnDefaultFromUnaryFactType">
+										<xsl:with-param name="columnPathNode" select="$childPathNode"/>
+										<xsl:with-param name="factType" select="key('KeyedFactTypes',$pathFactTypes[@ConceptTypeChild=$childId])"/>
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>r</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="valueStyle" select="string($valueStyleFragment)"/>
+				<xsl:if test="$valueStyle">
+					<xsl:choose>
+						<xsl:when test="$valueStyle='t'">
+							<loc:defaultValue boolean="t"/>
+						</xsl:when>
+						<xsl:when test="$valueStyle='f'">
+							<loc:defaultValue boolean="f"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:message terminate="yes">
-								<xsl:text>SANITY CHECK: Unexpected type of role (</xsl:text>
-								<xsl:value-of select="local-name($roleOrProxy)"/>
-								<xsl:text>).</xsl:text>
-							</xsl:message>
+							<xsl:variable name="ignoreDefault" select="$valueStyle='b'"/>
+							<xsl:if test="$ignoreDefault">
+								<loc:defaultValue block="1"/>
+							</xsl:if>
+							<xsl:for-each select="$pathFactTypes[@ConceptTypeChild=$childId]">
+								<!-- Retrieve fact types individually so we get the path order, not the document order -->
+								<xsl:variable name="trailingFactType" select="position()=last()"/>
+								<xsl:for-each select="key('KeyedFactTypes',@PathFactType)">
+									<xsl:variable name="factTypeMapping" select="key('KeyedTowardsRole',@id)"/>
+									<xsl:variable name="fromRoleOrProxy" select="orm:FactRoles/orm:*[not(@id=$factTypeMapping/@TowardsRole)]"/>
+									<xsl:choose>
+										<xsl:when test="$fromRoleOrProxy[self::orm:RoleProxy]">
+											<xsl:call-template name="ValueDataFromRole">
+												<xsl:with-param name="role" select="key('KeyedRoles',$fromRoleOrProxy/orm:Role/@ref)"/>
+												<xsl:with-param name="ignoreDefault" select="$ignoreDefault"/>
+												<xsl:with-param name="checkTypeDefault" select="$trailingFactType"/>
+											</xsl:call-template>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:call-template name="ValueDataFromRole">
+												<xsl:with-param name="role" select="$fromRoleOrProxy"/>
+												<xsl:with-param name="ignoreDefault" select="$ignoreDefault"/>
+												<xsl:with-param name="checkTypeDefault" select="$trailingFactType"/>
+											</xsl:call-template>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:for-each>
+							</xsl:for-each>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="valueData" select="exsl:node-set($valueDataFragment)/*"/>
+		<xsl:variable name="valueRestrictedRoleId" select="$valueData[self::loc:valueConstraint][1]/@role"/>
+		<xsl:variable name="defaultValue" select="$valueData[self::loc:defaultValue][1][not(@block)]"/>
+
+		<xsl:variable name="valueTypeId">
+			<xsl:variable name="childPathTypeNode" select="$conceptTypeChildPath[last()]"/>
+			<xsl:variable name="informationTypeId" select="$childPathTypeNode/@ConceptTypeChild"/>
+			<xsl:choose>
+				<xsl:when test="$childPathTypeNode[@AbsorptionIndicator[.='true' or .='1']] or $informationTypeId=$unaryInformationTypeIds">
+					<!-- The presense of an inverse child reference tells us if this is a straight boolean or a true-only boolean. Use special id values -->
+					<xsl:choose>
+						<xsl:when test="$childPathTypeNode/oialtocdb:InverseConceptTypeChild">
+							<xsl:text>__BOOLEAN</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>__BOOLEAN_TRUE</xsl:text>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:variable name="conceptTypeId" select="$oialModel/oial:conceptTypes/oial:conceptType[oial:children/oial:informationType/@id = $informationTypeId]/@id"/>
-					<xsl:variable name="objectTypeId" select="$ormOialBridge/ormtooial:ConceptTypeIsForObjectType[@ConceptType = $conceptTypeId]/@ObjectType"/>
-					<xsl:if test="not($ormModel/orm:Objects/orm:ValueType[@id = $objectTypeId])">
-						<xsl:message terminate="yes">
-							<xsl:text>SANITY CHECK: Found no roles and no value type for column "</xsl:text>
-							<xsl:value-of select="@Name"/>
-							<xsl:text>" in table "</xsl:text>
-							<xsl:value-of select="parent::rcd:Columns/parent::rcd:Table/@Name"/>
-							<xsl:text>".</xsl:text>
-						</xsl:message>
-					</xsl:if>
-					<xsl:value-of select="$objectTypeId"/>
+					<xsl:variable name="factTypeId" select="$pathFactTypes[@ConceptTypeChild = $informationTypeId][last()]/@PathFactType"/>
+					<xsl:choose>
+						<xsl:when test="$factTypeId">
+							<xsl:variable name="factTypeMapping" select="key('KeyedTowardsRole',$factTypeId)"/>
+							<xsl:variable name="factType" select="key('KeyedFactTypes',$factTypeId)"/>
+							<xsl:variable name="roleOrProxy" select="$factType/orm:FactRoles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
+							<xsl:if test="count($roleOrProxy) != 1">
+								<xsl:message terminate="yes">
+									<xsl:text>SANITY CHECK: Found no or multiple roles for column "</xsl:text>
+									<xsl:value-of select="@Name"/>
+									<xsl:text>" in table "</xsl:text>
+									<xsl:value-of select="parent::rcd:Columns/parent::rcd:Table/@Name"/>
+									<xsl:text>".</xsl:text>
+								</xsl:message>
+							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="$roleOrProxy[self::orm:Role]">
+									<xsl:value-of select="$roleOrProxy/orm:RolePlayer/@ref"/>
+								</xsl:when>
+								<xsl:when test="$roleOrProxy[self::orm:RoleProxy]">
+									<xsl:value-of select="key('KeyedRoles', $roleOrProxy/orm:Role/@ref)/orm:RolePlayer/@ref"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:message terminate="yes">
+										<xsl:text>SANITY CHECK: Unexpected type of role (</xsl:text>
+										<xsl:value-of select="local-name($roleOrProxy)"/>
+										<xsl:text>).</xsl:text>
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:variable name="conceptTypeId" select="key('KeyedConceptTypeChildren',$informationTypeId)/parent::oial:children/parent::oial:concepType/@id"/>
+							<xsl:variable name="objectTypeId" select="key('KeyedObjectTypeByConceptType',$conceptTypeId)/@ObjectType"/>
+							<xsl:if test="not(key('KeyedObjectTypes',$objectTypeId)[self::orm:ValueType])">
+								<xsl:message terminate="yes">
+									<xsl:text>SANITY CHECK: Found no roles and no value type for column "</xsl:text>
+									<xsl:value-of select="@Name"/>
+									<xsl:text>" in table "</xsl:text>
+									<xsl:value-of select="parent::rcd:Columns/parent::rcd:Table/@Name"/>
+									<xsl:text>".</xsl:text>
+								</xsl:message>
+							</xsl:if>
+							<xsl:value-of select="$objectTypeId"/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
 		<xsl:variable name="dataTypeMapping" select="$dataTypeMappings[@id = $valueTypeId]"/>
-		<xsl:variable name="initialDataTypeMapping" select="$initialDataTypeMappings[@id = $valueTypeId]"/>
 		<xsl:variable name="rawColumnName" select="string(@Name)"/>
 		<xsl:variable name="columnName" select="dsf:makeValidIdentifier($rawColumnName)"/>
 
-		<dcl:column name="{$columnName}">
-			<xsl:if test="$columnName!=$rawColumnName">
-				<xsl:attribute name="requestedName">
-					<xsl:value-of select="$rawColumnName"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:attribute name="isNullable">
-				<xsl:value-of select="@IsNullable='true' or @IsNullable=1"/>
-			</xsl:attribute>
-			<xsl:attribute name="isIdentity">
-				<xsl:value-of select="false()"/>
-			</xsl:attribute>
-			<xsl:if test="
-				count($conceptTypeChildPath) = 1 or
-				(not($oialModel/oial:conceptTypes/oial:conceptType/oial:children/oial:*[@id = $conceptTypeChildPath/@ConceptTypeChild and self::oial:relatedConceptType]) and
-				not(parent::rcd:Columns/parent::rcd:Table/rcd:Constraints/rcd:ReferenceConstraint/rcd:ColumnReferences/rcd:ColumnReference[@SourceColumn = current()/@id]))">
-				<!--
-					Only set the column as being an identity column if we have a single entry in the concept type child path,
-					or (we have no concept type relations in the path, and no reference constraints coming from this column).
-				-->
-				<!--
-					UNDONE: We may also need to filter out columns with concept type assimilations in their path that are separated
-					or mapped in the opposite direction, but checking the reference constraints might already take care of that.
-				-->
-				<xsl:copy-of select="$dataTypeMapping/@isIdentity"/>
-			</xsl:if>
-			<xsl:copy-of select="$dataTypeMapping/dcl:*"/>
-		</dcl:column>
-
-		<xsl:variable name="roleValueConstraints" select="$fromRolePath/orm:ValueRestriction/orm:RoleValueConstraint[not(@Modality='Deontic')]"/>
-		<xsl:if test="$roleValueConstraints">
-
-			<xsl:variable name="literalName">
-				<xsl:variable name="predefinedDataType" select="$initialDataTypeMapping//dcl:predefinedDataType"/>
+		<xsl:variable name="valueLiteralNameFragment">
+			<xsl:if test="$valueRestrictedRoleId or $defaultValue">
+				<xsl:variable name="predefinedDataType" select="$initialDataTypeMappings[@id = $valueTypeId]//dcl:predefinedDataType"/>
 				<xsl:variable name="predefinedDataTypeName" select="string($predefinedDataType/@name)"/>
 				<xsl:choose>
 					<xsl:when test="
 						$predefinedDataTypeName = 'CHARACTER LARGE OBJECT' or
 						$predefinedDataTypeName = 'CHARACTER' or
 						$predefinedDataTypeName = 'CHARACTER VARYING'">
-						<xsl:text>ddt:characterStringLiteral</xsl:text>
+						<xsl:text>characterStringLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'BINARY LARGE OBJECT' or
 						$predefinedDataTypeName = 'BINARY' or
 						$predefinedDataTypeName = 'BINARY VARYING'">
-						<xsl:text>ddt:binaryStringLiteral</xsl:text>
+						<xsl:text>binaryStringLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'NUMERIC' or
@@ -260,43 +398,41 @@
 						$predefinedDataTypeName = 'SMALLINT' or
 						$predefinedDataTypeName = 'INTEGER' or
 						$predefinedDataTypeName = 'BIGINT'">
-						<xsl:text>ddt:exactNumericLiteral</xsl:text>
+						<xsl:text>exactNumericLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'FLOAT' or
 						$predefinedDataTypeName = 'REAL' or
 						$predefinedDataTypeName = 'DOUBLE PRECISION'">
-						<xsl:text>ddt:approximateNumericLiteral</xsl:text>
+						<xsl:text>approximateNumericLiteral</xsl:text>
 					</xsl:when>
-					<!-- BOOLEAN_HACK: Remove the false() on the next line to stop forcing open-world-with-negation. -->
-					<xsl:when test="false() and
-						$predefinedDataTypeName = 'BOOLEAN'">
-						<xsl:text>ddt:booleanLiteral</xsl:text>
+					<xsl:when test="$predefinedDataTypeName = 'BOOLEAN'">
+						<xsl:text>booleanLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'DATE'">
-						<xsl:text>ddt:dateLiteral</xsl:text>
+						<xsl:text>dateLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'TIME'">
-						<xsl:text>ddt:timeLiteral</xsl:text>
+						<xsl:text>timeLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'DATETIME'">
-						<xsl:text>ddt:datetimeLiteral</xsl:text>
+						<xsl:text>datetimeLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'TIMESTAMP'">
-						<xsl:text>ddt:timestampLiteral</xsl:text>
+						<xsl:text>timestampLiteral</xsl:text>
 					</xsl:when>
 					<xsl:when test="
 						$predefinedDataTypeName = 'INTERVAL'">
 						<xsl:choose>
 							<xsl:when test="$predefinedDataType/@fields = 'YEAR' or $predefinedDataType/@fields = 'YEAR TO MONTH' or $predefinedDataType/@fields = 'MONTH'">
-								<xsl:text>ddt:yearMonthIntervalLiteral</xsl:text>
+								<xsl:text>yearMonthIntervalLiteral</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:text>ddt:dayTimeIntervalLiteral</xsl:text>
+								<xsl:text>dayTimeIntervalLiteral</xsl:text>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
@@ -308,27 +444,91 @@
 						</xsl:message>
 					</xsl:otherwise>
 				</xsl:choose>
-			</xsl:variable>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="valueLiteralName" select="string($valueLiteralNameFragment)"/>
 
+		<dcl:column name="{$columnName}">
+			<xsl:if test="$columnName!=$rawColumnName">
+				<xsl:attribute name="requestedName">
+					<xsl:value-of select="$rawColumnName"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:attribute name="isNullable">
+				<xsl:value-of select="boolean(@IsNullable[.='true' or .='1'])"/>
+			</xsl:attribute>
+			<xsl:variable name="useIdentity" select="
+				$dataTypeMapping[@isIdentity='true'] and
+				(count($conceptTypeChildPath) = 1 or
+				(not(key('KeyedConceptTypeChildren',$conceptTypeChildPath/@ConceptTypeChild)[self::oial:relatedConceptType]) and
+				not(parent::rcd:Columns/parent::rcd:Table/rcd:Constraints/rcd:ReferenceConstraint/rcd:ColumnReferences/rcd:ColumnReference[@SourceColumn = current()/@id])))"/>
+			<xsl:if test="$useIdentity">
+				<!--
+					Only set the column as being an identity column if we have a single entry in the concept type child path,
+					or (we have no concept type relations in the path, and no reference constraints coming from this column).
+				-->
+				<!--
+					UNDONE: We may also need to filter out columns with concept type assimilations in their path that are separated
+					or mapped in the opposite direction, but checking the reference constraints might already take care of that.
+				-->
+				<xsl:copy-of select="$dataTypeMapping/@isIdentity"/>
+			</xsl:if>
+			<xsl:copy-of select="$dataTypeMapping/dcl:*"/>
+			<xsl:if test="not($useIdentity)">
+				<xsl:for-each select="$defaultValue">
+					<dil:defaultClause>
+						<xsl:choose>
+							<xsl:when test="@boolean">
+								<ddt:booleanLiteral value="TRUE">
+									<xsl:if test="@boolean='f'">
+										<xsl:attribute name="value">
+											<xsl:text>FALSE</xsl:text>
+										</xsl:attribute>
+									</xsl:if>
+								</ddt:booleanLiteral>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:element name="ddt:{$valueLiteralName}">
+									<xsl:attribute name="value">
+										<xsl:choose>
+											<xsl:when test="@empty">
+												<!-- Leave the value empty -->
+											</xsl:when>
+											<xsl:when test="@invariantValue">
+												<xsl:value-of select="@invariantValue"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="@value"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:attribute>
+								</xsl:element>
+							</xsl:otherwise>
+						</xsl:choose>
+					</dil:defaultClause>
+				</xsl:for-each>
+			</xsl:if>
+		</dcl:column>
+
+		<xsl:if test="$valueRestrictedRoleId">
 			<xsl:variable name="valueReferenceFragment">
 				<dep:columnReference name="{$columnName}"/>
 			</xsl:variable>
 			<xsl:variable name="valueReference" select="exsl:node-set($valueReferenceFragment)/child::*"/>
 
-			<xsl:for-each select="$roleValueConstraints">
+			<xsl:for-each select="key('KeyedRoles',$valueRestrictedRoleId)/orm:ValueRestriction/orm:RoleValueConstraint[not(@Modality='Deontic')]">
 				<dcl:checkConstraint>
 					<xsl:call-template name="AddNameAttributes">
 						<xsl:with-param name="requestedName" select="concat($rawTableName, '_', $rawColumnName, '_', @Name)"/>
 					</xsl:call-template>
 					<xsl:call-template name="ProcessValueConstraintRanges">
-						<xsl:with-param name="literalName" select="$literalName"/>
+						<xsl:with-param name="literalName" select="$valueLiteralName"/>
 						<xsl:with-param name="valueRanges" select="orm:ValueRanges/orm:ValueRange"/>
 						<xsl:with-param name="valueReference" select="$valueReference"/>
 					</xsl:call-template>
 				</dcl:checkConstraint>
 			</xsl:for-each>
 		</xsl:if>
-
 	</xsl:template>
 
 	<xsl:template match="rcd:UniquenessConstraint" mode="GenerateTableContent">
@@ -362,15 +562,213 @@
 		<xsl:param name="startLinks"/>
 		<xsl:param name="columns"/>
 		<xsl:param name="contextConceptType"/>
-		<xsl:param name="startingMandatoryDepth"/>
+		<xsl:param name="booleanFormats"/>
+		<xsl:choose>
+			<xsl:when test="$startLinks[oialtocdb:InverseConceptTypeChild or @AbsorptionIndicator[.='true' or .='1']]">
+				<!-- Expand the starting set to get clean and annotated data in the main algorithm instead of
+				attempting to extrapolate this information inline.
+				1) Determine paired mandatory constraints for inverse children.
+				2) Expand the absorption indicator with a trailing node so it can have a natural leaf.
+				3) Mark whether a column requires comparison to true or false instead of null to determine if set.
+				4) Create a full column path for a pseudo column of an absorption indicator with an inverse (both must be assimilations).
+				5) Create a full path for an inverse assimilation that inverts an information type.
+				   In this case, we would have an absorption indicator if the assimilation were the parent
+				   and the child pointed to information type, but in this mixed case we always place the
+				   information type as the parent. We will simply replicate the path. -->
+				<xsl:variable name="expandedLinksFragment">
+					<xsl:for-each select="$startLinks">
+						<!-- We can assume root document context here, no need to push $Document -->
+						<xsl:variable name="inverseChild" select="key('KeyedConceptTypeChildren',oialtocdb:InverseConceptTypeChild/@ref)"/>
+						<xsl:variable name="pairFlagsFragment">
+							<xsl:if test="$inverseChild">
+								<!-- We don't known which end of the negation we're on from an oial perspective at this point, guess one
+								to determine if the pair is mandatory.(m means pair is mandatory) -->
+								<xsl:variable name="negation" select="$inverseChild/oial:negatesChild"/>
+								<xsl:choose>
+									<xsl:when test="$negation">
+										<!-- The inverse is the negation. -->
+										<xsl:if test="$negation[@pairIsMandatory[.='true' or .='1']]">
+											<xsl:text>m</xsl:text>
+										</xsl:if>
+									</xsl:when>
+									<xsl:when test="key('KeyedConceptTypeChildren',@ConceptTypeChild)/oial:negatesChild/@pairIsMandatory[.='true' or .='1']">
+										<xsl:text>m</xsl:text>
+									</xsl:when>
+								</xsl:choose>
+
+								<!-- Check if the inverse maps to a true or false value. (f means positive is false, reserve of normal) -->
+								<xsl:choose>
+									<xsl:when test="$inverseChild[self::oial:informationType]">
+										<xsl:if test="$booleanFormats[@id=$inverseChild/@ref][self::odt:booleanTrue]">
+											<xsl:text>f</xsl:text>
+										</xsl:if>
+									</xsl:when>
+									<xsl:otherwise>
+										<!-- Check for an information type on the containing child before resorting to multiple hops for a unary pattern test. -->
+										<xsl:variable name="otherChild" select="key('KeyedConceptTypeChildren',@ConceptTypeChild)[self::oial:informationType]"/>
+										<xsl:choose>
+											<xsl:when test="$otherChild">
+												<xsl:if test="$booleanFormats[@id=$otherChild/@ref][self::odt:booleanFalse]">
+													<xsl:text>f</xsl:text>
+												</xsl:if>
+											</xsl:when>
+											<xsl:otherwise>
+												<!-- Fall back on pulling the path fact type via objectification -->
+												<xsl:if test="key('KeyedFactTypes', key('KeyedObjectTypes',key('KeyedObjectTypeByConceptType',$inverseChild/@ref)/@ObjectType)[self::orm:ObjectifiedType]/orm:NestedPredicate/@ref)/@UnaryPattern[.!='Negation']">
+													<xsl:text>f</xsl:text>
+												</xsl:if>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:variable>
+						<xsl:variable name="pairFlags" select="string($pairFlagsFragment)"/>
+						<xsl:variable name="pairIsMandatory" select="contains($pairFlags,'m')"/>
+						<xsl:variable name="reverseNegation" select="contains($pairFlags,'f')"/>
+						<xsl:choose>
+							<xsl:when test="@AbsorptionIndicator[.='true' or .='1']">
+								<!-- This is always a leaf. Add a pseudo column step so the absorption
+								leaf can be an assimilating parent (leave off ConceptTypeChild).-->
+								<xsl:copy>
+									<xsl:copy-of select="@*[local-name()!='AbsorptionIndicator']"/>
+								</xsl:copy>
+
+								<xsl:variable name="columnId" select="string(@Column)"/>
+								<xsl:choose>
+									<xsl:when test="$inverseChild">
+										<!-- Add a final pseudo step (ConceptTypeChild is not set) -->
+										<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}" booleanTest="TRUE">
+											<xsl:if test="$reverseNegation">
+												<xsl:attribute name="booleanTest">
+													<xsl:text>FALSE</xsl:text>
+												</xsl:attribute>
+											</xsl:if>
+										</oialtocdb:ColumnHasConceptTypeChild>
+
+										<!-- Create a new pseudo column with a modified column id and realColumn attribute. -->
+										<xsl:for-each select="preceding-sibling::oialtocdb:ColumnHasConceptTypeChild[@Column=$columnId]">
+											<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Inverse" realColumn="{$columnId}" ConceptTypeChild="{@ConceptTypeChild}"/>
+										</xsl:for-each>
+										<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Inverse" realColumn="{$columnId}" ConceptTypeChild="{$inverseChild/@id}"/>
+										<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Inverse" realColumn="{$columnId}" booleanTest="FALSE">
+											<xsl:if test="$reverseNegation">
+												<xsl:attribute name="booleanTest">
+													<xsl:text>TRUE</xsl:text>
+												</xsl:attribute>
+											</xsl:if>
+										</oialtocdb:ColumnHasConceptTypeChild>
+
+										<xsl:if test="$pairIsMandatory">
+											<!-- Add another column that is mandatory in the containing path regardless of the true/false value. -->
+											<xsl:for-each select="preceding-sibling::oialtocdb:ColumnHasConceptTypeChild[@Column=$columnId]">
+												<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Mandatory" realColumn="{$columnId}" ConceptTypeChild="{@ConceptTypeChild}"/>
+											</xsl:for-each>
+											<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Mandatory" realColumn="{$columnId}" forceMandatory="1"/>
+										</xsl:if>
+									</xsl:when>
+									<xsl:otherwise>
+										<!-- This has true/null data, so a null check will work. -->
+										<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}" booleanTest="NULL"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="$inverseChild">
+								<!-- The starting step will always reference an information type if there is no absorption indicator,
+								but the inverse can be an assimilation. Create a new column path for this case, leaving the same
+								structure as an assimilation. -->
+								<xsl:choose>
+									<xsl:when test="$inverseChild[self::oial:assimilatedConceptType]">
+										<xsl:copy>
+											<!-- In the context of the parent, the true/false column is simply tested as null/not null.
+											We only care about an explicit true/false test when we're determining if the column is set
+											for the true/false branch of one of the assimilated states. So, booleanTest is added for the
+											assimilation path, but the current node is left with a null test. -->
+											<xsl:copy-of select="@*"/>
+
+											<!-- Give the real column information on mandatory state (used for parent assimilation, not this one). -->
+											<xsl:if test="$pairIsMandatory">
+												<xsl:attribute name="forceMandatory">
+													<xsl:text>1</xsl:text>
+												</xsl:attribute>
+											</xsl:if>
+										</xsl:copy>
+
+										<!-- Create the pseudo column for the assimilation as in the absorption indicator case.-->
+										<xsl:variable name="columnId" select="string(@Column)"/>
+										<xsl:for-each select="preceding-sibling::oialtocdb:ColumnHasConceptTypeChild[@Column=$columnId]">
+											<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Inverse" realColumn="{$columnId}" ConceptTypeChild="{@ConceptTypeChild}"/>
+										</xsl:for-each>
+										<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Inverse" realColumn="{$columnId}" ConceptTypeChild="{$inverseChild/@id}"/>
+										<oialtocdb:ColumnHasConceptTypeChild Column="{$columnId}_Inverse" realColumn="{$columnId}" booleanTest="TRUE">
+											<xsl:if test="$reverseNegation">
+												<xsl:attribute name="booleanTest">
+													<xsl:text>FALSE</xsl:text>
+												</xsl:attribute>
+											</xsl:if>
+										</oialtocdb:ColumnHasConceptTypeChild>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:copy>
+											<!-- No need to copy the inverse child. This is two information types, so an explicit
+											true/false test is not needed, just use the stock null test. -->
+											<xsl:copy-of select="@*"/>
+											<xsl:if test="$pairIsMandatory">
+												<xsl:attribute name="forceMandatory">
+													<xsl:text>1</xsl:text>
+												</xsl:attribute>
+											</xsl:if>
+										</xsl:copy>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy-of select="."/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:call-template name="BuildChildAndLeafHierarchyRecurse">
+					<xsl:with-param name="startLinks" select="exsl:node-set($expandedLinksFragment)/child::*"/>
+					<xsl:with-param name="columns" select="$columns"/>
+					<xsl:with-param name="contextConceptType" select="$contextConceptType"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="BuildChildAndLeafHierarchyRecurse">
+					<xsl:with-param name="startLinks" select="$startLinks"/>
+					<xsl:with-param name="columns" select="$columns"/>
+					<xsl:with-param name="contextConceptType" select="$contextConceptType"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="BuildChildAndLeafHierarchyRecurse">
+		<xsl:param name="startLinks"/>
+		<xsl:param name="columns"/>
+		<xsl:param name="contextConceptType"/>
+		<xsl:param name="startingMandatoryDepth" select="0"/>
 		<xsl:param name="generateLeafNodes" select="false()"/>
 		<xsl:param name="depth" select="1"/>
 		<xsl:variable name="uniqueLeadConceptTypeChildFragment">
 			<xsl:variable name="sortedLeadConceptTypeChildFragment">
-				<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)]/@ConceptTypeChild">
-					<xsl:sort select="."/>
+				<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)]">
+					<xsl:sort select="dsf:coalesce(@ConceptTypeChild,@Column)"/>
 					<loc:sorting>
-						<xsl:value-of select="."/>
+						<xsl:copy-of select="@forceMandatory"/>
+						<xsl:choose>
+							<xsl:when test="@ConceptTypeChild">
+								<xsl:value-of select="@ConceptTypeChild"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="columnTip">
+									<xsl:text>1</xsl:text>
+								</xsl:attribute>
+								<!-- This will always be the final node in the column path. We need to provide some id. -->
+								<xsl:value-of select="@Column"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</loc:sorting>
 				</xsl:for-each>
 			</xsl:variable>
@@ -378,6 +776,7 @@
 		</xsl:variable>
 
 		<xsl:for-each select="exsl:node-set($uniqueLeadConceptTypeChildFragment)/child::*">
+			<xsl:variable name="sortNode" select="."/>
 			<xsl:variable name="currentChildId" select="string(.)"/>
 			<xsl:for-each select="$Document">
 				<!-- Push context so that keyed lookups work correctly -->
@@ -387,17 +786,24 @@
 				<xsl:variable name="currentMandatoryAndNextFragment">
 					<loc:dummy isMandatory="{$currentConceptTypeChild/@isMandatory}" nextComingFrom="{$currentConceptTypeChild/@ref}">
 						<!-- For most cases, the mandatory state corresponds directly to the isMandatory property on the
-					current concept type child. However, if the place we're coming from does not match the parent
-					of a current assimilation, then we're walking in reverse and we always treat it as mandatory. Also,
-					in this case, the next node maps to the assimilation parent. -->
-						<xsl:if test="$currentAssimilation and not($contextConceptType=$parentConceptTypeId)">
-							<xsl:attribute name="isMandatory">
-								<xsl:text>true</xsl:text>
-							</xsl:attribute>
-							<xsl:attribute name="nextComingFrom">
-								<xsl:value-of select="$parentConceptTypeId"/>
-							</xsl:attribute>
-						</xsl:if>
+						current concept type child. However, if the place we're coming from does not match the parent
+						of a current assimilation, then we're walking in reverse and we always treat it as mandatory. Also,
+						in this case, the next node maps to the assimilation parent. -->
+						<xsl:choose>
+							<xsl:when test="$currentAssimilation and not($contextConceptType=$parentConceptTypeId)">
+								<xsl:attribute name="isMandatory">
+									<xsl:text>true</xsl:text>
+								</xsl:attribute>
+								<xsl:attribute name="nextComingFrom">
+									<xsl:value-of select="$parentConceptTypeId"/>
+								</xsl:attribute>
+							</xsl:when>
+							<xsl:when test="$sortNode/@forceMandatory">
+								<xsl:attribute name="isMandatory">
+									<xsl:text>true</xsl:text>
+								</xsl:attribute>
+							</xsl:when>
+						</xsl:choose>
 					</loc:dummy>
 				</xsl:variable>
 				<xsl:variable name="currentMandatoryAndNext" select="exsl:node-set($currentMandatoryAndNextFragment)/child::*"/>
@@ -420,20 +826,28 @@
 				</xsl:variable>
 				<xsl:variable name="mandatoryDepth" select="number($mandatoryDepthFragment)"/>
 				<xsl:variable name="childLinksFragment">
-					<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)][@ConceptTypeChild=$currentChildId]">
+					<xsl:for-each select="$startLinks[not(preceding-sibling::*[1]/@Column=@Column)][dsf:coalesce(@ConceptTypeChild,@Column)=$currentChildId]">
 						<xsl:variable name="linksForColumn" select="$startLinks[@Column=current()/@Column]"/>
 						<xsl:choose>
 							<xsl:when test="count($linksForColumn)=1">
 								<xsl:if test="$generateLeafNodes">
 									<loc:leaf>
 										<xsl:copy-of select="@*"/>
-										<xsl:variable name="resolvedColumn" select="$columns[@id=current()/@Column]"/>
-										<xsl:copy-of select="$resolvedColumn/@Name"/>
-										<xsl:if test="not($resolvedColumn/@IsNullable='true' or $resolvedColumn/@IsNullable=1)">
-											<xsl:attribute name="alwaysMandatory">
-												<xsl:value-of select="true()"/>
-											</xsl:attribute>
-										</xsl:if>
+										<xsl:choose>
+											<xsl:when test="@realColumn">
+												<xsl:copy-of select="$columns[@id=current()/@realColumn]/@Name"/>
+												<!-- This is an absorption indicator column or unary condition test. It is never mandatory. -->
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:variable name="resolvedColumn" select="$columns[@id=current()/@Column]"/>
+												<xsl:copy-of select="$resolvedColumn/@Name"/>
+												<xsl:if test="not($resolvedColumn/@IsNullable[.='true' or .='1'])">
+													<xsl:attribute name="alwaysMandatory">
+														<xsl:value-of select="true()"/>
+													</xsl:attribute>
+												</xsl:if>
+											</xsl:otherwise>
+										</xsl:choose>
 										<xsl:if test="$mandatoryDepth!=0">
 											<xsl:attribute name="isMandatoryStartingAt">
 												<xsl:value-of select="$mandatoryDepth"/>
@@ -454,7 +868,7 @@
 				<xsl:variable name="nextLinks" select="$childLinks/self::oialtocdb:ColumnHasConceptTypeChild"/>
 				<xsl:if test="$nextLinks">
 					<loc:child ConceptTypeChild="{$currentChildId}" ConceptTypeChildName="{key('KeyedConceptTypes',$currentConceptTypeChild/@ref)/@name}" IsMandatory="{$mandatoryDepth!=0}">
-						<xsl:call-template name="BuildChildAndLeafHierarchy">
+						<xsl:call-template name="BuildChildAndLeafHierarchyRecurse">
 							<xsl:with-param name="startLinks" select="$nextLinks"/>
 							<xsl:with-param name="columns" select="$columns"/>
 							<xsl:with-param name="contextConceptType" select="string($currentMandatoryAndNext/@nextComingFrom)"/>
@@ -470,7 +884,7 @@
 
 	<xsl:template match="rcd:Table" mode="GenerateAbsorptionConstraints">
 		<xsl:param name="oialDcilBridge"/>
-		<xsl:param name="oialModel"/>
+		<xsl:param name="booleanFormats"/>
 		<xsl:variable name="columns" select="rcd:Columns/rcd:Column"/>
 
 		<xsl:variable name="nestedChildFragment">
@@ -478,65 +892,90 @@
 				<xsl:with-param name="startLinks" select="$oialDcilBridge/oialtocdb:ColumnHasConceptTypeChild[@Column = $columns/@id]"/>
 				<xsl:with-param name="columns" select="$columns"/>
 				<xsl:with-param name="contextConceptType" select="string($oialDcilBridge/oialtocdb:TableIsPrimarilyForConceptType[@Table=current()/@id]/@ConceptType)"/>
-				<xsl:with-param name="startingMandatoryDepth" select="0"/>
+				<xsl:with-param name="booleanFormats" select="$booleanFormats"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="nestedChildren" select="exsl:node-set($nestedChildFragment)/child::*"/>
-		
-		<xsl:variable name="absorptionCheckConstraintsFragment">
-			<xsl:apply-templates select="$nestedChildren" mode="GenerateAssimilationCheckConstraints">
-				<xsl:with-param name="columns" select="$columns"/>
-				<xsl:with-param name="currentDepth" select="1"/>
-			</xsl:apply-templates>
-		</xsl:variable>
-		<xsl:variable name="absorptionCheckConstraints" select="exsl:node-set($absorptionCheckConstraintsFragment)/child::*"/>
-		<xsl:if test="$absorptionCheckConstraints">
-			<xsl:variable name="tableName" select="@Name"/>
-			<xsl:for-each select="$absorptionCheckConstraints">
-				<xsl:variable name="nameInstanceCount">
-					<xsl:variable name="precedingCount" select="count(preceding-sibling::*[@name=current()/@name])"/>
-					<xsl:choose>
-						<xsl:when test="$precedingCount">
-							<xsl:value-of select="$precedingCount+1"/>
-						</xsl:when>
-						<xsl:when test="following-sibling::*[@name=current()/@name][1]">
-							<xsl:value-of select="1"/>
-						</xsl:when>
-					</xsl:choose>
-				</xsl:variable>
-				<dcl:checkConstraint>
-					<xsl:call-template name="AddNameAttributes">
-						<xsl:with-param name="requestedName" select="concat($tableName,'_',@name,$nameInstanceCount,'_MandatoryGroup')"/>
-					</xsl:call-template>
-					<xsl:copy-of select="@*[local-name()!='name']"/>
-					<xsl:copy-of select="*"/>
-				</dcl:checkConstraint>
-			</xsl:for-each>
+
+		<xsl:if test="$nestedChildren">
+			<xsl:variable name="absorptionCheckConstraintsFragment">
+				<xsl:apply-templates select="$nestedChildren" mode="GenerateAssimilationCheckConstraints">
+					<xsl:with-param name="columns" select="$columns"/>
+					<xsl:with-param name="currentDepth" select="1"/>
+				</xsl:apply-templates>
+			</xsl:variable>
+			<xsl:variable name="absorptionCheckConstraints" select="exsl:node-set($absorptionCheckConstraintsFragment)/child::*"/>
+			<xsl:if test="$absorptionCheckConstraints">
+				<xsl:variable name="tableName" select="string(@Name)"/>
+				<xsl:for-each select="$absorptionCheckConstraints">
+					<xsl:variable name="nameInstanceCount">
+						<xsl:variable name="precedingCount" select="count(preceding-sibling::*[@name=current()/@name])"/>
+						<xsl:choose>
+							<xsl:when test="$precedingCount">
+								<xsl:value-of select="$precedingCount+1"/>
+							</xsl:when>
+							<xsl:when test="following-sibling::*[@name=current()/@name][1]">
+								<xsl:value-of select="1"/>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:variable>
+					<dcl:checkConstraint>
+						<xsl:call-template name="AddNameAttributes">
+							<xsl:with-param name="requestedName" select="concat($tableName,'_',@name,$nameInstanceCount,'_MandatoryGroup')"/>
+						</xsl:call-template>
+						<xsl:copy-of select="@*[local-name()!='name']"/>
+						<xsl:copy-of select="*"/>
+					</dcl:checkConstraint>
+				</xsl:for-each>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="loc:child" mode="GenerateAssimilationCheckConstraints">
 		<xsl:param name="columns"/>
 		<xsl:param name="currentDepth"/>
-		
-		<xsl:variable name="notNullClauseColumnReferencesFragment">
-			<xsl:apply-templates mode="GetColumnReferenceForNotNullClause">
-				<xsl:with-param name="columns" select="$columns"/>
-				<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
-			</xsl:apply-templates>
-		</xsl:variable>
-		<xsl:variable name="notNullClauseColumnReferences" select="exsl:node-set($notNullClauseColumnReferencesFragment)/*"/>
 
-		<xsl:variable name="nullClauseColumnReferencesFragment">
-			<xsl:apply-templates mode="GetColumnReferencesForNullClause">
-				<xsl:with-param name="columns" select="$columns"/>
-				<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
-			</xsl:apply-templates>
+		<xsl:variable name="mandatoryAtDepthFragment">
+			<xsl:variable name="rawFragment">
+				<xsl:apply-templates mode="GetMandatoryAtDepthColumnOperation">
+					<xsl:with-param name="columns" select="$columns"/>
+					<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
+				</xsl:apply-templates>
+			</xsl:variable>
+			<xsl:call-template name="ConsolidateColumnOperations">
+				<xsl:with-param name="operations" select="exsl:node-set($rawFragment)/*"/>
+			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="nullClauseColumnReferences" select="exsl:node-set($nullClauseColumnReferencesFragment)/*"/>
+		<xsl:variable name="mandatoryAtDepth" select="exsl:node-set($mandatoryAtDepthFragment)/*"/>
+		<xsl:if test="$mandatoryAtDepth">
+			<xsl:variable name="optionalAtDepthFragment">
+				<xsl:variable name="rawFragment">
+					<xsl:apply-templates mode="GetOptionalAtDepthColumnOperations">
+						<xsl:with-param name="columns" select="$columns"/>
+						<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
+					</xsl:apply-templates>
+				</xsl:variable>
+				<xsl:call-template name="ConsolidateColumnOperations">
+					<xsl:with-param name="operations" select="exsl:node-set($rawFragment)/*"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="optionalAtDepth" select="exsl:node-set($optionalAtDepthFragment)/*"/>
+			<xsl:if test="count($optionalAtDepth) >= 2">
+				<dcl:checkConstraint name="{translate(normalize-space(@ConceptTypeChildName),' ','_')}">
+					<dep:or>
+						<xsl:call-template name="RenderColumnOperations">
+							<xsl:with-param name="operations" select="$mandatoryAtDepth"/>
+						</xsl:call-template>
+						<xsl:call-template name="RenderColumnOperations">
+							<xsl:with-param name="operations" select="$optionalAtDepth"/>
+						</xsl:call-template>
+					</dep:or>
+				</dcl:checkConstraint>
+			</xsl:if>
+		</xsl:if>
 
 		<!--
-			UNDONE: There is potentially an optimization that can be made here.
+			UNDONE: There is potentially a reduction that can be made here.
 			If there is only a single column (from the current level?) in the not null clause,
 			that column does not need to be included in the null clause as well.
 			Example:
@@ -544,97 +983,266 @@
 				can become
 				a IS NOT NULL OR b IS NULL
 		-->
-		
-		<xsl:if test="$notNullClauseColumnReferences and count($nullClauseColumnReferences) >= 2">
-			<dcl:checkConstraint name="{translate(normalize-space(@ConceptTypeChildName),' ','_')}">
-				<dep:or>
-					<xsl:choose>
-						<xsl:when test="count($notNullClauseColumnReferences)=1">
-							<dep:nullPredicate type="NOT NULL">
-								<xsl:copy-of select="$notNullClauseColumnReferences"/>
-							</dep:nullPredicate>
-						</xsl:when>
-						<xsl:otherwise>
-							<dep:and>
-								<xsl:for-each select="$notNullClauseColumnReferences">
-									<dep:nullPredicate type="NOT NULL">
-										<xsl:copy-of select="."/>
-									</dep:nullPredicate>
-								</xsl:for-each>
-							</dep:and>
-						</xsl:otherwise>
-					</xsl:choose>
-					<dep:and>
-						<xsl:for-each select="$nullClauseColumnReferences">
-							<dep:nullPredicate type="NULL">
-								<xsl:copy-of select="."/>
-							</dep:nullPredicate>
-						</xsl:for-each>
-					</dep:and>
-				</dep:or>
-			</dcl:checkConstraint>
-		</xsl:if>
 
 		<xsl:apply-templates select="loc:child" mode="GenerateAssimilationCheckConstraints">
 			<xsl:with-param name="columns" select="$columns"/>
 			<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
 		</xsl:apply-templates>
-		
+
 	</xsl:template>
 
-	<xsl:template match="loc:child" mode="GetColumnReferenceForNotNullClause">
-		<xsl:param name="columns"/>
-		<xsl:param name="currentDepth"/>
-		<xsl:variable name="mandatoryNextStepColumnReferencesFragment">
-			<xsl:apply-templates mode="GetColumnReferenceForNotNullClause">
-				<xsl:with-param name="columns" select="$columns"/>
-				<xsl:with-param name="currentDepth" select="$currentDepth"/>
-			</xsl:apply-templates>
-		</xsl:variable>
-		<xsl:copy-of select="exsl:node-set($mandatoryNextStepColumnReferencesFragment)/*[1]"/>
-	</xsl:template>
-	<xsl:template match="loc:leaf" mode="GetColumnReferenceForNotNullClause">
-		<xsl:param name="columns"/>
-		<xsl:param name="currentDepth"/>
-		<xsl:if test="not(@alwaysMandatory) and @isMandatoryStartingAt &lt;= $currentDepth">
-			<xsl:apply-templates select="." mode="GetColumnReference">
-				<xsl:with-param name="columns" select="$columns"/>
-			</xsl:apply-templates>
+	<xsl:template name="ConsolidateColumnOperations">
+		<xsl:param name="operations"/>
+		<!-- columnName/compareTo NULL TRUE FALSE/invert 1 -->
+		<!-- This reduces multiple operations on the same column to a single
+		operation. Note that the invert level is assumed to be consistent for
+		all items in the set. -->
+		<xsl:if test="$operations">
+			<xsl:variable name="sortedOperationsFragment">
+				<xsl:for-each select="$operations">
+					<xsl:sort select="@columnName"/>
+					<xsl:copy-of select="."/>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="sortedOperations" select="exsl:node-set($sortedOperationsFragment)/*"/>
+			<xsl:for-each select="$sortedOperations[not(preceding-sibling::*[1]/@columnName=@columnName)]">
+				<xsl:variable name="matchedOperations" select="following-sibling::*[@columnName=current()/@columnName]"/>
+				<xsl:choose>
+					<xsl:when test="$matchedOperations">
+						<xsl:choose>
+							<xsl:when test="@compareTo='NULL'">
+								<xsl:copy-of select="."/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:variable name="otherNull" select="$matchedOperations[@compareTo='NULL']"/>
+								<xsl:choose>
+									<xsl:when test="$otherNull">
+										<xsl:copy-of select="$otherNull[1]"/>
+									</xsl:when>
+									<xsl:when test="(@compareTo='FALSE' and $matchedOperations[@compareTo='TRUE']) or (@compareTo='TRUE' and $matchedOperations[@compareTo='FALSE'])">
+										<loc:operation columnName="{@columnName}" compareTo="NULL">
+											<xsl:if test="not(@invert)">
+												<xsl:attribute name="invert">
+													<xsl:text>1</xsl:text>
+												</xsl:attribute>
+											</xsl:if>
+										</loc:operation>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="."/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template match="loc:child" mode="GetColumnReferencesForNullClause">
+
+	<xsl:template name="RenderColumnOperations">
+		<xsl:param name="operations"/>
+		<xsl:param name="checkContainer" select="true()"/>
+		<xsl:if test="$operations">
+			<xsl:choose>
+				<xsl:when test="$checkContainer and count($operations)!=1">
+					<dep:and>
+						<xsl:call-template name="RenderColumnOperations">
+							<xsl:with-param name="operations" select="$operations"/>
+							<xsl:with-param name="checkContainer" select="false()"/>
+						</xsl:call-template>
+					</dep:and>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:for-each select="$operations">
+						<xsl:variable name="comparand" select="string(@compareTo)"/>
+						<xsl:choose>
+							<xsl:when test="$comparand='NULL'">
+								<dep:nullPredicate type="NULL">
+									<xsl:if test="@invert">
+										<xsl:attribute name="type">
+											<xsl:text>NOT NULL</xsl:text>
+										</xsl:attribute>
+									</xsl:if>
+									<dep:columnReference name="{dsf:makeValidIdentifier(@columnName)}"/>
+								</dep:nullPredicate>
+							</xsl:when>
+							<xsl:otherwise>
+								<dep:comparisonPredicate operator="equals">
+									<xsl:if test="@invert">
+										<xsl:attribute name="operator">
+											<xsl:text>notEquals</xsl:text>
+										</xsl:attribute>
+									</xsl:if>
+									<dep:columnReference name="{dsf:makeValidIdentifier(@columnName)}"/>
+									<ddt:booleanLiteral value="{$comparand}"/>
+								</dep:comparisonPredicate>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="loc:child" mode="GetMandatoryAtDepthColumnOperation">
 		<xsl:param name="columns"/>
 		<xsl:param name="currentDepth"/>
-		<xsl:variable name="mandatoryNextStepColumnReferencesFragment">
-			<xsl:apply-templates select="." mode="GetColumnReferenceForNotNullClause">
+		<xsl:param name="invert" select="false"/>
+		<xsl:variable name="mandatoryNextStepColumnOperationsFragment">
+			<xsl:apply-templates mode="GetMandatoryAtDepthColumnOperation">
 				<xsl:with-param name="columns" select="$columns"/>
 				<xsl:with-param name="currentDepth" select="$currentDepth"/>
+				<xsl:with-param name="invert" select="$invert"/>
 			</xsl:apply-templates>
 		</xsl:variable>
-		<xsl:variable name="mandatoryNextStepColumnReferences" select="exsl:node-set($mandatoryNextStepColumnReferencesFragment)/*"/>
+		<xsl:copy-of select="exsl:node-set($mandatoryNextStepColumnOperationsFragment)/*[1]"/>
+	</xsl:template>
+	<xsl:template match="loc:leaf" mode="GetMandatoryAtDepthColumnOperation">
+		<xsl:param name="columns"/>
+		<xsl:param name="currentDepth"/>
+		<xsl:param name="invert" select="false()"/>
+		<xsl:if test="not(@alwaysMandatory) and @isMandatoryStartingAt &lt;= $currentDepth">
+			<xsl:variable name="self" select="."/>
+			<loc:operation columnName="{$columns[@id = dsf:coalesce($self/@realColumn,$self/@Column)]/@Name}" compareTo="NULL">
+				<xsl:choose>
+					<xsl:when test="@booleanTest[.!='NULL']">
+						<xsl:attribute name="compareTo">
+							<xsl:value-of select="@booleanTest"/>
+						</xsl:attribute>
+						<xsl:if test="@invert">
+							<xsl:attribute name="invert">
+								<xsl:text>1</xsl:text>
+							</xsl:attribute>
+						</xsl:if>
+					</xsl:when>
+					<xsl:when test="not(@invert)">
+						<xsl:attribute name="invert">
+							<!-- Compare to NOT NULL for an 'is set' test. -->
+							<xsl:text>1</xsl:text>
+						</xsl:attribute>
+					</xsl:when>
+				</xsl:choose>
+			</loc:operation>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="loc:child" mode="GetOptionalAtDepthColumnOperations">
+		<xsl:param name="columns"/>
+		<xsl:param name="currentDepth"/>
+		<xsl:variable name="mandatoryNextStepColumnOperationsFragment">
+			<xsl:apply-templates select="." mode="GetMandatoryAtDepthColumnOperation">
+				<xsl:with-param name="columns" select="$columns"/>
+				<xsl:with-param name="currentDepth" select="$currentDepth"/>
+				<xsl:with-param name="invert" select="true()"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:variable name="mandatoryNextStepColumnOperations" select="exsl:node-set(mandatoryNextStepColumnOperationsFragment)/*"/>
 		<xsl:choose>
-			<xsl:when test="$mandatoryNextStepColumnReferences">
-				<xsl:copy-of select="$mandatoryNextStepColumnReferences[1]"/>
+			<xsl:when test="$mandatoryNextStepColumnOperations">
+				<xsl:copy-of select="$mandatoryNextStepColumnOperations[1]"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:apply-templates mode="GetColumnReferencesForNullClause">
+				<xsl:apply-templates mode="GetOptionalAtDepthColumnOperations">
 					<xsl:with-param name="columns" select="$columns"/>
 					<xsl:with-param name="currentDepth" select="$currentDepth + 1"/>
 				</xsl:apply-templates>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="loc:leaf" mode="GetColumnReferencesForNullClause">
+	<xsl:template match="loc:leaf" mode="GetOptionalAtDepthColumnOperations">
 		<xsl:param name="columns"/>
-		<xsl:apply-templates select="self::node()[not(@alwaysMandatory)]" mode="GetColumnReference">
-			<xsl:with-param name="columns" select="$columns"/>
-		</xsl:apply-templates>
+		<xsl:if test="not(@alwaysMandatory)">
+			<xsl:variable name="self" select="."/>
+			<loc:operation columnName="{$columns[@id = dsf:coalesce($self/@realColumn,$self/@Column)]/@Name}" compareTo="NULL">
+				<xsl:if test="@booleanTest[.!='NULL']">
+					<xsl:attribute name="compareTo">
+						<xsl:value-of select="@booleanTest"/>
+					</xsl:attribute>
+					<xsl:attribute name="invert">
+						<xsl:text>1</xsl:text>
+					</xsl:attribute>
+				</xsl:if>
+			</loc:operation>
+		</xsl:if>
 	</xsl:template>
-	<xsl:template match="loc:leaf" mode="GetColumnReference">
-		<xsl:param name="columns"/>
-		<dep:columnReference name="{dsf:makeValidIdentifier($columns[@id = current()/@Column]/@Name)}"/>
+
+	<!-- Determine the true/false default for a unary column. This returns 't', 'f' or empty text. -->
+	<xsl:template name="ColumnDefaultFromUnaryFactType">
+		<xsl:param name="columnPathNode"/>
+		<xsl:param name="factType"/>
+		<xsl:variable name="unaryPattern" select="string($factType/@UnaryPattern)"/>
+		<xsl:choose>
+			<xsl:when test="$unaryPattern='Negation'">
+				<xsl:call-template name="ColumnDefaultFromUnaryFactType">
+					<xsl:with-param name="columnPathNode" select="$columnPathNode"/>
+					<xsl:with-param name="factType" select="key('KeyedFactTypeNegationLink',$factType/@id)/.."/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="contains($unaryPattern,'DefaultTrue')">
+				<!-- It doesn't matter if we're paired or not, just use the true value. -->
+				<xsl:text>t</xsl:text>
+			</xsl:when>
+			<xsl:when test="contains($unaryPattern,'DefaultFalse')">
+				<xsl:choose>
+					<xsl:when test="$columnPathNode[oialtocdb:InverseConceptTypeChild]">
+						<!-- False is a valid default for a column that represents both true and false values -->
+						<xsl:text>f</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<!-- An unpaired negation is always true. -->
+						<xsl:text>t</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
-	
+
+	<!-- Get intermediate loc:defaultValue and loc:valueConstraint nodes for a role. -->
+	<xsl:template name="ValueDataFromRole">
+		<xsl:param name="role"/>
+		<xsl:param name="ignoreDefault"/>
+		<xsl:param name="checkTypeDefault"/>
+		<xsl:if test="$role/orm:ValueRestriction/orm:RoleValueConstraint[not(@Modality='Deontic')]">
+			<loc:valueConstraint role="{$role/@id}"/>
+			<!-- Note that value type value constraints are folded into domains -->
+		</xsl:if>
+		<xsl:if test="not($ignoreDefault)">
+			<xsl:variable name="defaultState" select="string($role/@DefaultState)"/>
+			<xsl:choose>
+				<xsl:when test="$defaultState='EmptyValue'">
+					<loc:defaultValue empty="1"/>
+				</xsl:when>
+				<xsl:when test="$defaultState='IgnoreContext'">
+					<loc:defaultValue block="1"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="defaultValue" select="string($role/orm:DefaultValue)"/>
+					<xsl:choose>
+						<xsl:when test="$defaultValue">
+							<loc:defaultValue value="{$defaultValue}" invariantValue="{$role/orm:InvariantDefaultValue}"/>
+						</xsl:when>
+						<xsl:when test="$checkTypeDefault">
+							<xsl:for-each select="key('KeyedObjectTypes',$role/orm:RolePlayer/@ref)[self::orm:ValueType]">
+								<xsl:choose>
+									<xsl:when test="@DefaultState='EmptyValue'">
+										<loc:defaultValue empty="1"/>
+									</xsl:when>
+									<!-- Value types do not support IgnoreContext (there is nothing to ignore) -->
+									<xsl:otherwise>
+										<xsl:variable name="typeDefaultValue" select="string($role/orm:DefaultValue)"/>
+										<xsl:if test="$typeDefaultValue">
+											<loc:defaultValue value="{$defaultValue}" invariantValue="{$role/orm:InvariantDefaultValue}"/>
+										</xsl:if>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:for-each>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="orm:ValueType" mode="GenerateDataTypeMapping">
 		<xsl:param name="ormModel"/>
 		<xsl:variable name="dataTypeName" select="@Name"/>
@@ -654,8 +1262,7 @@
 				<xsl:variable name="hasFalseConstraint" select="$modelValueRanges[translate(@MinValue, 'false', 'FALSE') = 'FALSE' or translate(@MinValue, 'no', 'NO') = 'NO' or @MinValue = 0]"/>
 
 				<xsl:choose>
-					<!-- BOOLEAN_HACK: Remove the false() on the next line to stop forcing open-world-with-negation. -->
-					<xsl:when test="false() and $modelValueRanges and not($hasTrueConstraint and $hasFalseConstraint)">
+					<xsl:when test="$modelValueRanges and not($hasTrueConstraint and $hasFalseConstraint)">
 						<dcl:domain name="{dsf:makeValidIdentifier($dataTypeName)}">
 							<dcl:predefinedDataType name="BOOLEAN"/>
 							<dcl:checkConstraint name="{dsf:makeValidIdentifier($modelValueConstraint/@Name)}">
@@ -831,14 +1438,14 @@
 													<ddt:exactNumericLiteral value="0"/>
 												</dep:comparisonPredicate>
 												<xsl:call-template name="ProcessValueConstraintRanges">
-													<xsl:with-param name="literalName" select="'ddt:exactNumericLiteral'"/>
+													<xsl:with-param name="literalName" select="'exactNumericLiteral'"/>
 													<xsl:with-param name="valueRanges" select="$modelValueRanges"/>
 												</xsl:call-template>
 											</dep:and>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:call-template name="ProcessValueConstraintRanges">
-												<xsl:with-param name="literalName" select="'ddt:exactNumericLiteral'"/>
+												<xsl:with-param name="literalName" select="'exactNumericLiteral'"/>
 												<xsl:with-param name="valueRanges" select="$modelValueRanges"/>
 											</xsl:call-template>
 										</xsl:otherwise>
@@ -902,7 +1509,7 @@
 									<xsl:with-param name="requestedName" select="$modelValueConstraint/@Name"/>
 								</xsl:call-template>
 								<xsl:call-template name="ProcessValueConstraintRanges">
-									<xsl:with-param name="literalName" select="'ddt:approximateNumericLiteral'"/>
+									<xsl:with-param name="literalName" select="'approximateNumericLiteral'"/>
 									<xsl:with-param name="valueRanges" select="$modelValueRanges"/>
 								</xsl:call-template>
 							</dcl:checkConstraint>
@@ -960,7 +1567,7 @@
 								</xsl:call-template>
 								<!-- This may or may not work for actual ranges (where @MinValue != @MaxValue). -->
 								<xsl:call-template name="ProcessValueConstraintRanges">
-									<xsl:with-param name="literalName" select="'ddt:characterStringLiteral'"/>
+									<xsl:with-param name="literalName" select="'characterStringLiteral'"/>
 									<xsl:with-param name="valueRanges" select="$modelValueRanges"/>
 								</xsl:call-template>
 							</dcl:checkConstraint>
@@ -1052,7 +1659,7 @@
 									<xsl:with-param name="requestedName" select="$modelValueConstraint/@Name"/>
 								</xsl:call-template>
 								<xsl:call-template name="ProcessValueConstraintRanges">
-									<xsl:with-param name="literalName" select="concat('ddt:', translate($predefinedDataTypeName, 'DATEIMSAP', 'dateimsap'), 'Literal')"/>
+									<xsl:with-param name="literalName" select="concat(translate($predefinedDataTypeName, 'DATEIMSAP', 'dateimsap'), 'Literal')"/>
 									<xsl:with-param name="valueRanges" select="$modelValueRanges"/>
 								</xsl:call-template>
 							</dcl:checkConstraint>
@@ -1073,11 +1680,8 @@
 					<xsl:text>"</xsl:text>
 				</xsl:comment>
 			</xsl:otherwise>
-
 		</xsl:choose>
-
 	</xsl:template>
-
 
 	<xsl:template name="ProcessValueConstraintRanges">
 		<xsl:param name="literalName"/>
@@ -1141,7 +1745,7 @@
 		<dep:inPredicate type="IN">
 			<xsl:copy-of select="$valueReference"/>
 			<xsl:for-each select="$valueRanges">
-				<xsl:element name="{$literalName}">
+				<xsl:element name="ddt:{$literalName}">
 					<xsl:attribute name="value">
 						<xsl:value-of select="@MinValue"/>
 					</xsl:attribute>
@@ -1159,7 +1763,7 @@
 			<xsl:variable name="currentRange" select="$valueRanges[$currentNr]"/>
 			<xsl:variable name="lowerBoundLiteral">
 				<xsl:if test="string-length($currentRange/@MinValue)">
-					<xsl:element name="{$literalName}">
+					<xsl:element name="ddt:{$literalName}">
 						<xsl:attribute name="value">
 							<xsl:value-of select="$currentRange/@MinValue"/>
 						</xsl:attribute>
@@ -1168,7 +1772,7 @@
 			</xsl:variable>
 			<xsl:variable name="upperBoundLiteral">
 				<xsl:if test="string-length($currentRange/@MaxValue)">
-					<xsl:element name="{$literalName}">
+					<xsl:element name="ddt:{$literalName}">
 						<xsl:attribute name="value">
 							<xsl:value-of select="$currentRange/@MaxValue"/>
 						</xsl:attribute>

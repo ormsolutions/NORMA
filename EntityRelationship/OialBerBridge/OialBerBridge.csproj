@@ -148,7 +148,7 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </None>
-    <Compile Include="OialDcilBridge.DeserializationFixupListeners.cs" />
+    <Compile Include="OialBerBridge.DeserializationFixupListeners.cs" />
     <Compile Include="Resources\ResourceStrings.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">
       <AutoGen>True</AutoGen>

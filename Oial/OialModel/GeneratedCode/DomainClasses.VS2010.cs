@@ -184,6 +184,70 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			}
 		}
 		#endregion
+		#region PositiveUnaryInformationTypeFormat opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PositiveUnaryInformationTypeFormat.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.Model
+		/// </summary>
+		public PositiveUnaryInformationTypeFormat PositiveUnaryInformationTypeFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.ModelDomainRoleId) as PositiveUnaryInformationTypeFormat;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.ModelDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region NegativeUnaryInformationTypeFormat opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NegativeUnaryInformationTypeFormat.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.Model
+		/// </summary>
+		public NegativeUnaryInformationTypeFormat NegativeUnaryInformationTypeFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.ModelDomainRoleId) as NegativeUnaryInformationTypeFormat;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.ModelDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region ElementGroupPrototype Merge methods
 		/// <summary>
 		/// Returns a value indicating whether the source element represented by the
@@ -204,12 +268,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			{
 				DslModeling::DomainClassInfo rootElementDomainInfo = this.Partition.DomainDataDirectory.GetDomainClass(rootElement.DomainClassId);
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.DomainClassId)) 
 				{
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.DomainClassId)) 
 				{
 					return true;
 				}
@@ -238,20 +302,20 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			if ( sourceElement == null ) throw new global::System.ArgumentNullException("sourceElement");
 		
 				
-			global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat1 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat;
-			if (sourceInformationTypeFormat1 != null)
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType sourceConceptType1 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
+			if (sourceConceptType1 != null)
 			{
-				// Create link for path AbstractionModelHasInformationTypeFormat.InformationTypeFormatCollection
-				this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat1);
+				// Create link for path AbstractionModelHasConceptType.ConceptTypeCollection
+				this.ConceptTypeCollection.Add(sourceConceptType1);
 
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType sourceConceptType2 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
-			if (sourceConceptType2 != null)
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat2 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat;
+			if (sourceInformationTypeFormat2 != null)
 			{
-				// Create link for path AbstractionModelHasConceptType.ConceptTypeCollection
-				this.ConceptTypeCollection.Add(sourceConceptType2);
+				// Create link for path AbstractionModelHasInformationTypeFormat.InformationTypeFormatCollection
+				this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat2);
 
 				return;
 			}
@@ -278,29 +342,29 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 		{
 			if (sourceElement == null) throw new global::System.ArgumentNullException("sourceElement");
 				
-			global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat1 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat;
-			if (sourceInformationTypeFormat1 != null)
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType sourceConceptType1 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
+			if (sourceConceptType1 != null)
 			{
-				// Delete link for path AbstractionModelHasInformationTypeFormat.InformationTypeFormatCollection
+				// Delete link for path AbstractionModelHasConceptType.ConceptTypeCollection
 				
-				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLinks((global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)this, sourceInformationTypeFormat1))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetLinks((global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)this, sourceConceptType1))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+					link.Delete(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId);
 				}
 
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType sourceConceptType2 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType;
-			if (sourceConceptType2 != null)
+			global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat sourceInformationTypeFormat2 = sourceElement as global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat;
+			if (sourceInformationTypeFormat2 != null)
 			{
-				// Delete link for path AbstractionModelHasConceptType.ConceptTypeCollection
+				// Delete link for path AbstractionModelHasInformationTypeFormat.InformationTypeFormatCollection
 				
-				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetLinks((global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)this, sourceConceptType2))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLinks((global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)this, sourceInformationTypeFormat2))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId);
+					link.Delete(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
 				}
 
 				return;
@@ -718,6 +782,88 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			{
 				return GetRoleCollection<DslModeling::LinkedElementCollection<ConceptType>, ConceptType>(global::ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormatDomainRoleId);
 			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
+{
+	/// <summary>
+	/// DomainClass PositiveUnaryInformationTypeFormat
+	/// An InformationTypeFormat representing a true value.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.PositiveUnaryInformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.PositiveUnaryInformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("4a9c00f2-686e-42f1-9a94-5522d7cb3a35")]
+	public partial class PositiveUnaryInformationTypeFormat : InformationTypeFormat
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PositiveUnaryInformationTypeFormat domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x4a9c00f2, 0x686e, 0x42f1, 0x9a, 0x94, 0x55, 0x22, 0xd7, 0xcb, 0x3a, 0x35);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PositiveUnaryInformationTypeFormat(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PositiveUnaryInformationTypeFormat(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
+{
+	/// <summary>
+	/// DomainClass NegativeUnaryInformationTypeFormat
+	/// An InformationTypeFormat representing a false value.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.NegativeUnaryInformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.NegativeUnaryInformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("8347c1d4-23a0-4810-932a-e93bbd4650ec")]
+	public partial class NegativeUnaryInformationTypeFormat : InformationTypeFormat
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// NegativeUnaryInformationTypeFormat domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8347c1d4, 0x23a0, 0x4810, 0x93, 0x2a, 0xe9, 0x3b, 0xbd, 0x46, 0x50, 0xec);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NegativeUnaryInformationTypeFormat(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public NegativeUnaryInformationTypeFormat(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
 		}
 		#endregion
 	}

@@ -26,6 +26,9 @@
 			<arg:ChangeRule methodName="ConceptTypeChildChangedRule">
 				<arg:RuleOn targetType="ConceptTypeChild" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:ChangeRule>
+			<arg:ChangeRule methodName="InverseConceptTypeChildChangedRule">
+				<arg:RuleOn targetType="InverseConceptTypeChild" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
+			</arg:ChangeRule>
 			<arg:DeleteRule methodName="ConceptTypeDeletedRule">
 				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:DeleteRule>

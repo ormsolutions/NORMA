@@ -114,7 +114,7 @@
 							<xsl:with-param name="links" select="boolean(se:Link | se:StandaloneLink)"/>
 							<xsl:with-param name="aggregatingLinks" select="boolean(se:Link[@WriteStyle='EmbeddingLinkElement'])"/>
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
-							<xsl:with-param name="mixedTypedAttributes" select="boolean(se:Attribute[@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement'][not(@ReadOnly='true' or @ReadOnly='1')])"/>
+							<xsl:with-param name="mixedTypedAttributes" select="boolean(se:Attribute[(@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement' or (@NotSorted='true' or @NotSorted='1')) or se:*[@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement' or (@NotSorted='true' or @NotSorted='1')]][not(@ReadOnly='true' or @ReadOnly='1')])"/>
 						</xsl:call-template>
 					</xsl:variable>
 					<plx:return>
@@ -877,26 +877,97 @@
 				<xsl:when test="@SortChildElements='true'">
 					<xsl:variable name="UnsortedFirst" select="@UnsortedElementsFirst='true'"/>
 					<plx:field name="myCustomSortChildComparer" static="true" visibility="private" dataTypeName="IComparer">
-						<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+						<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 					</plx:field>
 					<plx:class name="CustomSortChildComparer" visibility="private" modifier="sealed">
 						<plx:implementsInterface dataTypeName="IComparer">
-							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+							<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 						</plx:implementsInterface>
-						<plx:field name="myRoleOrderDictionary" visibility="private" readOnly="true" dataTypeName="Dictionary">
+						<plx:field name="myElementOrderDictionary" visibility="private" readOnly="true" dataTypeName="Dictionary">
 							<plx:passTypeParam dataTypeName=".string"/>
 							<plx:passTypeParam dataTypeName=".i4"/>
 						</plx:field>
 						<xsl:if test="$ClassOverride">
 							<plx:field name="myBaseComparer" visibility="private" dataTypeName="IComparer">
-								<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+								<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 							</plx:field>
 						</xsl:if>
+						<xsl:variable name="SortedLevelsFragment">
+							<!-- ChildElement/Link links may have more information in Link. Just use
+								     the ChildElement one. -->
+							<xsl:variable name="childLinks" select="se:Container[not(@NotSorted='true')]/descendant::se:*[self::se:Link | self::se:Embed]"/>
+							<!-- Define a variable with structure <SortLevel><Role/><SortLevel/> -->
+							<xsl:for-each select="se:Link | se:Container | se:Attribute[@WriteStyle='Element' or se:Condition[@WriteStyle='Element']]">
+								<xsl:if test="not(@NotSorted='true')">
+									<xsl:choose>
+										<xsl:when test="self::se:Link">
+											<xsl:variable name="relName" select="@RelationshipName"/>
+											<xsl:variable name="roleName" select="@RoleName"/>
+											<xsl:if test="0=count($childLinks[@RelationshipName=$relName and @RoleName=$roleName])">
+												<SortLevel>
+													<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+												</SortLevel>
+											</xsl:if>
+										</xsl:when>
+										<xsl:when test="self::se:Container">
+											<xsl:choose>
+												<xsl:when test="@SortChildElements='true' or se:Container">
+													<!-- Add one sort level for each child -->
+													<xsl:for-each select="se:Link | se:Embed | se:Container">
+														<xsl:choose>
+															<xsl:when test="self::se:Container">
+																<xsl:choose>
+																	<xsl:when test="@SortChildElements='true'">
+																		<!-- Add one sort level for each nested child -->
+																		<xsl:for-each select="se:Link | se:Embed">
+																			<SortLevel>
+																				<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+																			</SortLevel>
+																		</xsl:for-each>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<!-- Add one sort level for all nested children -->
+																		<SortLevel>
+																			<xsl:for-each select="se:Link | se:Embed">
+																				<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+																			</xsl:for-each>
+																		</SortLevel>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:when>
+															<xsl:otherwise>
+																<SortLevel>
+																	<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+																</SortLevel>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:for-each>
+												</xsl:when>
+												<xsl:otherwise>
+													<!-- Add one sort level for all children -->
+													<SortLevel>
+														<xsl:for-each select="se:Link | se:Embed">
+															<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+														</xsl:for-each>
+													</SortLevel>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:when>
+										<xsl:when test="self::se:Attribute">
+											<SortLevel>
+												<Property Name="{@ID}"/>
+											</SortLevel>
+										</xsl:when>
+									</xsl:choose>
+								</xsl:if>
+							</xsl:for-each>
+						</xsl:variable>
+						<xsl:variable name="SortedLevels" select="exsl:node-set($SortedLevelsFragment)"/>
 						<plx:function name=".construct" visibility="public">
 							<plx:param name="store" dataTypeName="Store"/>
 							<xsl:if test="$ClassOverride">
 								<plx:param name="baseComparer" dataTypeName="IComparer">
-									<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+									<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 								</plx:param>
 								<plx:assign>
 									<plx:left>
@@ -907,72 +978,6 @@
 									</plx:right>
 								</plx:assign>
 							</xsl:if>
-							<xsl:variable name="SortedLevelsFragment">
-								<!-- ChildElement/Link links may have more information in Link. Just use
-								     the ChildElement one. -->
-								<xsl:variable name="childLinks" select="se:Container[not(@NotSorted='true')]/descendant::se:*[self::se:Link | self::se:Embed]"/>
-								<!-- Define a variable with structure <SortLevel><Role/><SortLevel/> -->
-								<xsl:for-each select="se:Link | se:Container">
-									<xsl:if test="not(@NotSorted='true')">
-										<xsl:choose>
-											<xsl:when test="self::se:Link">
-												<xsl:variable name="relName" select="@RelationshipName"/>
-												<xsl:variable name="roleName" select="@RoleName"/>
-												<xsl:if test="0=count($childLinks[@RelationshipName=$relName and @RoleName=$roleName])">
-													<SortLevel>
-														<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
-													</SortLevel>
-												</xsl:if>
-											</xsl:when>
-											<xsl:when test="self::se:Container">
-												<xsl:choose>
-													<xsl:when test="@SortChildElements='true' or se:Container">
-														<!-- Add one sort level for each child -->
-														<xsl:for-each select="se:Link | se:Embed | se:Container">
-															<xsl:choose>
-																<xsl:when test="self::se:Container">
-																	<xsl:choose>
-																		<xsl:when test="@SortChildElements='true'">
-																			<!-- Add one sort level for each nested child -->
-																			<xsl:for-each select="se:Link | se:Embed">
-																				<SortLevel>
-																					<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
-																				</SortLevel>
-																			</xsl:for-each>
-																		</xsl:when>
-																		<xsl:otherwise>
-																			<!-- Add one sort level for all nested children -->
-																			<SortLevel>
-																				<xsl:for-each select="se:Link | se:Embed">
-																					<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
-																				</xsl:for-each>
-																			</SortLevel>
-																		</xsl:otherwise>
-																	</xsl:choose>
-																</xsl:when>
-																<xsl:otherwise>
-																	<SortLevel>
-																		<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
-																	</SortLevel>
-																</xsl:otherwise>
-															</xsl:choose>
-														</xsl:for-each>
-													</xsl:when>
-													<xsl:otherwise>
-														<!-- Add one sort level for all children -->
-														<SortLevel>
-															<xsl:for-each select="se:Link | se:Embed">
-																<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
-															</xsl:for-each>
-														</SortLevel>
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-								</xsl:for-each>
-							</xsl:variable>
-							<xsl:variable name="SortedLevels" select="exsl:node-set($SortedLevelsFragment)"/>
 							<plx:local name="domainDataDirectory" dataTypeName="DomainDataDirectory">
 								<plx:initialize>
 									<plx:callInstance name="DomainDataDirectory" type="property">
@@ -982,7 +987,7 @@
 									</plx:callInstance>
 								</plx:initialize>
 							</plx:local>
-							<plx:local name="roleOrderDictionary" dataTypeName="Dictionary">
+							<plx:local name="elementOrderDictionary" dataTypeName="Dictionary">
 								<plx:passTypeParam dataTypeName=".string"/>
 								<plx:passTypeParam dataTypeName=".i4"/>
 								<plx:initialize>
@@ -992,7 +997,12 @@
 									</plx:callNew>
 								</plx:initialize>
 							</plx:local>
-							<plx:local name="domainRole" dataTypeName="DomainRoleInfo"/>
+							<xsl:if test="$SortedLevels/SortLevel/Role">
+								<plx:local name="domainRole" dataTypeName="DomainRoleInfo"/>
+							</xsl:if>
+							<xsl:if test="$SortedLevels/SortLevel/Property">
+								<plx:local name="domainProperty" dataTypeName="DomainPropertyInfo"/>
+							</xsl:if>
 							<xsl:for-each select="$SortedLevels/SortLevel">
 								<xsl:variable name="level" select="position()-1"/>
 								<xsl:for-each select="Role">
@@ -1019,7 +1029,7 @@
 										<plx:left>
 											<plx:callInstance name=".implied" type="indexerCall">
 												<plx:callObject>
-													<plx:nameRef name="roleOrderDictionary"/>
+													<plx:nameRef name="elementOrderDictionary"/>
 												</plx:callObject>
 												<plx:passParam>
 													<xsl:call-template name="DomainRoleInfoFullName">
@@ -1035,22 +1045,58 @@
 										</plx:right>
 									</plx:assign>
 								</xsl:for-each>
+								<xsl:for-each select="Property">
+									<plx:assign>
+										<plx:left>
+											<plx:nameRef name="domainProperty"/>
+										</plx:left>
+										<plx:right>
+											<plx:callInstance name="FindDomainProperty">
+												<plx:callObject>
+													<plx:nameRef name="domainDataDirectory"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:callThis accessor="static" type="field" name="{@Name}DomainPropertyId"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:right>
+									</plx:assign>
+									<plx:assign>
+										<plx:left>
+											<plx:callInstance name=".implied" type="indexerCall">
+												<plx:callObject>
+													<plx:nameRef name="elementOrderDictionary"/>
+												</plx:callObject>
+												<plx:passParam>
+													<xsl:call-template name="DomainPropertyInfoFullName">
+														<xsl:with-param name="DomainPropertyInfoExpression">
+															<plx:nameRef name="domainProperty"/>
+														</xsl:with-param>
+													</xsl:call-template>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:value type="i4" data="{$level}"/>
+										</plx:right>
+									</plx:assign>
+								</xsl:for-each>
 							</xsl:for-each>
 							<plx:assign>
 								<plx:left>
-									<plx:callThis name="myRoleOrderDictionary" type="field"/>
+									<plx:callThis name="myElementOrderDictionary" type="field"/>
 								</plx:left>
 								<plx:right>
-									<plx:nameRef name="roleOrderDictionary"/>
+									<plx:nameRef name="elementOrderDictionary"/>
 								</plx:right>
 							</plx:assign>
 						</plx:function>
 						<plx:function visibility="privateInterfaceMember" name="Compare">
 							<plx:interfaceMember dataTypeName="IComparer" memberName="Compare">
-								<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+								<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 							</plx:interfaceMember>
-							<plx:param name="x" dataTypeName="DomainRoleInfo"/>
-							<plx:param name="y" dataTypeName="DomainRoleInfo"/>
+							<plx:param name="x" dataTypeName="DomainObjectInfo"/>
+							<plx:param name="y" dataTypeName="DomainObjectInfo"/>
 							<plx:returns dataTypeName=".i4"/>
 							<xsl:if test="$ClassOverride">
 								<!-- Give the base the first shot, we want base elements displayed before derived elements -->
@@ -1101,26 +1147,129 @@
 								<Value>x</Value>
 								<Value>y</Value>
 							</xsl:variable>
+							<xsl:variable name="supportRoleInfo" select="boolean($SortedLevels/SortLevel/Role)"/>
+							<xsl:variable name="supportPropertyInfo" select="boolean($SortedLevels/SortLevel/Property)"/>
 							<xsl:for-each select="exsl:node-set($paramVals)/child::*">
 								<plx:local name="{.}Pos" dataTypeName=".i4"/>
+								<xsl:if test="$supportRoleInfo">
+									<plx:local name="{.}Role" dataTypeName="DomainRoleInfo"/>
+								</xsl:if>
+								<xsl:if test="$supportPropertyInfo">
+									<plx:local name="{.}Property" dataTypeName="DomainPropertyInfo"/>
+								</xsl:if>
+								<xsl:variable name="roleTestFragment">
+									<xsl:if test="$supportRoleInfo">
+										<plx:binaryOperator type="booleanAnd">
+											<plx:left>
+												<plx:binaryOperator type="identityInequality">
+													<plx:left>
+														<plx:inlineStatement dataTypeName="DomainRoleInfo">
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="{.}Role"/>
+																</plx:left>
+																<plx:right>
+																	<plx:cast dataTypeName="DomainRoleInfo" type="testCast">
+																		<plx:nameRef name="{.}" type="parameter"/>
+																	</plx:cast>
+																</plx:right>
+															</plx:assign>
+														</plx:inlineStatement>
+													</plx:left>
+													<plx:right>
+														<plx:nullKeyword/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:left>
+											<plx:right>
+												<plx:callInstance name="TryGetValue">
+													<plx:callObject>
+														<plx:callThis name="myElementOrderDictionary" type="field"/>
+													</plx:callObject>
+													<plx:passParam type="in">
+														<xsl:call-template name="DomainRoleInfoFullName">
+															<xsl:with-param name="DomainRoleInfoExpression">
+																<plx:nameRef name="{.}Role"/>
+															</xsl:with-param>
+														</xsl:call-template>
+													</plx:passParam>
+													<plx:passParam type="out">
+														<plx:nameRef name="{.}Pos"/>
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:right>
+										</plx:binaryOperator>
+									</xsl:if>
+								</xsl:variable>
+								<xsl:variable name="propertyTestFragment">
+									<xsl:if test="$supportPropertyInfo">
+										<plx:binaryOperator type="booleanAnd">
+											<plx:left>
+												<plx:binaryOperator type="identityInequality">
+													<plx:left>
+														<plx:inlineStatement dataTypeName="DomainPropertyInfo">
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="{.}Property"/>
+																</plx:left>
+																<plx:right>
+																	<plx:cast dataTypeName="DomainPropertyInfo" type="testCast">
+																		<plx:nameRef name="{.}" type="parameter"/>
+																	</plx:cast>
+																</plx:right>
+															</plx:assign>
+														</plx:inlineStatement>
+													</plx:left>
+													<plx:right>
+														<plx:nullKeyword/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:left>
+											<plx:right>
+												<plx:callInstance name="TryGetValue">
+													<plx:callObject>
+														<plx:callThis name="myElementOrderDictionary" type="field"/>
+													</plx:callObject>
+													<plx:passParam type="in">
+														<xsl:call-template name="DomainPropertyInfoFullName">
+															<xsl:with-param name="DomainPropertyInfoExpression">
+																<plx:nameRef name="{.}Property"/>
+															</xsl:with-param>
+														</xsl:call-template>
+													</plx:passParam>
+													<plx:passParam type="out">
+														<plx:nameRef name="{.}Pos"/>
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:right>
+										</plx:binaryOperator>
+									</xsl:if>
+								</xsl:variable>
 								<plx:branch>
 									<plx:condition>
 										<plx:unaryOperator type="booleanNot">
-											<plx:callInstance name="TryGetValue">
-												<plx:callObject>
-													<plx:callThis name="myRoleOrderDictionary" type="field"/>
-												</plx:callObject>
-												<plx:passParam type="in">
-													<xsl:call-template name="DomainRoleInfoFullName">
-														<xsl:with-param name="DomainRoleInfoExpression">
-															<plx:nameRef name="{.}" type="parameter"/>
-														</xsl:with-param>
-													</xsl:call-template>
-												</plx:passParam>
-												<plx:passParam type="out">
-													<plx:nameRef name="{.}Pos"/>
-												</plx:passParam>
-											</plx:callInstance>
+											<xsl:choose>
+												<xsl:when test="$supportRoleInfo">
+													<xsl:choose>
+														<xsl:when test="$supportPropertyInfo">
+															<plx:binaryOperator type="booleanOr">
+																<plx:left>
+																	<xsl:copy-of select="$roleTestFragment"/>
+																</plx:left>
+																<plx:right>
+																	<xsl:copy-of select="$propertyTestFragment"/>
+																</plx:right>
+															</plx:binaryOperator>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:copy-of select="$roleTestFragment"/>
+														</xsl:otherwise>
+													</xsl:choose>
+												</xsl:when>
+												<xsl:when test="$supportPropertyInfo">
+													<xsl:copy-of select="$propertyTestFragment"/>
+												</xsl:when>
+											</xsl:choose>
 										</plx:unaryOperator>
 									</plx:condition>
 									<plx:assign>
@@ -1151,19 +1300,19 @@
 							</plx:return>
 						</plx:function>
 					</plx:class>
-					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildRoleComparer" replacesName="{$ClassOverride}">
+					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildElementComparer" replacesName="{$ClassOverride}">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+								<summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
+						<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="CustomSerializedChildElementComparer"/>
 						<plx:returns dataTypeName="IComparer">
-							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+							<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 						</plx:returns>
 						<plx:get>
 							<plx:local name="retVal" dataTypeName="IComparer">
-								<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+								<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 								<plx:initialize>
 									<plx:callStatic dataTypeName="{$ClassName}" name="myCustomSortChildComparer" type="field"/>
 								</plx:initialize>
@@ -1181,7 +1330,7 @@
 								</plx:condition>
 								<xsl:if test="$ClassOverride">
 									<plx:local name="baseComparer" dataTypeName="IComparer">
-										<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+										<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 										<plx:initialize>
 											<plx:nullKeyword/>
 										</plx:initialize>
@@ -1195,7 +1344,7 @@
 												<plx:right>
 													<plx:binaryOperator type="bitwiseAnd">
 														<plx:left>
-															<plx:callStatic name="CustomSortChildRoles" dataTypeName="CustomSerializedElementSupportedOperations" type="field"/>
+															<plx:callStatic name="CustomSortChildElements" dataTypeName="CustomSerializedElementSupportedOperations" type="field"/>
 														</plx:left>
 														<plx:right>
 															<plx:callThis accessor="base" name="SupportedCustomSerializedOperations" type="property"/>
@@ -1209,7 +1358,7 @@
 												<plx:nameRef name="baseComparer"/>
 											</plx:left>
 											<plx:right>
-												<plx:callThis accessor="base" name="CustomSerializedChildRoleComparer" type="property"/>
+												<plx:callThis accessor="base" name="CustomSerializedChildElementComparer" type="property"/>
 											</plx:right>
 										</plx:assign>
 									</plx:branch>
@@ -1247,15 +1396,15 @@
 					</plx:property>
 				</xsl:when>
 				<xsl:when test="not($ClassOverride)">
-					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildRoleComparer">
+					<plx:property visibility="{$InterfaceImplementationVisibility}" name="CustomSerializedChildElementComparer">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+								<summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
+						<plx:interfaceMember dataTypeName="ICustomSerializedElement" memberName="CustomSerializedChildElementComparer"/>
 						<plx:returns dataTypeName="IComparer">
-							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
+							<plx:passTypeParam dataTypeName="DomainObjectInfo"/>
 						</plx:returns>
 						<plx:get>
 							<plx:return>
@@ -2241,6 +2390,36 @@
 			</plx:passParam>
 		</plx:callStatic>
 	</xsl:template>
+	<xsl:template name="DomainPropertyInfoFullName">
+		<xsl:param name="DomainPropertyInfoExpression"/>
+		<plx:callStatic name="Concat" dataTypeName=".string">
+			<plx:passParam>
+				<plx:callInstance name="FullName" type="property">
+					<plx:callObject>
+						<plx:callInstance name="ImplementationClass" type="property">
+							<plx:callObject>
+								<plx:callInstance name="DomainClass" type="property">
+									<plx:callObject>
+										<xsl:copy-of select="$DomainPropertyInfoExpression"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:string data="@"/>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:callInstance name="Name" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$DomainPropertyInfoExpression"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:passParam>
+		</plx:callStatic>
+	</xsl:template>
 	<xsl:template name="ResolveNamespace">
 		<xsl:param name="namespaces"/>
 		<xsl:param name="prefix" select="@Prefix"/>
@@ -3000,7 +3179,7 @@
 			</xsl:if>
 			<xsl:if test="$customSort">
 				<xsl:element name="SupportedOperation">
-					<xsl:text>CustomSortChildRoles</xsl:text>
+					<xsl:text>CustomSortChildElements</xsl:text>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="$mixedTypedAttributes">

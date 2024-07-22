@@ -561,6 +561,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case PortableDataType.OtherRowId:
 				case PortableDataType.OtherObjectId:
 				case PortableDataType.NumericUUID:
+				case PortableDataType.LogicalTrue:
 					if (sourceType == targetType)
 					{
 						return true;
@@ -583,6 +584,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						case PortableDataType.LogicalTrueOrFalse:
 						case PortableDataType.LogicalYesOrNo:
+						case PortableDataType.LogicalTrue:
 							return true;
 					}
 					break;
@@ -909,6 +911,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return null;
+			}
+		}
+		/// <summary>
+		/// Override to specify an implicit data type. This is never used directly as
+		/// the data type of an object type but is available as a portable data type.
+		/// </summary>
+		public virtual bool ImplicitOnly
+		{
+			get
+			{
+				return false;
 			}
 		}
 		/// <summary>

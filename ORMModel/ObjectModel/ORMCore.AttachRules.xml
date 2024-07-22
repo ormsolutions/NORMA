@@ -307,6 +307,12 @@
 			<arg:DeleteRule methodName="EntityTypeRoleInstanceDeletedRule">
 				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
+			<arg:AddRule methodName="EntityTypeUnaryRoleInstanceAddedRule">
+				<arg:RuleOn targetType="EntityTypeInstancePopulatesUnaryRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="EntityTypeUnaryRoleInstanceDeletedRule">
+				<arg:RuleOn targetType="EntityTypeInstancePopulatesUnaryRole"  fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
 			<arg:AddRule methodName="ObjectificationAddedRule">
 				<arg:RuleOn targetType="Objectification"/>
 			</arg:AddRule>
@@ -316,6 +322,9 @@
 			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangedRule">
 				<arg:RuleOn targetType="Objectification" priority="1"/>
 			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="MandatoryModalityChangedRule">
+				<arg:RuleOn targetType="MandatoryConstraint"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="PreferredIdentifierAddedRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
 			</arg:AddRule>
@@ -429,16 +438,16 @@
 			<arg:DeleteRule methodName="FactTypeHasReadingOrderDeleteRule">
 				<arg:RuleOn targetType="FactTypeHasReadingOrder"/>
 			</arg:DeleteRule>
-			<arg:AddRule methodName="FactTypeHasRoleAddRule">
+			<arg:AddRule methodName="FactTypeHasRoleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:AddRule>
-			<arg:DeleteRule methodName="FactTypeHasRoleDeleteRule">
+			<arg:DeleteRule methodName="FactTypeHasRoleDeletedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerPositionChangeRule methodName="FactTypeHasRoleOrderChangedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:RolePlayerPositionChangeRule>
-			<arg:ChangeRule methodName="FactTypeNameChangeRule">
+			<arg:ChangeRule methodName="FactTypeChangedRule">
 				<arg:RuleOn targetType="FactType"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="InternalConstraintAddRule">
@@ -510,32 +519,6 @@
 			<arg:RolePlayerPositionChangeRule methodName="ValidateFactTypeNameForReadingReorderRule">
 				<arg:RuleOn targetType="ReadingOrderHasReading"/>
 			</arg:RolePlayerPositionChangeRule>
-			<arg:AddRule methodName="ValidateFactTypeNameForRolePlayerAddedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="ValidateFactTypeNameForRolePlayerDeleteRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
-			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="ValidateFactTypeNameForRolePlayerRolePlayerChangeRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
-			</arg:RolePlayerChangeRule>
-		</arg:RuleContainer>
-		<arg:RuleContainer class="FactType.UnaryBinarizationUtility">
-			<arg:AddRule methodName="ConstraintRoleSequenceHasRoleAddedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:DeleteRule>
-			<arg:AddRule methodName="FactTypeHasRoleAddedRule">
-				<arg:RuleOn targetType="FactTypeHasRole"/>
-			</arg:AddRule>
-			<arg:DeletingRule methodName="FactTypeHasRoleDeletingRule">
-				<arg:RuleOn targetType="FactTypeHasRole"/>
-			</arg:DeletingRule>
-			<arg:ChangeRule methodName="FactTypeNameChangedRule">
-				<arg:RuleOn targetType="FactType"/>
-			</arg:ChangeRule>
 			<arg:AddRule methodName="ObjectTypePlaysRoleAddedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:AddRule>
@@ -545,9 +528,6 @@
 			<arg:RolePlayerChangeRule methodName="ObjectTypePlaysRoleRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
-			<arg:ChangeRule methodName="RoleNameChangedRule">
-				<arg:RuleOn targetType="Role"/>
-			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeDerivationExpression">
 			<!-- All derivation expression settings are mapped to the derivation path on load, stop new ones from being created -->
@@ -600,9 +580,6 @@
 			<arg:RolePlayerChangeRule methodName="FactTypeRoleInstanceRolePlayerChangedRule">
 				<arg:RuleOn targetType="FactTypeRoleInstance"/>
 			</arg:RolePlayerChangeRule>
-			<arg:DeleteRule methodName="ImpliedBooleanRolePlayerDeletedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
-			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ObjectTypeInstanceNameChangedRule">
 				<arg:RuleOn targetType="ObjectTypeInstance"/>
 			</arg:ChangeRule>
@@ -735,9 +712,6 @@
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeletingRule>
-			<arg:AddRule methodName="RolePlayerAddedRule">
-				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
-			</arg:AddRule>
 			<arg:DeletingRule methodName="RolePlayerDeletingRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:DeletingRule>
@@ -1626,9 +1600,15 @@
 			<arg:AddRule methodName="RoleValueConstraintAddedRule">
 				<arg:RuleOn targetType="RoleHasValueConstraint"/>
 			</arg:AddRule>
-			<arg:AddRule methodName="ValueConstraintAddRule">
+			<arg:DeleteRule methodName="RoleValueConstraintDeletedRule">
+				<arg:RuleOn targetType="RoleHasValueConstraint"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ValueTypeValueConstraintAddedRule">
 				<arg:RuleOn targetType="ValueTypeHasValueConstraint"/>
 			</arg:AddRule>
+			<arg:DeleteRule methodName="ValueTypeValueConstraintDeletedRule">
+				<arg:RuleOn targetType="ValueTypeHasValueConstraint"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ValueConstraintChangeRule">
 				<arg:RuleOn targetType="ValueConstraint"/>
 			</arg:ChangeRule>

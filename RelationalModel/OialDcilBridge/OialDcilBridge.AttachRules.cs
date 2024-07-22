@@ -53,6 +53,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						typeof(ModificationTracker).GetNestedType("FactTypeNameChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("InformationTypeFormatAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("InformationTypeFormatDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("InverseConceptTypeChildChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("MandatoryChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("MandatoryRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("MandatoryRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("NameGeneratorSettingsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("ReferenceModeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("ReferenceModeKindAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -107,7 +111,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMAbstractionToConceptualDatabaseBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 40; ++i)
+			for (int i = 0; i < 44; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -616,6 +620,110 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.InformationTypeFormatDeletedRule");
 					ModificationTracker.InformationTypeFormatDeletedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.InformationTypeFormatDeletedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class InverseConceptTypeChildChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public InverseConceptTypeChildChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild)
+				/// /// </summary>
+				/// private static void InverseConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.InverseConceptTypeChildChangedRule");
+					ModificationTracker.InverseConceptTypeChildChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.InverseConceptTypeChildChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class MandatoryChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public MandatoryChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint)
+				/// /// </summary>
+				/// private static void MandatoryChangedRule(ElementPropertyChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.MandatoryChangedRule");
+					ModificationTracker.MandatoryChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.MandatoryChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class MandatoryRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public MandatoryRoleAddedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
+				/// /// </summary>
+				/// private static void MandatoryRoleAddedRule(ElementAddedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.MandatoryRoleAddedRule");
+					ModificationTracker.MandatoryRoleAddedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.MandatoryRoleAddedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class MandatoryRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public MandatoryRoleDeletedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
+				/// /// </summary>
+				/// private static void MandatoryRoleDeletedRule(ElementDeletedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.MandatoryRoleDeletedRule");
+					ModificationTracker.MandatoryRoleDeletedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.MandatoryRoleDeletedRule");
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]

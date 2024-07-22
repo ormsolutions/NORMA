@@ -60,7 +60,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return ((IDefaultNamePattern)ModelElement).DefaultNamePattern;
+			MandatoryConstraint constraint = ModelElement;
+			return constraint.Store != null && constraint.ExclusiveOrExclusionConstraint == null ? ((IDefaultNamePattern)constraint).DefaultNamePattern : ResourceStrings.ExclusiveOrConstraint;
 		}
 
 		/// <summary>
@@ -76,10 +77,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				DomainPropertyInfo exclusionConstraintNameDomainProperty = exclusionConstraint.GetDomainClass().NameDomainProperty;
 				properties.Add(EditorUtility.RedirectPropertyDescriptor(
 					exclusionConstraint,
-					new ElementPropertyDescriptor(
-						exclusionConstraint,
-						exclusionConstraintNameDomainProperty,
-						base.GetDomainPropertyAttributes(exclusionConstraintNameDomainProperty)),
+					EditorUtility.ModifyPropertyDescriptorDisplay(
+						new ElementPropertyDescriptor(
+							exclusionConstraint,
+							exclusionConstraintNameDomainProperty,
+							base.GetDomainPropertyAttributes(exclusionConstraintNameDomainProperty)),
+						"ExclusionConstraintName",
+						null,
+						null,
+						null
+					),
 					typeof(MandatoryConstraint)));
 			}
 			return properties;
@@ -95,11 +102,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			FactType factType;
 			if (propertyDescriptor.DomainPropertyInfo.Id == MandatoryConstraint.ModalityDomainPropertyId &&
 				(element = ModelElement).Store != null &&
-				(element.IsImplied ||
-				(element.IsSimple &&
-				(roles = element.RoleCollection).Count == 1 &&
-				((factType = roles[0].FactType).ImpliedByObjectification != null ||
-				factType is SubtypeFact))))
+				(element.ClosesUnaryFactType != null ||
+					(element.IsImplied ||
+						(element.IsSimple &&
+							(roles = element.RoleCollection).Count == 1 &&
+							((factType = roles[0].FactType).ImpliedByObjectification != null ||
+							factType is SubtypeFact)))))
 			{
 				return true;
 			}
@@ -115,9 +123,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				ModelElement.Store != null &&
 				ModelElement.ExclusiveOrExclusionConstraint != null)
 			{
-				return propertyDescriptor.ModelElement is MandatoryConstraint ?
-					ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName :
-					ResourceStrings.ExclusiveOrConstraintExclusionConstraintNameDisplayName;
+				return ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName;
 			}
 			return base.GetPropertyDescriptorDisplayName(propertyDescriptor);
 		}

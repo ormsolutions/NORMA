@@ -512,6 +512,528 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 namespace ORMSolutions.ORMArchitect.ORMAbstraction
 {
 	/// <summary>
+	/// DomainRelationship AbstractionModelHasPositiveUnaryInformationTypeFormat
+	/// Description for
+	/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("e73b7add-537c-49ca-a22a-e37e94458fd1")]
+	public sealed partial class AbstractionModelHasPositiveUnaryInformationTypeFormat : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// AbstractionModelHasPositiveUnaryInformationTypeFormat domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe73b7add, 0x537c, 0x49ca, 0xa2, 0x2a, 0xe3, 0x7e, 0x94, 0x45, 0x8f, 0xd1);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a AbstractionModelHasPositiveUnaryInformationTypeFormat link in the same Partition as the given AbstractionModel
+		/// </summary>
+		/// <param name="source">AbstractionModel to use as the source of the relationship.</param>
+		/// <param name="target">PositiveUnaryInformationTypeFormat to use as the target of the relationship.</param>
+		public AbstractionModelHasPositiveUnaryInformationTypeFormat(AbstractionModel source, PositiveUnaryInformationTypeFormat target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(AbstractionModelHasPositiveUnaryInformationTypeFormat.ModelDomainRoleId, source), new DslModeling::RoleAssignment(AbstractionModelHasPositiveUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public AbstractionModelHasPositiveUnaryInformationTypeFormat(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public AbstractionModelHasPositiveUnaryInformationTypeFormat(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public AbstractionModelHasPositiveUnaryInformationTypeFormat(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public AbstractionModelHasPositiveUnaryInformationTypeFormat(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x2c8bba6b, 0xebfe, 0x410b, 0xba, 0x13, 0xdb, 0xb5, 0x87, 0x20, 0x45, 0xa1);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/Model.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/Model.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PositiveUnaryInformationTypeFormat", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/Model.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("2c8bba6b-ebfe-410b-ba13-dbb5872045a1")]
+		public AbstractionModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a PositiveUnaryInformationTypeFormat
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static AbstractionModel GetModel(PositiveUnaryInformationTypeFormat element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeFormatDomainRoleId) as AbstractionModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(PositiveUnaryInformationTypeFormat element, AbstractionModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, InformationTypeFormatDomainRoleId, newModel);
+		}
+		#endregion
+		#region InformationTypeFormat domain role code
+		
+		/// <summary>
+		/// InformationTypeFormat domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid InformationTypeFormatDomainRoleId = new global::System.Guid(0x3e40f442, 0xbc82, 0x47da, 0x84, 0xcd, 0x04, 0x24, 0xdf, 0x77, 0xcb, 0xd8);
+		
+		/// <summary>
+		/// DomainRole InformationTypeFormat
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.InformationTypeFormat
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/InformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/InformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/InformationTypeFormat.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("3e40f442-bc82-47da-84cd-0424df77cbd8")]
+		public PositiveUnaryInformationTypeFormat InformationTypeFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PositiveUnaryInformationTypeFormat)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeFormatDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, InformationTypeFormatDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PositiveUnaryInformationTypeFormat of a AbstractionModel
+		/// <summary>
+		/// Gets PositiveUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PositiveUnaryInformationTypeFormat GetPositiveUnaryInformationTypeFormat(AbstractionModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelDomainRoleId) as PositiveUnaryInformationTypeFormat;
+		}
+		
+		/// <summary>
+		/// Sets PositiveUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPositiveUnaryInformationTypeFormat(AbstractionModel element, PositiveUnaryInformationTypeFormat newInformationTypeFormat)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelDomainRoleId, newInformationTypeFormat);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the AbstractionModelHasPositiveUnaryInformationTypeFormat link to a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat GetLinkToPositiveUnaryInformationTypeFormat (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel modelInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat>(modelInstance, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.ModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Model not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region InformationTypeFormat link accessor
+		/// <summary>
+		/// Get the AbstractionModelHasPositiveUnaryInformationTypeFormat link to a PositiveUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat GetLinkToModel (global::ORMSolutions.ORMArchitect.ORMAbstraction.PositiveUnaryInformationTypeFormat informationTypeFormatInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat>(informationTypeFormatInstance, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of InformationTypeFormat not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region AbstractionModelHasPositiveUnaryInformationTypeFormat instance accessors
+		
+		/// <summary>
+		/// Get any AbstractionModelHasPositiveUnaryInformationTypeFormat links between a given AbstractionModel and a PositiveUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel source, global::ORMSolutions.ORMArchitect.ORMAbstraction.PositiveUnaryInformationTypeFormat target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat>(source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.ModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat link in links )
+			{
+				if ( target.Equals(link.InformationTypeFormat) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one AbstractionModelHasPositiveUnaryInformationTypeFormat link between a given AbstractionModeland a PositiveUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel source, global::ORMSolutions.ORMArchitect.ORMAbstraction.PositiveUnaryInformationTypeFormat target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat>(source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.ModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat link in links )
+			{
+				if ( target.Equals(link.InformationTypeFormat) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
+{
+	/// <summary>
+	/// DomainRelationship AbstractionModelHasNegativeUnaryInformationTypeFormat
+	/// Description for
+	/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("a3ad6338-ddde-4dfe-8cae-7acd93061219")]
+	public sealed partial class AbstractionModelHasNegativeUnaryInformationTypeFormat : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// AbstractionModelHasNegativeUnaryInformationTypeFormat domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa3ad6338, 0xddde, 0x4dfe, 0x8c, 0xae, 0x7a, 0xcd, 0x93, 0x06, 0x12, 0x19);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a AbstractionModelHasNegativeUnaryInformationTypeFormat link in the same Partition as the given AbstractionModel
+		/// </summary>
+		/// <param name="source">AbstractionModel to use as the source of the relationship.</param>
+		/// <param name="target">NegativeUnaryInformationTypeFormat to use as the target of the relationship.</param>
+		public AbstractionModelHasNegativeUnaryInformationTypeFormat(AbstractionModel source, NegativeUnaryInformationTypeFormat target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(AbstractionModelHasNegativeUnaryInformationTypeFormat.ModelDomainRoleId, source), new DslModeling::RoleAssignment(AbstractionModelHasNegativeUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public AbstractionModelHasNegativeUnaryInformationTypeFormat(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public AbstractionModelHasNegativeUnaryInformationTypeFormat(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public AbstractionModelHasNegativeUnaryInformationTypeFormat(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public AbstractionModelHasNegativeUnaryInformationTypeFormat(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x5dfbc582, 0xc72f, 0x4a41, 0x98, 0x2f, 0xd6, 0x89, 0x8f, 0x7b, 0x61, 0xd8);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/Model.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/Model.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NegativeUnaryInformationTypeFormat", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/Model.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("5dfbc582-c72f-4a41-982f-d6898f7b61d8")]
+		public AbstractionModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (AbstractionModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a NegativeUnaryInformationTypeFormat
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static AbstractionModel GetModel(NegativeUnaryInformationTypeFormat element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeFormatDomainRoleId) as AbstractionModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(NegativeUnaryInformationTypeFormat element, AbstractionModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, InformationTypeFormatDomainRoleId, newModel);
+		}
+		#endregion
+		#region InformationTypeFormat domain role code
+		
+		/// <summary>
+		/// InformationTypeFormat domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid InformationTypeFormatDomainRoleId = new global::System.Guid(0xf81f8223, 0x72b4, 0x4917, 0x9b, 0x54, 0x0e, 0xd8, 0xa5, 0x93, 0x35, 0xec);
+		
+		/// <summary>
+		/// DomainRole InformationTypeFormat
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.InformationTypeFormat
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/InformationTypeFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/InformationTypeFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/InformationTypeFormat.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("f81f8223-72b4-4917-9b54-0ed8a59335ec")]
+		public NegativeUnaryInformationTypeFormat InformationTypeFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (NegativeUnaryInformationTypeFormat)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeFormatDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, InformationTypeFormatDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access NegativeUnaryInformationTypeFormat of a AbstractionModel
+		/// <summary>
+		/// Gets NegativeUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static NegativeUnaryInformationTypeFormat GetNegativeUnaryInformationTypeFormat(AbstractionModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelDomainRoleId) as NegativeUnaryInformationTypeFormat;
+		}
+		
+		/// <summary>
+		/// Sets NegativeUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNegativeUnaryInformationTypeFormat(AbstractionModel element, NegativeUnaryInformationTypeFormat newInformationTypeFormat)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelDomainRoleId, newInformationTypeFormat);
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the AbstractionModelHasNegativeUnaryInformationTypeFormat link to a AbstractionModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat GetLinkToNegativeUnaryInformationTypeFormat (global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel modelInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat>(modelInstance, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.ModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Model not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region InformationTypeFormat link accessor
+		/// <summary>
+		/// Get the AbstractionModelHasNegativeUnaryInformationTypeFormat link to a NegativeUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat GetLinkToModel (global::ORMSolutions.ORMArchitect.ORMAbstraction.NegativeUnaryInformationTypeFormat informationTypeFormatInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat>(informationTypeFormatInstance, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of InformationTypeFormat not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region AbstractionModelHasNegativeUnaryInformationTypeFormat instance accessors
+		
+		/// <summary>
+		/// Get any AbstractionModelHasNegativeUnaryInformationTypeFormat links between a given AbstractionModel and a NegativeUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel source, global::ORMSolutions.ORMArchitect.ORMAbstraction.NegativeUnaryInformationTypeFormat target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat>(source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.ModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat link in links )
+			{
+				if ( target.Equals(link.InformationTypeFormat) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one AbstractionModelHasNegativeUnaryInformationTypeFormat link between a given AbstractionModeland a NegativeUnaryInformationTypeFormat.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel source, global::ORMSolutions.ORMArchitect.ORMAbstraction.NegativeUnaryInformationTypeFormat target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat>(source, global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.ModelDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat link in links )
+			{
+				if ( target.Equals(link.InformationTypeFormat) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
+{
+	/// <summary>
 	/// DomainRelationship ConceptTypeHasUniqueness
 	/// Description for
 	/// ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness
@@ -1027,6 +1549,70 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 		
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
+		#region NegativeInverseChild opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NegativeInverseChild.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChild
+		/// </summary>
+		public ConceptTypeChild NegativeInverseChild
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChildDomainRoleId) as ConceptTypeChild;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChildDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChildDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChildDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region PositiveInverseChild opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PositiveInverseChild.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChild
+		/// </summary>
+		public ConceptTypeChild PositiveInverseChild
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChildDomainRoleId) as ConceptTypeChild;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChildDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChildDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChildDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#endregion
 		#region Parent link accessor
 		/// <summary>
@@ -1070,6 +1656,354 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			}
 			return outLinks.AsReadOnly();
 		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.ORMAbstraction
+{
+	/// <summary>
+	/// DomainRelationship InverseConceptTypeChild
+	/// Description for ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("5e2de8e5-c5b7-46a5-8582-7ce031d1341d")]
+	public sealed partial class InverseConceptTypeChild : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// InverseConceptTypeChild domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5e2de8e5, 0xc5b7, 0x46a5, 0x85, 0x82, 0x7c, 0xe0, 0x31, 0xd1, 0x34, 0x1d);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a InverseConceptTypeChild link in the same Partition as the given ConceptTypeChild
+		/// </summary>
+		/// <param name="source">ConceptTypeChild to use as the source of the relationship.</param>
+		/// <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
+		public InverseConceptTypeChild(ConceptTypeChild source, ConceptTypeChild target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(InverseConceptTypeChild.PositiveChildDomainRoleId, source), new DslModeling::RoleAssignment(InverseConceptTypeChild.NegativeChildDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public InverseConceptTypeChild(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public InverseConceptTypeChild(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public InverseConceptTypeChild(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public InverseConceptTypeChild(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PositiveChild domain role code
+		
+		/// <summary>
+		/// PositiveChild domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PositiveChildDomainRoleId = new global::System.Guid(0x918008ac, 0x1307, 0x446f, 0xaa, 0x29, 0x41, 0xc3, 0xbd, 0xda, 0x20, 0x90);
+		
+		/// <summary>
+		/// DomainRole PositiveChild
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChild
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PositiveChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PositiveChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NegativeInverseChild", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PositiveChild.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("918008ac-1307-446f-aa29-41c3bdda2090")]
+		public ConceptTypeChild PositiveChild
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, PositiveChildDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PositiveChildDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PositiveInverseChild of a ConceptTypeChild
+		/// <summary>
+		/// Gets PositiveInverseChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ConceptTypeChild GetPositiveInverseChild(ConceptTypeChild element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NegativeChildDomainRoleId) as ConceptTypeChild;
+		}
+		
+		/// <summary>
+		/// Sets PositiveInverseChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPositiveInverseChild(ConceptTypeChild element, ConceptTypeChild newPositiveChild)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NegativeChildDomainRoleId, newPositiveChild);
+		}
+		#endregion
+		#region NegativeChild domain role code
+		
+		/// <summary>
+		/// NegativeChild domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NegativeChildDomainRoleId = new global::System.Guid(0x13b23b26, 0x78cd, 0x4121, 0xa2, 0xec, 0x5a, 0xf2, 0x5c, 0xe8, 0x01, 0x03);
+		
+		/// <summary>
+		/// DomainRole NegativeChild
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChild
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/NegativeChild.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/NegativeChild.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PositiveInverseChild", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/NegativeChild.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("13b23b26-78cd-4121-a2ec-5af25ce80103")]
+		public ConceptTypeChild NegativeChild
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, NegativeChildDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NegativeChildDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access NegativeInverseChild of a ConceptTypeChild
+		/// <summary>
+		/// Gets NegativeInverseChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ConceptTypeChild GetNegativeInverseChild(ConceptTypeChild element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PositiveChildDomainRoleId) as ConceptTypeChild;
+		}
+		
+		/// <summary>
+		/// Sets NegativeInverseChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNegativeInverseChild(ConceptTypeChild element, ConceptTypeChild newNegativeChild)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PositiveChildDomainRoleId, newNegativeChild);
+		}
+		#endregion
+		#region PairIsMandatory domain property code
+		
+		/// <summary>
+		/// PairIsMandatory domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PairIsMandatoryDomainPropertyId = new global::System.Guid(0x64897a7f, 0x49e6, 0x40c7, 0x8f, 0xa0, 0xa3, 0xdd, 0x18, 0xab, 0x13, 0x53);
+		
+		/// <summary>
+		/// Storage for PairIsMandatory
+		/// </summary>
+		private global::System.Boolean pairIsMandatoryPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of PairIsMandatory domain property.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PairIsMandatory
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PairIsMandatory.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PairIsMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
+		[DslModeling::DomainObjectId("64897a7f-49e6-40c7-8fa0-a3dd18ab1353")]
+		public global::System.Boolean PairIsMandatory
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return pairIsMandatoryPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PairIsMandatoryPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the InverseConceptTypeChild.PairIsMandatory domain property.
+		/// </summary>
+		internal sealed partial class PairIsMandatoryPropertyHandler : DslModeling::DomainPropertyValueHandler<InverseConceptTypeChild, global::System.Boolean>
+		{
+			private PairIsMandatoryPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the InverseConceptTypeChild.PairIsMandatory domain property value handler.
+			/// </summary>
+			public static readonly PairIsMandatoryPropertyHandler Instance = new PairIsMandatoryPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the InverseConceptTypeChild.PairIsMandatory domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PairIsMandatoryDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(InverseConceptTypeChild element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.pairIsMandatoryPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(InverseConceptTypeChild element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.pairIsMandatoryPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PositiveChild link accessor
+		/// <summary>
+		/// Get the InverseConceptTypeChild link to a ConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild GetLinkToNegativeInverseChild (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild positiveChildInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild>(positiveChildInstance, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChildDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PositiveChild not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region NegativeChild link accessor
+		/// <summary>
+		/// Get the InverseConceptTypeChild link to a ConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild GetLinkToPositiveInverseChild (global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild negativeChildInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild>(negativeChildInstance, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChildDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of NegativeChild not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region InverseConceptTypeChild instance accessors
+		
+		/// <summary>
+		/// Get any InverseConceptTypeChild links between a given ConceptTypeChild and a ConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild>(source, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChildDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild link in links )
+			{
+				if ( target.Equals(link.NegativeChild) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one InverseConceptTypeChild link between a given ConceptTypeChildand a ConceptTypeChild.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild GetLink( global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild source, global::ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild>(source, global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChildDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild link in links )
+			{
+				if ( target.Equals(link.NegativeChild) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
 		#endregion
 	}
 }

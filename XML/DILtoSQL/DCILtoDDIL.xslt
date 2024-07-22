@@ -230,6 +230,9 @@
 						<xsl:copy-of select="dcl:generationCode/child::*"/>
 					</ddl:generationClause>
 				</xsl:when>
+				<xsl:when test="dil:defaultClause">
+					<xsl:copy-of select="."/>
+				</xsl:when>
 			</xsl:choose>
 			<xsl:if test="@isNullable='false'">
 				<ddl:columnConstraintDefinition>

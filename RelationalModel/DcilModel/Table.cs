@@ -29,7 +29,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		}
 		private void SetEditNameValue(string value)
 		{
-			if (Store.TransactionActive)
+			if (!Store.InUndoRedoOrRollback)
 			{
 				if (string.IsNullOrEmpty(value))
 				{

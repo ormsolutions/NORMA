@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
+using System.IO;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
@@ -33,6 +34,49 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	partial class RolePlayerLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
+		#region Member Variables
+		/// <summary>
+		/// Pen to draw a role box outline for a link fact type
+		/// </summary>
+		protected static readonly StyleSetResourceId UnarySignResource = new StyleSetResourceId("ORMArchitect", "RolePlayerLinkUnarySignResource");
+		#endregion // Member Variables
+		#region MandatoryDotStyle enum
+		/// <summary>
+		/// Specify the kind of mandatory dot to draw. This breaks down the
+		/// graphics, not the underlying pen and brush styles.
+		/// </summary>
+		protected enum MandatoryDotStyle
+		{
+			/// <summary>
+			/// No mandatory dot is drawn
+			/// </summary>
+			None,
+			/// <summary>
+			/// Draw a simple mandatory dot
+			/// </summary>
+			SimpleMandatory,
+			/// <summary>
+			/// Draw a dot indicate the positive fact type of a negatable unary pair.
+			/// The mandatory state is incorporated via the style set.
+			/// </summary>
+			PositiveUnary,
+			/// <summary>
+			/// Draw a dot indicate the positive fact type of a negatable unary pair.
+			/// Add dots to distinguish deontic form.
+			/// </summary>
+			DeonticPositiveUnary,
+			/// <summary>
+			/// Draw a dot indicate the negative fact type of a negatable unary pair.
+			/// The mandatory state is incorporated via the style set.
+			/// </summary>
+			NegativeUnary,
+			/// <summary>
+			/// Draw a dot indicate the negative fact type of a negatable unary pair.
+			/// Add dots to distinguish deontic form.
+			/// </summary>
+			DeonticNegativeUnary,
+		}
+		#endregion // MandatoryDotStyle enum
 		#region MandatoryDotDecorator class
 		/// <summary>
 		/// The link decorator used to draw the mandatory
@@ -44,7 +88,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Singleton instance of this decorator
 			/// </summary>
 			public static readonly LinkDecorator Decorator = new MandatoryDotDecorator();
-			private MandatoryDotDecorator()
+			/// <summary>
+			/// Create a mandatory dot decorator
+			/// </summary>
+			protected MandatoryDotDecorator()
 			{
 				FillDecorator = true;
 			}
@@ -99,6 +146,200 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			#endregion // ILinkDecoratorSettings Implementation
 		}
 		#endregion // MandatoryDotDecorator class
+		#region UnarySignDecorator class
+		/// <summary>
+		/// Base class for drawing positive and negative unary signs
+		/// </summary>
+		protected abstract class UnarySignDecorator : MandatoryDotDecorator, ILinkDecoratorRenderingState
+		{
+			private float myRenderingRotation;
+			/// <summary>
+			/// Create the default decorator instance
+			/// </summary>
+			protected UnarySignDecorator() { }
+
+			/// <summary>
+			/// Add the unary positive or minus sign and deontic pattern over the filled background.
+			/// </summary>
+			public override void DoPaintShape(RectangleD bounds, IGeometryHost shape, DiagramPaintEventArgs e)
+			{
+				// This +/- signs always need to be square with the page, not the link line. It
+				// doesn't really matter where the solid background is rendered, so we rotate for
+				// the full draw process.
+
+				// Note that simply telling the base to not rotate is not sufficient here because
+				// the base rotation occurs at the center right edge of the rendering box whereas
+				// this rotation is needed in the true center of the bounding box, so this is not
+				// simply an inverse of the base rotation.
+				Graphics g = e.Graphics;
+				Matrix rotationMatrix = g.Transform;
+				Matrix restoreMatrix = rotationMatrix.Clone();
+				rotationMatrix.RotateAt(-myRenderingRotation, PointD.ToPointF(bounds.Center));
+				g.Transform = rotationMatrix;
+				base.DoPaintShape(bounds, shape, e);
+
+				Pen pen;
+				StyleSetResourceId penId = RolePlayerLink.UnarySignResource;
+				if (null != (pen = shape.GeometryStyleSet.GetPen(penId)))
+				{
+					IDynamicColorGeometryHost dynamicColors;
+					Color restoreColor;
+					if (null == (dynamicColors = shape as IDynamicColorGeometryHost) ||
+						(restoreColor = dynamicColors.UpdateDynamicColor(penId, pen)).IsEmpty)
+					{
+						restoreColor = shape.UpdateGeometryLuminosity(e.View, pen);
+					}
+					else
+					{
+						shape.UpdateGeometryLuminosity(e.View, pen);
+					}
+					this.DrawSign(g, bounds, pen);
+					pen.Color = restoreColor;
+
+					// Dots are draw with the default pen background color. Draw after
+					// the dynamic color is restored.
+					if (this.ShouldDrawDeonticDots)
+					{
+						this.DrawDeonticDots(g, bounds, pen);
+					}
+				}
+
+				// Put our graphics object back to where it was.
+				g.Transform = restoreMatrix;
+			}
+
+			float ILinkDecoratorRenderingState.RotationRadians
+			{
+				set
+				{
+					myRenderingRotation = value;
+				}
+			}
+
+			/// <summary>
+			/// Draw the unary sign
+			/// </summary>
+			/// <param name="g">The graphics object.</param>
+			/// <param name="bounds">Shape bounds</param>
+			/// <param name="pen">The pen to draw with.</param>
+			protected abstract void DrawSign(Graphics g, RectangleD bounds, Pen pen);
+
+			/// <summary>
+			/// Should the deontic dots be draw for this decorator
+			/// </summary>
+			protected virtual bool ShouldDrawDeonticDots
+			{
+				get
+				{
+					return false;
+				}
+			}
+
+			/// <summary>
+			/// Draw the deontic dots around the edge of the circle to form a dash pattern
+			/// </summary>
+			protected virtual void DrawDeonticDots(Graphics g, RectangleD bounds, Pen pen)
+			{
+				PointD center = bounds.Center;
+				double centerX = center.X;
+				double centerY = center.Y;
+				double root2 = Math.Sqrt(2);
+				double halfWidth = bounds.Width / 2;
+				double dashOffsetOuter = (halfWidth + .2d / 72d) / root2;
+				double dashOffsetInner = (halfWidth - .6d / 72d) / root2;
+
+				g.DrawLine(pen, (float)(centerX + dashOffsetOuter), (float)(centerY + dashOffsetOuter), (float)(centerX + dashOffsetInner), (float)(centerY + dashOffsetInner));
+				g.DrawLine(pen, (float)(centerX + dashOffsetOuter), (float)(centerY - dashOffsetOuter), (float)(centerX + dashOffsetInner), (float)(centerY - dashOffsetInner));
+				g.DrawLine(pen, (float)(centerX - dashOffsetOuter), (float)(centerY + dashOffsetOuter), (float)(centerX - dashOffsetInner), (float)(centerY + dashOffsetInner));
+				g.DrawLine(pen, (float)(centerX - dashOffsetOuter), (float)(centerY - dashOffsetOuter), (float)(centerX - dashOffsetInner), (float)(centerY - dashOffsetInner));
+			}
+		}
+		#endregion // UnarySignDecorator class
+		#region PositiveUnaryDecorator class
+		/// <summary>
+		/// A decorator displaying the sign and mandatory state for the
+		/// positive fact type of a negatable unary pair.
+		/// </summary>
+		protected class PositiveUnaryDecorator : UnarySignDecorator
+		{
+			/// <summary>
+			/// Singleton instance of this decorator
+			/// </summary>
+			public static new readonly LinkDecorator Decorator = new PositiveUnaryDecorator();
+
+			/// <summary>
+			/// Single instance of this decorator for a deontic instance
+			/// </summary>
+			public static readonly LinkDecorator DeonticDecorator = new DeonticPositiveUnaryDecorator();
+
+			private PositiveUnaryDecorator() { }
+			/// <summary>
+			/// Draw the plus sign in the provided graphics object.
+			/// </summary>
+			protected override void DrawSign(Graphics g, RectangleD bounds, Pen pen)
+			{
+				double signWidth = bounds.Width / 2 - 1d / 72d;
+
+				PointD center = bounds.Center;
+				double centerX = center.X;
+				double centerY = center.Y;
+
+				g.DrawLine(pen, (float)(centerX - signWidth), (float)centerY, (float)(centerX + signWidth), (float)centerY);
+				g.DrawLine(pen, (float)centerX, (float)(centerY - signWidth), (float)centerX, (float)(centerY + signWidth));
+			}
+
+			private class DeonticPositiveUnaryDecorator : PositiveUnaryDecorator
+			{
+				protected override bool ShouldDrawDeonticDots
+				{
+					get
+					{
+						return true;
+					}
+				}
+			}
+		}
+		#endregion // PositiveUnaryDecorator class
+		#region NegativeUnaryDecorator class
+		/// <summary>
+		/// A decorator displaying the sign and mandatory state for the
+		/// positive fact type of a negatable unary pair.
+		/// </summary>
+		protected class NegativeUnaryDecorator : UnarySignDecorator
+		{
+			/// <summary>
+			/// Singleton instance of this decorator
+			/// </summary>
+			public static new readonly LinkDecorator Decorator = new NegativeUnaryDecorator();
+
+			/// <summary>
+			/// Single instance of this decorator for a deontic instance
+			/// </summary>
+			public static readonly LinkDecorator DeonticDecorator = new DeonticNegativeUnaryDecorator();
+
+			private NegativeUnaryDecorator() { }
+			/// <summary>
+			/// Draw the minus sign in the provided graphics object.
+			/// </summary>
+			protected override void DrawSign(Graphics g, RectangleD bounds, Pen pen)
+			{
+				PointD center = bounds.Center;
+				double width = bounds.Width / 2 - 1d / 72d; // Take off 1 point
+				g.DrawLine(pen, (float)(center.X - width), (float)center.Y, (float)(center.X + width), (float)center.Y);
+			}
+
+			private class DeonticNegativeUnaryDecorator : NegativeUnaryDecorator
+			{
+				protected override bool ShouldDrawDeonticDots
+				{
+					get
+					{
+						return true;
+					}
+				}
+			}
+		}
+		#endregion // NegativeUnaryDecorator class
 		#region Customize appearance
 		/// <summary>
 		/// Draw the mandatory dot on the role box end, depending
@@ -108,11 +349,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				if ((OptionsPage.CurrentMandatoryDotPlacement != MandatoryDotPlacement.ObjectShapeEnd ||
-					OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay != EntityRelationshipBinaryMultiplicityDisplay.Off) &&
-					DrawMandatoryDot)
+				if (OptionsPage.CurrentMandatoryDotPlacement != MandatoryDotPlacement.ObjectShapeEnd ||
+					OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay != EntityRelationshipBinaryMultiplicityDisplay.Off)
 				{
-					return MandatoryDotDecorator.Decorator;
+					switch (DrawMandatoryDot)
+					{
+						case MandatoryDotStyle.SimpleMandatory:
+							return MandatoryDotDecorator.Decorator;
+						case MandatoryDotStyle.PositiveUnary:
+							return PositiveUnaryDecorator.Decorator;
+						case MandatoryDotStyle.DeonticPositiveUnary:
+							return PositiveUnaryDecorator.DeonticDecorator;
+						case MandatoryDotStyle.NegativeUnary:
+							return NegativeUnaryDecorator.Decorator;
+						case MandatoryDotStyle.DeonticNegativeUnary:
+							return NegativeUnaryDecorator.DeonticDecorator;
+					}
 				}
 				return base.DecoratorFrom;
 			}
@@ -129,10 +381,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			get
 			{
 				if (OptionsPage.CurrentMandatoryDotPlacement != MandatoryDotPlacement.RoleBoxEnd &&
-					OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay == EntityRelationshipBinaryMultiplicityDisplay.Off &&
-					DrawMandatoryDot)
+					OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay == EntityRelationshipBinaryMultiplicityDisplay.Off)
 				{
-					return MandatoryDotDecorator.Decorator;
+					switch (DrawMandatoryDot)
+					{
+						case MandatoryDotStyle.SimpleMandatory:
+							return MandatoryDotDecorator.Decorator;
+						case MandatoryDotStyle.PositiveUnary:
+							return PositiveUnaryDecorator.Decorator;
+						case MandatoryDotStyle.DeonticPositiveUnary:
+							return PositiveUnaryDecorator.DeonticDecorator;
+						case MandatoryDotStyle.NegativeUnary:
+							return NegativeUnaryDecorator.Decorator;
+						case MandatoryDotStyle.DeonticNegativeUnary:
+							return NegativeUnaryDecorator.DeonticDecorator;
+					}
 				}
 				return base.DecoratorTo;
 			}
@@ -143,21 +406,53 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Helper function to determine if we should draw a mandatory dot
 		/// </summary>
-		protected bool DrawMandatoryDot
+		protected MandatoryDotStyle DrawMandatoryDot
 		{
 			get
 			{
-				bool retVal = false;
+				MandatoryDotStyle retVal = MandatoryDotStyle.None;
 				ObjectTypePlaysRole link;
 				Role role;
 				FactType factType;
 				if ((null != (link = AssociatedRolePlayerLink)) &&
-					(null != (role = link.PlayedRole)) &&
-					role.IsMandatory &&
-					// Do not draw the dot on a Binarized Unary
-					!(null != (factType = role.FactType) && factType.UnaryRole != null))
+					(null != (role = link.PlayedRole)))
 				{
-					retVal = true;
+					if (role.IsMandatory)
+					{
+						retVal = MandatoryDotStyle.SimpleMandatory;
+					}
+					else if (null != (factType = role.FactType))
+					{
+						switch (factType.UnaryPattern)
+						{
+							case UnaryValuePattern.NotUnary:
+							case UnaryValuePattern.OptionalWithoutNegation:
+							case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+								// Skip these, all others have a form of +/- sign
+								break;
+							case UnaryValuePattern.Negation:
+								switch (factType.PositiveUnaryFactType.UnaryPattern)
+								{
+									case UnaryValuePattern.DeonticRequiredWithNegation:
+									case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+									case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+										retVal = MandatoryDotStyle.DeonticNegativeUnary;
+										break;
+									default:
+										retVal = MandatoryDotStyle.NegativeUnary;
+										break;
+								}
+								break;
+							case UnaryValuePattern.DeonticRequiredWithNegation:
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+								retVal = MandatoryDotStyle.DeonticPositiveUnary;
+								break;
+							default:
+								retVal = MandatoryDotStyle.PositiveUnary;
+								break;
+						}
+					}
 				}
 				return retVal;
 			}
@@ -171,20 +466,48 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			get
 			{
 				Role role;
+				FactType factType;
 				ObjectTypePlaysRole link;
 				if ((null != (link = AssociatedRolePlayerLink)) &&
 					(null != (role = link.PlayedRole)) &&
-					role.IsMandatory &&
-					role.MandatoryConstraintModality == ConstraintModality.Deontic)
+					(null != (factType = role.FactType)))
 				{
-					// Note that we don't do anything with fonts with this style set, so the
-					// static one is sufficient. Instance style sets also go through a font initiation
-					// step inside the framework
-					return DeonticClassStyleSet;
+					UnaryValuePattern unaryPattern = factType.UnaryPattern;
+					if (unaryPattern == UnaryValuePattern.NotUnary)
+					{
+						if (role.IsMandatory && role.MandatoryConstraintModality == ConstraintModality.Deontic)
+						{
+							return DeonticStyleSet;
+						}
+					}
+					else
+					{
+						if (unaryPattern == UnaryValuePattern.Negation)
+						{
+							unaryPattern = factType.PositiveUnaryFactType.UnaryPattern;
+						}
+
+						switch (unaryPattern)
+						{
+							case UnaryValuePattern.OptionalWithNegation:
+							case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+							case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+								return OptionalUnaryStyleSet;
+							case UnaryValuePattern.RequiredWithNegation:
+							case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+							case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+								return MandatoryUnaryStyleSet;
+							case UnaryValuePattern.DeonticRequiredWithNegation:
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+								return DeonticUnaryStyleSet;
+						}
+					}
 				}
 				return base.StyleSet;
 			}
 		}
+
 		/// <summary>
 		/// Pen to draw dotted line on optional ER roles
 		/// </summary>
@@ -197,12 +520,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			base.InitializeResources(classStyleSet);
+
 			PenSettings penSettings = new PenSettings();
 			penSettings.Width = 1.2F / 72.0F; // 1.2 Point. 0 Means 1 pixel, but should only be used for non-printed items
-			penSettings.Alignment = PenAlignment.Center;
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
 			penSettings.DashStyle = DashStyle.Dash;
 			classStyleSet.AddPen(BarkerEROptionalPen, DiagramPens.ConnectionLine, penSettings);
+
+			SolidBrush backgroundBrush = classStyleSet.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush;
+			penSettings.Color = backgroundBrush != null ? backgroundBrush.Color : Color.White;
+			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.DashStyle = DashStyle.Solid;
+			penSettings.StartCap = LineCap.Flat;
+			penSettings.EndCap = LineCap.Flat;
+			classStyleSet.AddPen(UnarySignResource, DiagramPens.ShapeOutline, penSettings);
+
 			IORMFontAndColorService fontsAndColors = (Store as IORMToolServices).FontAndColorService;
 			Color constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.Constraint);
 			penSettings = new PenSettings();
@@ -212,17 +544,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			brushSettings.Color = constraintForeColor;
 			classStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
 		}
-		/// <summary>
-		/// A style set used for drawing deontic mandatory decorators
-		/// </summary>
 		private static StyleSet myDeonticClassStyleSet;
 		/// <summary>
-		/// Create an alternate style set for drawing deontic mandatory constraint decorators
+		/// The style set for drawing deontic mandatory constraint decorators
 		/// </summary>
-		protected virtual StyleSet DeonticClassStyleSet
+		protected virtual StyleSet DeonticStyleSet
 		{
 			get
 			{
+				// Note that we don't do anything with fonts with these style sets, so the
+				// static sets are sufficient. Instance style sets also go through a font initiation
+				// step inside the framework
 				StyleSet retVal = myDeonticClassStyleSet;
 				if (retVal == null)
 				{
@@ -237,6 +569,69 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					brushSettings.Color = (backgroundBrush == null) ? constraintForeColor : backgroundBrush.Color;
 					retVal.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
 					myDeonticClassStyleSet = retVal;
+				}
+				return retVal;
+			}
+		}
+		private static StyleSet myOptionalUnaryClassStyleSet;
+		/// <summary>
+		/// The style set for drawing deontic mandatory constraint decorators
+		/// </summary>
+		protected virtual StyleSet OptionalUnaryStyleSet
+		{
+			get
+			{
+				StyleSet retVal = myOptionalUnaryClassStyleSet;
+				if (retVal == null)
+				{
+					retVal = new StyleSet(ClassStyleSet);
+					PenSettings penSettings = new PenSettings();
+					penSettings.Color = SystemColors.WindowText;
+					retVal.OverridePen(RolePlayerLink.UnarySignResource, penSettings);
+
+					penSettings.Width = 1.0F / 72.0F; // 1.0 Point. 0 Means 1 pixel, but should only be used for non-printed items
+					penSettings.Color = Color.LightGray;
+					retVal.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
+
+					SolidBrush backgroundBrush = retVal.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush;
+					BrushSettings brushSettings = new BrushSettings();
+					brushSettings.Color = backgroundBrush != null ? backgroundBrush.Color : Color.White;
+					retVal.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
+					myOptionalUnaryClassStyleSet = retVal;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// The style set for drawing deontic mandatory constraint decorators
+		/// </summary>
+		protected virtual StyleSet MandatoryUnaryStyleSet
+		{
+			get
+			{
+				// The sign pen is in the base set, no customizations are needed.
+				return base.StyleSet;
+			}
+		}
+		private static StyleSet myDeonticUnaryClassStyleSet;
+		/// <summary>
+		/// Create an alternate style set for drawing deontic mandatory constraint decorators
+		/// </summary>
+		protected virtual StyleSet DeonticUnaryStyleSet
+		{
+			get
+			{
+				StyleSet retVal = myDeonticUnaryClassStyleSet;
+				if (retVal == null)
+				{
+					retVal = new StyleSet(DeonticStyleSet);
+
+					IORMFontAndColorService fontsAndColors = (Store as IORMToolServices).FontAndColorService;
+					BrushSettings brushSettings = new BrushSettings();
+					brushSettings.Color = fontsAndColors.GetForeColor(ORMDesignerColor.DeonticConstraint);
+					retVal.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
+
+					myDeonticUnaryClassStyleSet = retVal;
 				}
 				return retVal;
 			}
@@ -262,7 +657,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectTypePlaysRole link;
 			Store store;
 			bool forLink = penId == DiagramPens.ConnectionLine;
-			if ((forLink || (penId == DiagramPens.ConnectionLineDecorator)) &&
+			bool forBorder = !forLink && penId == DiagramPens.ConnectionLineDecorator;
+			if ((forLink || forBorder || (penId == RolePlayerLink.UnarySignResource)) &&
 				null != (store = Utility.ValidateStore(Store)) &&
 				null != (link = ModelElement as ObjectTypePlaysRole))
 			{
@@ -283,26 +679,93 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 					}
 				}
-				else
+				else if (forBorder)
 				{
 					IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>[] providers;
 					Role playedRole;
-					MandatoryConstraint mandatory;
 					if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>(true)) &&
-						null != (playedRole = link.PlayedRole) &&
-						null != (mandatory = playedRole.SimpleMandatoryConstraint))
+						null != (playedRole = link.PlayedRole))
 					{
-						ORMDiagramDynamicColor requestColor = mandatory.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
-						for (int i = 0; i < providers.Length; ++i)
+						MandatoryConstraint mandatory =  null;
+						UnaryValuePattern unaryPattern;
+						FactType factType;
+						ORMDiagramDynamicColor requestColor = ORMDiagramDynamicColor.Constraint;
+						if (UnaryValuePattern.NotUnary == (unaryPattern = (factType = playedRole.FactType).UnaryPattern))
 						{
-							Color alternateColor = providers[i].GetDynamicColor(requestColor, this, mandatory);
-							if (alternateColor != Color.Empty)
+							mandatory = playedRole.SimpleMandatoryConstraint;
+							if (mandatory.Modality == ConstraintModality.Deontic)
 							{
-								retVal = pen.Color;
-								pen.Color = alternateColor;
-								break;
+								requestColor = ORMDiagramDynamicColor.DeonticConstraint;
 							}
 						}
+						else
+						{
+							if (unaryPattern == UnaryValuePattern.Negation)
+							{
+								factType = factType.PositiveUnaryFactType;
+								unaryPattern = factType.UnaryPattern;
+							}
+
+							switch (ReduceUnaryPattern(unaryPattern))
+							{
+								case UnaryValuePattern.RequiredWithNegation:
+									mandatory = factType.NegationMandatoryConstraint;
+									break;
+								case UnaryValuePattern.DeonticRequiredWithNegation:
+									mandatory = factType.NegationMandatoryConstraint;
+									requestColor = ORMDiagramDynamicColor.DeonticConstraint;
+									break;
+							}
+						}
+
+						if (mandatory != null)
+						{
+							for (int i = 0; i < providers.Length; ++i)
+							{
+								Color alternateColor = providers[i].GetDynamicColor(requestColor, this, mandatory);
+								if (alternateColor != Color.Empty)
+								{
+									retVal = pen.Color;
+									pen.Color = alternateColor;
+									break;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					UnaryValuePattern unaryPattern;
+					FactType factType = link.PlayedRole.FactType;
+					IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
+					if (UnaryValuePattern.Negation == (unaryPattern = factType.UnaryPattern))
+					{
+						unaryPattern = factType.PositiveUnaryFactType.UnaryPattern;
+					}
+
+					switch (unaryPattern)
+					{
+						case UnaryValuePattern.OptionalWithNegation:
+						case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+						case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+							if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>(true)))
+							{
+								FactTypeShape fromShape = this.FromShape as FactTypeShape;
+								if (fromShape != null)
+								{
+									for (int i = 0; i < providers.Length; ++i)
+									{
+										Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.ForegroundGraphics, fromShape, factType);
+										if (alternateColor != Color.Empty)
+										{
+											retVal = pen.Color;
+											pen.Color = alternateColor;
+											break;
+										}
+									}
+								}
+							}
+							break;
 					}
 				}
 			}
@@ -322,25 +785,60 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>[] providers;
 			ObjectTypePlaysRole link;
 			Role playedRole;
-			MandatoryConstraint mandatory;
 			Store store;
 			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
 				null != (store = Utility.ValidateStore(Store)) &&
 				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>(true)) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (link = ModelElement as ObjectTypePlaysRole) &&
-				null != (playedRole = link.PlayedRole) &&
-				null != (mandatory = playedRole.SimpleMandatoryConstraint) &&
-				mandatory.Modality != ConstraintModality.Deontic) // The brush draws the middle, which we don't change
+				null != (playedRole = link.PlayedRole))
 			{
-				for (int i = 0; i < providers.Length; ++i)
+				MandatoryConstraint mandatory = null;
+				UnaryValuePattern unaryPattern;
+				FactType factType;
+				ORMDiagramDynamicColor dynamicColor = ORMDiagramDynamicColor.Constraint;
+				if (UnaryValuePattern.NotUnary == (unaryPattern = (factType = playedRole.FactType).UnaryPattern))
 				{
-					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, mandatory);
-					if (alternateColor != Color.Empty)
+					if (null != (mandatory = playedRole.SimpleMandatoryConstraint) && mandatory.Modality == ConstraintModality.Deontic) // The brush draws the middle without the background color, which we don't change
 					{
-						retVal = solidBrush.Color;
-						solidBrush.Color = alternateColor;
-						break;
+						mandatory = null;
+					}
+					else if (mandatory.Modality == ConstraintModality.Deontic)
+					{
+						dynamicColor = ORMDiagramDynamicColor.DeonticConstraint;
+					}
+				}
+				else
+				{
+					if (unaryPattern == UnaryValuePattern.Negation)
+					{
+						factType = factType.PositiveUnaryFactType;
+						unaryPattern = factType.UnaryPattern;
+					}
+
+					switch (ReduceUnaryPattern(unaryPattern))
+					{
+						case UnaryValuePattern.RequiredWithNegation:
+							mandatory = factType.NegationMandatoryConstraint;
+							break;
+						case UnaryValuePattern.DeonticRequiredWithNegation:
+							mandatory = factType.NegationMandatoryConstraint;
+							dynamicColor = ORMDiagramDynamicColor.DeonticConstraint;
+							break;
+					}
+				}
+
+				if (mandatory != null)
+				{
+					for (int i = 0; i < providers.Length; ++i)
+					{
+						Color alternateColor = providers[i].GetDynamicColor(dynamicColor, this, mandatory);
+						if (alternateColor != Color.Empty)
+						{
+							retVal = solidBrush.Color;
+							solidBrush.Color = alternateColor;
+							break;
+						}
 					}
 				}
 			}
@@ -829,6 +1327,99 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // Accessibility Properties
+		#region Update Rules
+		/// <summary>
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), FireTime=LocalCommit
+		/// </summary>
+		private static void FactTypeChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == FactType.UnaryPatternDomainPropertyId)
+			{
+				ModelElement element = e.ModelElement;
+				if (!element.IsDeleted && !element.IsDeleting)
+				{
+					FactType factType = (FactType)element;
+					UnaryValuePattern oldValue = ReduceUnaryPattern((UnaryValuePattern)e.OldValue);
+					UnaryValuePattern newValue = ReduceUnaryPattern(factType.UnaryPattern);
+					if (oldValue != newValue)
+					{
+						bool refreshRequired = false;
+						bool refreshNegation = true;
+						switch (newValue)
+						{
+							case UnaryValuePattern.NotUnary:
+								refreshRequired = oldValue != UnaryValuePattern.OptionalWithoutNegation;
+								refreshNegation = false;
+								break;
+							case UnaryValuePattern.Negation:
+								// This will result in an add or deletion, no need to look at it here.
+								refreshNegation = false;
+								break;
+							case UnaryValuePattern.OptionalWithoutNegation:
+								refreshNegation = false;
+								refreshRequired = true;
+								break;
+							case UnaryValuePattern.OptionalWithNegation:
+							case UnaryValuePattern.RequiredWithNegation:
+							case UnaryValuePattern.DeonticRequiredWithNegation:
+								refreshRequired = true;
+								break;
+						}
+
+						if (refreshRequired)
+						{
+							UpdateUnaryLinkLines(factType);
+							if (refreshNegation && null != (factType = factType.NegationUnaryFactType))
+							{
+								UpdateUnaryLinkLines(factType);
+							}
+						}
+					}
+				}
+			}
+		}
+		private static void UpdateUnaryLinkLines(FactType factType)
+		{
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+			{
+				FactTypeShape shape = pel as FactTypeShape;
+				if (shape != null)
+				{
+					foreach (RolePlayerLink linkShape in MultiShapeUtility.GetEffectiveAttachedLinkShapesFrom<RolePlayerLink>(shape))
+					{
+						linkShape.InvalidateRequired(true);
+					}
+
+				}
+			}
+		}
+		/// <summary>
+		/// Strip default portions of a unary value pattern so we
+		/// can compare the parts that affect link display only.
+		/// </summary>
+		private static UnaryValuePattern ReduceUnaryPattern(UnaryValuePattern pattern)
+		{
+			switch (pattern)
+			{
+				case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+					pattern = UnaryValuePattern.OptionalWithoutNegation;
+					break;
+				case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+				case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+					pattern = UnaryValuePattern.OptionalWithNegation;
+					break;
+				case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+				case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+					pattern = UnaryValuePattern.RequiredWithNegation;
+					break;
+				case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+				case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+					pattern = UnaryValuePattern.DeonticRequiredWithNegation;
+					break;
+			}
+			return pattern;
+		}
+		#endregion // Update Rules
 		#region Store Event Handlers
 		/// <summary>
 		///  Helper function to update the mandatory dot in response to events
@@ -839,7 +1430,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (OptionsPage.CurrentEntityRelationshipBinaryMultiplicityDisplay == EntityRelationshipBinaryMultiplicityDisplay.InformationEngineering)
 			{
 				// The opposite links also need updating
-				RoleBase oppositeRole = role.OppositeRole;
+				RoleBase oppositeRole = role.OppositeOrUnaryRole;
 				if (oppositeRole != null)
 				{
 					InvalidateRolePlayerLinks(oppositeRole.Role);

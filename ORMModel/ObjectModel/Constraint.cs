@@ -216,6 +216,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// The constraint validation rule relies on the role players in addition to the intersecting constraints.
 		/// </summary>
 		RolePlayerDependent = 0x10,
+		/// <summary>
+		/// Do not consider the implied internal uniqueness constraint on a unary fact type.
+		/// </summary>
+		IgnoreImpliedUnaryConstraints = 0x20,
 	}
 
 
@@ -824,8 +828,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Show the reading errors first
 				for (int i = 0; i < count; ++i)
 				{
-					FactTypeRequiresReadingError noReadingError = factLinks[i].FactType.ReadingRequiredError;
-					if (noReadingError != null)
+					FactType factType = factLinks[i].FactType;
+					FactTypeRequiresReadingError noReadingError = factType.ReadingRequiredError;
+					FactType positiveFactType;
+					if (noReadingError != null &&
+						(factType.UnaryPattern != UnaryValuePattern.Negation ||
+							null == (positiveFactType = factType.PositiveUnaryFactType) ||
+							positiveFactType.ReadingRequiredError != null))
 					{
 						yield return noReadingError;
 					}
@@ -1590,9 +1599,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			ConstraintModality modality = Modality;
 			int validationCount = validations.Count;
+			LinkedElementCollection<Role> constraintRoles = null;
+			int constraintRoleCount = 0;
 			for (int i = 0; i < validationCount; ++i)
 			{
 				IntersectingConstraintValidation validationInfo = validations[i];
+				bool ignoreImpliedUnaryConstraint = 0 != (validationInfo.IntersectionValidationOptions & IntersectingConstraintPatternOptions.IgnoreImpliedUnaryConstraints);
 				bool sameSet;
 				switch (validationInfo.IntersectionValidationPattern)
 				{
@@ -1606,8 +1618,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						continue;
 				}
 				bool hasError = false;
-				LinkedElementCollection<Role> constraintRoles = this.RoleCollection;
-				int constraintRoleCount = constraintRoles.Count;
+				if (i == 0)
+				{
+					constraintRoles = this.RoleCollection;
+					constraintRoleCount = constraintRoles.Count;
+				}
 				for (int iConstraintRole = 0; iConstraintRole < constraintRoleCount; ++iConstraintRole)
 				{
 					Role constraintRole = constraintRoles[iConstraintRole];
@@ -1625,6 +1640,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								SetConstraint intersectingSetConstraint = (SetConstraint)intersectingSequence;
 								LinkedElementCollection<Role> intersectingRoles = intersectingSetConstraint.RoleCollection;
 								int intersectingRoleCount = intersectingRoles.Count;
+								if (ignoreImpliedUnaryConstraint && intersectingRoleCount == 1 && intersectingRoles[0].FactType.UnaryPattern != UnaryValuePattern.NotUnary && intersectingConstraint.ConstraintType == ConstraintType.InternalUniqueness)
+								{
+									// When unary fact types were debinarized, uniqueness and frequency constraints constraints moved from the implicit
+									// boolean value role to the unary role. These nominally conflict with the implied internal uniqueness on the unary role,
+									// which we still want defined for verbalization and the link fact type proxy pattern (when the fact type is objectified).
+									// However, this really points out a bigger issue, which is that uniqueness constraint intersecting validation should also
+									// consider inner/outer join states when specified on optional roles. We do not currently have this information in the
+									// constraint metamodel. In this case, the implied constraint would be inner on the unary role (only applies when specified).
+									// If this intersects a uniqueness that also has the optional boolean role as an inner join then there is an implication error.
+									// However, if the join has the (more common) outer semantics then there is no implication error.
+									continue;
+								}
 								if (sameSet ? intersectingRoleCount == constraintRoleCount : intersectingRoleCount <= constraintRoleCount) // Can't be a subset if the count is greater
 								{
 									hasError = true; // Assume we have the problem, disprove it
@@ -3055,8 +3082,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Show the reading errors first
 				for (int i = 0; i < count; ++i)
 				{
-					FactTypeRequiresReadingError noReadingError = factLinks[i].FactType.ReadingRequiredError;
-					if (noReadingError != null)
+					FactType factType = factLinks[i].FactType;
+					FactTypeRequiresReadingError noReadingError = factType.ReadingRequiredError;
+					FactType positiveFactType;
+					if (noReadingError != null &&
+						(factType.UnaryPattern != UnaryValuePattern.Negation ||
+							null == (positiveFactType = factType.PositiveUnaryFactType) ||
+							positiveFactType.ReadingRequiredError != null))
 					{
 						yield return noReadingError;
 					}
@@ -5546,7 +5578,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (!checkedFirstOppositeRolePlayer)
 								{
 									checkedFirstOppositeRolePlayer = true;
-									oppositeRole = firstRole.OppositeRole as Role;
+									oppositeRole = firstRole.OppositeOrUnaryRole as Role;
 									if (oppositeRole != null)
 									{
 										resolvedOppositeRolePlayer = oppositeRole.RolePlayer;
@@ -5580,7 +5612,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								if (null != resolvedOppositeRolePlayer)
 								{
-									oppositeRolePlayer = null != (oppositeRole = currentRole.OppositeRole as Role) ? oppositeRole.RolePlayer : null;
+									oppositeRolePlayer = null != (oppositeRole = currentRole.OppositeOrUnaryRole as Role) ? oppositeRole.RolePlayer : null;
 									// Check for an exact match
 									if (oppositeRolePlayer != null)
 									{
@@ -5850,7 +5882,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ObjectType previousFactTypeObjectifiedBy = previousFactType.NestingType;
 			LinkedElementCollection<RoleBase> previousFactTypeRoles = null;
 			int previousFactTypeRoleCount = 0;
-			int? previousFactTypeUnaryRoleIndex = null;
 			pathData.Add(new AutomaticJoinPathData(constraintRole, previousRole, PathedRolePurpose.PostInnerJoin));
 			usedRoles[previousRole] = null;
 			int lastFactTypeEntryIndex = 0;
@@ -5881,7 +5912,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ObjectType currentFactTypeObjectifiedBy = currentFactType.NestingType;
 					LinkedElementCollection<RoleBase> currentFactTypeRoles = null;
 					int currentFactTypeRoleCount = 0;
-					int? currentFactTypeUnaryRoleIndex = null;
 
 					// Peek ahead to see the pattern (one or many constrained roles) for the next fact type
 					int constrainedRoleCountInCurrentFactType = 1;
@@ -5955,17 +5985,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							currentFactTypeRoles = currentFactType.RoleCollection;
 							currentFactTypeRoleCount = currentFactTypeRoles.Count;
-							currentFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(currentFactTypeRoles);
 						}
 						for (int currentFactTypeRoleIndex = 0; currentFactTypeRoleIndex < currentFactTypeRoleCount; ++currentFactTypeRoleIndex)
 						{
 							Role testRole;
-							if (currentFactTypeUnaryRoleIndex.HasValue)
+							if (currentFactTypeRoleCount == 1)
 							{
-								if (currentFactTypeRoleIndex != currentFactTypeUnaryRoleIndex.Value)
-								{
-									continue;
-								}
 								// Use the unary role to proceed, even though it is constrained. Join directly off it.
 								testRole = currentFactTypeRoles[currentFactTypeRoleIndex].Role;
 							}
@@ -6026,31 +6051,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (connectThroughRightObjectifyingType)
 							{
-								if (currentFactTypeUnaryRoleIndex.HasValue)
+								pathData.Add(new AutomaticJoinPathData(null, otherRole = currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
+								usedRoles[otherRole] = null;
+								if (constrainedRoleCountInCurrentFactType > 1)
 								{
-									Role objectifiedUnaryRole = currentRole.ObjectifiedUnaryRole;
-									pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
-									pathData.Add(new AutomaticJoinPathData(constraintRole, objectifiedUnaryRole, PathedRolePurpose.SameFactType));
-									usedRoles[otherRole] = null;
-									usedRoles[objectifiedUnaryRole] = null;
+									// Step across the link fact type then join into the objectified fact type
+									pathData.Add(new AutomaticJoinPathData(null, currentRole, PathedRolePurpose.SameFactType));
+									pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
 								}
 								else
 								{
-									pathData.Add(new AutomaticJoinPathData(null, otherRole = currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
-									usedRoles[otherRole] = null;
-									if (constrainedRoleCountInCurrentFactType > 1)
-									{
-										// Step across the link fact type then join into the objectified fact type
-										pathData.Add(new AutomaticJoinPathData(null, currentRole, PathedRolePurpose.SameFactType));
-										pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
-									}
-									else
-									{
-										// Project directly on the link fact type
-										pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
-									}
-									usedRoles[currentRole] = null;
+									// Project directly on the link fact type
+									pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
 								}
+								usedRoles[currentRole] = null;
 							}
 							else if (matchedRole == currentRole) // Unary case
 							{
@@ -6061,13 +6075,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								if (connectThroughLeftObjectifyingType)
 								{
-									if (currentFactTypeUnaryRoleIndex.HasValue)
+									if (currentFactTypeRoleCount == 1)
 									{
-										Role objectifiedUnaryRole = currentRole.ObjectifiedUnaryRole;
-										pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
-										pathData.Add(new AutomaticJoinPathData(constraintRole, objectifiedUnaryRole, PathedRolePurpose.SameFactType));
+										pathData.Add(new AutomaticJoinPathData(null, otherRole = currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
+										pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
 										usedRoles[otherRole] = null;
-										usedRoles[objectifiedUnaryRole] = null;
+										usedRoles[currentRole] = null;
 									}
 									else
 									{
@@ -6104,7 +6117,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							previousFactType = currentFactType;
 							previousFactTypeRoles = currentFactTypeRoles;
 							previousFactTypeRoleCount = currentFactTypeRoleCount;
-							previousFactTypeUnaryRoleIndex = currentFactTypeUnaryRoleIndex;
 							previousFactTypeObjectifiedBy = currentFactTypeObjectifiedBy;
 							previousRole = currentRole;
 							lastFactTypeEntryIndex = i;
@@ -6124,18 +6136,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							currentFactTypeRoles = currentFactType.RoleCollection;
 							currentFactTypeRoleCount = currentFactTypeRoles.Count;
-							currentFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(currentFactTypeRoles);
 						}
 						for (int rightRoleIndex = 0; rightRoleIndex < currentFactTypeRoleCount; ++rightRoleIndex)
 						{
 							Role testRightRole;
 							int testRightRoleAlternateEntryConstraintRoleIndex = -1;
-							if (currentFactTypeUnaryRoleIndex.HasValue)
+							if (currentFactTypeRoleCount == 1)
 							{
-								if (currentFactTypeUnaryRoleIndex.Value != rightRoleIndex)
-								{
-									continue;
-								}
 								testRightRole = currentFactTypeRoles[rightRoleIndex].Role;
 							}
 							else
@@ -6192,7 +6199,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							previousFactTypeRoles = previousFactType.RoleCollection;
 							previousFactTypeRoleCount = previousFactTypeRoles.Count;
-							previousFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(previousFactTypeRoles);
 						}
 						if (matchedRightRole == null)
 						{
@@ -6200,12 +6206,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								Role testLeftRole;
 								bool testObjectificationOnly = false;
-								if (previousFactTypeUnaryRoleIndex.HasValue)
+								if (previousFactTypeRoleCount == 1)
 								{
-									if (leftRoleIndex != previousFactTypeUnaryRoleIndex.Value)
-									{
-										continue;
-									}
 									// Use the unary role to proceed, even though it is constrained. Join directly off it.
 									testLeftRole = previousFactTypeRoles[leftRoleIndex].Role;
 								}
@@ -6277,18 +6279,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										currentFactTypeRoles = currentFactType.RoleCollection;
 										currentFactTypeRoleCount = currentFactTypeRoles.Count;
-										currentFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(currentFactTypeRoles);
 									}
 									for (int rightRoleIndex = 0; rightRoleIndex < currentFactTypeRoleCount; ++rightRoleIndex)
 									{
 										Role testRightRole;
 										int testRightRoleAlternateEntryConstraintRoleIndex = -1;
-										if (currentFactTypeUnaryRoleIndex.HasValue)
+										if (currentFactTypeRoleCount == 1)
 										{
-											if (currentFactTypeUnaryRoleIndex.Value != rightRoleIndex)
-											{
-												continue;
-											}
 											testRightRole = currentFactTypeRoles[rightRoleIndex].Role;
 										}
 										else
@@ -6366,31 +6363,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (matchedLeftRole == null)
 					{
 						// Objectification coming from the left
-						if (previousFactTypeUnaryRoleIndex.HasValue)
+
+						// If only one role was used in the objectified fact type, then not adding an additional
+						// join step switches the path to use the link fact type.
+						if (constrainedInPreviousFactTypeCount > 1)
 						{
-							Role objectifiedUnaryRole = previousRole.ObjectifiedUnaryRole;
-							// We have already added a role for the unary role. Switch this added role to the
-							// objectified unary role.
-							int replaceIndex = pathData.Count - 1;
-							AutomaticJoinPathData unaryRoleData = pathData[replaceIndex];
-							unaryRoleData.Role = objectifiedUnaryRole;
-							pathData[replaceIndex] = unaryRoleData;
-							pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.SameFactType));
+							pathData.Add(new AutomaticJoinPathData(null, previousRole, PathedRolePurpose.PostInnerJoin));
+							usedRoles[previousRole] = null;
 						}
-						else
-						{
-							// If only one role was used in the objectified fact type, then not adding an additional
-							// join step switches the path to use the link fact type.
-							if (constrainedInPreviousFactTypeCount > 1)
-							{
-								pathData.Add(new AutomaticJoinPathData(null, previousRole, PathedRolePurpose.PostInnerJoin));
-								usedRoles[previousRole] = null;
-							}
-							pathData.Add(new AutomaticJoinPathData(null, otherRole = previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
-						}
+						pathData.Add(new AutomaticJoinPathData(null, otherRole = previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
 						usedRoles[otherRole] = null;
 					}
-					else if (!previousFactTypeUnaryRoleIndex.HasValue &&
+					else if (previousFactTypeRoleCount != 1 &&
 						matchedLeftRole != previousRole)
 					{
 						pathData.Add(new AutomaticJoinPathData(null, matchedLeftRole, PathedRolePurpose.SameFactType));
@@ -6422,38 +6406,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							currentFactTypeRoles = currentFactType.RoleCollection;
 							currentFactTypeRoleCount = currentFactTypeRoles.Count;
-							currentFactTypeUnaryRoleIndex = FactType.GetUnaryRoleIndex(currentFactTypeRoles);
 						}
-						if (currentFactTypeUnaryRoleIndex.HasValue)
+
+						// Objectified binary or n-ary pattern
+						pathData.Add(new AutomaticJoinPathData(null, otherRole = currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
+						usedRoles[otherRole] = null;
+						if (constrainedRoleCountInCurrentFactType == 1)
 						{
-							// Objectified unary pattern
-							Role objectifiedUnaryRole = currentRole.ObjectifiedUnaryRole;
-							pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
-							pathData.Add(new AutomaticJoinPathData(constraintRole, objectifiedUnaryRole, PathedRolePurpose.SameFactType));
-							usedRoles[otherRole] = null;
-							usedRoles[objectifiedUnaryRole] = null;
+							pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
 						}
 						else
 						{
-							// Objectified binary or n-ary pattern
-							pathData.Add(new AutomaticJoinPathData(null, otherRole = currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
-							usedRoles[otherRole] = null;
-							if (constrainedRoleCountInCurrentFactType == 1)
-							{
-								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
-							}
-							else
-							{
-								pathData.Add(new AutomaticJoinPathData(null, currentRole, PathedRolePurpose.SameFactType));
-								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
-							}
-							usedRoles[currentRole] = null;
+							pathData.Add(new AutomaticJoinPathData(null, currentRole, PathedRolePurpose.SameFactType));
+							pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
 						}
+						usedRoles[currentRole] = null;
 					}
 					previousFactType = currentFactType;
 					previousFactTypeRoles = currentFactTypeRoles;
 					previousFactTypeRoleCount = currentFactTypeRoleCount;
-					previousFactTypeUnaryRoleIndex = currentFactTypeUnaryRoleIndex;
 					previousFactTypeObjectifiedBy = currentFactTypeObjectifiedBy;
 					previousRole = currentRole;
 					lastFactTypeEntryIndex = i;
@@ -6757,14 +6728,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					leadRoles.Clear();
 					subPaths.Clear();
 				}
+				leadRolePath.RootObjectType = resolvedObjectType;
 				leadRolePath.SplitCombinationOperator = LogicalCombinationOperator.And;
 				leadRolePath.SplitIsNegated = false;
 			}
+			RolePathObjectTypeRoot leadRolePathRoot = leadRolePath.PathRoot;
+
 			// We need one subpath per role with an entry on the near role and the far
 			// role projected on the constraint role.
 			ConstraintRoleSequenceJoinPathProjection pathProjection = null;
 			ConstraintRoleProjection roleProjection;
-			ConstraintRoleProjectedFromPathedRole projectionLink;
+			ConstraintRoleProjectedFromPathedRole pathedRoleProjectionLink;
+			ConstraintRoleProjectedFromRolePathRoot pathRootProjectionLink;
 			int roleCount = constraintRoles.Count;
 			int subPathCount = subPaths.Count;
 			int firstUnverifiedSubpathIndex = 0;
@@ -6772,7 +6747,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole roleLink = constraintRoles[i];
 				Role farRole = roleLink.Role;
-				Role nearRole = (Role)(useObjectifyingRole[i] ? farRole.OppositeRoleAlwaysResolveProxy : farRole.OppositeRole);
+				Role nearRole = (Role)(useObjectifyingRole[i] ? farRole.OppositeRoleAlwaysResolveProxy : farRole.OppositeOrUnaryRole);
 				if (firstUnverifiedSubpathIndex < subPathCount)
 				{
 					// See if we can find an existing subpath that begins with the correct role
@@ -6780,11 +6755,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (; j < subPathCount; ++j)
 					{
 						RoleSubPath matchSubPath = subPaths[j];
-						LinkedElementCollection<Role> testRoles = matchSubPath.RoleCollection;
-						int testRoleCount = testRoles.Count;
+						ReadOnlyCollection<PathedRole> testPathRoles = matchSubPath.PathedRoleCollection;
+						int testRoleCount = testPathRoles.Count;
 						if (testRoleCount != 0)
 						{
-							if (testRoles[0] == nearRole)
+							PathedRole nearPathedRole = testPathRoles[0];
+							if (nearPathedRole.Role == nearRole)
 							{
 								// Use this subpath, fixup and position correctly
 								if (j > firstUnverifiedSubpathIndex)
@@ -6792,8 +6768,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									subPaths.Move(j, firstUnverifiedSubpathIndex);
 								}
 								++firstUnverifiedSubpathIndex;
+
+								// Make sure we have the correct purpose on the entry role
+								nearPathedRole.PathedRolePurpose = PathedRolePurpose.PostInnerJoin;
+
 								PathedRole farPathedRole;
-								if (testRoleCount == 1)
+								if (nearRole == farRole)
+								{
+									// Unary case
+									farPathedRole = null; // If not set then we project the path root
+									for (int k = testRoleCount - 1; k >= 1; --k)
+									{
+										testPathRoles[k].Delete();
+									}
+								}
+								else if (testRoleCount == 1)
 								{
 									farPathedRole = new PathedRole(matchSubPath, farRole);
 									if (notifyAdded != null)
@@ -6801,12 +6790,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										notifyAdded.ElementAdded(farPathedRole, false);
 									}
 								}
-								else if (!(farRole == testRoles[1] &&
-									(farPathedRole = matchSubPath.PathedRoleCollection[1]).PathedRolePurpose == PathedRolePurpose.SameFactType))
+								else if (!(farRole == (farPathedRole = testPathRoles[1]).Role &&
+									farPathedRole.PathedRolePurpose == PathedRolePurpose.SameFactType))
 								{
-									for (int k = testRoleCount; k >= 1; --k)
+									for (int k = testRoleCount - 1; k >= 1; --k)
 									{
-										testRoles.RemoveAt(k);
+										testPathRoles[k].Delete();
 									}
 									farPathedRole = new PathedRole(matchSubPath, farRole);
 									if (notifyAdded != null)
@@ -6816,7 +6805,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 
 								roleProjection = null;
-								projectionLink = null;
+								pathedRoleProjectionLink = null;
+								pathRootProjectionLink = null;
 								if (null == pathProjection &&
 									null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLink(joinPath, leadRolePath)))
 								{
@@ -6833,9 +6823,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										roleProjection.IsAutomatic = false;
 										roleProjection.IncompatibleProjectionError = null;
-										projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+										if (farPathedRole != null)
+										{
+											pathedRoleProjectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+										}
+										else
+										{
+											pathRootProjectionLink = ConstraintRoleProjectedFromRolePathRoot.GetLinkToProjectedFromPathRoot(roleProjection);
+										}
 									}
 								}
+
 								if (roleProjection == null)
 								{
 									roleProjection = new ConstraintRoleProjection(pathProjection, roleLink);
@@ -6844,21 +6842,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										notifyAdded.ElementAdded(roleProjection);
 									}
 								}
-								if (projectionLink == null)
+
+								if (farPathedRole != null)
 								{
-									projectionLink = new ConstraintRoleProjectedFromPathedRole(roleProjection, farPathedRole);
-									if (notifyAdded != null)
+									if (pathedRoleProjectionLink == null)
 									{
-										notifyAdded.ElementAdded(projectionLink);
-										// Rules aren't turned on, so the other projection options won't clear automatically
-										roleProjection.ProjectedFromCalculatedValue = null;
-										roleProjection.ProjectedFromPathRoot = null;
-										roleProjection.ProjectedFromConstant = null;
+										pathedRoleProjectionLink = new ConstraintRoleProjectedFromPathedRole(roleProjection, farPathedRole);
+										if (notifyAdded != null)
+										{
+											notifyAdded.ElementAdded(pathedRoleProjectionLink);
+											// Rules aren't turned on, so the other projection options won't clear automatically
+											roleProjection.ProjectedFromCalculatedValue = null;
+											roleProjection.ProjectedFromPathRoot = null;
+											roleProjection.ProjectedFromConstant = null;
+										}
+									}
+									else if (pathedRoleProjectionLink.Source != farPathedRole)
+									{
+										pathedRoleProjectionLink.Source = farPathedRole;
 									}
 								}
-								else if (projectionLink.Source != farPathedRole)
+								else
 								{
-									projectionLink.Source = farPathedRole;
+									if (pathRootProjectionLink == null)
+									{
+										pathRootProjectionLink = new ConstraintRoleProjectedFromRolePathRoot(roleProjection, leadRolePathRoot);
+										if (notifyAdded != null)
+										{
+											notifyAdded.ElementAdded(pathRootProjectionLink);
+											// Rules aren't turned on, so the other projection options won't clear automatically
+											roleProjection.ProjectedFromCalculatedValue = null;
+											roleProjection.ProjectedFromPathedRole = null;
+											roleProjection.ProjectedFromConstant = null;
+										}
+									}
+									else if (pathRootProjectionLink.Source != leadRolePathRoot)
+									{
+										pathRootProjectionLink.Source = leadRolePathRoot;
+									}
 								}
 								matchSubPath.RootObjectType = null;
 								matchSubPath.SubPathCollection.Clear();
@@ -6889,15 +6910,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						new RoleAssignment(PathedRole.RoleDomainRoleId, nearRole)},
 					new PropertyAssignment[]{
 						new PropertyAssignment(PathedRole.PathedRolePurposeDomainPropertyId, PathedRolePurpose.PostInnerJoin)});
-				PathedRole newFarPathedRole = new PathedRole(subPath, farRole);
-				if (notifyAdded != null)
+
+				PathedRole newFarPathedRole = null;
+				if (nearRole != farRole)
 				{
-					notifyAdded.ElementAdded(subPath, true);
+					newFarPathedRole = new PathedRole(subPath, farRole); // SameFactType is the default purpose
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(subPath, true);
+					}
 				}
 
 				// Project the far role on the constraint role sequence role
 				roleProjection = null;
-				projectionLink = null;
+				pathedRoleProjectionLink = null;
+				pathRootProjectionLink = null;
 				if (null == pathProjection &&
 					null == (pathProjection = ConstraintRoleSequenceJoinPathProjection.GetLink(joinPath, leadRolePath)))
 				{
@@ -6914,9 +6941,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						roleProjection.IsAutomatic = false;
 						roleProjection.IncompatibleProjectionError = null;
-						projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+						if (newFarPathedRole != null)
+						{
+							pathedRoleProjectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+						}
+						else
+						{
+							pathRootProjectionLink = ConstraintRoleProjectedFromRolePathRoot.GetLinkToProjectedFromPathRoot(roleProjection);
+						}
 					}
 				}
+
 				if (roleProjection == null)
 				{
 					roleProjection = new ConstraintRoleProjection(pathProjection, roleLink);
@@ -6925,21 +6960,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						notifyAdded.ElementAdded(roleProjection);
 					}
 				}
-				if (projectionLink == null)
+
+				if (newFarPathedRole != null)
 				{
-					projectionLink = new ConstraintRoleProjectedFromPathedRole(roleProjection, newFarPathedRole);
-					if (notifyAdded != null)
+					if (pathedRoleProjectionLink == null)
 					{
-						notifyAdded.ElementAdded(projectionLink);
-						// Rules aren't turned on, so the other projection options won't clear automatically
-						roleProjection.ProjectedFromConstant = null;
-						roleProjection.ProjectedFromPathRoot = null;
-						roleProjection.ProjectedFromCalculatedValue = null;
+						pathedRoleProjectionLink = new ConstraintRoleProjectedFromPathedRole(roleProjection, newFarPathedRole);
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(pathedRoleProjectionLink);
+							// Rules aren't turned on, so the other projection options won't clear automatically
+							roleProjection.ProjectedFromConstant = null;
+							roleProjection.ProjectedFromPathRoot = null;
+							roleProjection.ProjectedFromCalculatedValue = null;
+						}
+					}
+					else if (pathedRoleProjectionLink.Source != newFarPathedRole)
+					{
+						pathedRoleProjectionLink.Source = newFarPathedRole;
 					}
 				}
-				else if (projectionLink.Source != newFarPathedRole)
+				else
 				{
-					projectionLink.Source = newFarPathedRole;
+					if (pathRootProjectionLink == null)
+					{
+						pathRootProjectionLink = new ConstraintRoleProjectedFromRolePathRoot(roleProjection, leadRolePathRoot);
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(pathRootProjectionLink);
+							// Rules aren't turned on, so the other projection options won't clear automatically
+							roleProjection.ProjectedFromConstant = null;
+							roleProjection.ProjectedFromPathedRole = null;
+							roleProjection.ProjectedFromCalculatedValue = null;
+						}
+					}
+					else if (pathRootProjectionLink.Source != leadRolePathRoot)
+					{
+						pathRootProjectionLink.Source = leadRolePathRoot;
+					}
 				}
 			}
 
@@ -7320,15 +7378,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											}
 											factType = constraintRole.FactType;
 											LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
-											if (factRoles.Count != 2)
+											int factRoleCount = factRoles.Count;
+											Role oppositeRole = factRoles[0].Role;
+											if (factRoleCount == 2)
+											{
+												if (oppositeRole == constraintRole)
+												{
+													oppositeRole = factRoles[1].Role;
+												}
+											}
+											else if (factRoleCount != 1)
 											{
 												break;
 											}
-											Role oppositeRole = factRoles[0].Role;
-											if (oppositeRole == constraintRole)
-											{
-												oppositeRole = factRoles[1].Role;
-											}
+
 											if (oppositeRole.IsDeleting)
 											{
 												break;
@@ -7356,33 +7419,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											{
 												break; // Condition 4
 											}
-											bool haveSingleRoleInternalUniqueness = false;
-											foreach (ConstraintRoleSequence oppositeSequence in oppositeRole.ConstraintRoleSequenceCollection)
+
+											if (factRoleCount == 2)
 											{
-												UniquenessConstraint oppositeUniqueness = oppositeSequence as UniquenessConstraint;
-												if (oppositeUniqueness != null && oppositeUniqueness.IsInternal && oppositeUniqueness.Modality == ConstraintModality.Alethic)
+												bool haveSingleRoleInternalUniqueness = false;
+												foreach (ConstraintRoleSequence oppositeSequence in oppositeRole.ConstraintRoleSequenceCollection)
 												{
-													ReadOnlyCollection<ConstraintRoleSequenceHasRole> roleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(oppositeSequence, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
-													int roleLinkCount = roleLinks.Count;
-													int remainingCount = 0;
-													for (int i = 0; i < roleLinkCount; ++i)
+													UniquenessConstraint oppositeUniqueness = oppositeSequence as UniquenessConstraint;
+													if (oppositeUniqueness != null && oppositeUniqueness.IsInternal && oppositeUniqueness.Modality == ConstraintModality.Alethic)
 													{
-														ConstraintRoleSequenceHasRole roleLink = roleLinks[i];
-														if (!roleLink.IsDeleting)
+														ReadOnlyCollection<ConstraintRoleSequenceHasRole> roleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(oppositeSequence, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
+														int roleLinkCount = roleLinks.Count;
+														int remainingCount = 0;
+														for (int i = 0; i < roleLinkCount; ++i)
 														{
-															++remainingCount;
+															ConstraintRoleSequenceHasRole roleLink = roleLinks[i];
+															if (!roleLink.IsDeleting)
+															{
+																++remainingCount;
+															}
+														}
+														if (remainingCount == 1)
+														{
+															haveSingleRoleInternalUniqueness = true;
+															continue; // Not a condition from TestAllowPreferred, but set in rule when constraint was added
 														}
 													}
-													if (remainingCount == 1)
-													{
-														haveSingleRoleInternalUniqueness = true;
-														continue; // Not a condition from TestAllowPreferred, but set in rule when constraint was added
-													}
 												}
-											}
-											if (!haveSingleRoleInternalUniqueness)
-											{
-												break;
+												if (!haveSingleRoleInternalUniqueness)
+												{
+													break;
+												}
 											}
 										}
 									}
@@ -7614,6 +7681,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									RoleProxy proxy;
 									FactType impliedFact;
 									LinkedElementCollection<RoleBase> factRoles;
+									int factRoleCount;
 									if (null != (objectification = identifierFor.Objectification) &&
 										null != (proxy = nearRole.Proxy) &&
 										null != (impliedFact = proxy.FactType) &&
@@ -7621,29 +7689,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										clearIdentifier = false;
 									}
-									else if ((factRoles = factType.RoleCollection).Count == 2)
+									else if ((factRoleCount = (factRoles = factType.RoleCollection).Count) <= 2)
 									{
 										Role oppositeRole = factRoles[0].Role;
-										if (oppositeRole == nearRole)
+										if (factRoleCount == 2 && oppositeRole == nearRole)
 										{
 											oppositeRole = factRoles[1].Role;
 										}
 										ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
 										if (oppositeRolePlayer == null || oppositeRolePlayer == identifierFor)
 										{
-											bool haveSingleRoleInternalUniqueness = false;
-											foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
+											if (factRoleCount == 2)
 											{
-												if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
+												bool haveSingleRoleInternalUniqueness = false;
+												foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 												{
-													haveSingleRoleInternalUniqueness = true;
-													break;
+													if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
+													{
+														haveSingleRoleInternalUniqueness = true;
+														break;
+													}
 												}
-											}
-											if (!haveSingleRoleInternalUniqueness)
-											{
-												UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(factType);
-												new ConstraintRoleSequenceHasRole(oppositeIuc, oppositeRole);
+												if (!haveSingleRoleInternalUniqueness)
+												{
+													UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(factType);
+													new ConstraintRoleSequenceHasRole(oppositeIuc, oppositeRole);
+												}
 											}
 											if (oppositeRolePlayer == null)
 											{
@@ -7876,6 +7947,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 							Role oppositeRole = null;
 							FactType factType = role.FactType;
+							if (factType.UnaryPattern != UnaryValuePattern.NotUnary)
+							{
+								continue;
+							}
+
 							foreach (RoleBase roleBase in factType.RoleCollection)
 							{
 								Role factRole = roleBase.Role;
@@ -8047,10 +8123,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//    regardless of whether it is primary or not, must not be attached to a role with a single-role internal
 				//    uniqueness constraint on it. However, the opposite role must have this condition. Therefore, two
 				//    roles from a preferred constraint cannot share the same binary fact).
-				// 3) Each fact must be binary
-				// 4) The opposite role player for each fact must be set to the same object
-				// 5) The opposite role player must be an entity type
-				// 6) The opposite role must not be an objectified unary role
+				// 3) Each fact must be binary or unary
+				// 4) The opposite role player (same role player for a unary role) for each fact must be set to the same object
+				// 5) The opposite role player (same role player for a unary role) must be an entity type
 				// The other conditions (at least one opposite role is mandatory and all
 				// opposite roles have a single-role uniqueness constraint) will either
 				// be enforced (single-role uniqueness) in the rule that makes  the change
@@ -8082,10 +8157,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						RoleProxy proxy = role.Proxy;
 						FactType factType = role.FactType;
 						LinkedElementCollection<RoleBase> factRoles = null;
-						bool directBinary;
+						int roleCount;
+						bool directBinary = false;
+						bool isUnary = false;
 						patternOK = false;
 						if (!(factType is SubtypeFact) && 
-							((directBinary = (!objectified && (factRoles = factType.RoleCollection).Count == 2 && (!isInternal || constraintRoleCount == 1))) ||
+							((!objectified && (!isInternal || constraintRoleCount == 1) && ((directBinary = (roleCount = (factRoles = factType.RoleCollection).Count) == 2) || (isUnary = roleCount == 1))) ||
 							proxy != null)) // Condition 3 (RoleProxy can only be attached to a binary fact)
 						{
 							ObjectType rolePlayer = null;
@@ -8097,11 +8174,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									oppositeRole = factRoles[1].Role;
 								}
-								if (oppositeRole is ObjectifiedUnaryRole) // Condition 6, Can't be opposite an objectified unary role
-								{
-									break;
-								}
 								rolePlayer = oppositeRole.RolePlayer;
+							}
+							else if (isUnary)
+							{
+								rolePlayer = role.RolePlayer;
 							}
 							if (proxy != null)
 							{
@@ -8190,18 +8267,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return preferredFor != null &&
 					null != (objectification = preferredFor.Objectification) &&
 					1 == (constraintRoles = RoleCollection).Count &&
-					((role = constraintRoles[0]) is ObjectifiedUnaryRole ||
-					(null != (proxy = role.Proxy) &&
+					(null != (proxy = (role = constraintRoles[0]).Proxy) &&
 					null != (impliedFact = proxy.FactType) &&
-					impliedFact.ImpliedByObjectification == objectification));
+					impliedFact.ImpliedByObjectification == objectification);
 			}
 		}
 		/// <summary>
 		/// Returns true if this uniqueness constraint is internal
 		/// to an objectified <see cref="FactType"/> that is objectified
 		/// by the <see cref="ObjectType"/> the constraint is a preferred
-		/// identifier, or if the preferred identifier is part of a unary
-		/// objectification FactType.
+		/// identifier.
 		/// </summary>
 		public bool IsObjectifiedPreferredIdentifier
 		{
@@ -8210,17 +8285,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ObjectType preferredFor;
 				FactType objectifiedFactType;
 				LinkedElementCollection<FactType> pidFactTypes;
-				Role unaryRole;
-				ObjectifiedUnaryRole objectifiedUnaryRole;
-				FactType identifierFactType;
 				return IsInternal &&
 					null != (preferredFor = PreferredIdentifierFor) &&
 					null != (objectifiedFactType = preferredFor.NestedFactType) &&
 					1 == (pidFactTypes = FactTypeCollection).Count &&
-					((identifierFactType = pidFactTypes[0]) == objectifiedFactType ||
-					(null != (unaryRole = objectifiedFactType.UnaryRole) &&
-					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-					identifierFactType == objectifiedUnaryRole.FactType));
+					pidFactTypes[0] == objectifiedFactType;
 			}
 		}
 		#endregion // UniquenessConstraint Specific
@@ -9274,7 +9343,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ExclusionConstraint exclusion = link.ExclusionConstraint;
 			if (mandatory.IsDeleted)
 			{
-				if (!exclusion.IsDeleted)
+				if (!exclusion.IsDeleted && exclusion.ControlledByUnaryFactType == null)
 				{
 					exclusion.Delete();
 				}
@@ -10428,7 +10497,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!element.IsDeleted &&
 				(valueType = (ObjectType)element).IsValueType)
 			{
-				Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+				Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)
 				{
 					if (pathedRole == null && pathRoot == null)
 					{
@@ -11513,6 +11582,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// one connector per role instead of per fact type.
 		/// </summary>
 		ConnectIndividualRoles = 0x200,
+		/// <summary>
+		/// The projected values are on roles opposite the constrained
+		/// object type. In practice, this blocks isolating projection variables
+		/// on unary fact types.
+		/// </summary>
+		ProjectOppositeValues = 0x400,
 	}
 	#endregion // RoleSequenceStyles enum
 	#region ConstraintType enum
@@ -11603,12 +11678,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
 		{
 				new IntersectingConstraintValidation(
-				    IntersectingConstraintPattern.SetConstraintSameSet,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
+					IntersectingConstraintPattern.SetConstraintSameSet,
+					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker | IntersectingConstraintPatternOptions.IgnoreImpliedUnaryConstraints,
 					FrequencyConstraintHasFrequencyConstraintViolatedByUniquenessConstraintError.FrequencyConstraintDomainRoleId,
 					null,
-				    ConstraintType.InternalUniqueness,
-				    ConstraintType.ExternalUniqueness),
+					ConstraintType.InternalUniqueness,
+					ConstraintType.ExternalUniqueness),
 		};
 		/// <summary>
 		/// Implements <see cref="IConstraint.GetIntersectingConstraintValidationInfo"/>
@@ -11646,7 +11721,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return RoleSequenceStyles.OneOrMoreRoleSequences | RoleSequenceStyles.OneRolePerSequence;
+				return RoleSequenceStyles.OneOrMoreRoleSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.ProjectOppositeValues;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles
@@ -11750,7 +11825,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetConstraintSubset,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
+					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker | IntersectingConstraintPatternOptions.IgnoreImpliedUnaryConstraints,
 					null,
 					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
 					ConstraintType.InternalUniqueness,
@@ -11813,7 +11888,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return IsInternal ?
 					RoleSequenceStyles.OneRoleSequence | RoleSequenceStyles.AtLeastCountMinusOneRolesPerSequence :
-					RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence;
+					RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.ProjectOppositeValues;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles

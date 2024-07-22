@@ -298,7 +298,7 @@
     <comment xml:space="preserve">The window title for the ORM diagram spy window</comment>
   </data>
   <data name="DiagramSpy.DiagramListStart">
-    <value xml:space="preserve">Choose a diagram:&#xd;&#xa;</value>
+	  <value xml:space="preserve">Choose a diagram:</value>
     <comment xml:space="preserve">The header text shown on the diagram spy watermark when a diagram is not selected</comment>
   </data>
   <data name="DiagramSpy.NoSelection">

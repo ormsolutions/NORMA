@@ -86,11 +86,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 				typeof(AbstractionModel),
 				typeof(ConceptType),
 				typeof(InformationTypeFormat),
+				typeof(PositiveUnaryInformationTypeFormat),
+				typeof(NegativeUnaryInformationTypeFormat),
 				typeof(Uniqueness),
 				typeof(AbstractionModelHasConceptType),
 				typeof(AbstractionModelHasInformationTypeFormat),
+				typeof(AbstractionModelHasPositiveUnaryInformationTypeFormat),
+				typeof(AbstractionModelHasNegativeUnaryInformationTypeFormat),
 				typeof(ConceptTypeHasUniqueness),
 				typeof(ConceptTypeChild),
+				typeof(InverseConceptTypeChild),
 				typeof(ConceptTypeHasChildAsPartOfAssociation),
 				typeof(InformationType),
 				typeof(ConceptTypeReferencesConceptType),
@@ -115,6 +120,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 				new DomainMemberInfo(typeof(Uniqueness), "IsPreferred", Uniqueness.IsPreferredDomainPropertyId, typeof(Uniqueness.IsPreferredPropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeChild), "IsMandatory", ConceptTypeChild.IsMandatoryDomainPropertyId, typeof(ConceptTypeChild.IsMandatoryPropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeChild), "Name", ConceptTypeChild.NameDomainPropertyId, typeof(ConceptTypeChild.NamePropertyHandler)),
+				new DomainMemberInfo(typeof(InverseConceptTypeChild), "PairIsMandatory", InverseConceptTypeChild.PairIsMandatoryDomainPropertyId, typeof(InverseConceptTypeChild.PairIsMandatoryPropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeReferencesConceptType), "OppositeName", ConceptTypeReferencesConceptType.OppositeNameDomainPropertyId, typeof(ConceptTypeReferencesConceptType.OppositeNamePropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeAssimilatesConceptType), "RefersToSubtype", ConceptTypeAssimilatesConceptType.RefersToSubtypeDomainPropertyId, typeof(ConceptTypeAssimilatesConceptType.RefersToSubtypePropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeAssimilatesConceptType), "IsPreferredForTarget", ConceptTypeAssimilatesConceptType.IsPreferredForTargetDomainPropertyId, typeof(ConceptTypeAssimilatesConceptType.IsPreferredForTargetPropertyHandler)),
@@ -133,10 +139,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 				new DomainRolePlayerInfo(typeof(AbstractionModelHasConceptType), "ConceptType", AbstractionModelHasConceptType.ConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(AbstractionModelHasInformationTypeFormat), "Model", AbstractionModelHasInformationTypeFormat.ModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(AbstractionModelHasInformationTypeFormat), "InformationTypeFormat", AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasPositiveUnaryInformationTypeFormat), "Model", AbstractionModelHasPositiveUnaryInformationTypeFormat.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasPositiveUnaryInformationTypeFormat), "InformationTypeFormat", AbstractionModelHasPositiveUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasNegativeUnaryInformationTypeFormat), "Model", AbstractionModelHasNegativeUnaryInformationTypeFormat.ModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(AbstractionModelHasNegativeUnaryInformationTypeFormat), "InformationTypeFormat", AbstractionModelHasNegativeUnaryInformationTypeFormat.InformationTypeFormatDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeHasUniqueness), "ConceptType", ConceptTypeHasUniqueness.ConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeHasUniqueness), "Uniqueness", ConceptTypeHasUniqueness.UniquenessDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeChild), "Parent", ConceptTypeChild.ParentDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeChild), "Target", ConceptTypeChild.TargetDomainRoleId),
+				new DomainRolePlayerInfo(typeof(InverseConceptTypeChild), "PositiveChild", InverseConceptTypeChild.PositiveChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(InverseConceptTypeChild), "NegativeChild", InverseConceptTypeChild.NegativeChildDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeHasChildAsPartOfAssociation), "Parent", ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeHasChildAsPartOfAssociation), "Target", ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId),
 				new DomainRolePlayerInfo(typeof(InformationType), "ConceptType", InformationType.ConceptTypeDomainRoleId),
@@ -170,11 +182,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(4);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(6);
 				createElementMap.Add(typeof(AbstractionModel), 0);
 				createElementMap.Add(typeof(ConceptType), 1);
 				createElementMap.Add(typeof(InformationTypeFormat), 2);
-				createElementMap.Add(typeof(Uniqueness), 3);
+				createElementMap.Add(typeof(PositiveUnaryInformationTypeFormat), 3);
+				createElementMap.Add(typeof(NegativeUnaryInformationTypeFormat), 4);
+				createElementMap.Add(typeof(Uniqueness), 5);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -191,7 +205,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 				case 0: return new AbstractionModel(partition, propertyAssignments);
 				case 1: return new ConceptType(partition, propertyAssignments);
 				case 2: return new InformationTypeFormat(partition, propertyAssignments);
-				case 3: return new Uniqueness(partition, propertyAssignments);
+				case 3: return new PositiveUnaryInformationTypeFormat(partition, propertyAssignments);
+				case 4: return new NegativeUnaryInformationTypeFormat(partition, propertyAssignments);
+				case 5: return new Uniqueness(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -214,15 +230,18 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(10);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(13);
 				createElementLinkMap.Add(typeof(AbstractionModelHasConceptType), 0);
 				createElementLinkMap.Add(typeof(AbstractionModelHasInformationTypeFormat), 1);
-				createElementLinkMap.Add(typeof(ConceptTypeHasUniqueness), 2);
-				createElementLinkMap.Add(typeof(ConceptTypeHasChildAsPartOfAssociation), 3);
-				createElementLinkMap.Add(typeof(InformationType), 4);
-				createElementLinkMap.Add(typeof(ConceptTypeRelatesToConceptType), 5);
-				createElementLinkMap.Add(typeof(ConceptTypeAssimilatesConceptType), 6);
-				createElementLinkMap.Add(typeof(UniquenessIncludesConceptTypeChild), 7);
+				createElementLinkMap.Add(typeof(AbstractionModelHasPositiveUnaryInformationTypeFormat), 2);
+				createElementLinkMap.Add(typeof(AbstractionModelHasNegativeUnaryInformationTypeFormat), 3);
+				createElementLinkMap.Add(typeof(ConceptTypeHasUniqueness), 4);
+				createElementLinkMap.Add(typeof(InverseConceptTypeChild), 5);
+				createElementLinkMap.Add(typeof(ConceptTypeHasChildAsPartOfAssociation), 6);
+				createElementLinkMap.Add(typeof(InformationType), 7);
+				createElementLinkMap.Add(typeof(ConceptTypeRelatesToConceptType), 8);
+				createElementLinkMap.Add(typeof(ConceptTypeAssimilatesConceptType), 9);
+				createElementLinkMap.Add(typeof(UniquenessIncludesConceptTypeChild), 10);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -239,12 +258,15 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			{
 				case 0: return new AbstractionModelHasConceptType(partition, roleAssignments, propertyAssignments);
 				case 1: return new AbstractionModelHasInformationTypeFormat(partition, roleAssignments, propertyAssignments);
-				case 2: return new ConceptTypeHasUniqueness(partition, roleAssignments, propertyAssignments);
-				case 3: return new ConceptTypeHasChildAsPartOfAssociation(partition, roleAssignments, propertyAssignments);
-				case 4: return new InformationType(partition, roleAssignments, propertyAssignments);
-				case 5: return new ConceptTypeRelatesToConceptType(partition, roleAssignments, propertyAssignments);
-				case 6: return new ConceptTypeAssimilatesConceptType(partition, roleAssignments, propertyAssignments);
-				case 7: return new UniquenessIncludesConceptTypeChild(partition, roleAssignments, propertyAssignments);
+				case 2: return new AbstractionModelHasPositiveUnaryInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 3: return new AbstractionModelHasNegativeUnaryInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 4: return new ConceptTypeHasUniqueness(partition, roleAssignments, propertyAssignments);
+				case 5: return new InverseConceptTypeChild(partition, roleAssignments, propertyAssignments);
+				case 6: return new ConceptTypeHasChildAsPartOfAssociation(partition, roleAssignments, propertyAssignments);
+				case 7: return new InformationType(partition, roleAssignments, propertyAssignments);
+				case 8: return new ConceptTypeRelatesToConceptType(partition, roleAssignments, propertyAssignments);
+				case 9: return new ConceptTypeAssimilatesConceptType(partition, roleAssignments, propertyAssignments);
+				case 10: return new UniquenessIncludesConceptTypeChild(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}

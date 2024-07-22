@@ -775,7 +775,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != factType.ImpliedByObjectification)
 				{
 					RoleBase testRole = order.RoleCollection[0];
-					return Text == ((testRole is RoleProxy || testRole is ObjectifiedUnaryRole) ? ResourceStrings.ImpliedFactTypePredicateReading : ResourceStrings.ImpliedFactTypePredicateInverseReading);
+					return Text == (testRole is RoleProxy ? ResourceStrings.ImpliedFactTypePredicateReading : ResourceStrings.ImpliedFactTypePredicateInverseReading);
 				}
 				return false;
 			}
@@ -1044,7 +1044,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IList<RoleBase> roles = RoleCollection;
 			int roleCount = roles.Count;
 
-			VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(this, null, null, null, "{0}\x0{1}", null);
+			VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(this, null, null, "{0}\x0{1}", null);
 			string alternateReadingText = hyphenBinder.ModifiedReadingText;
 			if (alternateReadingText != null)
 			{

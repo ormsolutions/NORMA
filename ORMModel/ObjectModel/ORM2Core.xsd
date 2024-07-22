@@ -311,6 +311,16 @@
 				<xs:sequence>
 					<xs:element name="ConceptualDataType" type="DataTypeUse"/>
 					<xs:element name="ValueRestriction" type="ValueTypeValueRestrictionType" minOccurs="0"/>
+					<xs:element name="DefaultValue" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The default value for this value type. An empty default (as opposed to null) is represented with the DefaultState attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="InvariantDefaultValue" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A culture-invariant form of the DefaultValue element. This value will not be set for a data type where any value is allowed (such as a string) or if the DefaultValue could not be interpreted by the current data type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
 					<xs:element name="Instances" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>Container for instances of this value type.</xs:documentation>
@@ -325,9 +335,10 @@
 				</xs:sequence>
 				<xs:attribute name="IsImplicitBooleanValue" type="xs:boolean" default="false">
 					<xs:annotation>
-						<xs:documentation>True if this is an implied boolean value type. The implied boolean values are automatically created to provide a binarized form of a unary fact type.</xs:documentation>
+						<xs:documentation>(Deprecated) Use explicit unary negation instead. True if this is an implied boolean value type. The implied boolean values are automatically created to provide a binarized form of a unary fact type.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
+				<xs:attribute name="DefaultState" type="DefaultValueState" use="optional" default="UseValue"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -409,6 +420,11 @@
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="EntityTypeRoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EntityTypeUnaryRoleInstance" type="RoleRef" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A reference to a unary role indicating the role is populated by the EntityInstance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeRoleInstanceRef">
@@ -976,6 +992,16 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="ValueRestriction" type="RoleValueRestrictionType" minOccurs="0"/>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The default value for this role. An empty default (as opposed to null) is represented with the DefaultState attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvariantDefaultValue" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A culture-invariant form of the DefaultValue element. This value will not be set for a data type where any value is allowed (such as a string) or if the DefaultValue could not be interpreted by the current data type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="CardinalityRestriction" type="UnaryRoleCardinalityRestrictionType" minOccurs="0"/>
 			<!-- UNDONE: Remove direct DerivationSource support when the format is upgraded -->
 			<xs:element name="DerivationSource" minOccurs="0">
@@ -1006,6 +1032,7 @@
 		</xs:attribute>
 		<!--Derived-->
 		<xs:attribute name="_Multiplicity" type="MultiplicityValues" default="ZeroToOne"/>
+		<xs:attribute name="DefaultState" type="DefaultValueState" use="optional" default="UseValue"/>
 	</xs:complexType>
 	<xs:complexType name="RoleType">
 		<xs:annotation>
@@ -1031,7 +1058,7 @@
 	</xs:complexType>
 	<xs:complexType name="ObjectifiedUnaryRoleType">
 		<xs:annotation>
-			<xs:documentation>A role representing the identifying role in the fact type implied between the object type that objectifies a unary role and the unary role player. There is an implied equality constraint between this role and the referenced unary role.</xs:documentation>
+			<xs:documentation>(Deprecated) With unary negation, objectification uses a RoleProxy instead. A role representing the identifying role in the fact type implied between the object type that objectifies a unary role and the unary role player. There is an implied equality constraint between this role and the referenced unary role.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="RoleBaseType">
@@ -1133,6 +1160,21 @@
 			<xs:element name="FactRoles" type="FactRolesType" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
+			<xs:element name="NegatedByUnaryFactType" type="FactTypeRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For a unary fact type, a paired fact type that represents the negation of this positive unary.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnaryNegationExclusionConstraint" type="ExclusionConstraintRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For a unary fact type that allows negation, an exclusion constraint that assures only one of the positive/negative fact types is populated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnaryNegationMandatoryConstraint" type="MandatoryConstraintRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For a unary fact type that allows negation, constraint that one of positive/negative values is specified.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
 			<xs:element name="Instances" type="FactTypeInstancesType" minOccurs="0"/>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
@@ -1148,7 +1190,103 @@
 				<xs:documentation>This fact type is externally defined (not used).</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="UnaryPattern" type="UnaryValuePattern" default="NotUnary">
+			<xs:annotation>
+				<xs:documentation>Specify the expected unary fact type pattern. The NegatedByUnaryFactType, UnaryNegationExclusionConstraint, ClosedUnaryMandatoryConstraint and role DefaultValue are synchronized with this pattern.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
+	<xs:simpleType name="UnaryValuePattern">
+		<xs:annotation>
+			<xs:documentation>Specify a standard negation, constraint and default pattern for a unary fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NotUnary">
+				<xs:annotation>
+					<xs:documentation>This is not a unary fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Negation">
+				<xs:annotation>
+					<xs:documentation>This is the negation of a unary fact type. All other pattern values are reflected on the paired positive fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OptionalWithoutNegation">
+				<xs:annotation>
+					<xs:documentation>The unary fact type can only represent a true or unknown state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OptionalWithoutNegationDefaultTrue">
+				<xs:annotation>
+					<xs:documentation>The unary fact type can only represent a true or unknown state. The default value is 'true'.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OptionalWithNegation">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true, false and unknown states.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OptionalWithNegationDefaultTrue">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true, false and unknown states. The default value is 'true'.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OptionalWithNegationDefaultFalse">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true, false and unknown states. The default value is 'false'.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RequiredWithNegation">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true and false states.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RequiredWithNegationDefaultTrue">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true and false states. The default value is 'true'.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RequiredWithNegationDefaultFalse">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true and false states. The default value is 'false'.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DeonticRequiredWithNegation">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true and false states. The user is obligated to provide a value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DeonticRequiredWithNegationDefaultTrue">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it to support true and false states. The user is obligated to provide a value. The default value is 'true'.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DeonticRequiredWithNegationDefaultFalse">
+				<xs:annotation>
+					<xs:documentation>The unary fact type is paired with a unary that negates it support true and false states. The user is obligated to provide a value. The default value is 'false'.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DefaultValueState">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UseValue">
+				<xs:annotation>
+					<xs:documentation>The DefaultValue element provides the default information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EmptyValue">
+				<xs:annotation>
+					<xs:documentation>The default value is represented by the interpretation of an empty string by the current data type. For example, an empty string for a string type. The DefaultValue element is not specified when this is set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IgnoreContext">
+				<xs:annotation>
+					<xs:documentation>If a default value is specified in a simple identifier chain then it is automatically used higher up the chain. For example, a default value on a value type will provide a default for all played roles. This setting hides the context default value. It is not used for a value type, which has no context to provide a default value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="ImpliedFactTypeType">
 		<xs:annotation>
 			<xs:documentation>A fact type representing the implied relationship between an objectifying entity type and the role player of a role in the objectified fact type.</xs:documentation>
@@ -2818,6 +2956,7 @@
 			<xs:element name="FrequencyConstraintViolatedByUniquenessConstraintError" type="FrequencyConstraintViolatedByUniquenessConstraintErrorType"/>
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchErrorType"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchErrorType"/>
+			<xs:element name="ValueRangeOutOfRangeError" type="ValueRangeOutOfRangeErrorType"/>
 			<xs:element name="CardinalityRangeOverlapError" type="CardinalityRangeOverlapErrorType"/>
 			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapErrorType"/>
 			<xs:element name="ValueTypeDetachedError" type="ValueTypeDetachedErrorType"/>
@@ -2873,6 +3012,9 @@
 			<xs:element name="ObjectUnifierMismatchedDynamicStateError" type="ObjectUnifierMismatchedDynamicStateErrorType"/>
 			<xs:element name="DynamicObjectAddPartialIdentifierError" type="DynamicObjectAddPartialIdentifierErrorType"/>
 			<xs:element name="DynamicObjectificationAddRequiresLinkFactTypesError" type="DynamicObjectificationAddRequiresLinkFactTypesErrorType"/>
+			<xs:element name="DefaultValueMismatchError" type="DefaultValueMismatchErrorType"/>
+			<xs:element name="DefaultValueOutOfRangeError" type="DefaultValueOutOfRangeErrorType"/>
+			<xs:element name="DefaultValueValueTypeDetachedError" type="DefaultValueValueTypeDetachedErrorType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -3272,6 +3414,18 @@
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ValueRangeOutOfRangeErrorType">
+		<xs:annotation>
+			<xs:documentation>A value range violates a context value constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ValueRange" type="ValueRangeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -4033,6 +4187,44 @@
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DefaultValueMismatchErrorType">
+		<xs:annotation>
+			<xs:documentation>A default value on a role or value type does not match the associated data type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:choice>
+					<xs:element name="Role" type="RoleRef"/>
+					<xs:element name="ValueType" type="ObjectTypeRef"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DefaultValueOutOfRangeErrorType">
+		<xs:annotation>
+			<xs:documentation>A default value on a role or value type violates a value constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:choice>
+					<xs:element name="Role" type="RoleRef"/>
+					<xs:element name="ValueType" type="ObjectTypeRef"/>
+				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DefaultValueValueTypeDetachedErrorType">
+		<xs:annotation>
+			<xs:documentation>A default value is specified on a role that cannot be resolved back to a single identifying value type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Role" type="RoleRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

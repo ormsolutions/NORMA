@@ -125,6 +125,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Model.Name.Description");
 			}
 		}
+		/// <summary>Description for the UnaryNegation property displayed when a unary negation fact type is selected.</summary>
+		public static string FactTypeUnaryNegationDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.FactType.UnaryNegation.Description");
+			}
+		}
+		/// <summary>Display name for the UnaryNegation property displayed when a unary negation fact type is selected.</summary>
+		public static string FactTypeUnaryNegationDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.FactType.UnaryNegation.DisplayName");
+			}
+		}
 		/// <summary>Description for the <see cref="ObjectModel.ObjectType.CardinalityDisplay"/></summary>
 		public static string ObjectTypeCardinalityDisplayDescription
 		{
@@ -291,6 +307,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.EntityType.DefaultNamePattern");
+			}
+		}
+		/// <summary>The name displayed to represent the lack of a default value for a role or value type.</summary>
+		public static string DefaultValuePickerNoDefaultText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.DefaultValuePicker.NoDefaultValueText");
+			}
+		}
+		/// <summary>The name displayed to use the context default value. Replacement fields: 0=context default</summary>
+		public static string DefaultValuePickerContextDefaultFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.DefaultValuePicker.ContextDefaultValueFormat");
 			}
 		}
 		/// <summary>An alternate description for the DataType.Length property. The default description describes a variable length.</summary>
@@ -531,6 +563,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text");
+			}
+		}
+		/// <summary>A true-only logical data type</summary>
+		public static string PortableDataTypeLogicalTrue
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Logical.True.Text");
 			}
 		}
 		/// <summary>A true or false logical data type</summary>
@@ -1460,6 +1500,54 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum.Compact");
 			}
 		}
+		/// <summary>DefaultValueMismatchError text. Compact form.</summary>
+		public static string ModelErrorDefaultValueMismatchCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DefaultValueMismatchError.CompactMessage");
+			}
+		}
+		/// <summary>DefaultValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
+		public static string ModelErrorDefaultValueMismatch
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DefaultValueMismatchError.Message");
+			}
+		}
+		/// <summary>DefaultValueOutOfRangeError text. Compact form.</summary>
+		public static string ModelErrorDefaultValueOutOfRangeCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DefaultValueOutOfRangeError.CompactMessage");
+			}
+		}
+		/// <summary>DefaultValueOutOfRangeError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
+		public static string ModelErrorDefaultValueOutOfRange
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DefaultValueOutOfRangeError.Message");
+			}
+		}
+		/// <summary>DefaultValueTypeDetachedError text. Compact form.</summary>
+		public static string ModelErrorDefaultValueValueTypeDetachedCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DefaultValueValueTypeDetachedError.CompactMessage");
+			}
+		}
+		/// <summary>DefaultValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
+		public static string ModelErrorDefaultValueValueTypeDetached
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DefaultValueValueTypeDetachedError.Message");
+			}
+		}
 		/// <summary>Dynamic text replacement for an error associated a dynamic rule. Automatically capitalized on replacement. {0}=DynamicRule {1}=Model.</summary>
 		public static string ModelErrorDisplayContextDynamicRule
 		{
@@ -1948,6 +2036,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.CompactMessage");
 			}
 		}
+		/// <summary>ValueRangeOutOfRangeError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
+		public static string ModelErrorValueRangeOutOfRangeError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.OutOfRangeError.Message");
+			}
+		}
+		/// <summary>ValueRangeOutOfRangeError text. Compact form.</summary>
+		public static string ModelErrorValueRangeOutOfRangeErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.OutOfRangeError.CompactMessage");
+			}
+		}
 		/// <summary>Category name to display for uncategorized model errors.</summary>
 		public static string ModelErrorUncategorized
 		{
@@ -2002,14 +2106,6 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceRolePlayerNotNestingType");
-			}
-		}
-		/// <summary>Exception message when an attempt is made to modify a role player associated with an implicit boolean value.</summary>
-		public static string ModelExceptionFactTypeEnforceNoImplicitBooleanValueTypeRolePlayerChange
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to move a role to a different FactType.</summary>
@@ -2546,6 +2642,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ImpliedFactTypeReadingsText");
 			}
 		}
+		/// <summary>Text used as the header row for the inverse readings when a positive unary is selected.</summary>
+		public static string ModelReadingEditorInverseNegationFactTypeReadingsText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.InverseNegationFactTypeReadingsText");
+			}
+		}
+		/// <summary>Text used as the header row for the inverse readings when a negation unary is selected.</summary>
+		public static string ModelReadingEditorInversePositiveFactTypeReadingsText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.InversePositiveFactTypeReadingsText");
+			}
+		}
 		/// <summary>Text used as the header row for the primary readings in the reading editor for a role selection on an objectified fact type.</summary>
 		public static string ModelReadingEditorPrimaryFactTypeReadingsText
 		{
@@ -2610,12 +2722,20 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.UnsupportedSelectionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.</summary>
-		public static string ModelSamplePopulationEditorNewInstanceTransactionText
+		/// <summary>Text used to describe the transaction when a reference to an object instance is added. {0}=referenced type name {1}=referenced instance name {2}=referencing instance name.</summary>
+		public static string ModelSamplePopulationEditorAddObjectInstanceReferenceTransactionText
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NewInstanceTransactionText");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.AddObjectInstanceReferenceTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when adding a unary role instance. {0}=unary fact type name {1}=instance name.</summary>
+		public static string ModelSamplePopulationEditorAddUnaryRoleInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.AddUnaryRoleInstanceTransactionText");
 			}
 		}
 		/// <summary>Text used to describe the transaction when editing an instance.  {0}=ObjectType or FactType name, {1}=instance name</summary>
@@ -2624,6 +2744,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EditInstanceTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.</summary>
+		public static string ModelSamplePopulationEditorNewInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NewInstanceTransactionText");
 			}
 		}
 		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another fact instance.</summary>
@@ -2666,7 +2794,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveFactInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when a reference an object instance is removed. {0}=type name {1}=instance name.</summary>
+		/// <summary>Text used to describe the transaction when a reference to an object instance is removed. {0}=referenced type name {1}=referenced instance name {2}=referencing instance name.</summary>
 		public static string ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText
 		{
 			get
@@ -2680,6 +2808,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveObjectInstanceTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when removing a unary role instance. {0}=unary fact type name {1}=instance name.</summary>
+		public static string ModelSamplePopulationEditorRemoveUnaryRoleInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveUnaryRoleInstanceTransactionText");
 			}
 		}
 		/// <summary>Text used to describe the transaction when an identifier is separated from an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
@@ -3402,12 +3538,12 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ExclusiveOrConstraint.MandatoryConstraintName.DisplayName");
 			}
 		}
-		/// <summary>Text used as the name for Name property of the coupled exclusion constraint, displayed in the properties window.</summary>
-		public static string ExclusiveOrConstraintExclusionConstraintNameDisplayName
+		/// <summary>Text used to modify the survey name (model browser) display of the exclusion constraint for an exclusive or. This is only displayed as a reference, but looks exactly like the coupled mandatory otherwise.</summary>
+		public static string ExclusiveOrConstraintExclusionConstraintSurveyNameFormat
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ExclusiveOrConstraint.ExclusionConstraintName.DisplayName");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ExclusiveOrConstraint.ExclusionConstraint.SurveyNameFormat");
 			}
 		}
 		/// <summary>The format string for a selected role when a role name is specified. {0}=ObjectType Name, {1}=Role Name</summary>
@@ -4755,30 +4891,6 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "SchemaValidationFailure.Instructions");
 			}
 		}
-		/// <summary>Error message for when a user attempts to modify the IsImplicitBooleanValueType property on a ValueType</summary>
-		public static string ImplicitBooleanValueTypeRestriction
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.Restriction");
-			}
-		}
-		/// <summary>Error message for when a user attempts to modify properties on an Implicit Boolean ValueType</summary>
-		public static string ImplicitBooleanValueTypePropertyRestriction
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.PropertyRestriction");
-			}
-		}
-		/// <summary>The format string for naming an implicit boolean value type when there are no readings on the fact type.</summary>
-		public static string ImplicitBooleanValueTypeNoReadingFormatString
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ImplicitBooleanValueType.NoReadingFormatString");
-			}
-		}
 		/// <summary>Text used in the dropdown editor and type converter for the frequency constraint max value. Correspond to the 0 value in the object model.</summary>
 		public static string FrequencyConstraintUnboundedMaxValueText
 		{
@@ -4792,6 +4904,29 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.DisplayName");
+			}
+		}
+		/// <summary>The format string used to wrap a full positive predicate that does not start with {0}.</summary>
+		public static string UnaryFactTypeNegationDefaultFullPredicateFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "UnaryFactTypeNegation.DefaultFullPredicateFormat");
+			}
+		}
+		/// <summary>The format string used to wrap the positive predicate part for a default negated fact type reading. This is used if the positive format string starts with {0} and is applied after any space. It is not used if it is empty.</summary>
+		public static string UnaryFactTypeNegationDefaultPredicatePartFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "UnaryFactTypeNegation.DefaultPredicatePartFormat");
+			}
+		}
+		public static string UpgradeMessageDebinarizeUnary
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "UpgradeMessage.DebinarizeUnary");
 			}
 		}
 		/// <summary>The name of the transaction that converts a frequency constraint to a uniqueness.</summary>

@@ -65,15 +65,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				DomainPropertyInfo mandatoryConstraintNameDomainProperty = mandatoryConstraint.GetDomainClass().NameDomainProperty;
 				properties.Add(EditorUtility.RedirectPropertyDescriptor(
 					mandatoryConstraint,
-					new ElementPropertyDescriptor(
-						mandatoryConstraint,
-						mandatoryConstraintNameDomainProperty,
-						base.GetDomainPropertyAttributes(mandatoryConstraintNameDomainProperty)),
+					EditorUtility.ModifyPropertyDescriptorDisplay(
+						new ElementPropertyDescriptor(
+							mandatoryConstraint,
+							mandatoryConstraintNameDomainProperty,
+							base.GetDomainPropertyAttributes(mandatoryConstraintNameDomainProperty)),
+						"MandatoryConstraintName",
+						ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName,
+						null,
+						null
+					),
 					typeof(ExclusionConstraint)));
 			}
 			return properties;
 		}
 
+#if FALSE
 		/// <summary>
 		/// Distinguish between the <c>Name</c> properties for the <see cref="ExclusionConstraint"/> and
 		/// the <see cref="MandatoryConstraint"/> that make up an <c>Exclusive Or</c> constraint.
@@ -89,6 +96,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					ResourceStrings.ExclusiveOrConstraintMandatoryConstraintNameDisplayName;
 			}
 			return base.GetPropertyDescriptorDisplayName(propertyDescriptor);
+		}
+#endif
+
+		/// <summary>
+		/// Modality is read-only if it is controlled by a unary fact type pattern
+		/// </summary>
+		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
+		{
+			if (propertyDescriptor.DomainPropertyInfo.Id == SetComparisonConstraint.ModalityDomainPropertyId &&
+				ModelElement.Store != null &&
+				ModelElement.ControlledByUnaryFactType != null)
+			{
+				return true;
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
 	}
 }

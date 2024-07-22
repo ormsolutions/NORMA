@@ -699,6 +699,39 @@
     <value>DerivationStorage</value>
     <comment>DisplayName for DomainProperty &apos;DerivationStorageDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultValue.Description" xml:space="preserve">
+    <value>The default value for this value type.</value>
+    <comment>Description for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultValue.DisplayName" xml:space="preserve">
+    <value>DefaultValue</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/InvariantDefaultValue.Description" xml:space="preserve">
+    <value>The culture-invariant form of the default value property.</value>
+    <comment>Description for DomainProperty &apos;InvariantDefaultValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/InvariantDefaultValue.DisplayName" xml:space="preserve">
+    <value>InvariantDefaultValue</value>
+    <comment>DisplayName for DomainProperty &apos;InvariantDefaultValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ValueTypeDefaultValue.Description" xml:space="preserve">
+    <value>The DefaultValue property for the ValueType that identifies this EntityType.
+    The DefaultValue property of an EntityType is applied to the identifying role, not directly to the identifying ValueType. This allows EntityType DefaultValue to be specified independently for multiple EntityTypes identified with the same unit-based or general reference mode patterns.</value>
+    <comment>Description for DomainProperty &apos;ValueTypeDefaultValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ValueTypeDefaultValue.DisplayName" xml:space="preserve">
+    <value>ValueTypeDefaultValue</value>
+    <comment>DisplayName for DomainProperty &apos;ValueTypeDefaultValue&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultState.Description" xml:space="preserve">
+    <value>Specify how the DefaultValue is interpreted.</value>
+    <comment>Description for DomainProperty &apos;DefaultState&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultState.DisplayName" xml:space="preserve">
+    <value>DefaultState</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultState&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;FactType&apos;</comment>
@@ -742,6 +775,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;FactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/UnaryPattern.Description" xml:space="preserve">
+    <value>Specify unary fact type negation, constraint and default value pattern.</value>
+    <comment>Description for DomainProperty &apos;UnaryPattern&apos; on DomainClass &apos;FactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/UnaryPattern.DisplayName" xml:space="preserve">
+    <value>UnaryPattern</value>
+    <comment>DisplayName for DomainProperty &apos;UnaryPattern&apos; on DomainClass &apos;FactType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/GeneratedName.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.GeneratedName</value>
@@ -883,6 +924,30 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/ObjectificationOppositeRoleName.DisplayName" xml:space="preserve">
     <value>ImpliedRoleName</value>
     <comment>DisplayName for DomainProperty &apos;ObjectificationOppositeRoleName&apos; on DomainClass &apos;Role&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultValue.Description" xml:space="preserve">
+    <value>The default value for this role.</value>
+    <comment>Description for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;Role&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultValue.DisplayName" xml:space="preserve">
+    <value>DefaultValue</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultValue&apos; on DomainClass &apos;Role&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/InvariantDefaultValue.Description" xml:space="preserve">
+    <value>The culture-invariant form of the default value property.</value>
+    <comment>Description for DomainProperty &apos;InvariantDefaultValue&apos; on DomainClass &apos;Role&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/InvariantDefaultValue.DisplayName" xml:space="preserve">
+    <value>InvariantDefaultValue</value>
+    <comment>DisplayName for DomainProperty &apos;InvariantDefaultValue&apos; on DomainClass &apos;Role&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultState.Description" xml:space="preserve">
+    <value>Specify how the DefaultValue is interpreted.</value>
+    <comment>Description for DomainProperty &apos;DefaultState&apos; on DomainClass &apos;Role&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultState.DisplayName" xml:space="preserve">
+    <value>DefaultState</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultState&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedUnaryRole.Description" xml:space="preserve">
     <value></value>
@@ -2294,6 +2359,14 @@
     <value>TrueOrFalseLogicalDataType</value>
     <comment>DisplayName for DomainClass &apos;TrueOrFalseLogicalDataType&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TrueLogicalDataType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;TrueLogicalDataType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TrueLogicalDataType.DisplayName" xml:space="preserve">
+    <value>TrueLogicalDataType</value>
+    <comment>DisplayName for DomainClass &apos;TrueLogicalDataType&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.YesOrNoLogicalDataType.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;YesOrNoLogicalDataType&apos;</comment>
@@ -2710,6 +2783,30 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Value Comparison Roles Not Comparable</value>
     <comment>DisplayName for DomainClass &apos;ValueComparisonRolesNotComparableError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueMismatchError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueMismatchError.DisplayName" xml:space="preserve">
+    <value>Default Value Invalid for DataType</value>
+    <comment>DisplayName for DomainClass &apos;DefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueValueTypeDetachedError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueValueTypeDetachedError.DisplayName" xml:space="preserve">
+    <value>Default Value Detached from Identifying ValueType</value>
+    <comment>DisplayName for DomainClass &apos;DefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueOutOfRangeError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueOutOfRangeError.DisplayName" xml:space="preserve">
+    <value>Default Value Violates Value Constraint</value>
+    <comment>DisplayName for DomainClass &apos;DefaultValueOutOfRangeError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeMetaRole.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;SubtypeMetaRole&apos;</comment>
@@ -2813,8 +2910,16 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <comment>Description for DomainClass &apos;ValueConstraintValueTypeDetachedError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintValueTypeDetachedError.DisplayName" xml:space="preserve">
-    <value>Path to Identifying ValueType Detached</value>
+    <value>Value Constraint Detached from Identifying ValueType</value>
     <comment>DisplayName for DomainClass &apos;ValueConstraintValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeOutOfRangeError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ValueRangeOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeOutOfRangeError.DisplayName" xml:space="preserve">
+    <value>Value Range Violates Context Value Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ValueRangeOutOfRangeError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError.Description" xml:space="preserve">
     <value></value>
@@ -4239,6 +4344,102 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler/ExclusionConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Exclusive Or Mandatory Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusiveOrConstraintCoupler&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation</value>
+    <comment>Description for DomainClass &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.DisplayName" xml:space="preserve">
+    <value>Exclusion Constraint Allows Unary Fact Type Negation</value>
+    <comment>DisplayName for DomainClass &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation/UnaryFactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.UnaryFactType</value>
+    <comment>Description for DomainRole &apos;UnaryFactType&apos; on DomainRelationship &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation/UnaryFactType.DisplayName" xml:space="preserve">
+    <value>NegationExclusionConstraint</value>
+    <comment>DisplayName for DomainRole &apos;UnaryFactType&apos; on DomainRelationship &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation/UnaryFactType.PropertyDisplayName" xml:space="preserve">
+    <value>Negation Exclusion Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UnaryFactType&apos; on DomainRelationship &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation/ExclusionConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.ExclusionConstraint</value>
+    <comment>Description for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation/ExclusionConstraint.DisplayName" xml:space="preserve">
+    <value>ControlledByUnaryFactType</value>
+    <comment>DisplayName for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation/ExclusionConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Controlled By Unary Fact Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExclusionConstraint&apos; on DomainRelationship &apos;ExclusionConstraintAllowsUnaryFactTypeNegation&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType</value>
+    <comment>Description for DomainClass &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.DisplayName" xml:space="preserve">
+    <value>Mandatory Constraint Closes Unary Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType/UnaryFactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.UnaryFactType</value>
+    <comment>Description for DomainRole &apos;UnaryFactType&apos; on DomainRelationship &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType/UnaryFactType.DisplayName" xml:space="preserve">
+    <value>NegationMandatoryConstraint</value>
+    <comment>DisplayName for DomainRole &apos;UnaryFactType&apos; on DomainRelationship &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType/UnaryFactType.PropertyDisplayName" xml:space="preserve">
+    <value>Negation Mandatory Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UnaryFactType&apos; on DomainRelationship &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.MandatoryConstraint</value>
+    <comment>Description for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType/MandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>ClosesUnaryFactType</value>
+    <comment>DisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType/MandatoryConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Closes Unary Fact Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintClosesUnaryFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType</value>
+    <comment>Description for DomainClass &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.DisplayName" xml:space="preserve">
+    <value>Unary Fact Type Has Negation Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType/PositiveFactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.PositiveFactType</value>
+    <comment>Description for DomainRole &apos;PositiveFactType&apos; on DomainRelationship &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType/PositiveFactType.DisplayName" xml:space="preserve">
+    <value>NegationUnaryFactType</value>
+    <comment>DisplayName for DomainRole &apos;PositiveFactType&apos; on DomainRelationship &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType/PositiveFactType.PropertyDisplayName" xml:space="preserve">
+    <value>Negation Unary Fact Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PositiveFactType&apos; on DomainRelationship &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType/NegativeFactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.NegativeFactType</value>
+    <comment>Description for DomainRole &apos;NegativeFactType&apos; on DomainRelationship &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType/NegativeFactType.DisplayName" xml:space="preserve">
+    <value>PositiveUnaryFactType</value>
+    <comment>DisplayName for DomainRole &apos;NegativeFactType&apos; on DomainRelationship &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType/NegativeFactType.PropertyDisplayName" xml:space="preserve">
+    <value>Positive Unary Fact Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;NegativeFactType&apos; on DomainRelationship &apos;UnaryFactTypeHasNegationFactType&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasRoleSequence.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasRoleSequence</value>
@@ -6256,6 +6457,166 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Cardinality Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError</value>
+    <comment>Description for DomainClass &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.DisplayName" xml:space="preserve">
+    <value>Role Has Default Value Mismatch Error</value>
+    <comment>DisplayName for DomainClass &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Default Value Mismatch Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError/DefaultValueMismatchError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.DefaultValueMismatchError</value>
+    <comment>Description for DomainRole &apos;DefaultValueMismatchError&apos; on DomainRelationship &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError/DefaultValueMismatchError.DisplayName" xml:space="preserve">
+    <value>DefaultValueMismatchError</value>
+    <comment>DisplayName for DomainRole &apos;DefaultValueMismatchError&apos; on DomainRelationship &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError/DefaultValueMismatchError.PropertyDisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultValueMismatchError&apos; on DomainRelationship &apos;RoleHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError</value>
+    <comment>Description for DomainClass &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.DisplayName" xml:space="preserve">
+    <value>Role Has Default Value Out Of Range Error</value>
+    <comment>DisplayName for DomainClass &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Default Value Out Of Range Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError/DefaultValueOutOfRangeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeError</value>
+    <comment>Description for DomainRole &apos;DefaultValueOutOfRangeError&apos; on DomainRelationship &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError/DefaultValueOutOfRangeError.DisplayName" xml:space="preserve">
+    <value>DefaultValueOutOfRangeError</value>
+    <comment>DisplayName for DomainRole &apos;DefaultValueOutOfRangeError&apos; on DomainRelationship &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError/DefaultValueOutOfRangeError.PropertyDisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultValueOutOfRangeError&apos; on DomainRelationship &apos;RoleHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError</value>
+    <comment>Description for DomainClass &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.DisplayName" xml:space="preserve">
+    <value>Role Has Default Value Value Type Detached Error</value>
+    <comment>DisplayName for DomainClass &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Default Value Value Type Detached Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError/DefaultValueValueTypeDetachedError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.DefaultValueValueTypeDetachedError</value>
+    <comment>Description for DomainRole &apos;DefaultValueValueTypeDetachedError&apos; on DomainRelationship &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError/DefaultValueValueTypeDetachedError.DisplayName" xml:space="preserve">
+    <value>DefaultValueValueTypeDetachedError</value>
+    <comment>DisplayName for DomainRole &apos;DefaultValueValueTypeDetachedError&apos; on DomainRelationship &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError/DefaultValueValueTypeDetachedError.PropertyDisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultValueValueTypeDetachedError&apos; on DomainRelationship &apos;RoleHasDefaultValueValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError</value>
+    <comment>Description for DomainClass &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.DisplayName" xml:space="preserve">
+    <value>Value Type Has Default Value Mismatch Error</value>
+    <comment>DisplayName for DomainClass &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError/ValueType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.ValueType</value>
+    <comment>Description for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError/ValueType.DisplayName" xml:space="preserve">
+    <value>ValueType</value>
+    <comment>DisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError/ValueType.PropertyDisplayName" xml:space="preserve">
+    <value>Default Value Mismatch Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError/DefaultValueMismatchError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.DefaultValueMismatchError</value>
+    <comment>Description for DomainRole &apos;DefaultValueMismatchError&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError/DefaultValueMismatchError.DisplayName" xml:space="preserve">
+    <value>DefaultValueMismatchError</value>
+    <comment>DisplayName for DomainRole &apos;DefaultValueMismatchError&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError/DefaultValueMismatchError.PropertyDisplayName" xml:space="preserve">
+    <value>Value Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultValueMismatchError&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueMismatchError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError</value>
+    <comment>Description for DomainClass &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.DisplayName" xml:space="preserve">
+    <value>Value Type Has Default Value Out Of Range Error</value>
+    <comment>DisplayName for DomainClass &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError/ValueType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.ValueType</value>
+    <comment>Description for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError/ValueType.DisplayName" xml:space="preserve">
+    <value>ValueType</value>
+    <comment>DisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError/ValueType.PropertyDisplayName" xml:space="preserve">
+    <value>Default Value Out Of Range Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError/DefaultValueOutOfRangeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeError</value>
+    <comment>Description for DomainRole &apos;DefaultValueOutOfRangeError&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError/DefaultValueOutOfRangeError.DisplayName" xml:space="preserve">
+    <value>DefaultValueOutOfRangeError</value>
+    <comment>DisplayName for DomainRole &apos;DefaultValueOutOfRangeError&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError/DefaultValueOutOfRangeError.PropertyDisplayName" xml:space="preserve">
+    <value>Value Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultValueOutOfRangeError&apos; on DomainRelationship &apos;ValueTypeHasDefaultValueOutOfRangeError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasDefinition.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasDefinition</value>
     <comment>Description for DomainClass &apos;ModelHasDefinition&apos;</comment>
@@ -7216,6 +7577,38 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Value Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ValueTypeDetachedError&apos; on DomainRelationship &apos;ValueConstraintHasValueTypeDetachedError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError</value>
+    <comment>Description for DomainClass &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.DisplayName" xml:space="preserve">
+    <value>Value Range Has Out Of Range Error</value>
+    <comment>DisplayName for DomainClass &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError/ValueRange.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.ValueRange</value>
+    <comment>Description for DomainRole &apos;ValueRange&apos; on DomainRelationship &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError/ValueRange.DisplayName" xml:space="preserve">
+    <value>ValueRange</value>
+    <comment>DisplayName for DomainRole &apos;ValueRange&apos; on DomainRelationship &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError/ValueRange.PropertyDisplayName" xml:space="preserve">
+    <value>Out Of Range Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueRange&apos; on DomainRelationship &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError/OutOfRangeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.OutOfRangeError</value>
+    <comment>Description for DomainRole &apos;OutOfRangeError&apos; on DomainRelationship &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError/OutOfRangeError.DisplayName" xml:space="preserve">
+    <value>OutOfRangeError</value>
+    <comment>DisplayName for DomainRole &apos;OutOfRangeError&apos; on DomainRelationship &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError/OutOfRangeError.PropertyDisplayName" xml:space="preserve">
+    <value>Value Range</value>
+    <comment>PropertyDisplayName for DomainRole &apos;OutOfRangeError&apos; on DomainRelationship &apos;ValueRangeHasOutOfRangeError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole</value>
     <comment>Description for DomainClass &apos;FactTypeHasRole&apos;</comment>
@@ -7663,6 +8056,38 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/RoleInstance.PropertyDisplayName" xml:space="preserve">
     <value>Entity Type Instance</value>
     <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole</value>
+    <comment>Description for DomainClass &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.DisplayName" xml:space="preserve">
+    <value>Entity Type Instance Populates Unary Role</value>
+    <comment>DisplayName for DomainClass &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstance</value>
+    <comment>Description for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.DisplayName" xml:space="preserve">
+    <value>EntityTypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Unary Role Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRole</value>
+    <comment>Description for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.DisplayName" xml:space="preserve">
+    <value>UnaryRole</value>
+    <comment>DisplayName for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.PropertyDisplayName" xml:space="preserve">
+    <value>Entity Instances For Unary</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance</value>
@@ -12199,6 +12624,134 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DynamicRuleNodeState/Delete.Description" xml:space="preserve">
     <value>Delete this node from the current state.</value>
     <comment>Description for EnumerationLiteral &apos;Delete&apos; on DomainEnumeration &apos;DynamicRuleNodeState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/NotUnary.DisplayName" xml:space="preserve">
+    <value>NotUnary</value>
+    <comment>Display name for EnumerationLiteral &apos;NotUnary&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/NotUnary.Description" xml:space="preserve">
+    <value>This is not a unary fact type.</value>
+    <comment>Description for EnumerationLiteral &apos;NotUnary&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/Negation.DisplayName" xml:space="preserve">
+    <value>Negation</value>
+    <comment>Display name for EnumerationLiteral &apos;Negation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/Negation.Description" xml:space="preserve">
+    <value>This is the negation of a unary fact type. All other pattern values are reflected on the paired positive fact type.</value>
+    <comment>Description for EnumerationLiteral &apos;Negation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithoutNegation.DisplayName" xml:space="preserve">
+    <value>OptionalWithoutNegation</value>
+    <comment>Display name for EnumerationLiteral &apos;OptionalWithoutNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithoutNegation.Description" xml:space="preserve">
+    <value>The unary fact type can only represent a true or unknown state.</value>
+    <comment>Description for EnumerationLiteral &apos;OptionalWithoutNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithoutNegationDefaultTrue.DisplayName" xml:space="preserve">
+    <value>OptionalWithoutNegationDefaultTrue</value>
+    <comment>Display name for EnumerationLiteral &apos;OptionalWithoutNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithoutNegationDefaultTrue.Description" xml:space="preserve">
+    <value>The unary fact type can only represent a true or unknown state. The default value is &apos;true&apos;.</value>
+    <comment>Description for EnumerationLiteral &apos;OptionalWithoutNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithNegation.DisplayName" xml:space="preserve">
+    <value>OptionalWithNegation</value>
+    <comment>Display name for EnumerationLiteral &apos;OptionalWithNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithNegation.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true, false and unknown states.</value>
+    <comment>Description for EnumerationLiteral &apos;OptionalWithNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithNegationDefaultTrue.DisplayName" xml:space="preserve">
+    <value>OptionalWithNegationDefaultTrue</value>
+    <comment>Display name for EnumerationLiteral &apos;OptionalWithNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithNegationDefaultTrue.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true, false and unknown states. The default value is &apos;true&apos;.</value>
+    <comment>Description for EnumerationLiteral &apos;OptionalWithNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithNegationDefaultFalse.DisplayName" xml:space="preserve">
+    <value>OptionalWithNegationDefaultFalse</value>
+    <comment>Display name for EnumerationLiteral &apos;OptionalWithNegationDefaultFalse&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/OptionalWithNegationDefaultFalse.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true, false and unknown states. The default value is &apos;false&apos;.</value>
+    <comment>Description for EnumerationLiteral &apos;OptionalWithNegationDefaultFalse&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/RequiredWithNegation.DisplayName" xml:space="preserve">
+    <value>RequiredWithNegation</value>
+    <comment>Display name for EnumerationLiteral &apos;RequiredWithNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/RequiredWithNegation.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true and false states.</value>
+    <comment>Description for EnumerationLiteral &apos;RequiredWithNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/RequiredWithNegationDefaultTrue.DisplayName" xml:space="preserve">
+    <value>RequiredWithNegationDefaultTrue</value>
+    <comment>Display name for EnumerationLiteral &apos;RequiredWithNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/RequiredWithNegationDefaultTrue.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true and false states. The default value is &apos;true&apos;.</value>
+    <comment>Description for EnumerationLiteral &apos;RequiredWithNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/RequiredWithNegationDefaultFalse.DisplayName" xml:space="preserve">
+    <value>RequiredWithNegationDefaultFalse</value>
+    <comment>Display name for EnumerationLiteral &apos;RequiredWithNegationDefaultFalse&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/RequiredWithNegationDefaultFalse.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true and false states. The default value is &apos;false&apos;.</value>
+    <comment>Description for EnumerationLiteral &apos;RequiredWithNegationDefaultFalse&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/DeonticRequiredWithNegation.DisplayName" xml:space="preserve">
+    <value>DeonticRequiredWithNegation</value>
+    <comment>Display name for EnumerationLiteral &apos;DeonticRequiredWithNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/DeonticRequiredWithNegation.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true and false states. The user is obligated to provide a value.</value>
+    <comment>Description for EnumerationLiteral &apos;DeonticRequiredWithNegation&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/DeonticRequiredWithNegationDefaultTrue.DisplayName" xml:space="preserve">
+    <value>DeonticRequiredWithNegationDefaultTrue</value>
+    <comment>Display name for EnumerationLiteral &apos;DeonticRequiredWithNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/DeonticRequiredWithNegationDefaultTrue.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it to support true and false states. The user is obligated to provide a value. The default value is &apos;true&apos;.</value>
+    <comment>Description for EnumerationLiteral &apos;DeonticRequiredWithNegationDefaultTrue&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/DeonticRequiredWithNegationDefaultFalse.DisplayName" xml:space="preserve">
+    <value>DeonticRequiredWithNegationDefaultFalse</value>
+    <comment>Display name for EnumerationLiteral &apos;DeonticRequiredWithNegationDefaultFalse&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern/DeonticRequiredWithNegationDefaultFalse.Description" xml:space="preserve">
+    <value>The unary fact type is paired with a unary that negates it support true and false states. The user is obligated to provide a value. The default value is &apos;false&apos;.</value>
+    <comment>Description for EnumerationLiteral &apos;DeonticRequiredWithNegationDefaultFalse&apos; on DomainEnumeration &apos;UnaryValuePattern&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueState/UseValue.DisplayName" xml:space="preserve">
+    <value>UseValue</value>
+    <comment>Display name for EnumerationLiteral &apos;UseValue&apos; on DomainEnumeration &apos;DefaultValueState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueState/UseValue.Description" xml:space="preserve">
+    <value>Use the DefaultValue property.</value>
+    <comment>Description for EnumerationLiteral &apos;UseValue&apos; on DomainEnumeration &apos;DefaultValueState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueState/EmptyValue.DisplayName" xml:space="preserve">
+    <value>EmptyValue</value>
+    <comment>Display name for EnumerationLiteral &apos;EmptyValue&apos; on DomainEnumeration &apos;DefaultValueState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueState/EmptyValue.Description" xml:space="preserve">
+    <value>Use an empty value as the default. Applies to string values.</value>
+    <comment>Description for EnumerationLiteral &apos;EmptyValue&apos; on DomainEnumeration &apos;DefaultValueState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueState/IgnoreContext.DisplayName" xml:space="preserve">
+    <value>IgnoreContext</value>
+    <comment>Display name for EnumerationLiteral &apos;IgnoreContext&apos; on DomainEnumeration &apos;DefaultValueState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueState/IgnoreContext.Description" xml:space="preserve">
+    <value>Turn off a default that is in context from the value type or identifying role.</value>
+    <comment>Description for EnumerationLiteral &apos;IgnoreContext&apos; on DomainEnumeration &apos;DefaultValueState&apos;</comment>
   </data>
   <data name="UnrecognizedElementType" xml:space="preserve">
     <value>ElementType {0} is not recognized as a type of domain class which belongs to this domain model.</value>

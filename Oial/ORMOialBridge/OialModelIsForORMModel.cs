@@ -36,7 +36,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.011";
+		public const string CurrentAlgorithmVersion = "1.012";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -150,7 +150,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		[DelayValidatePriority(ValidationPriority.ValidateModel, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 		private static void DelayValidateModel(ModelElement element)
 		{
-			Dictionary<object, object> contextDictionary = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			ValidateORMModel((ORMModel)element, false);
+		}
+		private static void ValidateORMModel(ORMModel model, bool notifyBeforeRebuild)
+		{
+			Dictionary<object, object> contextDictionary = model.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 
 			if (contextDictionary.ContainsKey(Key))
 			{
@@ -168,7 +172,6 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 			}
 
-			ORMModel model = (ORMModel)element;
 			Store store = model.Store;
 
 			// Get the link from the given ORMModel
@@ -183,6 +186,15 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				try
 				{
 					oialModel = oialModelIsForORMModel.AbstractionModel;
+					IAbstractionModelRebuilding[] rebuildListeners;
+					if (notifyBeforeRebuild && null != (rebuildListeners = ((IFrameworkServices)store).GetTypedDomainModelProviders<IAbstractionModelRebuilding>()))
+					{
+						foreach (IAbstractionModelRebuilding rebuildListener in rebuildListeners)
+						{
+							rebuildListener.AbstractionModelRebuilding(oialModel);
+						}
+					}
+
 					oialModel.ConceptTypeCollection.Clear();
 					oialModel.InformationTypeFormatCollection.Clear();
 
@@ -345,6 +357,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						subtypeFact,
 						subtypeRole,
 						supertypeRole,
+						null,
 						FactTypeMappingFlags.Subtype |
 							// Map deeply toward the supertype unless the subtype has a generated identifier, in which case
 							// we disallow a deep mapping.
@@ -354,11 +367,23 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 							(subtype.IsValueType ? FactTypeMappingFlags.FromValueType | FactTypeMappingFlags.TowardsValueType : FactTypeMappingFlags.None));
 					decidedOneToOneFactTypeMappings.Add(subtypeFact, factTypeMapping);
 				}
+				else if (factType.UnaryPattern != UnaryValuePattern.NotUnary)
+				{
+					FactType inverseFactType;
+					FactTypeMappingFlags inverseFlags;
+					ResolveInverseFactType(factType, out inverseFactType, out inverseFlags);
+					Role unaryRole = factType.UnaryRole;
+					decidedManyToOneFactTypeMappings.Add(factType, new FactTypeMapping(factType, null, unaryRole, inverseFactType, FactTypeMappingFlags.FromValueType | (unaryRole.RolePlayer.IsValueType ? FactTypeMappingFlags.TowardsValueType : FactTypeMappingFlags.None) | inverseFlags));
+				}
 				else
 				{
 					LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 
-					Debug.Assert(roles.Count == 2 && (factType.Objectification == null || factType.UnaryRole != null), "Non-binarized fact types should have been filtered out already.");
+					Debug.Assert(roles.Count == 2 && factType.Objectification == null, "Non-binarized fact types should have been filtered out already.");
+
+					FactType inverseFactType;
+					FactTypeMappingFlags inverseFlags;
+					ResolveInverseFactType(factType, out inverseFactType, out inverseFlags);
 
 					Role firstRole = roles[0].Role;
 					Role secondRole = roles[1].Role;
@@ -373,7 +398,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					
 					bool firstRoleIsUnique = (firstRoleUniquenessConstraint != null);
 					bool secondRoleIsUnique = (secondRoleUniquenessConstraint != null);
-					
+
+					// These are used to make sure that we never shallowly map towards a preferred identifier.
+					// Tracking this also allows us to prefer a deep mapping when a 1-1 maps towards its only identifier.
+					bool firstRoleIsUniqueAndPreferred = firstRoleIsUnique && firstRoleUniquenessConstraint.IsPreferred;
+					bool secondRoleIsUniqueAndPreferred = secondRoleIsUnique && secondRoleUniquenessConstraint.IsPreferred;
+
 					bool firstRoleIsMandatory = null != (mandatory = firstRole.SingleRoleAlethicMandatoryConstraint);
 					bool firstRoleIsImplicitlyMandatory = firstRoleIsMandatory && mandatory.IsImplied;
 					bool firstRoleIsExplicitlyMandatory = firstRoleIsMandatory && !firstRoleIsImplicitlyMandatory;
@@ -453,10 +483,6 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						}
 						else // ...not a ring fact type...
 						{
-							// These are used to make sure that we never shallowly map towards a preferred identifier.
-							bool firstRoleIsUniqueAndPreferred = firstRoleIsUnique && firstRoleUniquenessConstraint.IsPreferred;
-							bool secondRoleIsUniqueAndPreferred = secondRoleIsUnique && secondRoleUniquenessConstraint.IsPreferred;
-
 							// If neither role is mandatory...
 							if (!firstRoleIsExplicitlyMandatory && !secondRoleIsExplicitlyMandatory)
 							{
@@ -622,16 +648,16 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					switch (possibilityBits)
 					{
 						case FIRST_SECOND_SHALLOW:
-							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, firstRole, secondRole, GetFlags(false, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory)));
+							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, firstRole, secondRole, inverseFactType, inverseFlags | GetFlags(false, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRoleIsUniqueAndPreferred, secondRoleIsUniqueAndPreferred)));
 							break;
 						case SECOND_FIRST_SHALLOW:
-							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, secondRole, firstRole, GetFlags(false, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory)));
+							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, secondRole, firstRole, inverseFactType, inverseFlags | GetFlags(false, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRoleIsUniqueAndPreferred, firstRoleIsUniqueAndPreferred)));
 							break;
 						case FIRST_SECOND_DEEP:
-							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, firstRole, secondRole, GetFlags(true, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory)));
+							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, firstRole, secondRole, inverseFactType, inverseFlags | GetFlags(true, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRoleIsUniqueAndPreferred, secondRoleIsUniqueAndPreferred)));
 							break;
 						case SECOND_FIRST_DEEP:
-							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, secondRole, firstRole, GetFlags(true, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory)));
+							(manyToOne ? decidedManyToOneFactTypeMappings : decidedOneToOneFactTypeMappings).Add(factType, new FactTypeMapping(factType, secondRole, firstRole, inverseFactType, inverseFlags | GetFlags(true, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRoleIsUniqueAndPreferred, firstRoleIsUniqueAndPreferred)));
 							break;
 						default:
 							{
@@ -654,19 +680,19 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 								count = -1;
 								if (0 != (possibilityBits & FIRST_SECOND_SHALLOW))
 								{
-									potentialMappingList.Add(new FactTypeMapping(factType, firstRole, secondRole, GetFlags(false, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory)));
+									potentialMappingList.Add(new FactTypeMapping(factType, firstRole, secondRole, inverseFactType, inverseFlags | GetFlags(false, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRoleIsUniqueAndPreferred, secondRoleIsUniqueAndPreferred)));
 								}
 								if (0 != (possibilityBits & SECOND_FIRST_SHALLOW))
 								{
-									potentialMappingList.Add(new FactTypeMapping(factType, secondRole, firstRole, GetFlags(false, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory)));
+									potentialMappingList.Add(new FactTypeMapping(factType, secondRole, firstRole, inverseFactType, inverseFlags | GetFlags(false, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRoleIsUniqueAndPreferred, firstRoleIsUniqueAndPreferred)));
 								}
 								if (0 != (possibilityBits & FIRST_SECOND_DEEP))
 								{
-									potentialMappingList.Add(new FactTypeMapping(factType, firstRole, secondRole, GetFlags(true, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory)));
+									potentialMappingList.Add(new FactTypeMapping(factType, firstRole, secondRole, inverseFactType, inverseFlags | GetFlags(true, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRoleIsUniqueAndPreferred, secondRoleIsUniqueAndPreferred)));
 								}
 								if (0 != (possibilityBits & SECOND_FIRST_DEEP))
 								{
-									potentialMappingList.Add(new FactTypeMapping(factType, secondRole, firstRole, GetFlags(true, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory)));
+									potentialMappingList.Add(new FactTypeMapping(factType, secondRole, firstRole, inverseFactType, inverseFlags | GetFlags(true, secondRolePlayerIsValueType, secondRoleIsMandatory, secondRoleIsImplicitlyMandatory, firstRolePlayerIsValueType, firstRoleIsMandatory, firstRoleIsImplicitlyMandatory, secondRoleIsUniqueAndPreferred, firstRoleIsUniqueAndPreferred)));
 								}
 								undecidedOneToOneFactTypeMappings.Add(factType, potentialMappingList);
 								break;
@@ -675,7 +701,65 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 			}
 		}
-		private static FactTypeMappingFlags GetFlags(bool deepMapping, bool fromValueType, bool fromMandatory, bool fromImpliedMandatory, bool towardsValueType, bool towardsMandatory, bool towardsImpliedMandatory)
+		private void ResolveInverseFactType(FactType factType, out FactType inverseFactType, out FactTypeMappingFlags inverseMappingFlags)
+		{
+			inverseMappingFlags = FactTypeMappingFlags.None;
+			inverseFactType = null;
+			UnaryValuePattern unaryPattern = factType.UnaryPattern;
+			if (unaryPattern == UnaryValuePattern.NotUnary)
+			{
+				factType = factType.ImpliedByObjectification?.NestedFactType;
+				if (factType == null || UnaryValuePattern.NotUnary == (unaryPattern = factType.UnaryPattern))
+				{
+					return;
+				}
+			}
+
+			switch (unaryPattern)
+			{
+				case UnaryValuePattern.OptionalWithoutNegation:
+				case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+					break;
+				case UnaryValuePattern.Negation:
+					inverseFactType = factType.PositiveUnaryFactType;
+					if (inverseFactType != null)
+					{
+						inverseMappingFlags = FactTypeMappingFlags.FactTypeIsNegation;
+						switch (inverseFactType.UnaryPattern)
+						{
+							case UnaryValuePattern.RequiredWithNegation:
+							case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+							case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+								inverseMappingFlags |= FactTypeMappingFlags.InversePairIsMandatory;
+								break;
+						}
+					}
+					break;
+				case UnaryValuePattern.RequiredWithNegation:
+				case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+				case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+					inverseFactType = factType.NegationUnaryFactType;
+					inverseMappingFlags = FactTypeMappingFlags.InversePairIsMandatory;
+					break;
+				default:
+					inverseFactType = factType.NegationUnaryFactType;
+					break;
+			}
+
+			if (inverseFactType != null)
+			{
+				// The unary fact type itself is ignored if objectified, switch to the link fact type.
+				if (inverseFactType.Objectification != null)
+				{
+					if (null == (inverseFactType = inverseFactType?.UnaryRole?.Proxy?.FactType) || ShouldIgnoreFactType(inverseFactType))
+					{
+						inverseFactType = null;
+						inverseMappingFlags = FactTypeMappingFlags.None;
+					}
+				}
+			}
+		}
+		private static FactTypeMappingFlags GetFlags(bool deepMapping, bool fromValueType, bool fromMandatory, bool fromImpliedMandatory, bool towardsValueType, bool towardsMandatory, bool towardsImpliedMandatory, bool fromRoleSimplePreferred, bool towardsRoleSimplePreferred)
 		{
 			FactTypeMappingFlags flags = deepMapping ? FactTypeMappingFlags.DeepMapping : FactTypeMappingFlags.None;
 			if (fromValueType)
@@ -693,6 +777,14 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			if (towardsMandatory)
 			{
 				flags |= towardsImpliedMandatory ? (FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory) : FactTypeMappingFlags.TowardsRoleMandatory;
+			}
+			if (fromRoleSimplePreferred)
+			{
+				flags |= FactTypeMappingFlags.FromRoleSimplePreferred;
+			}
+			if (towardsRoleSimplePreferred)
+			{
+				flags |= FactTypeMappingFlags.TowardsRoleSimplePreferred;
 			}
 			return flags;
 		}
@@ -888,7 +980,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			foreach (Role rolePlayed in rolesPlayed)
 			{
 				// NOTE: We don't need the ShouldIgnoreFactType filter here, because fact types that we want to ignore won't be in the dictionaries in the first place.
-				FactType factType = rolePlayed.BinarizedFactType;
+				FactType factType = rolePlayed.BinarizedOrSameFactType;
 
 				if (factType == excludedFactType)
 				{
@@ -982,7 +1074,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					continue;
 				}
-				// If it should have a conctpt type...
+				// If it should have a concept type...
 				if (ObjectTypeIsConceptType(objectType, factTypeMappings))
 				{
 					// Create the ConceptType object.
@@ -1032,6 +1124,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		private void GenerateConceptTypeChildren(FactTypeMappingDictionary factTypeMappings)
 		{
 			List<FactType> factTypePath = new List<FactType>();
+			Dictionary<FactType, ConceptTypeChild> inverseChildrenByFactType = new Dictionary<FactType, ConceptTypeChild>();
 
 			foreach (ConceptType conceptType in this.AbstractionModel.ConceptTypeCollection)
 			{
@@ -1045,7 +1138,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					// NOTE: We don't need the ShouldIgnoreFactType filter here, because fact types that
 					// we want to ignore won't be in the set of fact type mappings in the first place.
-					FactType playedFactType = playedRole.BinarizedFactType;
+					FactType playedFactType = playedRole.BinarizedOrSameFactType;
 
 					FactTypeMapping factTypeMapping;
 
@@ -1054,7 +1147,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					{
 						// The fact type has a mapping and that mapping is towards the role played by
 						// this concept type, so we need to generate concept type children for it.
-						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, conceptType, ref conceptTypeHasDeepMappingAway, factTypeMapping, factTypePath, true);
+						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, conceptType, ref conceptTypeHasDeepMappingAway, factTypeMapping, factTypePath, true, inverseChildrenByFactType);
 					}
 				}
 			}
@@ -1083,7 +1176,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <param name="isMandatorySoFar">
 		/// Indicates whether every step in <paramref name="factTypePath"/> is mandatory for the parent concept type (towards object type).
 		/// </param>
-		private static void GenerateConceptTypeChildrenForFactTypeMapping(FactTypeMappingDictionary factTypeMappings, ConceptType parentConceptType, ref bool? parentConceptTypeHasDeepAway, FactTypeMapping factTypeMapping, List<FactType> factTypePath, bool isMandatorySoFar)
+		/// <param name="inverseChildrenByFactType">
+		/// Provide a dictionary a fact types that map to a concept type child used in an inverse (unary positive/negative) pairing. This allows
+		/// the pairs to be created in any order.
+		/// </param>
+		private static void GenerateConceptTypeChildrenForFactTypeMapping(FactTypeMappingDictionary factTypeMappings, ConceptType parentConceptType, ref bool? parentConceptTypeHasDeepAway, FactTypeMapping factTypeMapping, List<FactType> factTypePath, bool isMandatorySoFar, Dictionary<FactType, ConceptTypeChild> inverseChildrenByFactType)
 		{
 			// Push the current fact type onto the path.
 			factTypePath.Add(factTypeMapping.FactType);
@@ -1092,8 +1189,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 			ConceptTypeChild newConceptTypeChild;
 
-			ConceptType fromConceptType = ConceptTypeIsForObjectType.GetConceptType(factTypeMapping.FromObjectType);
-			if (fromConceptType != null)
+			ConceptType fromConceptType;
+			bool unaryMapping = factTypeMapping.FromRole == null;
+			if (!unaryMapping && null != (fromConceptType = ConceptTypeIsForObjectType.GetConceptType(factTypeMapping.FromObjectType)))
 			{
 				// The mapping is coming from a concept type, so we will create a concept type reference to it.
 
@@ -1159,7 +1257,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					// handling of derivations, implications, equivalences, and logical rules becomes more sophisticated. We assert here
 					// in order to make this case easier to catch if it happens, since this method may need to be adjusted in that case
 					// to ensure that it continues to produce correct results.
-					Debug.Assert(!isPreferredForParent || factTypeMapping.FromRole.SingleRoleAlethicUniquenessConstraint.IsPreferred);
+
+					// This assert assumes an error-free ORM state, which cannot be assumed here. An external uniqueness can be set as
+					// preferred when it is implied by a single-role internal uniqueness, which triggers this assert.
+					//Debug.Assert(!isPreferredForParent || factTypeMapping.FromRole.SingleRoleAlethicUniquenessConstraint.IsPreferred);
 
 					newConceptTypeChild = new ConceptTypeAssimilatesConceptType(parentConceptType.Partition,
 						new RoleAssignment[]
@@ -1204,12 +1305,37 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// for it), or we need to collapse the preferred identifier of an entity type or structured
 				// value type.
 
-				InformationTypeFormat fromInformationTypeFormat = InformationTypeFormatIsForValueType.GetInformationTypeFormat(factTypeMapping.FromObjectType);
+				InformationTypeFormat fromInformationTypeFormat;
+				if (unaryMapping)
+				{
+					bool isNegation = factTypeMapping.FactType.UnaryPattern == UnaryValuePattern.Negation;
+					AbstractionModel model = parentConceptType.Model;
+					fromInformationTypeFormat = isNegation ? (InformationTypeFormat)model.NegativeUnaryInformationTypeFormat : model.PositiveUnaryInformationTypeFormat;
+
+					if (fromInformationTypeFormat == null)
+					{
+						if (isNegation)
+						{
+							fromInformationTypeFormat = new NegativeUnaryInformationTypeFormat(parentConceptType.Partition);
+							fromInformationTypeFormat.Name = "_negative_unary";
+						}
+						else
+						{
+							fromInformationTypeFormat = new PositiveUnaryInformationTypeFormat(parentConceptType.Partition);
+							fromInformationTypeFormat.Name = "_positive_unary";
+						}
+						fromInformationTypeFormat.Model = model;
+					}
+				}
+				else
+				{
+					fromInformationTypeFormat = InformationTypeFormatIsForValueType.GetInformationTypeFormat(factTypeMapping.FromObjectType);
+				}
 				if (fromInformationTypeFormat != null)
 				{
 					// We have an information type format, which means that we need to create an information type.
 
-					string name = ResolveRoleName(factTypeMapping.FromRole);
+					string name = ResolveRoleName(unaryMapping ? factTypeMapping.TowardsRole : factTypeMapping.FromRole);
 
 					newConceptTypeChild = new InformationType(parentConceptType.Partition,
 						new RoleAssignment[]
@@ -1232,12 +1358,13 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 					UniquenessConstraint preferredIdentifier = factTypeMapping.FromObjectType.PreferredIdentifier ?? factTypeMapping.FromObjectType.ResolvedPreferredIdentifier;
 					Debug.Assert(preferredIdentifier != null);
+					LinkedElementCollection<Role> pidRoles = preferredIdentifier.RoleCollection;
 
-					foreach (Role preferredIdentifierRole in preferredIdentifier.RoleCollection)
+					foreach (Role preferredIdentifierRole in pidRoles)
 					{
 						// NOTE: We don't need the ShouldIgnoreFactType filter here, because we would have ignored
 						// this object type if we were ignoring any of the fact types in its preferred identifier.
-						FactType preferredIdentifierFactType = preferredIdentifierRole.BinarizedFactType;
+						FactType preferredIdentifierFactType = preferredIdentifierRole.BinarizedOrSameFactType;
 
 						FactTypeMapping preferredIdentifierFactTypeMapping = factTypeMappings[preferredIdentifierFactType];
 
@@ -1272,7 +1399,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 							// UNDONE: Would we ever want to use a depth other than shallow here? Probably not, but it might be worth looking in to.
 							FactTypeMappingFlags currentFlags = preferredIdentifierFactTypeMapping.Flags;
-							preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.TowardsRole, preferredIdentifierFactTypeMapping.FromRole, (currentFlags & FactTypeMappingFlags.Subtype) | GetFlags(false, 0 != (currentFlags & FactTypeMappingFlags.TowardsValueType), 0 != (currentFlags & FactTypeMappingFlags.TowardsRoleMandatory), 0 != (currentFlags & FactTypeMappingFlags.TowardsRoleImpliedMandatory), 0 != (currentFlags & FactTypeMappingFlags.FromValueType), 0 != (currentFlags & FactTypeMappingFlags.FromRoleMandatory), 0 != (currentFlags & FactTypeMappingFlags.FromRoleImpliedMandatory)));
+							preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.TowardsRole, preferredIdentifierFactTypeMapping.FromRole, null, (currentFlags & FactTypeMappingFlags.Subtype) | GetFlags(false, 0 != (currentFlags & FactTypeMappingFlags.TowardsValueType), 0 != (currentFlags & FactTypeMappingFlags.TowardsRoleMandatory), 0 != (currentFlags & FactTypeMappingFlags.TowardsRoleImpliedMandatory), 0 != (currentFlags & FactTypeMappingFlags.FromValueType), 0 != (currentFlags & FactTypeMappingFlags.FromRoleMandatory), 0 != (currentFlags & FactTypeMappingFlags.FromRoleImpliedMandatory), pidRoles.Count == 1, false));
 						}
 						else if (preferredIdentifierFactTypeMapping.MappingDepth == MappingDepth.Deep)
 						{
@@ -1292,12 +1419,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 								{
 									FactType factType;
 									FactTypeMapping testMapping;
-									if (null != (factType = role.BinarizedFactType) &&
+									if (null != (factType = role.BinarizedOrSameFactType) &&
 										factTypeMappings.TryGetValue(factType, out testMapping) &&
 										testMapping.MappingDepth == MappingDepth.Deep &&
 										testMapping.FromObjectType == objectType)
 									{
-										preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.FromRole, preferredIdentifierFactTypeMapping.TowardsRole, preferredIdentifierFactTypeMapping.Flags & ~FactTypeMappingFlags.DeepMapping);
+										preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.FromRole, preferredIdentifierFactTypeMapping.TowardsRole, null, preferredIdentifierFactTypeMapping.Flags & ~FactTypeMappingFlags.DeepMapping);
 										parentConceptTypeHasDeepAway = true;
 										break;
 									}
@@ -1309,11 +1436,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 							}
 							else if (parentConceptTypeHasDeepAway.Value)
 							{
-								preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.FromRole, preferredIdentifierFactTypeMapping.TowardsRole, preferredIdentifierFactTypeMapping.Flags & ~FactTypeMappingFlags.DeepMapping);
+								preferredIdentifierFactTypeMapping = new FactTypeMapping(preferredIdentifierFactType, preferredIdentifierFactTypeMapping.FromRole, preferredIdentifierFactTypeMapping.TowardsRole, null, preferredIdentifierFactTypeMapping.Flags & ~FactTypeMappingFlags.DeepMapping);
 							}
 						}
 
-						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, parentConceptType, ref parentConceptTypeHasDeepAway, preferredIdentifierFactTypeMapping, factTypePath, isMandatory);
+						GenerateConceptTypeChildrenForFactTypeMapping(factTypeMappings, parentConceptType, ref parentConceptTypeHasDeepAway, preferredIdentifierFactTypeMapping, factTypePath, isMandatory, inverseChildrenByFactType);
 					}
 				}
 			}
@@ -1321,6 +1448,32 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			// If we created a new concept type child, populate its fact type path.
 			if (newConceptTypeChild != null)
 			{
+				FactType inverseFactType = factTypeMapping.InverseFactType;
+				if (inverseFactType != null)
+				{
+					ConceptTypeChild pairedChild;
+					if (inverseChildrenByFactType.TryGetValue(inverseFactType, out pairedChild))
+					{
+						if (pairedChild != null)
+						{
+							inverseChildrenByFactType[inverseFactType] = null; // Sanity protected, should not be hit.
+
+							FactTypeMappingFlags flags = factTypeMapping.Flags;
+							InverseConceptTypeChild inverseChildRef = 0 != (flags & FactTypeMappingFlags.FactTypeIsNegation) ?
+								new InverseConceptTypeChild(pairedChild, newConceptTypeChild) :
+								new InverseConceptTypeChild(newConceptTypeChild, pairedChild);
+							if (0 != (flags & FactTypeMappingFlags.InversePairIsMandatory))
+							{
+								inverseChildRef.PairIsMandatory = true;
+							}
+						}
+					}
+					else
+					{
+						inverseChildrenByFactType[factTypeMapping.FactType] = newConceptTypeChild;
+					}
+				}
+
 				foreach (FactType pathFactType in factTypePath)
 				{
 					ConceptTypeChildHasPathFactType conceptTypeChildHasPathFactType = new ConceptTypeChildHasPathFactType(newConceptTypeChild, pathFactType);
@@ -1349,12 +1502,13 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// For each role played by its object type...
 				foreach (Role role in objectType.PlayedRoleCollection)
 				{
-					if (ShouldIgnoreFactType(role.BinarizedFactType))
+					RoleBase oppositeRoleBase;
+					if (ShouldIgnoreFactType(role.BinarizedOrSameFactType) || null == (oppositeRoleBase = role.OppositeRoleAlwaysResolveProxy))
 					{
 						continue;
 					}
 
-					Role oppositeRole = role.OppositeRoleAlwaysResolveProxy.Role;
+					Role oppositeRole = oppositeRoleBase.Role;
 
 					// For each constraint on the opposite role...
 					foreach (ConstraintRoleSequence constraintRoleSequence in oppositeRole.ConstraintRoleSequenceCollection)
@@ -1375,7 +1529,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 							foreach (Role childRole in uniquenessConstraint.RoleCollection)
 							{
-								FactType binarizedFactType = childRole.BinarizedFactType;
+								FactType binarizedFactType = childRole.BinarizedOrSameFactType;
 								if (ShouldIgnoreFactType(binarizedFactType))
 								{
 									hasFactTypeThatShouldBeIgnored = true;
@@ -1383,7 +1537,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 								}
 								FactTypeMapping factTypeMapping = factTypeMappings[binarizedFactType];
 
-								if (factTypeMapping.TowardsRole != childRole.OppositeRoleAlwaysResolveProxy.Role)
+								RoleBase oppositeChildBase = childRole.OppositeRoleAlwaysResolveProxy;
+								if (factTypeMapping.TowardsRole != (oppositeChildBase != null ? oppositeChildBase.Role : childRole))
 								{
 									allChildrenMapTowardObjectType = false;
 									break;
@@ -1512,6 +1667,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			// HACK: This is only here until we implement a better alternative.
 			Role role = roleBase.Role;
 			string name = role.Name;
+			string defaultUnaryName = null;
 
 			if (String.IsNullOrEmpty(name))
 			{
@@ -1521,6 +1677,22 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					FactType factType;
 					if (null != (factType = roleBase.FactType))
 					{
+						bool snapUnaryReading;
+						bool unaryNegation;
+						switch (factType.UnaryPattern)
+						{
+							case UnaryValuePattern.NotUnary:
+								snapUnaryReading = unaryNegation = false;
+								break;
+							case UnaryValuePattern.Negation:
+								snapUnaryReading = unaryNegation = true;
+								break;
+							default:
+								snapUnaryReading = true;
+								unaryNegation = false;
+								break;
+						}
+
 						foreach (ReadingOrder order in factType.ReadingOrderCollection)
 						{
 							int roleIndex;
@@ -1534,6 +1706,29 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 									{
 										return string.Format(CultureInfo.InvariantCulture, formatText, name);
 									}
+
+									if (snapUnaryReading)
+									{
+										snapUnaryReading = false;
+										defaultUnaryName = string.Format(reading.Text, string.Empty).Trim();
+									}
+								}
+							}
+						}
+
+						if (snapUnaryReading && unaryNegation)
+						{
+							factType = factType.PositiveUnaryFactType;
+							if (factType != null)
+							{
+								foreach (ReadingOrder order in factType.ReadingOrderCollection)
+								{
+									foreach (Reading reading in order.ReadingCollection)
+									{
+										defaultUnaryName = "not " + string.Format(reading.Text, string.Empty).Trim();
+										break;
+									}
+									break;
 								}
 							}
 						}
@@ -1548,7 +1743,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 			}
 
-			return name;
+			return defaultUnaryName ?? name;
 		}
 
 		/// <summary>
@@ -1565,7 +1760,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 				foreach (Role role in roles)
 				{
-					FactType factType = role.BinarizedFactType;
+					FactType factType = role.BinarizedOrSameFactType;
 					if (ShouldIgnoreFactType(factType))
 					{
 						continue;
@@ -1607,7 +1802,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 			foreach (Role role in ObjectTypePlaysRole.GetPlayedRoleCollection(objectType))
 			{
-				FactType factType = role.BinarizedFactType;
+				FactType factType = role.BinarizedOrSameFactType;
 				if (ShouldIgnoreFactType(factType))
 				{
 					continue;
@@ -1631,10 +1826,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 
 				// If fact type mapping is toward objectType...
-				if (factTypeMapping.TowardsObjectType == objectType)
+				Role fromRole;
+				if (factTypeMapping.TowardsObjectType == objectType && null != (fromRole = factTypeMapping.FromRole))
 				{
 					bool isPartOfPreferredIdentifier = false;
-					Role fromRole = factTypeMapping.FromRole;
 					foreach (ConstraintRoleSequence constraintRoleSequence in fromRole.ConstraintRoleSequenceCollection)
 					{
 						UniquenessConstraint uniquenessConstraint = constraintRoleSequence as UniquenessConstraint;

@@ -541,6 +541,14 @@
     <value>Column Has Concept Type Child</value>
     <comment>DisplayName for DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/AbsorptionIndicator.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild.AbsorptionIndicator</value>
+    <comment>Description for DomainProperty &apos;AbsorptionIndicator&apos; on DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/AbsorptionIndicator.DisplayName" xml:space="preserve">
+    <value>AbsorptionIndicator</value>
+    <comment>DisplayName for DomainProperty &apos;AbsorptionIndicator&apos; on DomainClass &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/Column.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
@@ -564,6 +572,38 @@
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName" xml:space="preserve">
     <value>Column</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild</value>
+    <comment>Description for DomainClass &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>Column Has Inverse Concept Type Child</value>
+    <comment>DisplayName for DomainClass &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/ColumnChildNode.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;ColumnChildNode&apos; on DomainRelationship &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/ColumnChildNode.DisplayName" xml:space="preserve">
+    <value>Column Child Node</value>
+    <comment>DisplayName for DomainRole &apos;ColumnChildNode&apos; on DomainRelationship &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/ColumnChildNode.PropertyDisplayName" xml:space="preserve">
+    <value>Inverse Concept Type Child</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ColumnChildNode&apos; on DomainRelationship &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/InverseConceptTypeChild.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;InverseConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/InverseConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>Inverse Concept Type Child</value>
+    <comment>DisplayName for DomainRole &apos;InverseConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ColumnHasInverseConceptTypeChild/InverseConceptTypeChild.PropertyDisplayName" xml:space="preserve">
+    <value>Inverse Child Node</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InverseConceptTypeChild&apos; on DomainRelationship &apos;ColumnHasInverseConceptTypeChild&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.UniquenessConstraintIsForUniqueness</value>

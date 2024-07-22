@@ -204,8 +204,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					{
 						ObjectType testObjectType = allObjectTypes[i];
 						Objectification objectification;
-						if (testObjectType.IsImplicitBooleanValue ||
-							(null != (objectification = testObjectType.Objectification) && objectification.IsImplied))
+						if (null != (objectification = testObjectType.Objectification) && objectification.IsImplied)
 						{
 							if (filteredList == null)
 							{
@@ -940,7 +939,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 									rolePlayer = currentFactRoles[j].Role.RolePlayer;
 									if (rolePlayer != null &&
 										rolePlayer != myObjectType &&
-										!rolePlayer.IsImplicitBooleanValue &&
 										!relatedObjectList.Contains(rolePlayer))
 									{
 										relatedObjectList.Add(rolePlayer);

@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using System.Drawing.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
@@ -44,12 +45,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		}
 
 		/// <summary>
+		/// Add unary negation custom properties as needed
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
+			FactType factType = ModelElement;
+			Store store;
+			if (factType.UnaryPattern == UnaryValuePattern.Negation &&
+				null != (store = Utility.ValidateStore(factType.Store)))
+			{
+				retVal = EditorUtility.GetEditablePropertyDescriptors(retVal);
+				retVal.Add(UnaryNegationPropertyDescriptor);
+				FactType positiveFactType = factType.PositiveUnaryFactType;
+				if (positiveFactType != null)
+				{
+					retVal.Add(EditorUtility.RedirectPropertyDescriptor(positiveFactType, TypeDescriptor.GetProperties(positiveFactType, attributes, false)["UnaryPattern"], typeof(FactType)));
+				}
+			}
+			return retVal;
+		}
+
+		/// <summary>
 		/// Ensure that the <see cref="FactType.Name"/> property is read-only when
 		/// <see cref="FactType.Objectification"/> is <see langword="null"/>.
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			if (propertyDescriptor.DomainPropertyInfo.Id == FactType.NameDomainPropertyId)
+			Guid attributeId = propertyDescriptor.DomainPropertyInfo.Id;
+			if (attributeId == FactType.NameDomainPropertyId)
 			{
 				FactType factType = ModelElement;
 				FactTypeDerivationRule derivationRule;
@@ -76,7 +100,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				// UNDONE: Support IsExternal
 				return false;
 			}
+			else if (propertyId == FactType.UnaryPatternDomainPropertyId)
+			{
+				switch (ModelElement.UnaryPattern)
+				{
+					case UnaryValuePattern.NotUnary:
+					// This is redirected to the positive unary for the negation case.
+					case UnaryValuePattern.Negation:
+						return false;
+				}
+				return true;
+			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
+		}
+
+		/// <summary>
+		/// Make the unary pattern type descriptor handle automated elements
+		/// </summary>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
+		{
+			if (domainPropertyInfo.Id == FactType.UnaryPatternDomainPropertyId)
+			{
+				return new AutomatedElementFilterPropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+			}
+			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
 		}
 
 		/// <summary>
@@ -115,6 +162,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			Objectification objectification = ModelElement.Objectification;
 			return (objectification == null || objectification.IsImplied) ? ResourceStrings.FactType : ResourceStrings.ObjectifiedFactType;
+		}
+
+		private static PropertyDescriptor myUnaryNegationStatusPropertyDescriptor;
+		/// <summary>
+		/// Get a custom <see cref="PropertyDescriptor"/> to show when a unary negation fact type
+		/// is displayed. The 'UnaryPattern' property is redirected to the positive unary.
+		/// </summary>
+		public static PropertyDescriptor UnaryNegationPropertyDescriptor
+		{
+			get
+			{
+				PropertyDescriptor retVal = myUnaryNegationStatusPropertyDescriptor;
+				if (retVal == null)
+				{
+					PropertyDescriptor innerDescriptor = TypeDescriptor.CreateProperty(typeof(UnaryNegationComponent), "UnaryNegation", typeof(Boolean));
+					myUnaryNegationStatusPropertyDescriptor = retVal = EditorUtility.RedirectPropertyDescriptor(
+						new UnaryNegationComponent(),
+						EditorUtility.ModifyPropertyDescriptorDisplay(TypeDescriptor.CreateProperty(typeof(UnaryNegationComponent), "UnaryNegation", typeof(Boolean)), "IsUnaryNegation", ResourceStrings.FactTypeUnaryNegationDisplayName, ResourceStrings.FactTypeUnaryNegationDisplayName, null, true),
+						typeof(FactType));
+				}
+				return retVal;
+			}
+		}
+		private class UnaryNegationComponent
+		{
+			public bool UnaryNegation
+			{
+				get
+				{
+					return true;
+				}
+			}
 		}
 	}
 }

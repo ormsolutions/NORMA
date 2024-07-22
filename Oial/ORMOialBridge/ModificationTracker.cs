@@ -45,7 +45,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					if (IsRelevantConstraint(constraint))
 					{
-						FactTypeConstraintPatternChanged(link.Role.BinarizedFactType);
+						FactTypeConstraintPatternChanged(link.Role.BinarizedOrSameFactType);
 					}
 					switch (constraint.ConstraintType)
 					{
@@ -70,7 +70,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					if (IsRelevantConstraint(constraint))
 					{
-						FactTypeConstraintPatternChanged(link.Role.BinarizedFactType);
+						FactTypeConstraintPatternChanged(link.Role.BinarizedOrSameFactType);
 					}
 					switch (constraint.ConstraintType)
 					{
@@ -145,84 +145,136 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					FrameworkDomainModel.DelayValidateElement(e.ModelElement, UpdateNamesForObjectTypeDelayed);
 				}
 			}
-			 /// <summary>
-			 /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
-			 /// </summary>
-			 private static void ReadingOrderAddedRule(ElementAddedEventArgs e)
-			 {
-				 FrameworkDomainModel.DelayValidateElement(((FactTypeHasReadingOrder)e.ModelElement).FactType, UpdateChildNamesForFactTypeDelayed);
-			 }
-			 /// <summary>
-			 /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
-			 /// </summary>
-			 private static void ReadingOrderDeletedRule(ElementDeletedEventArgs e)
-			 {
-				 FactType factType;
-				 if (!(factType = ((FactTypeHasReadingOrder)e.ModelElement).FactType).IsDeleted)
-				 {
+
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
+			/// </summary>
+			private static void FactTypeChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == FactType.UnaryPatternDomainPropertyId)
+				{
+					// Incrementally track pattern changes on a positive unary to see what
+					// The introduction of the unary negation fact type triggers a full change,
+					// so the only thing we're looking for are changes to the mandatory state.
+					FactType factType = (FactType)e.ModelElement;
+					bool isPaired = true;
+					bool isMandatory = false;
+					switch (factType.UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+						case UnaryValuePattern.Negation: // Negation is static, handle everything from the positive side of the pairing
+						case UnaryValuePattern.OptionalWithoutNegation:
+						case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+							isPaired = false;
+							break;
+						case UnaryValuePattern.RequiredWithNegation:
+						case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+						case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+							isMandatory = true;
+							break;
+					}
+
+					if (isPaired)
+					{
+						bool wasMandatory = false;
+						switch ((UnaryValuePattern)e.OldValue)
+						{
+							case UnaryValuePattern.RequiredWithNegation:
+							case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+							case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+								wasMandatory = true;
+								break;
+						}
+
+						if (wasMandatory != isMandatory)
+						{
+							foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType.UnaryRole?.Proxy?.FactType ?? factType))
+							{
+								FrameworkDomainModel.DelayValidateElement(child, DelayValidateInverseChildMandatory);
+							}
+						}
+					}
+				}
+			}
+
+			/// <summary>
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
+			/// </summary>
+			private static void ReadingOrderAddedRule(ElementAddedEventArgs e)
+			{
+			 FrameworkDomainModel.DelayValidateElement(((FactTypeHasReadingOrder)e.ModelElement).FactType, UpdateChildNamesForFactTypeDelayed);
+			}
+			/// <summary>
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
+			/// </summary>
+			private static void ReadingOrderDeletedRule(ElementDeletedEventArgs e)
+			{
+				FactType factType;
+				if (!(factType = ((FactTypeHasReadingOrder)e.ModelElement).FactType).IsDeleted)
+				{
 					FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
-				 }
-			 }
-			 /// <summary>
-			 /// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
-			 /// </summary>
-			 private static void ReadingOrderReorderedRule(RolePlayerOrderChangedEventArgs e)
-			 {
-				 if (e.SourceDomainRole.Id == FactTypeHasReadingOrder.FactTypeDomainRoleId)
-				 {
-					 FrameworkDomainModel.DelayValidateElement(e.SourceElement, UpdateChildNamesForFactTypeDelayed);
-				 }
-			 }
-			 /// <summary>
-			 /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
-			 /// </summary>
-			 private static void ReadingAddedRule(ElementAddedEventArgs e)
-			 {
-				 FactType factType;
-				 if (null != (factType = ((ReadingOrderHasReading)e.ModelElement).ReadingOrder.FactType))
-				 {
-					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
-				 }
-			 }
-			 /// <summary>
-			 /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Reading)
-			 /// </summary>
-			 private static void ReadingChangedRule(ElementPropertyChangedEventArgs e)
-			 {
-				 ReadingOrder order;
-				 FactType factType;
-				 if (e.DomainProperty.Id == Reading.TextDomainPropertyId &&
-					 null != (order = ((Reading)e.ModelElement).ReadingOrder) &&
-					 null != (factType = order.FactType))
-				 {
-					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
-				 }
-			 }
-			 /// <summary>
-			 /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
-			 /// </summary>
-			 private static void ReadingDeletedRule(ElementDeletedEventArgs e)
-			 {
-				 ReadingOrder order;
-				 FactType factType;
-				 if (!(order = ((ReadingOrderHasReading)e.ModelElement).ReadingOrder).IsDeleted &&
-					 null != (factType = order.FactType))
-				 {
-					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
-				 }
-			 }
-			 /// <summary>
-			 /// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
-			 /// </summary>
-			 private static void ReadingReorderedRule(RolePlayerOrderChangedEventArgs e)
-			 {
-				 FactType factType;
-				 if (e.SourceDomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId &&
-					 null != (factType = ((ReadingOrder)e.SourceElement).FactType))
-				 {
-					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
-				 }
-			 }
+				}
+			}
+			/// <summary>
+			/// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
+			/// </summary>
+			private static void ReadingOrderReorderedRule(RolePlayerOrderChangedEventArgs e)
+			{
+				if (e.SourceDomainRole.Id == FactTypeHasReadingOrder.FactTypeDomainRoleId)
+				{
+					FrameworkDomainModel.DelayValidateElement(e.SourceElement, UpdateChildNamesForFactTypeDelayed);
+				}
+			}
+			/// <summary>
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
+			/// </summary>
+			private static void ReadingAddedRule(ElementAddedEventArgs e)
+			{
+				FactType factType;
+				if (null != (factType = ((ReadingOrderHasReading)e.ModelElement).ReadingOrder.FactType))
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Reading)
+			/// </summary>
+			private static void ReadingChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				ReadingOrder order;
+				FactType factType;
+				if (e.DomainProperty.Id == Reading.TextDomainPropertyId &&
+					null != (order = ((Reading)e.ModelElement).ReadingOrder) &&
+					null != (factType = order.FactType))
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
+			/// </summary>
+			private static void ReadingDeletedRule(ElementDeletedEventArgs e)
+			{
+				ReadingOrder order;
+				FactType factType;
+				if (!(order = ((ReadingOrderHasReading)e.ModelElement).ReadingOrder).IsDeleted &&
+					null != (factType = order.FactType))
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				}
+			}
+			/// <summary>
+			/// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
+			/// </summary>
+			private static void ReadingReorderedRule(RolePlayerOrderChangedEventArgs e)
+			{
+				FactType factType;
+				if (e.SourceDomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId &&
+					null != (factType = ((ReadingOrder)e.SourceElement).FactType))
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				}
+			}
 			/// <summary>
 			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Role)
 			/// </summary>
@@ -251,7 +303,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 							// Note that constraint.FactTypeCollection does not resolve the
 							// BinarizedFactType. Notifying twice on one FactType is harmless
 							// due to delayed validation.
-							FactTypeConstraintPatternChanged(role.BinarizedFactType);
+							FactTypeConstraintPatternChanged(role.BinarizedOrSameFactType);
 						}
 					}
 				}
@@ -373,14 +425,14 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ElementLink;
 				if (e.DomainRole.Id == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
 				{
-					SignificantFactTypeChange(((Role)e.OldRolePlayer).BinarizedFactType);
+					SignificantFactTypeChange(((Role)e.OldRolePlayer).BinarizedOrSameFactType);
 				}
 				else
 				{
 					SignificantObjectTypeChange((ObjectType)e.OldRolePlayer);
 				}
 				SignificantObjectTypeChange(link.RolePlayer);
-				SignificantFactTypeChange(link.PlayedRole.BinarizedFactType);
+				SignificantFactTypeChange(link.PlayedRole.BinarizedOrSameFactType);
 			}
 			#endregion // ORM modification rule methods
 			#region Bridge deletion rule methods
@@ -578,6 +630,50 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						}
 					}
 					child.IsMandatory = newMandatory;
+				}
+			}
+			[DelayValidatePriority(ValidationPriority.ValidateMandatory, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateInverseChildMandatory(ModelElement element)
+			{
+				// Update the PairIsMandatory setting on an inverse child link.
+				// This does not handle creation of the link.
+				if (!element.IsDeleted)
+				{
+					ConceptTypeChild child = (ConceptTypeChild)element;
+					InverseConceptTypeChild link = InverseConceptTypeChild.GetLinkToNegativeInverseChild(child);
+					if (link != null)
+					{
+						LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(child);
+						int factTypeCount;
+						if (0 != (factTypeCount = factTypes.Count))
+						{
+							FactType factType = factTypes[factTypeCount - 1];
+							bool pairIsMandatory = false;
+							switch (factType.UnaryPattern)
+							{
+								case UnaryValuePattern.NotUnary:
+									factType = factType.ImpliedByObjectification?.NestedFactType;
+									if (factType != null)
+									{
+										switch (factType.UnaryPattern)
+										{
+											case UnaryValuePattern.RequiredWithNegation:
+											case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+											case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+												pairIsMandatory = true;
+												break;
+										}
+									}
+									break;
+								case UnaryValuePattern.RequiredWithNegation:
+								case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+								case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+									pairIsMandatory = true;
+									break;
+							}
+							link.PairIsMandatory = pairIsMandatory;
+						}
+					}
 				}
 			}
 			private static void SignificantUniquenessConstraintChange(UniquenessConstraint constraint)

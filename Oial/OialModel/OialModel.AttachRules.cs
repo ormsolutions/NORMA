@@ -33,7 +33,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 					// If accessed concurrently, the worst that will happen is the array of Types being created multiple times.
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
-					retVal = new Type[]{};
+					retVal = new Type[]{
+						typeof(EnsureUnaryFormatClass)};
 					AbstractionDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -64,4 +65,32 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 		}
 	}
 	#endregion // Attach rules to AbstractionDomainModel model
+	#region Auto-rule classes
+	#region Rule classes for AbstractionDomainModel
+	partial class AbstractionDomainModel
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(AbstractionModelHasInformationTypeFormat), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class EnsureUnaryFormatClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(AbstractionModelHasInformationTypeFormat)
+			/// /// </summary>
+			/// private static void EnsureUnaryFormat(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.EnsureUnaryFormat");
+				AbstractionDomainModel.EnsureUnaryFormat(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.EnsureUnaryFormat");
+			}
+		}
+	}
+	#endregion // Rule classes for AbstractionDomainModel
+	#endregion // Auto-rule classes
 }

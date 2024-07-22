@@ -1071,6 +1071,11 @@
 							<xs:documentation>Check if the operator for the context ValueComparisonConstraint is 'not equal'.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="HasDefaultValue">
+						<xs:annotation>
+							<xs:documentation>The object type or role has a default value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:list>
@@ -1120,6 +1125,7 @@
 			<xs:element name="MaxValue" type="MaxValueType"/>
 			<xs:element name="MinFrequencyValue" type="MinFrequencyValueType"/>
 			<xs:element name="MaxFrequencyValue" type="MaxFrequencyValueType"/>
+			<xs:element name="DefaultValue" type="DefaultValueType"/>
 			<xs:element name="IterateRanges" type="IterateRangesType"/>
 			<xs:element name="IterateDerivedFrom" type="IterateDerivedFromType"/>
 			<xs:element name="RangeLowerBound" type="RangeLowerBoundType"/>
@@ -1645,6 +1651,13 @@
 		<xs:annotation>
 			<xs:documentation>
 				Returns the upper bound of a cardinality constraint.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="DefaultValueType">
+		<xs:annotation>
+			<xs:documentation>
+				The resolved default value of a value type or role.
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>

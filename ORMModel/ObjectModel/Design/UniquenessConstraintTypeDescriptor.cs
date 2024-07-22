@@ -78,11 +78,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					{
 						UniquenessConstraint candidate = null;
 						LinkedElementCollection<Role> constraintRoles = uniquenessConstraint.RoleCollection;
-						if (constraintRoles.Count == 1 && constraintRoles[0] is ObjectifiedUnaryRole) // Note there is only one FactType for an internal constraint
-						{
-							candidate = uniquenessConstraint;
-						}
-						else if (factType == uniquenessConstraint.FactTypeCollection[0] && null == factType.UnaryRole)
+						if (factType == uniquenessConstraint.FactTypeCollection[0])
 						{
 							foreach (UniquenessConstraint constraint in factType.GetInternalConstraints<UniquenessConstraint>())
 							{

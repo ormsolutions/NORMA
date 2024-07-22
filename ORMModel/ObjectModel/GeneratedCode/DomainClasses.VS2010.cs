@@ -5744,6 +5744,370 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region DefaultValue domain property code
+		
+		/// <summary>
+		/// DefaultValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultValueDomainPropertyId = new global::System.Guid(0x765608be, 0x82fb, 0x4a12, 0x96, 0xc8, 0x2c, 0x36, 0x1c, 0x9b, 0xe6, 0x69);
+		
+		/// <summary>
+		/// Storage for DefaultValue
+		/// </summary>
+		private global::System.String defaultValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of DefaultValue domain property.
+		/// The default value for this value type.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainObjectId("765608be-82fb-4a12-96c8-2c361c9be669")]
+		public global::System.String DefaultValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return defaultValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefaultValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.DefaultValue domain property.
+		/// </summary>
+		internal sealed partial class DefaultValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		{
+			private DefaultValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.DefaultValue domain property value handler.
+			/// </summary>
+			public static readonly DefaultValuePropertyHandler Instance = new DefaultValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.DefaultValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefaultValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.defaultValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.defaultValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region InvariantDefaultValue domain property code
+		
+		/// <summary>
+		/// InvariantDefaultValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid InvariantDefaultValueDomainPropertyId = new global::System.Guid(0x6e1796fa, 0x4429, 0x43f5, 0xb1, 0xa2, 0x9e, 0xc6, 0xbc, 0xd4, 0x41, 0xbc);
+		
+		/// <summary>
+		/// Storage for InvariantDefaultValue
+		/// </summary>
+		private global::System.String invariantDefaultValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of InvariantDefaultValue domain property.
+		/// The culture-invariant form of the default value property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/InvariantDefaultValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/InvariantDefaultValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("6e1796fa-4429-43f5-b1a2-9ec6bcd441bc")]
+		public global::System.String InvariantDefaultValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return invariantDefaultValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				InvariantDefaultValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.InvariantDefaultValue domain property.
+		/// </summary>
+		internal sealed partial class InvariantDefaultValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		{
+			private InvariantDefaultValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.InvariantDefaultValue domain property value handler.
+			/// </summary>
+			public static readonly InvariantDefaultValuePropertyHandler Instance = new InvariantDefaultValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.InvariantDefaultValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return InvariantDefaultValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.invariantDefaultValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.invariantDefaultValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ValueTypeDefaultValue domain property code
+		
+		/// <summary>
+		/// ValueTypeDefaultValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueTypeDefaultValueDomainPropertyId = new global::System.Guid(0xe58275a9, 0x77a5, 0x441e, 0x9e, 0x65, 0xb9, 0x96, 0x6d, 0xe6, 0x51, 0x7d);
+		
+		/// <summary>
+		/// Gets or sets the value of ValueTypeDefaultValue domain property.
+		/// The DefaultValue property for the ValueType that identifies this EntityType.
+		///     The DefaultValue property of an EntityType is applied to the identifying
+		/// role, not directly to the identifying ValueType. This allows EntityType
+		/// DefaultValue to be specified independently for multiple EntityTypes identified
+		/// with the same unit-based or general reference mode patterns.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ValueTypeDefaultValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/ValueTypeDefaultValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("e58275a9-77a5-441e-9e65-b9966de6517d")]
+		public global::System.String ValueTypeDefaultValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ValueTypeDefaultValuePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ValueTypeDefaultValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.ValueTypeDefaultValue domain property.
+		/// </summary>
+		internal sealed partial class ValueTypeDefaultValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		{
+			private ValueTypeDefaultValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.ValueTypeDefaultValue domain property value handler.
+			/// </summary>
+			public static readonly ValueTypeDefaultValuePropertyHandler Instance = new ValueTypeDefaultValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.ValueTypeDefaultValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ValueTypeDefaultValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for ValueTypeDefaultValue because its Kind is
+				// set to CustomStorage. Please provide the GetValueTypeDefaultValueValue()
+				// method on the domain class.
+				return element.GetValueTypeDefaultValueValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for ValueTypeDefaultValue because its Kind is
+					// set to CustomStorage. Please provide the SetValueTypeDefaultValueValue()
+					// method on the domain class.
+					element.SetValueTypeDefaultValueValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DefaultState domain property code
+		
+		/// <summary>
+		/// DefaultState domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultStateDomainPropertyId = new global::System.Guid(0x80cc08e5, 0xf40b, 0x411d, 0xae, 0x92, 0x0c, 0x87, 0x4a, 0x38, 0xc0, 0xac);
+		
+		/// <summary>
+		/// Gets or sets the value of DefaultState domain property.
+		/// Specify how the DefaultValue is interpreted.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType/DefaultState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(DefaultValueState.UseValue)]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("80cc08e5-f40b-411d-ae92-0c874a38c0ac")]
+		public DefaultValueState DefaultState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefaultStatePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefaultStatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.DefaultState domain property.
+		/// </summary>
+		internal sealed partial class DefaultStatePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, DefaultValueState>
+		{
+			private DefaultStatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.DefaultState domain property value handler.
+			/// </summary>
+			public static readonly DefaultStatePropertyHandler Instance = new DefaultStatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.DefaultState domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefaultStateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DefaultValueState GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefaultState because its Kind is
+				// set to CustomStorage. Please provide the GetDefaultStateValue()
+				// method on the domain class.
+				return element.GetDefaultStateValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, DefaultValueState newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DefaultValueState oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefaultState because its Kind is
+					// set to CustomStorage. Please provide the SetDefaultStateValue()
+					// method on the domain class.
+					element.SetDefaultStateValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region DataType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets DataType.
@@ -6055,6 +6419,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DefaultValueMismatchError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DefaultValueMismatchError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.ValueType
+		/// </summary>
+		public virtual DefaultValueMismatchError DefaultValueMismatchError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.ValueTypeDomainRoleId) as DefaultValueMismatchError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.ValueTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DefaultValueOutOfRangeError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DefaultValueOutOfRangeError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.ValueType
+		/// </summary>
+		public virtual DefaultValueOutOfRangeError DefaultValueOutOfRangeError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.ValueTypeDomainRoleId) as DefaultValueOutOfRangeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.ValueTypeDomainRoleId, value);
 				}
 			}
 		}
@@ -6780,6 +7208,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region UnaryPattern domain property code
+		
+		/// <summary>
+		/// UnaryPattern domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UnaryPatternDomainPropertyId = new global::System.Guid(0xddfe356e, 0x7a5e, 0x4958, 0x98, 0xfc, 0xd5, 0xe2, 0x47, 0x6b, 0x8e, 0x6d);
+		
+		/// <summary>
+		/// Storage for UnaryPattern
+		/// </summary>
+		private UnaryValuePattern unaryPatternPropertyStorage = UnaryValuePattern.NotUnary;
+		
+		/// <summary>
+		/// Gets or sets the value of UnaryPattern domain property.
+		/// Specify unary fact type negation, constraint and default value pattern.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/UnaryPattern.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactType/UnaryPattern.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(UnaryValuePattern.NotUnary)]
+		[DslModeling::DomainObjectId("ddfe356e-7a5e-4958-98fc-d5e2476b8e6d")]
+		public UnaryValuePattern UnaryPattern
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return unaryPatternPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UnaryPatternPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactType.UnaryPattern domain property.
+		/// </summary>
+		internal sealed partial class UnaryPatternPropertyHandler : DslModeling::DomainPropertyValueHandler<FactType, UnaryValuePattern>
+		{
+			private UnaryPatternPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactType.UnaryPattern domain property value handler.
+			/// </summary>
+			public static readonly UnaryPatternPropertyHandler Instance = new UnaryPatternPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactType.UnaryPattern domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UnaryPatternDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed UnaryValuePattern GetValue(FactType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.unaryPatternPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactType element, UnaryValuePattern newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				UnaryValuePattern oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.unaryPatternPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region GeneratedName domain property code
 		
 		/// <summary>
@@ -7228,6 +7744,134 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasFactType.FactTypeDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region NegationExclusionConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NegationExclusionConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.UnaryFactType
+		/// </summary>
+		public virtual ExclusionConstraint NegationExclusionConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.UnaryFactTypeDomainRoleId) as ExclusionConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.ExclusionConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.ExclusionConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.UnaryFactTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region NegationMandatoryConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NegationMandatoryConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.UnaryFactType
+		/// </summary>
+		public virtual MandatoryConstraint NegationMandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.UnaryFactTypeDomainRoleId) as MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.MandatoryConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.MandatoryConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.UnaryFactTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region NegationUnaryFactType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NegationUnaryFactType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.PositiveFactType
+		/// </summary>
+		public virtual FactType NegationUnaryFactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.PositiveFactTypeDomainRoleId) as FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.NegativeFactTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.NegativeFactTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.PositiveFactTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region PositiveUnaryFactType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PositiveUnaryFactType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.NegativeFactType
+		/// </summary>
+		public virtual FactType PositiveUnaryFactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.NegativeFactTypeDomainRoleId) as FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.PositiveFactTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.PositiveFactTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryFactTypeHasNegationFactType.NegativeFactTypeDomainRoleId, value);
+				}
 			}
 		}
 		#endregion
@@ -8570,6 +9214,272 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region DefaultValue domain property code
+		
+		/// <summary>
+		/// DefaultValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultValueDomainPropertyId = new global::System.Guid(0xea46debd, 0x3560, 0x4b4a, 0x9d, 0xc7, 0x82, 0x50, 0x10, 0x5f, 0xd4, 0xac);
+		
+		/// <summary>
+		/// Storage for DefaultValue
+		/// </summary>
+		private global::System.String defaultValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of DefaultValue domain property.
+		/// The default value for this role.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainObjectId("ea46debd-3560-4b4a-9dc7-8250105fd4ac")]
+		public global::System.String DefaultValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return defaultValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefaultValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Role.DefaultValue domain property.
+		/// </summary>
+		internal sealed partial class DefaultValuePropertyHandler : DslModeling::DomainPropertyValueHandler<Role, global::System.String>
+		{
+			private DefaultValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Role.DefaultValue domain property value handler.
+			/// </summary>
+			public static readonly DefaultValuePropertyHandler Instance = new DefaultValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Role.DefaultValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefaultValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Role element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.defaultValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Role element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.defaultValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region InvariantDefaultValue domain property code
+		
+		/// <summary>
+		/// InvariantDefaultValue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid InvariantDefaultValueDomainPropertyId = new global::System.Guid(0x70f07a83, 0x7aee, 0x4038, 0x95, 0xcd, 0xa3, 0xce, 0x9e, 0x84, 0x10, 0x0d);
+		
+		/// <summary>
+		/// Storage for InvariantDefaultValue
+		/// </summary>
+		private global::System.String invariantDefaultValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of InvariantDefaultValue domain property.
+		/// The culture-invariant form of the default value property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/InvariantDefaultValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/InvariantDefaultValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("70f07a83-7aee-4038-95cd-a3ce9e84100d")]
+		public global::System.String InvariantDefaultValue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return invariantDefaultValuePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				InvariantDefaultValuePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Role.InvariantDefaultValue domain property.
+		/// </summary>
+		internal sealed partial class InvariantDefaultValuePropertyHandler : DslModeling::DomainPropertyValueHandler<Role, global::System.String>
+		{
+			private InvariantDefaultValuePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Role.InvariantDefaultValue domain property value handler.
+			/// </summary>
+			public static readonly InvariantDefaultValuePropertyHandler Instance = new InvariantDefaultValuePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Role.InvariantDefaultValue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return InvariantDefaultValueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Role element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.invariantDefaultValuePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Role element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.invariantDefaultValuePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DefaultState domain property code
+		
+		/// <summary>
+		/// DefaultState domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultStateDomainPropertyId = new global::System.Guid(0x614b1936, 0x5c38, 0x4b08, 0x82, 0xba, 0xd7, 0xf3, 0x86, 0xc3, 0xba, 0x42);
+		
+		/// <summary>
+		/// Storage for DefaultState
+		/// </summary>
+		private DefaultValueState defaultStatePropertyStorage = DefaultValueState.UseValue;
+		
+		/// <summary>
+		/// Gets or sets the value of DefaultState domain property.
+		/// Specify how the DefaultValue is interpreted.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Role/DefaultState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(DefaultValueState.UseValue)]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("614b1936-5c38-4b08-82ba-d7f386c3ba42")]
+		public DefaultValueState DefaultState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return defaultStatePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefaultStatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Role.DefaultState domain property.
+		/// </summary>
+		internal sealed partial class DefaultStatePropertyHandler : DslModeling::DomainPropertyValueHandler<Role, DefaultValueState>
+		{
+			private DefaultStatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Role.DefaultState domain property value handler.
+			/// </summary>
+			public static readonly DefaultStatePropertyHandler Instance = new DefaultStatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Role.DefaultState domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefaultStateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DefaultValueState GetValue(Role element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.defaultStatePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Role element, DefaultValueState newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DefaultValueState oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.defaultStatePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region RolePlayer opposite domain role accessor
 		/// <summary>
 		/// Gets or sets RolePlayer.
@@ -8702,6 +9612,102 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region DefaultValueMismatchError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DefaultValueMismatchError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.Role
+		/// </summary>
+		public virtual DefaultValueMismatchError DefaultValueMismatchError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.RoleDomainRoleId) as DefaultValueMismatchError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.RoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DefaultValueOutOfRangeError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DefaultValueOutOfRangeError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.Role
+		/// </summary>
+		public virtual DefaultValueOutOfRangeError DefaultValueOutOfRangeError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.RoleDomainRoleId) as DefaultValueOutOfRangeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.RoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DefaultValueValueTypeDetachedError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DefaultValueValueTypeDetachedError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.Role
+		/// </summary>
+		public virtual DefaultValueValueTypeDetachedError DefaultValueValueTypeDetachedError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.RoleDomainRoleId) as DefaultValueValueTypeDetachedError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.DefaultValueValueTypeDetachedErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.DefaultValueValueTypeDetachedErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.RoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region Proxy opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Proxy.
@@ -8778,6 +9784,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<ObjectTypeInstance>, ObjectTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.RoleDomainRoleId);
+			}
+		}
+		#endregion
+		#region EntityInstancesForUnary opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of EntityInstancesForUnary.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRole
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<EntityTypeInstance> EntityInstancesForUnary
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeInstance>, EntityTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRoleDomainRoleId);
 			}
 		}
 		#endregion
@@ -9250,6 +10272,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region ControlledByUnaryFactType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ControlledByUnaryFactType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.ExclusionConstraint
+		/// </summary>
+		public virtual FactType ControlledByUnaryFactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.ExclusionConstraintDomainRoleId) as FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.UnaryFactTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.UnaryFactTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusionConstraintAllowsUnaryFactTypeNegation.ExclusionConstraintDomainRoleId, value);
 				}
 			}
 		}
@@ -11451,6 +12505,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region ClosesUnaryFactType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ClosesUnaryFactType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.MandatoryConstraint
+		/// </summary>
+		public virtual FactType ClosesUnaryFactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.MandatoryConstraintDomainRoleId) as FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.UnaryFactTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.UnaryFactTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintClosesUnaryFactType.MandatoryConstraintDomainRoleId, value);
 				}
 			}
 		}
@@ -23065,6 +24151,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass TrueLogicalDataType
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TrueLogicalDataType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TrueLogicalDataType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("d88cd3f4-cfad-486c-857f-f22ed0a2e6fe")]
+	public partial class TrueLogicalDataType : LogicalDataType
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// TrueLogicalDataType domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd88cd3f4, 0xcfad, 0x486c, 0x85, 0x7f, 0xf2, 0x2e, 0xd0, 0xa2, 0xe6, 0xfe);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public TrueLogicalDataType(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public TrueLogicalDataType(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass YesOrNoLogicalDataType
 	/// </summary>
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.YesOrNoLogicalDataType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -25818,6 +26944,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region OutOfRangeError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets OutOfRangeError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.ValueRange
+		/// </summary>
+		public virtual ValueRangeOutOfRangeError OutOfRangeError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.ValueRangeDomainRoleId) as ValueRangeOutOfRangeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.OutOfRangeErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.OutOfRangeErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.ValueRangeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
@@ -27302,6 +28460,286 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass DefaultValueMismatchError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueMismatchError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueMismatchError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("35d67f39-3c1b-4735-93e3-4c5eb7cdc950")]
+	public partial class DefaultValueMismatchError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DefaultValueMismatchError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x35d67f39, 0x3c1b, 0x4735, 0x93, 0xe3, 0x4c, 0x5e, 0xb7, 0xcd, 0xc9, 0x50);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DefaultValueMismatchError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DefaultValueMismatchError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Role opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.DefaultValueMismatchError
+		/// </summary>
+		public virtual Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.RoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.RoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region ValueType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.DefaultValueMismatchError
+		/// </summary>
+		public virtual ObjectType ValueType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.ValueTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.ValueTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass DefaultValueValueTypeDetachedError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueValueTypeDetachedError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueValueTypeDetachedError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("4271e695-1088-459e-88e1-0c30dd4f9467")]
+	public partial class DefaultValueValueTypeDetachedError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DefaultValueValueTypeDetachedError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x4271e695, 0x1088, 0x459e, 0x88, 0xe1, 0x0c, 0x30, 0xdd, 0x4f, 0x94, 0x67);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DefaultValueValueTypeDetachedError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DefaultValueValueTypeDetachedError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Role opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.DefaultValueValueTypeDetachedError
+		/// </summary>
+		public virtual Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.DefaultValueValueTypeDetachedErrorDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.RoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.RoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueValueTypeDetachedError.DefaultValueValueTypeDetachedErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass DefaultValueOutOfRangeError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueOutOfRangeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultValueOutOfRangeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("a197d25d-a586-472e-a2b3-bbe3f062fc8e")]
+	public partial class DefaultValueOutOfRangeError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DefaultValueOutOfRangeError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa197d25d, 0xa586, 0x472e, 0xa2, 0xb3, 0xbb, 0xe3, 0xf0, 0x62, 0xfc, 0x8e);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DefaultValueOutOfRangeError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DefaultValueOutOfRangeError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Role opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeError
+		/// </summary>
+		public virtual Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.RoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.RoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region ValueType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeError
+		/// </summary>
+		public virtual ObjectType ValueType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.ValueTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.ValueTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId, value);
 				}
 			}
 		}
@@ -28802,6 +30240,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass ValueRangeOutOfRangeError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeOutOfRangeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeOutOfRangeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("87bb13f4-6cec-4490-a976-548be754e0e1")]
+	public partial class ValueRangeOutOfRangeError : ValueConstraintError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ValueRangeOutOfRangeError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x87bb13f4, 0x6cec, 0x4490, 0xa9, 0x76, 0x54, 0x8b, 0xe7, 0x54, 0xe0, 0xe1);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueRangeOutOfRangeError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueRangeOutOfRangeError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueRange opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueRange.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.OutOfRangeError
+		/// </summary>
+		public virtual ValueRange ValueRange
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.OutOfRangeErrorDomainRoleId) as ValueRange;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.ValueRangeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.ValueRangeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRangeHasOutOfRangeError.OutOfRangeErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass CardinalityRangeOverlapError
 	/// </summary>
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -29710,6 +31220,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeRoleInstance>, EntityTypeRoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstanceDomainRoleId);
+			}
+		}
+		#endregion
+		#region UnaryRoleInstanceCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of UnaryRoleInstanceCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstance
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<Role> UnaryRoleInstanceCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstanceDomainRoleId);
 			}
 		}
 		#endregion

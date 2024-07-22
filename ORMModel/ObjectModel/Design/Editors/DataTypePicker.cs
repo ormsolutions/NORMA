@@ -76,16 +76,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return new object[0];
 			}
 
-			IList dataTypes = model.DataTypeCollection;
+			IList<DataType> dataTypes = model.DataTypeCollection;
 			int count = dataTypes.Count;
-			if (count > 1)
+			if (count != 0)
 			{
-				DataType[] types = new DataType[count];
-				dataTypes.CopyTo(types, 0);
+				DataType[] types = new DataType[count - DataType.ImplicitDataTypeCount];
+				int iFilteredType = 0;
+				for (int i = 0; i < count; ++i)
+				{
+					DataType dataType = dataTypes[i];
+					if (!dataType.ImplicitOnly)
+					{
+						types[iFilteredType] = dataType;
+						++iFilteredType;
+					}
+				}
 				Array.Sort<DataType>(types, new DataTypeToStringComparer());
-				dataTypes = types;
+				return types;
 			}
-			return dataTypes;
+			return Array.Empty<DataType>();
 		}
 		/// <summary>
 		/// Choose an initial size

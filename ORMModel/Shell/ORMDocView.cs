@@ -285,6 +285,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		SelectInGroupList = 1L << 56,
 		/// <summary>
+		/// Place an inverse unary fact type in drag mode
+		/// </summary>
+		DragInverseUnaryFactType = 1L << 57,
+		/// <summary>
+		/// Place a link fact type in drag mode
+		/// </summary>
+		DragLinkFactType = 1L << 58,
+		/// <summary>
+		/// Show the 'all diagrams' page in the Diagram Spy window
+		/// </summary>
+		DiagramSpyAllDiagrams = 1L << 59,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference | DeleteGroup | RemoveFromGroup,

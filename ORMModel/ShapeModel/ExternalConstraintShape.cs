@@ -623,23 +623,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					case ConstraintStorageStyle.SetConstraint:
 						LinkedElementCollection<Role> constraintRoles = (constraint as SetConstraint).RoleCollection;
 						rVal = constraintRoles.Contains(r);
-						if (!rVal)
-						{
-							switch (constraint.ConstraintType)
-							{
-								case ConstraintType.ExternalUniqueness:
-								case ConstraintType.Frequency:
-									// Check for unary condition on external uniqueness
-									ObjectType rolePlayer;
-									if (null != (r = r.OppositeRole as Role) &&
-										null != (rolePlayer = r.RolePlayer) &&
-										rolePlayer.IsImplicitBooleanValue)
-									{
-										rVal = constraintRoles.Contains(r);
-									}
-									break;
-							}
-						}
 						break;
 					case ConstraintStorageStyle.SetComparisonConstraint:
 						foreach (SetComparisonConstraintRoleSequence roleSequence in (constraint as SetComparisonConstraint).RoleSequenceCollection)

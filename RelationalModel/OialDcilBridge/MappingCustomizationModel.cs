@@ -19,6 +19,7 @@ using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -55,7 +56,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		"G2bAG9BRljmgOGzhMTuef2UF2wLQYXt9pz2ougj/8X0pJ0arJFVVJrGrbO3wuGsYAQ4PWg5TtKifUmh6fhfLKQ=="
 #endif
 	)]
-	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IModelingEventSubscriber
+	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IModelingEventSubscriber, IProvideMappedColumnInfo
 	{
 		#region IModelingEventSubscriber Implementation
 		/// <summary>
@@ -71,6 +72,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				propertyProvider.AddOrRemovePropertyProvider(typeof(ObjectType), RelationalReferenceModeNaming.PopulateReferenceModeNamingExtensionPropertiesOnObjectType, false, action);
 				propertyProvider.AddOrRemovePropertyProvider(typeof(ORMModel), RelationalReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel, false, action);
 				propertyProvider.AddOrRemovePropertyProvider(typeof(RelationalNameGenerator), RelationalReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator, false, action);
+				propertyProvider.AddOrRemovePropertyProvider(typeof(Column), Design.ColumnProperties.PopulateColumnProperties, false, action);
 
 				if (0 != (reasons & EventSubscriberReasons.ModelStateEvents))
 				{
@@ -83,5 +85,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			ManageModelingEventHandlers(eventManager, reasons, action);
 		}
 		#endregion // IModelingEventSubscriber Implementation
+		#region IProvideMappedColumnInfo implementation
+		IMappedColumnInfo IProvideMappedColumnInfo.GetColumnInfo(Column column)
+		{
+			return Design.ColumnProperties.GetColumnInfo(column);
+		}
+		#endregion // IProvideMappedColumnInfo implementation
 	}
 }

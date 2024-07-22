@@ -64,6 +64,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("DataTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("DataTypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("DataTypeRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("FactTypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ObjectTypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ORMModelChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(AbstractionModelIsForORMModel).GetNestedType("ModificationTracker", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("PreferredIdentifierDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -115,7 +116,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMToORMAbstractionBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 47; ++i)
+			for (int i = 0; i < 48; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -908,6 +909,32 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.DataTypeRolePlayerChangedRule");
 					ModificationTracker.DataTypeRolePlayerChangedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.DataTypeRolePlayerChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class FactTypeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public FactTypeChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker
+				/// /// <summary>
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
+				/// /// </summary>
+				/// private static void FactTypeChangedRule(ElementPropertyChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.FactTypeChangedRule");
+					ModificationTracker.FactTypeChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.AbstractionModelIsForORMModel.ModificationTracker.FactTypeChangedRule");
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]

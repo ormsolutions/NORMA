@@ -130,6 +130,9 @@
 		<DataType name="YesOrNo">
 			<Comment type="summary">A yes or no logical data type</Comment>
 		</DataType>
+		<DataType name="True" backingType=".boolean" implicitType="true">
+			<Comment type="summary">An implied true-only logical data type</Comment>
+		</DataType>
 	</DataTypeGroup>
 	<DataTypeGroup name="Other" rangeSupport="None" backingType=".u8">
 		<DataType name="RowId">

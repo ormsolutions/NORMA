@@ -58,32 +58,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			: base(serviceProvider)
 		{
 		}
-
-		/// <summary>
-		/// Initialize here after we have the frame so we can grab the toolbar host
-		/// </summary>
-		protected override void Initialize()
-		{
-			base.Initialize();
-			IVsToolWindowToolbarHost host = ToolBarHost;
-			Debug.Assert(host != null); // Should be set with HasToolbar true
-			if (host != null)
-			{
-				CommandID command = ORMDesignerDocView.ORMDesignerCommandIds.ViewSamplePopulationEditor;
-				Guid commandGuid = command.Guid;
-				host.AddToolbar(VSTWT_LOCATION.VSTWT_LEFT, ref commandGuid, (uint)command.ID);
-			}
-		}
-		/// <summary>
-		/// Make sure the toolbar flag gets set
-		/// </summary>
-		protected override bool HasToolBar
-		{
-			get
-			{
-				return true;
-			}
-		}
 		#endregion // Construction
 		#region ToolWindow Overrides
 		/// <summary>

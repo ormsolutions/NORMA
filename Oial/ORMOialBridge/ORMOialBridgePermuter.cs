@@ -154,7 +154,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					visitedObjectTypes[objectType] = null;
 					foreach (Role role in objectType.PlayedRoleCollection)
 					{
-						FactType factType = role.BinarizedFactType;
+						FactType factType = role.BinarizedOrSameFactType;
 						// If we've already visited this fact type, go on to the next one.
 						if (visitedFactTypes.ContainsKey(factType))
 						{

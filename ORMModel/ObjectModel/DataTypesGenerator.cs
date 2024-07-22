@@ -96,6 +96,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		LogicalTrueOrFalse,
 		/// <summary>A yes or no logical data type</summary>
 		LogicalYesOrNo,
+		/// <summary>An implied true-only logical data type</summary>
+		[System.ComponentModel.Browsable(false)]
+		LogicalTrue,
 		/// <summary>A row id data type (can not be classified in any of the groups above)</summary>
 		OtherRowId,
 		/// <summary>An object id data type (can not be classified in any of the groups above)</summary>
@@ -139,6 +142,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				typeof(DateAndTimeTemporalDataType),
 				typeof(TrueOrFalseLogicalDataType),
 				typeof(YesOrNoLogicalDataType),
+				typeof(TrueLogicalDataType),
 				typeof(RowIdOtherDataType),
 				typeof(ObjectIdOtherDataType)};
 		}
@@ -2452,6 +2456,66 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 	}
+	/// <summary>An implied true-only logical data type</summary>
+	public partial class TrueLogicalDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.LogicalTrue;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeLogicalTrue;
+		}
+		/// <summary>This type cannot be used as the data type of a value type.</summary>
+		public override bool ImplicitOnly
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>The data type supports 'None' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			bool result;
+			return bool.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string invariantValue1, string invariantValue2)
+		{
+			bool typedValue1;
+			bool.TryParse(invariantValue1, out typedValue1);
+			bool typedValue2;
+			bool.TryParse(invariantValue2, out typedValue2);
+			if (((IEquatable<bool>)typedValue1).Equals(typedValue2))
+			{
+				return 0;
+			}
+			return 1;
+		}
+	}
 	/// <summary>A row id data type (can not be classified in any of the groups above)</summary>
 	public partial class RowIdOtherDataType
 	{
@@ -2555,6 +2619,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return 1;
 		}
+	}
+	public partial class DataType
+	{
+		/// <summary>The total number of implicit types.</summary>
+		public const int ImplicitDataTypeCount = 1;
 	}
 }
 #endregion // Bind data types to enums and localized names

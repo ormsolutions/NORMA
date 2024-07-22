@@ -69,7 +69,7 @@
 					<xsl:copy-of select="@*"/>
 					<xsl:copy-of select="child::*[not(self::orm:Facts)]"/>
 					<orm:Facts>
-						<xsl:copy-of select="orm:Facts/child::*[not(orm:DerivationRule/orm:DerivationExpression/@DerivationStorage='Derived')]"/>
+						<xsl:copy-of select="orm:Facts/orm:*[not(orm:DerivationRule[orm:DerivationExpression[@DerivationStorage='Derived'] or orm:FactTypeDerivationPath[not(@DerivationCompleteness='PartiallyDerived')]])]"/>
 					</orm:Facts>
 				</xsl:copy>
 			</xsl:for-each>

@@ -132,6 +132,11 @@
 				<xs:documentation>Use in place of writeStyle="NotWritten" to allow an attribute to be read but not written. Used in upgrade scenarios.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="NotSorted" type="canonicalBoolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true to ignore this element when Element.SortChildElements is true. Applies only if the WriteStyle is Element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="DoubleTagName" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>The name of the double tag. [WriteStyle=DoubleTaggedElement]</xs:documentation>
@@ -445,59 +450,57 @@
 			<xs:sequence>
 				<xs:element ref="ConditionalSerialization" minOccurs="0"/>
 				<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:choice minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="SharedAttributeCode">
-						<xs:annotation>
-							<xs:documentation>Define code to define variables that can be shared by any following attributes</xs:documentation>
-						</xs:annotation>
-						<xs:complexType>
-							<xs:sequence>
-								<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:documentation>Customizes an attribute on the current element.</xs:documentation>
-						</xs:annotation>
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
-									<xs:annotation>
-										<xs:documentation>Use different attribute properties based on a PLIX condition. The last PLiX element is assumed to be condition, other elements are preliminary code. If the condition is plx:falseKeyword then this attribute can be read but will not be written, allowing an attribute name to be easily deprecated and replaced.</xs:documentation>
-									</xs:annotation>
-									<xs:complexType>
-										<xs:sequence>
-											<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
-										</xs:sequence>
-										<xs:attributeGroup ref="AttributeAttributes"/>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
-									<xs:annotation>
-										<xs:documentation>Matches the role played.</xs:documentation>
-									</xs:annotation>
-									<xs:complexType>
-										<xs:attribute name="ID" type="xs:string" use="required">
-											<xs:annotation>
-												<xs:documentation>The ID to match.</xs:documentation>
-											</xs:annotation>
-										</xs:attribute>
-										<xs:attributeGroup ref="AttributeAttributes"/>
-									</xs:complexType>
-								</xs:element>
-							</xs:sequence>
-							<xs:attribute name="ID" type="xs:string" use="required">
-								<xs:annotation>
-									<xs:documentation>The ID to match.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attributeGroup ref="AttributeAttributes"/>
-						</xs:complexType>
-					</xs:element>
-				</xs:choice>
 			</xs:sequence>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="SharedAttributeCode">
+					<xs:annotation>
+						<xs:documentation>Define code to define variables that can be shared by any following attributes</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Customizes an attribute on the current element.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Use different attribute properties based on a PLIX condition. The last PLiX element is assumed to be condition, other elements are preliminary code. If the condition is plx:falseKeyword then this attribute can be read but will not be written, allowing an attribute name to be easily deprecated and replaced.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
+									</xs:sequence>
+									<xs:attributeGroup ref="AttributeAttributes"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Matches the role played.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="ID" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>The ID to match.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attributeGroup ref="AttributeAttributes"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="ID" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>The ID to match.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attributeGroup ref="AttributeAttributes"/>
+					</xs:complexType>
+				</xs:element>
 				<xs:element name="Container" type="ContainerType">
 					<xs:annotation>
 						<xs:documentation>Creates a container. Containers are required for all embedded relationships.</xs:documentation>

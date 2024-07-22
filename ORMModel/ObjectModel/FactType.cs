@@ -25,6 +25,9 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Proxies;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -74,6 +77,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public static readonly object InsertBeforeRoleKey = new object();
 		#endregion // Public token values
+		#region Private token values
+		/// <summary>
+		/// Allow the unary negation pattern to be established without triggering additional rules.
+		/// </summary>
+		private readonly static object UnaryPatternInitializingKey = new object();
+
+		#endregion // Private token values
 		#region ReadingOrder acquisition
 		/// <summary>
 		/// Gets a reading order, first by trying to find it, if one doesn't exist
@@ -275,17 +285,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Note that this needs to be kept in sync with the InitializeDefaultFactRoles template
 				// in VerbalizationGenerator.xslt, which generates an inline form of this property
 				LinkedElementCollection<ReadingOrder> orders = ReadingOrderCollection;
-				if (orders.Count != 0)
+				return orders.Count != 0 ? orders[0].RoleCollection : RoleCollection;
+			}
+		}
+		/// <summary>
+		/// Get the <see cref="Role"/> for a unary <see cref="FactType"/>.
+		/// </summary>
+		/// <returns>The unary <see cref="Role"/></returns>
+		public Role UnaryRole
+		{
+			get
+			{
+				LinkedElementCollection<RoleBase> roles = this.RoleCollection;
+				return roles.Count == 1 ? roles[0].Role : null;
+			}
+		}
+		/// <summary>
+		/// Get the <see cref="FactType"/> of the opposite unary fact type. This will
+		/// be the unary negation fact type for a positive unary and the positive
+		/// fact type for a unary negation.
+		/// </summary>
+		public FactType InverseUnaryFactType
+		{
+			get
+			{
+				switch (UnaryPattern)
 				{
-					return orders[0].RoleCollection;
-				}
-				else
-				{
-					LinkedElementCollection<RoleBase> roles = RoleCollection;
-					int? unaryRoleIndex = GetUnaryRoleIndex(roles);
-					return (unaryRoleIndex.HasValue) ?
-						(IList<RoleBase>)new RoleBase[] { roles[unaryRoleIndex.Value] } :
-						roles;
+					case UnaryValuePattern.NotUnary:
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						return null;
+					case UnaryValuePattern.Negation:
+						return PositiveUnaryFactType;
+					default:
+						return NegationUnaryFactType;
 				}
 			}
 		}
@@ -750,13 +783,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // INamedElementDictionaryRemoteChild implementation
-		#region FactTypeNameChangeRule
+		#region FactTypeChangedRule
 		/// <summary>
 		/// ChangeRule: typeof(FactType)
 		/// </summary>
-		private static void FactTypeNameChangeRule(ElementPropertyChangedEventArgs e)
+		private static void FactTypeChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			if (e.DomainProperty.Id == FactType.NameDomainPropertyId)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == FactType.NameDomainPropertyId)
 			{
 				Debug.Assert(e.ChangeSource == ChangeSource.Normal, "The FactType.Name property should not be set directly from a rule. FactType and its nested class should set the GeneratedName property instead.");
 				if (e.ChangeSource == ChangeSource.Normal) // Ignore changes from rules and other sources
@@ -776,8 +810,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
+			else if (attributeId == FactType.UnaryPatternDomainPropertyId)
+			{
+				ModelElement element = e.ModelElement;
+				Dictionary<object, object> contextInfo = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				if (!contextInfo.ContainsKey(UnaryPatternInitializingKey))
+				{
+					if (CopyMergeUtility.GetIntegrationPhase(element.Store) == CopyClosureIntegrationPhase.Integrating)
+					{
+						// The pattern still needs to be validated to handle element deletions (inverse unary, implied constraints, etc.)
+						FrameworkDomainModel.DelayValidateElement(element, DelayValidateUnaryPattern);
+					}
+					else
+					{
+						((FactType)element).RealizeUnaryPattern(null);
+					}
+				}
+			}
 		}
-		#endregion // FactTypeNameChangeRule
+		#endregion // FactTypeChangedRule
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the error associated with the fact.
@@ -789,17 +840,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
+
+			FactTypeRequiresReadingError noReadingError = this.ReadingRequiredError;
 			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)))
 			{
-				FactTypeRequiresReadingError noReadingError = this.ReadingRequiredError;
-				if (noReadingError != null)
+				// There are some cases where this is error, but it is handled specially and is not blocking if we have a positive reading.
+				FactType positiveFactType;
+				if (noReadingError != null &&
+					(UnaryPattern != UnaryValuePattern.Negation ||
+						null == (positiveFactType = this.PositiveUnaryFactType) ||
+						positiveFactType.ReadingRequiredError != null))
 				{
 					yield return new ModelErrorUsage(noReadingError, ModelErrorUses.BlockVerbalization);
+					noReadingError = null;
 				}
 			}
 
 			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
+				if (noReadingError != null)
+				{
+					yield return new ModelErrorUsage(noReadingError, ModelErrorUses.BlockVerbalization);
+				}
+
+				switch (UnaryPattern)
+				{
+					case UnaryValuePattern.NotUnary:
+					case UnaryValuePattern.Negation:
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						break;
+					default:
+						{
+							FactType negationFactType = this.NegationUnaryFactType;
+							if (negationFactType != null)
+							{
+								foreach (ModelErrorUsage negationError in negationFactType.GetErrorCollection(filter))
+								{
+									yield return negationError;
+								}
+							}
+						}
+						break;
+					
+				}
+
 				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = this.InternalUniquenessConstraintRequiredError;
 				if (noUniquenessError != null)
 				{
@@ -972,10 +1057,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// This passes onto the Objectification class, which maps towards
 				// the fact type.
 				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] {
-					ObjectificationImpliesFactType.ImpliedFactTypeDomainRoleId };
+					ObjectificationImpliesFactType.ImpliedFactTypeDomainRoleId,
+					UnaryFactTypeHasNegationFactType.NegativeFactTypeDomainRoleId };
 				// Note that this method is hidden by SubQuery.GetIndirectModelErrorOwnerLinkRoles
-				// because a subquery is never an implied fact type. Check other owner list
-				// if this one changes.
+				// because a subquery is never an implied fact type or negatable fact type. Check the
+				// other owner list if this one changes.
 			}
 			return linkRoles;
 		}
@@ -1122,10 +1208,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool hasError = !HasImplicitReadings && !(this is QueryBase);
 				if (hasError)
 				{
-					LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
-					if (readingOrders.Count > 0)
+					foreach (ReadingOrder order in ReadingOrderCollection)
 					{
-						foreach (ReadingOrder order in readingOrders)
+						if (order.ReadingCollection.Count > 0)
+						{
+							hasError = false;
+							break;
+						}
+					}
+				}
+
+				if (hasError && this.UnaryPattern == UnaryValuePattern.Negation)
+				{
+					// Require a reading if either the positive or negative forms are objectified.
+					FactType positiveFactType = PositiveUnaryFactType;
+					if (positiveFactType != null && this.Objectification == null && positiveFactType.Objectification == null)
+					{
+						foreach (ReadingOrder order in positiveFactType.ReadingOrderCollection)
 						{
 							if (order.ReadingCollection.Count > 0)
 							{
@@ -1151,11 +1250,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
-				else
+				else if (noReadingError != null)
 				{
-					if (noReadingError != null)
+					noReadingError.Delete();
+				}
+
+				if ((int)UnaryPattern >= (int)UnaryValuePattern.OptionalWithNegation)
+				{
+					FactType negationFactType = NegationUnaryFactType;
+					if (negationFactType != null)
 					{
-						noReadingError.Delete();
+						negationFactType.ValidateRequiresReading(notifyAdded);
 					}
 				}
 			}
@@ -1667,6 +1772,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				GeneratedNamePropertyHandler.ClearGeneratedName(this, !string.IsNullOrEmpty(oldGeneratedName) ? "" : oldGeneratedName);
 			}
 			OnFactTypeNameChanged();
+
+			if ((int)UnaryPattern >= (int)UnaryValuePattern.OptionalWithNegation)
+			{
+				FactType negationFactType = NegationUnaryFactType;
+				if (negationFactType != null)
+				{
+					negationFactType.ValidateFactTypeNamePartChanged();
+				}
+			}
 		}
 		partial class GeneratedNamePropertyHandler
 		{
@@ -1729,20 +1843,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
+
+				if (UnaryPattern == UnaryValuePattern.Negation)
+				{
+					FactType positiveFactType = PositiveUnaryFactType;
+					if (positiveFactType != null) // Sanity check
+					{
+						IReading positiveReading = positiveFactType.GetDefaultReading();
+						return new ImplicitReading(NegateUnaryReadingText(positiveReading.Text), RoleCollection);
+					}
+				}
+
 				LinkedElementCollection<RoleBase> roles = RoleCollection;
 				int roleCount = roles.Count;
 				if (roleCount != 0)
 				{
-					//used for naming binarized unaries
-					int? unaryRoleIndex;
-					if (roleCount == 2 &&
-						(unaryRoleIndex = GetUnaryRoleIndex(roles)).HasValue)
-					{
-						return new ImplicitReading(ResourceStrings.ImplicitBooleanValueTypeNoReadingFormatString, new RoleBase[] { roles[unaryRoleIndex.Value] });
-					}
 					string readingText = null;
 					switch (roleCount)
 					{
+						case 1:
+							readingText = "{0}";
+							break;
 						case 2:
 							readingText = "{0}{1}";
 							break;
@@ -1767,6 +1888,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			return retVal;
+		}
+
+		private static Regex myExtractUnaryPredicatePartRegex;
+		private static string NegateUnaryReadingText(string positiveReadingText)
+		{
+			string partPattern = ResourceStrings.UnaryFactTypeNegationDefaultPredicatePartFormat;
+			string negativeText = null;
+			if (!string.IsNullOrEmpty(partPattern))
+			{
+				Regex predicatePartSplitter = myExtractUnaryPredicatePartRegex;
+				if (predicatePartSplitter == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myExtractUnaryPredicatePartRegex,
+						new Regex(
+							@"^(\{0}\s*)(.+)",
+							RegexOptions.Compiled),
+						null);
+					predicatePartSplitter = myExtractUnaryPredicatePartRegex;
+				}
+				Match match = predicatePartSplitter.Match(positiveReadingText);
+				if (match.Success)
+				{
+					GroupCollection groups = match.Groups;
+					negativeText = groups[1].Value + string.Format(partPattern, groups[2].Value);
+				}
+			}
+
+			return negativeText ?? string.Format(ResourceStrings.UnaryFactTypeNegationDefaultFullPredicateFormat, positiveReadingText);
 		}
 		private static Dictionary<string, object> myGeneratedNameRolePlayerRenderingOptions;
 		private static IDictionary<string, object> GeneratedNameRolePlayerRenderingOptions
@@ -1888,40 +2038,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					LinkedElementCollection<RoleBase> roles = null;
 					string formatText = null;
 					LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
-					int readingOrdersCount = readingOrders.Count;
-					for (int i = 0; i < readingOrdersCount && formatText == null; ++i)
+					bool isNegation = UnaryPattern == UnaryValuePattern.Negation;
+					bool checkPositive = isNegation;
+					bool negateReading = false;
+					do
 					{
-						ReadingOrder order = readingOrders[i];
-						LinkedElementCollection<Reading> readings = order.ReadingCollection;
-						int readingsCount = readings.Count;
-						for (int j = 0; j < readingsCount; ++j)
+						int readingOrdersCount = readingOrders.Count;
+						for (int i = 0; i < readingOrdersCount && formatText == null; ++i)
 						{
-							Reading reading = readings[j];
-							if (reading.TooFewRolesError == null && reading.TooManyRolesError == null)
+							ReadingOrder order = readingOrders[i];
+							LinkedElementCollection<Reading> readings = order.ReadingCollection;
+							int readingsCount = readings.Count;
+							for (int j = 0; j < readingsCount; ++j)
 							{
-								// Don't block this for all errors. Just filter out readings with
-								// structural errors. Anything else (duplicate signature, user
-								// modification required, etc.) should not affect the default naming.
-								roles = order.RoleCollection;
-								formatText = reading.Text;
-								break;
+								Reading reading = readings[j];
+								if (reading.TooFewRolesError == null && reading.TooManyRolesError == null)
+								{
+									// Don't block this for all errors. Just filter out readings with
+									// structural errors. Anything else (duplicate signature, user
+									// modification required, etc.) should not affect the default naming.
+									roles = order.RoleCollection;
+									formatText = reading.Text;
+									if (negateReading)
+									{
+										formatText = NegateUnaryReadingText(formatText);
+									}
+									break;
+								}
 							}
 						}
-					}
+
+						if (checkPositive && roles == null)
+						{
+							checkPositive = false;
+							negateReading = true;
+							FactType positiveFactType = PositiveUnaryFactType;
+							readingOrders = positiveFactType.ReadingOrderCollection;
+						}
+						else
+						{
+							break;
+						}
+					} while (true);
+
 					if (roles == null)
 					{
 						roles = RoleCollection;
 					}
+
 					int roleCount = roles.Count;
 					if (roleCount != 0)
 					{
-						//used for naming binarized unaries
-						bool applyValueText = false;
-						if (roleCount == 2 && GetUnaryRoleIndex(roles).HasValue)
-						{
-							roleCount = 1;
-							applyValueText = readingOrdersCount == 0;
-						}
+						negateReading = isNegation && formatText == null;
 						string[] replacements = new string[roleCount];
 						if (!originalAlgorithm)
 						{
@@ -1953,9 +2121,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								retVal = retVal.Replace(" ", null);
 							}
 						}
-						if (applyValueText)
+
+						if (negateReading)
 						{
-							retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ImplicitBooleanValueTypeNoReadingFormatString, retVal);
+							retVal = string.Format(ResourceStrings.UnaryFactTypeNegationDefaultFullPredicateFormat, retVal);
 						}
 					}
 				}
@@ -2045,24 +2214,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// AddRule: typeof(FactTypeHasRole)
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
 		/// validation when roles are added and removed.
+		/// Unary pattern has potentially changed
+		/// A name part has changed.
 		/// </summary>
-		private static void FactTypeHasRoleAddRule(ElementAddedEventArgs e)
+		private static void FactTypeHasRoleAddedRule(ElementAddedEventArgs e)
 		{
-			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
+			FactType factType = ((FactTypeHasRole)e.ModelElement).FactType;
 			FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+			FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryPattern);
 			factType.DelayValidateNamePartChanged();
 		}
 		/// <summary>
 		/// DeleteRule: typeof(FactTypeHasRole)
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
 		/// validation when roles are added and removed.
+		/// Unary pattern has potentially changed
+		/// A name part has changed.
 		/// </summary>
-		private static void FactTypeHasRoleDeleteRule(ElementDeletedEventArgs e)
+		private static void FactTypeHasRoleDeletedRule(ElementDeletedEventArgs e)
 		{
 			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
 			if (!factType.IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryPattern);
 				factType.DelayValidateNamePartChanged();
 			}
 		}
@@ -2271,10 +2446,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// Synchronize unary pattern
+		/// Update fact type name
 		/// </summary>
-		private static void ValidateFactTypeNameForRolePlayerAddedRule(ElementAddedEventArgs e)
+		private static void ObjectTypePlaysRoleAddedRule(ElementAddedEventArgs e)
 		{
-			ProcessValidateFactNameForRolePlayerAdded(e.ModelElement as ObjectTypePlaysRole, null);
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			FactType factType;
+			if (null != (factType = link.PlayedRole.FactType) && CopyMergeUtility.GetIntegrationPhase(factType.Store) != CopyClosureIntegrationPhase.Integrating)
+			{
+				Role inverseUnaryRole = null;
+				switch (factType.UnaryPattern)
+				{
+					case UnaryValuePattern.NotUnary:
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						break;
+					case UnaryValuePattern.Negation:
+						inverseUnaryRole = factType.PositiveUnaryFactType?.UnaryRole;
+						break;
+					default:
+						inverseUnaryRole = factType.NegationUnaryFactType?.UnaryRole;
+						break;
+				}
+
+				ObjectType rolePlayer;
+				if (inverseUnaryRole != null && inverseUnaryRole.RolePlayer != (rolePlayer = link.RolePlayer))
+				{
+					inverseUnaryRole.RolePlayer = rolePlayer;
+				}
+			}
+
+			ProcessValidateFactNameForRolePlayerAdded(link, null);
 		}
 		/// <summary>
 		/// Rule helper method
@@ -2299,10 +2502,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// Validate unary pattern
+		/// Synchronize name change
 		/// </summary>
-		private static void ValidateFactTypeNameForRolePlayerDeleteRule(ElementDeletedEventArgs e)
+		private static void ObjectTypePlaysRoleDeletedRule(ElementDeletedEventArgs e)
 		{
-			ProcessValidateFactNameForRolePlayerDelete(e.ModelElement as ObjectTypePlaysRole, null);
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
+			Role role;
+			FactType factType;
+			if (!(role = link.PlayedRole).IsDeleted &&
+				null != (factType = role.FactType) &&
+				CopyMergeUtility.GetIntegrationPhase(factType.Store) != CopyClosureIntegrationPhase.Integrating)
+			{
+				Role inverseUnaryRole = null;
+				switch (factType.UnaryPattern)
+				{
+					case UnaryValuePattern.NotUnary:
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						break;
+					case UnaryValuePattern.Negation:
+						inverseUnaryRole = factType.PositiveUnaryFactType?.UnaryRole;
+						break;
+					default:
+						inverseUnaryRole = factType.NegationUnaryFactType?.UnaryRole;
+						break;
+				}
+
+				if (inverseUnaryRole != null && inverseUnaryRole.RolePlayer != null)
+				{
+					inverseUnaryRole.RolePlayer = null;
+				}
+			}
+
+			ProcessValidateFactNameForRolePlayerDelete(link, null);
 		}
 		/// <summary>
 		/// Rule helper method
@@ -2330,16 +2563,61 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// Synchronize fact type name
+		/// Update unary pattern
 		/// </summary>
-		private static void ValidateFactTypeNameForRolePlayerRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		private static void ObjectTypePlaysRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			Guid changedRoleGuid = e.DomainRole.Id;
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ElementLink;
 			Role oldRole = null;
-			if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				if (CopyMergeUtility.GetIntegrationPhase(link.Store) != CopyClosureIntegrationPhase.Integrating)
+				{
+					Role role = link.PlayedRole;
+					FactType factType = role.FactType;
+					ObjectType rolePlayer;
+					if (factType != null)
+					{
+						Role inverseUnaryRole = null;
+
+						// This isn't worth running a full validation on--the role player is only used once.
+						// Just make sure they're synchronized.
+						switch (factType.UnaryPattern)
+						{
+							case UnaryValuePattern.NotUnary:
+							case UnaryValuePattern.OptionalWithoutNegation:
+							case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+								break;
+							case UnaryValuePattern.Negation:
+								inverseUnaryRole = factType.PositiveUnaryFactType?.UnaryRole;
+								break;
+							default:
+								inverseUnaryRole = factType.NegationUnaryFactType?.UnaryRole;
+								break;
+						}
+
+						if (inverseUnaryRole != null && inverseUnaryRole.RolePlayer != (rolePlayer = link.RolePlayer))
+						{
+							inverseUnaryRole.RolePlayer = rolePlayer;
+						}
+					}
+				}
+			}
+			else // e.DomainRole.Id == ObjectTypePlaysRole.PlayedRoleDomainRoleId
 			{
 				oldRole = (Role)e.OldRolePlayer;
+				FactType factType = oldRole.FactType;
+				if (factType != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryPattern);
+				}
+				factType = ((Role)e.NewRolePlayer).FactType;
+				if (factType != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateUnaryPattern);
+				}
 			}
-			ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
 			ProcessValidateFactNameForRolePlayerDelete(link, oldRole);
 			ProcessValidateFactNameForRolePlayerAdded(link, null);
 		}
@@ -2610,7 +2888,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ValidateFactTypeNameForObjectificationAddedRule(ElementAddedEventArgs e)
 		{
-			ProcessValidateFactNameForObjectificationAdded(e.ModelElement as Objectification);
+			Objectification objectification = (Objectification)e.ModelElement;
+			FactType factType = objectification.NestedFactType;
+
+			// An objectification on either fact type requires a reading on the negation.
+			switch (factType.UnaryPattern)
+			{
+				case UnaryValuePattern.NotUnary:
+				case UnaryValuePattern.OptionalWithoutNegation:
+				case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+					break;
+				case UnaryValuePattern.Negation:
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+					break;
+				default:
+					// Negation exists for all other unary patterns
+					FactType negationFactType;
+					if (null != (negationFactType = factType.NegationUnaryFactType))
+					{
+						FrameworkDomainModel.DelayValidateElement(negationFactType, DelayValidateFactTypeRequiresReadingError);
+					}
+					break;
+			}
+
+			ProcessValidateFactNameForObjectificationAdded(objectification);
 		}
 		/// <summary>
 		/// Rule helper method
@@ -2631,7 +2932,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ValidateFactTypeNameForObjectificationDeleteRule(ElementDeletedEventArgs e)
 		{
-			ProcessValidateFactNameForObjectificationDelete(e.ModelElement as Objectification, null, null);
+			Objectification objectification = (Objectification)e.ModelElement;
+			FactType factType = objectification.NestedFactType;
+
+			// An objectification on either fact type requires a reading on the negation.
+			if (!factType.IsDeleted)
+			{
+				switch (factType.UnaryPattern)
+				{
+					case UnaryValuePattern.NotUnary:
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						break;
+					case UnaryValuePattern.Negation:
+						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+						break;
+					default:
+						// Negation exists for all other unary patterns
+						FactType negationFactType;
+						if (null != (negationFactType = factType.NegationUnaryFactType))
+						{
+							FrameworkDomainModel.DelayValidateElement(negationFactType, DelayValidateFactTypeRequiresReadingError);
+						}
+						break;
+				}
+			}
+
+			ProcessValidateFactNameForObjectificationDelete(objectification, factType, null);
 		}
 		/// <summary>
 		/// Rule helper method
@@ -3477,7 +3804,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
-			if (ReadingRequiredError != null)
+			if (VerbalizationBlockingReadingRequiredError != null)
 			{
 				yield break;
 			}
@@ -3499,18 +3826,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool lookForCombined = !isNegative && (bool)verbalizationOptions[CoreVerbalizationOption.CombineSimpleMandatoryAndUniqueness];
 
 				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
-				int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
-				bool isUnaryFactType = unaryRoleIndex.HasValue;
-				if (!isUnaryFactType && 2 == factRoles.Count)
+				int factRoleCount = factRoles.Count;
+				if (2 == factRoleCount)
 				{
 					Role[] roles = new Role[2];
 					RoleProxy proxy = null;
-					int primaryRoleCount;
+					int primaryRoleCount = 2;
 					if (ImpliedByObjectification == null)
 					{
 						roles[0] = (Role)factRoles[0];
 						roles[1] = (Role)factRoles[1];
-						primaryRoleCount = 2;
 					}
 					// Find the proxy, and put the opposite role in the 0 slot
 					else if (null != (proxy = factRoles[0] as RoleProxy))
@@ -3523,13 +3848,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						roles[0] = (Role)factRoles[0];
 						primaryRoleCount = 1;
 					}
-					// Fallback case for unary objectification, which does not use a proxy
-					else
-					{
-						roles[0] = (Role)factRoles[0];
-						roles[1] = (Role)factRoles[1];
-						primaryRoleCount = 2;
-					}
+
 					// Array of single role constraints.
 					//    Index 1 == Left/Right
 					//    Index 2 == Alethic/Deontic
@@ -3725,7 +4044,65 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 					}
 				}
-				else if (!isUnaryFactType)
+				else if (1 == factRoleCount)
+				{
+					// Verbalize the uniqueness constraint on the unary role
+					UniquenessConstraint constraint;
+					if (null != (constraint = factRoles[0].Role.SingleRoleAlethicUniquenessConstraint) &&
+						(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
+					{
+						yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
+					}
+					FactType positiveUnary = this;
+					switch (UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary: // Sanity, obviously should not be set
+						case UnaryValuePattern.OptionalWithoutNegation:
+						case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+							positiveUnary = null;
+							break;
+						case UnaryValuePattern.Negation:
+							positiveUnary = PositiveUnaryFactType;
+							break;
+					}
+
+					if (positiveUnary != null)
+					{
+						bool verbalizeExclusion = false;
+						bool verbalizeMandatory = false;
+						switch (positiveUnary.UnaryPattern)
+						{
+							case UnaryValuePattern.OptionalWithNegation:
+							case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+							case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+							
+							// These will have a coupled mandatory, exclusion verbalization is sufficient.
+							case UnaryValuePattern.RequiredWithNegation:
+							case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+							case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+								verbalizeExclusion = true;
+								break;
+							case UnaryValuePattern.DeonticRequiredWithNegation:
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+								verbalizeMandatory = verbalizeExclusion = true;
+								break;
+						}
+
+						ExclusionConstraint exclusion;
+						MandatoryConstraint mandatory;
+						if (verbalizeExclusion && null != (exclusion = positiveUnary.NegationExclusionConstraint))
+						{
+							yield return CustomChildVerbalizer.VerbalizeInstance(exclusion);
+						}
+
+						if (verbalizeMandatory && null != (mandatory = positiveUnary.NegationMandatoryConstraint))
+						{
+							yield return CustomChildVerbalizer.VerbalizeInstance(mandatory);
+						}
+					}
+				}
+				else
 				{
 					// Easy case, just verbalize all internal constraints as entered
 					for (int i = 0; i < setConstraintCount; ++i)
@@ -3736,16 +4113,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 						}
-					}
-				}
-				else
-				{
-					// Verbalize the uniqueness constraint on the unary role
-					UniquenessConstraint constraint;
-					if (null != (constraint = factRoles[unaryRoleIndex.Value].Role.SingleRoleAlethicUniquenessConstraint) &&
-						(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
-					{
-						yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 					}
 				}
 			}
@@ -3908,7 +4275,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach (RoleBase roleBase in RoleCollection)
 			{
 				ObjectType rolePlayer = roleBase.Role.RolePlayer;
-				if (rolePlayer != null && !rolePlayer.IsImplicitBooleanValue)
+				if (rolePlayer != null)
 				{
 					yield return rolePlayer;
 				}
@@ -3940,8 +4307,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								ObjectType rolePlayer = roleBase.Role.RolePlayer;
 								if (rolePlayer != null &&
-									rolePlayer != nestingType &&
-									!rolePlayer.IsImplicitBooleanValue)
+									rolePlayer != nestingType)
 								{
 									yield return rolePlayer;
 								}
@@ -4041,6 +4407,298 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IHierarchyContextEnabled Implementation
 		#region UnaryFactTypeFixupListener
 		/// <summary>
+		/// Unary binarization is deprecated. This removes previously stored elements.
+		/// </summary>
+		public static IDeserializationFixupListener DebinarizeUnaryFixupListener
+		{
+			// UNDONE: File format update. Handle this in the import transform, not here.
+			get { return new UnaryDebinarizationFixupListener(); }
+
+		}
+		private sealed class UnaryDebinarizationFixupListener : DeserializationFixupListener<ObjectType>
+		{
+			public UnaryDebinarizationFixupListener() : base((int)ORMDeserializationFixupPhase.ReplaceDeprecatedStoredElements) { }
+			protected override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (element.IsImplicitBooleanValue)
+				{
+					// This is the old style binarized unary. The true-only value constraint was ignored and
+					// these were always mapped as a nullable bit (true/false/unknown or OWN style), which will
+					// be enforced later in UnaryFactTypeFixupListener. This needs to:
+					// 1) REPAIR any uniqueness or frequency constraint on the the role played by this object type.
+					// 2) REMOVE This object type, the role played by this object type and the value constraint on this object type.
+					// 3) REMOVE Remove all RoleDisplayOrder links on the shape (no longer needed)
+					// 4) If objectified, change the ObjectifiedUnaryRole to a normal RoleProxy
+					//    a) There will be an ObjectifiedUnaryRole in the implied fact type for the unary role. If it is preferred, move
+					//       the preferred link to the implied uniqueness constraint on the unary role (which we do not delete).
+					//    b) If the objectified unary role was identifying, move any EntityTypeRoleInstance associated with it to the
+					//       unary role.
+					//    c) Replace any use of the objectified unary role in a fact type reading ordering.
+					//    d) An objectified unary role in a PathedRole indicates a join to the objectified fact type. When a proxy is used,
+					//       the join over the implied fact type is indicating by placing the opposite role (a normal role attached to the
+					//       objectifying entity type) as the next same-fact-type step in the path with the target role as the join role.
+					//       This disamgiguates the use of the objectified role in the path, which refers to the objectified fact type if
+					//       the link role does not follow it. For the objectified unary role, this trailing role is optional and my not be
+					//       specified, so the path needs to be manipulated accordingly to add the link fact type role.
+					//    e) Delete the objectified unary role and the internal uniqueness constraint on it. The constraint will be implied
+					//       by the role proxy.
+					//    f) Create a RoleProxy to replace the ObjectifiedUnaryRole.
+					// 5) Replace any EntityTypeRoleInstance attached to the implicit boolean role to an EntityTypeInstancePopulatesUnaryRole.
+					// 6) SET the fact type UnaryPattern to UnaryValuePattern.OptionalWithNegation (for later processing)
+					foreach (Role role in element.PlayedRoleCollection)
+					{
+						Role booleanRole = role;
+						FactType unaryFactType = booleanRole.FactType;
+						Role unaryRole = booleanRole.OppositeRole as Role;
+						if (unaryRole != null)
+						{
+							ObjectifiedUnaryRole objectifiedUnaryRole;
+							Objectification objectification;
+							if (null != (objectification = unaryFactType.Objectification) &&
+								null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole))
+							{
+								// The default constraint structure on the objectified unary role is a single-role internal uniqueness that is
+								// preferred for the objectifying entity type. This internal constraint needs to be deleted if found, with the
+								// objectified entity pid moved to the uniqueness on the unary role.
+								ObjectType objectifyingType = objectification.NestingType;
+								UniquenessConstraint pid = objectifyingType.PreferredIdentifier;
+								foreach (ConstraintRoleSequenceHasRole constraintLink in ConstraintRoleSequenceHasRole.GetLinksToConstraintRoleSequenceCollection(objectifiedUnaryRole))
+								{
+									ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequence;
+									UniquenessConstraint uniquenessConstraint;
+									MandatoryConstraint mandatoryConstraint;
+									if (null != (uniquenessConstraint = sequence as UniquenessConstraint) && uniquenessConstraint.IsInternal)
+									{
+										if (uniquenessConstraint == pid)
+										{
+											// Find the corresponding constraint on the unary role and make this the preferred identifier
+											foreach (ConstraintRoleSequenceHasRole unaryRoleConstraintLink in ConstraintRoleSequenceHasRole.GetLinksToConstraintRoleSequenceCollection(unaryRole))
+											{
+												UniquenessConstraint unaryRoleConstraint = unaryRoleConstraintLink.ConstraintRoleSequence as UniquenessConstraint;
+												if (unaryRoleConstraint != null && unaryRoleConstraint.IsInternal)
+												{
+													objectifyingType.PreferredIdentifier = unaryRoleConstraint;
+												}
+											}
+
+											// Move role instances before we delete the objectified unary role
+											foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToObjectTypeInstanceCollection(objectifiedUnaryRole))
+											{
+												roleInstance.Role = unaryRole;
+											}
+										}
+										uniquenessConstraint.Delete();
+									}
+									else if ((null == (mandatoryConstraint = sequence as MandatoryConstraint) || mandatoryConstraint.ImpliedByObjectType == null) && // This will be deleted with the objectified unary role
+										null == ConstraintRoleSequenceHasRole.GetLink(sequence, unaryRole)) // We don't know what this is, use caution.
+									{
+										// (Unusual) move the constraint to the unary role.
+										constraintLink.Role = unaryRole;
+									}
+								}
+
+								RoleProxy proxy = new RoleProxy(store);
+								proxy.TargetRole = unaryRole;
+
+								// Restructure role paths
+								ReadOnlyCollection<PathedRole> pathedRoles = PathedRole.GetLinksToRolePathCollection(objectifiedUnaryRole);
+								foreach (PathedRole pathedRole in PathedRole.GetLinksToRolePathCollection(objectifiedUnaryRole))
+								{
+									if (pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+									{
+										Role linkRole = objectifiedUnaryRole.OppositeRole as Role;
+										RolePath rolePath = pathedRole.RolePath;
+										ReadOnlyCollection<PathedRole> siblings = rolePath.PathedRoleCollection;
+										int siblingCount = siblings.Count;
+										int signalRoleIndex = siblings.IndexOf(pathedRole) + 1;
+
+										// Add a new signal PathedRole to indicate this is navigating the link fact type, not the objectified fact type.
+										// The difficulty comes if there are following pathed roles or splits from this path. This handles the various cases.
+										if (linkRole != null &&
+											(signalRoleIndex >= siblingCount || siblings[signalRoleIndex].PathedRolePurpose != PathedRolePurpose.SameFactType))
+										{
+											LinkedElementCollection<RoleSubPath> subpaths = rolePath.SubPathCollection;
+											bool nodesAfter = siblingCount > signalRoleIndex;
+											bool hasSplit = subpaths.Count != 0;
+											if (!nodesAfter && !hasSplit)
+											{
+												new PathedRole(rolePath, linkRole); // SameFactType is the default purpose. Just add the signal role to the end of the current path.
+											}
+											else
+											{
+												bool nodesBefore = signalRoleIndex > 1;
+												bool splitJoinable = !hasSplit || (!rolePath.SplitIsNegated && rolePath.SplitCombinationOperator == LogicalCombinationOperator.And);
+												bool hasRoot = rolePath.PathRoot != null;
+												RoleSubPath pathAsSubpath;
+												RolePath parentConjunction = null;
+
+												if (null != (pathAsSubpath = rolePath as RoleSubPath) &&
+													null != (parentConjunction = pathAsSubpath.ParentRolePath) &&
+													(parentConjunction.SplitIsNegated || parentConjunction.SplitCombinationOperator != LogicalCombinationOperator.And))
+												{
+													parentConjunction = null;
+												}
+
+												// Create an isolated path for the unary and signal roles
+												RoleSubPath linkFactTypePath = new RoleSubPath(store);
+												pathedRole.RolePath = linkFactTypePath;
+												new PathedRole(linkFactTypePath, linkRole);
+
+												bool rehostSplit = false;
+												RoleSubPath afterPath = null;
+
+												if (nodesAfter)
+												{
+													// Move the after nodes to a new subpath
+													afterPath = new RoleSubPath(store);
+													for (int i = signalRoleIndex; i < siblingCount; ++i)
+													{
+														siblings[i].RolePath = afterPath;
+													}
+
+													if (nodesBefore || hasRoot || parentConjunction == null)
+													{
+														// We need to preserve the before nodes or root of this path
+														if (splitJoinable)
+														{
+															if (!hasSplit)
+															{
+																// Sanity check, these are ignored if there are no subpaths
+																rolePath.SplitCombinationOperator = LogicalCombinationOperator.And;
+																rolePath.SplitIsNegated = true;
+															}
+															subpaths.InsertRange(0, new RoleSubPath[] { linkFactTypePath, afterPath });
+														}
+														else
+														{
+															rehostSplit = true;
+														}
+													}
+													else if (parentConjunction != null)
+													{
+														// Move the isolated path before the after nodes in the parent conjunction
+														LinkedElementCollection<RoleSubPath> siblingPaths = parentConjunction.SubPathCollection;
+														siblingPaths.Insert(siblingPaths.IndexOf(pathAsSubpath), linkFactTypePath);
+													}
+												}
+												// hasSplit must be true below here base on the containing block condition
+												else if (parentConjunction != null)
+												{
+													LinkedElementCollection<RoleSubPath> siblingPaths = parentConjunction.SubPathCollection;
+													siblingPaths.Insert(siblingPaths.IndexOf(pathAsSubpath), linkFactTypePath);
+												}
+												else if (splitJoinable)
+												{
+													subpaths.Insert(0, linkFactTypePath);
+												}
+												else
+												{
+													rehostSplit = true;
+												}
+
+												if (rehostSplit)
+												{
+													RoleSubPath splitHost = new RoleSubPath(store);
+													splitHost.SplitCombinationOperator = rolePath.SplitCombinationOperator;
+													splitHost.SplitIsNegated = rolePath.SplitIsNegated;
+													rolePath.SplitCombinationOperator = LogicalCombinationOperator.And;
+													rolePath.SplitIsNegated = true;
+
+													foreach (RoleSubPathIsContinuationOfRolePath link in RoleSubPathIsContinuationOfRolePath.GetLinksToSubPathCollection(rolePath))
+													{
+														link.SubPath = splitHost;
+													}
+
+													new RoleSubPathIsContinuationOfRolePath(rolePath, linkFactTypePath);
+													if (afterPath != null)
+													{
+														new RoleSubPathIsContinuationOfRolePath(rolePath, afterPath);
+													}
+													new RoleSubPathIsContinuationOfRolePath(rolePath, splitHost);
+												}
+											}
+										}
+									}
+
+									// Switch to the unary role, which will be the proxy target.
+									pathedRole.Role = unaryRole;
+								}
+
+								// Replace the objectified unary role with the proxy in the fact type (roles and reading orders)
+								foreach (ReadingOrderHasRole readingOrderLink in ReadingOrderHasRole.GetLinksToReadingOrder(objectifiedUnaryRole))
+								{
+									readingOrderLink.Role = proxy;
+								}
+
+								FactTypeHasRole roleLink = FactTypeHasRole.GetLinkToFactType(objectifiedUnaryRole);
+								roleLink.Role = proxy;
+								objectifiedUnaryRole.Delete();
+
+								notifyAdded.ElementAdded(proxy, true);
+							}
+
+							// Remove all display orders. These were always added as an easy way to stop the fact type shape from
+							// displaying the boolean role.
+							ShapeModel.FactTypeShapeHasRoleDisplayOrder.GetFactTypeShapeCollection(unaryRole).Clear();
+
+							// Move external uniqueness and frequency constraints to the unary role. In this case, we also
+							// split the frequency and uniqueness constraints between the positive and negative roles, so
+							// we need to do pair-bones work (fact type, unary role only, negation link) from RealizeUnaryPattern to
+							// have something to attach to. We either need to pre-create these objects or add yet another fixup listener
+							// later in the process, which is much more complicated than this code.
+							//Role negationRole = null;
+							foreach (ConstraintRoleSequenceHasRole constraintLink in ConstraintRoleSequenceHasRole.GetLinksToConstraintRoleSequenceCollection(booleanRole))
+							{
+								SetConstraint constraint = constraintLink.ConstraintRoleSequence as SetConstraint;
+								if (constraint != null)
+								{
+									switch (((IConstraint)constraint).ConstraintType)
+									{
+										case ConstraintType.Frequency:
+										case ConstraintType.ExternalUniqueness:
+											{
+												constraintLink.Role = unaryRole;
+												// UNDONE: Moving external uniqueness on frequency and uniqueness technically needs to attach to both the true and
+												// false states. However, the proper form form this requires access to open semantics on the constraint, which
+												// we don't have in the tool yet, so technically it isn't right with the prior configuration either. To avoid
+												// creating impossible constraints--an inner join across a paired mandatory is necessarily the empty set because
+												// they are exclusive--we just leave this as is for now.
+
+												// Insert negation role right after this one for clarity
+												//LinkedElementCollection<Role> sequenceRoles = constraintLink.ConstraintRoleSequence.RoleCollection;
+												//sequenceRoles.Insert(sequenceRoles.IndexOf(unaryRole) + 1, negationRole ?? (negationRole = CreateInitialUnaryNegation(unaryFactType, unaryRole, null, notifyAdded)));
+											}
+											break;
+									}
+								}
+							}
+
+							// Move any entity type role instances on the unary role to unary role instances on the unary role
+							// Note that fact type instances populate the unary role, not the boolean role.
+							foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToObjectTypeInstanceCollection(booleanRole))
+							{
+								new EntityTypeInstancePopulatesUnaryRole(roleInstance.EntityTypeInstance, unaryRole);
+							}
+
+							// Delete the boolean role, role player and value constraint
+							RoleValueConstraint valueConstraint = booleanRole.ValueConstraint;
+							if (valueConstraint != null)
+							{
+								valueConstraint.Delete();
+							}
+
+							booleanRole.Delete();
+							element.Delete();
+
+							// Set the pattern. This will be synchronized later.
+							unaryFactType.UnaryPattern = UnaryValuePattern.OptionalWithNegation;
+						}
+						break; // There will only be one role player
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// This fixup listener handles the automatic binarization of unary facts that are stored as single-role facts.
 		/// </summary>
 		public static IDeserializationFixupListener UnaryFixupListener
@@ -4053,23 +4711,414 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				// Binarize any fact that is stored as a unary
-				if (element.RoleCollection != null && element.RoleCollection.Count == 1)
+				if (!element.IsDeleted)
 				{
-					UnaryBinarizationUtility.BinarizeUnary(element, notifyAdded);
+					element.RealizeUnaryPattern(notifyAdded);
 				}
-				else if (element.UnaryRole != null)
-				{
-					// Validate and fix any binarized unary facts
-					UnaryBinarizationUtility.ProcessFactType(element, notifyAdded);
-				}
-			}
-			protected override bool VerifyElementType(ModelElement element)
-			{
-				return !(element is QueryBase || element is SubtypeFact);
 			}
 		}
-		#endregion
+		[DelayValidatePriority(-100)]
+		private static void DelayValidateUnaryPattern(ModelElement element)
+		{
+			FactType factType;
+			if (!element.IsDeleted &&
+				null != (factType = element as FactType) &&
+				!(factType is QueryBase || factType is SubtypeFact))
+			{
+				factType.RealizeUnaryPattern(null);
+			}
+		}
+		/// <summary>
+		/// Helper function to synchronize the unary pattern with the value specified on the fact type.
+		/// </summary>
+		/// <param name="notifyAdded">Callback used to notify element addition. Set when rules are not enabled.</param>
+		private void RealizeUnaryPattern(INotifyElementAdded notifyAdded)
+		{
+			UnaryValuePattern pattern = this.UnaryPattern;
+			LinkedElementCollection<RoleBase> roles = this.RoleCollection;
+			bool clearNegationLinks = false;
+			bool clearRoleValues = false;
+			bool clearInternalUniqueness = false;
+			Store store = this.Store;
+			bool clearInitializingFlag = false;
+			Dictionary<Object, Object> contextInfo = null;
+			try
+			{
+				Action init = notifyAdded == null ?
+					() =>
+					{
+						contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+						if (!contextInfo.ContainsKey(UnaryPatternInitializingKey))
+						{
+							contextInfo[UnaryPatternInitializingKey] = null;
+							clearInitializingFlag = true;
+						}
+						init = null; // Once is enough
+					}:
+					(Action)null;
+
+				Action ensureInit = () =>
+				{
+					if (init != null)
+					{
+						init();
+					}
+				};
+
+				if (roles.Count == 1)
+				{
+					FactType positiveUnary = this.PositiveUnaryFactType;
+					if (pattern == UnaryValuePattern.Negation)
+					{
+						if (positiveUnary == null)
+						{
+							// This is detached, there is no way to know what its positive unary is.
+							ensureInit();
+							this.Delete();
+						}
+						else
+						{
+							clearNegationLinks = true;
+						}
+					}
+					else if (positiveUnary != null)
+					{
+						ensureInit();
+						this.UnaryPattern = UnaryValuePattern.Negation;
+						clearNegationLinks = true;
+					}
+					else
+					{
+						ensureInit(); // There is way too much happening here to do finer grained initialization
+
+						// Synchronize the positive side with the requested pattern
+						if (pattern == UnaryValuePattern.NotUnary)
+						{
+							// Default to the basic pattern. Note that deprecating the old pattern
+							// of a binarized unary form will already set this to the most general case (OptionalWithNegation),
+							// so this is just a sanity check.
+							this.UnaryPattern = pattern = UnaryValuePattern.OptionalWithoutNegation;
+						}
+
+						bool requireNegation = true; // exclusion is required with negation. true is the most common value.
+						bool requireMandatory = false;
+						bool deonticMandatory = false;
+						bool? defaultValue = null;
+						switch (pattern)
+						{
+							case UnaryValuePattern.OptionalWithoutNegation:
+								requireNegation = false;
+								break;
+							case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+								requireNegation = false;
+								defaultValue = true;
+								break;
+							//case UnaryValuePattern.OptionalWithNegation:
+							case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+								defaultValue = true;
+								break;
+							case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+								defaultValue = false;
+								break;
+							case UnaryValuePattern.RequiredWithNegation:
+								requireMandatory = true;
+								break;
+							case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+								requireMandatory = true;
+								defaultValue = true;
+								break;
+							case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+								requireMandatory = true;
+								defaultValue = false;
+								break;
+							case UnaryValuePattern.DeonticRequiredWithNegation:
+								requireMandatory = deonticMandatory = true;
+								break;
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+								requireMandatory = deonticMandatory = true;
+								defaultValue = true;
+								break;
+							case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+								requireMandatory = deonticMandatory = true;
+								defaultValue = false;
+								break;
+						}
+
+						Role unaryRole = roles[0] as Role;
+						UniquenessConstraint unaryUniqueness = unaryRole.SingleRoleAlethicUniquenessConstraint;
+						if (unaryUniqueness == null)
+						{
+							new ConstraintRoleSequenceHasRole(unaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(this), unaryRole);
+
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(unaryUniqueness, true);
+							}
+						}
+
+						string defaultString = defaultValue.HasValue && defaultValue.Value ? "True" : "";
+						unaryRole.DefaultState = DefaultValueState.UseValue;
+						unaryRole.DefaultValue = defaultString;
+						unaryRole.InvariantDefaultValue = ""; // The assumed data type is TrueOrFalseLogicalDataType. This is not culture sensitive, so InvariantDefaultValue remains unset.
+
+						if (requireNegation)
+						{
+							FactType negativeUnary = this.NegationUnaryFactType;
+							ExclusionConstraint exclusion = this.NegationExclusionConstraint;
+							MandatoryConstraint mandatory = this.NegationMandatoryConstraint;
+
+							ORMModel model = this.ResolvedModel;
+							Role negationRole = null;
+
+							if (negativeUnary != null)
+							{
+								LinkedElementCollection<RoleBase> negationRoles = negativeUnary.RoleCollection;
+								if (negationRoles.Count != 1)
+								{
+									negativeUnary.Delete();
+									negativeUnary = null;
+								}
+								else
+								{
+									negationRole = negationRoles[0] as Role;
+									negationRole.RolePlayer = unaryRole.RolePlayer;
+
+									unaryUniqueness = negationRole.SingleRoleAlethicUniquenessConstraint;
+									if (unaryUniqueness == null)
+									{
+										new ConstraintRoleSequenceHasRole(unaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(this), negationRole);
+
+										if (notifyAdded != null)
+										{
+											notifyAdded.ElementAdded(unaryUniqueness, true);
+										}
+									}
+								}
+							}
+
+							if (negativeUnary == null)
+							{
+								negationRole = CreateInitialUnaryNegation(this, unaryRole, model, notifyAdded);
+							}
+
+							// Choosing false here saves some grief with the display of the default value for the
+							// positive fact type, but it is more correct to use true because this is the negated
+							// role and ~true means false for the paired fact types.
+							defaultString = defaultValue.HasValue && !defaultValue.Value ? "True" : "";
+							negationRole.DefaultState = DefaultValueState.UseValue;
+							negationRole.DefaultValue = defaultString;
+							negationRole.InvariantDefaultValue = "";
+
+							// Verify structure during fixup. There is no reason to verify after reload.
+							// There will be no attempt to fix this. It will be rebuilt from scratch if incorrect.
+							if (exclusion != null && notifyAdded != null)
+							{
+								LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = exclusion.RoleSequenceCollection;
+								bool validExclusion = false;
+								if (sequences.Count == 2)
+								{
+									LinkedElementCollection<Role> sequenceRoles = sequences[0].RoleCollection;
+									if (sequenceRoles.Count == 1 && sequenceRoles[0] == unaryRole)
+									{
+										sequenceRoles = sequences[1].RoleCollection;
+										if (sequenceRoles.Count == 1 && sequenceRoles[0] == negationRole)
+										{
+											validExclusion = true;
+										}
+									}
+								}
+
+								if (!validExclusion)
+								{
+									exclusion.Delete();
+									exclusion = null;
+								}
+							}
+
+							if (exclusion == null)
+							{
+								exclusion = new ExclusionConstraint(store);
+								exclusion.Model = model;
+								exclusion.ControlledByUnaryFactType = this;
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(exclusion, true);
+								}
+
+								SetComparisonConstraintRoleSequence sequence = new SetComparisonConstraintRoleSequence(store);
+								new SetComparisonConstraintHasRoleSequence(exclusion, sequence);
+								new ConstraintRoleSequenceHasRole(sequence, unaryRole);
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(sequence, true);
+								}
+
+								sequence = new SetComparisonConstraintRoleSequence(store);
+								new SetComparisonConstraintHasRoleSequence(exclusion, sequence);
+								new ConstraintRoleSequenceHasRole(sequence, negationRole);
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(sequence, true);
+								}
+							}
+
+							if (requireMandatory)
+							{
+								// See comment on exclusion validation
+								if (mandatory != null && notifyAdded != null)
+								{
+									LinkedElementCollection<Role> mandatoryRoles = mandatory.RoleCollection;
+									if (mandatoryRoles.Count != 2 || mandatoryRoles[0] != unaryRole || mandatoryRoles[1] != negationRole)
+									{
+										mandatory.Delete();
+										mandatory = null;
+									}
+								}
+
+								if (mandatory == null)
+								{
+									mandatory = deonticMandatory ? new MandatoryConstraint(store, new PropertyAssignment(SetConstraint.ModalityDomainPropertyId, ConstraintModality.Deontic)) : new MandatoryConstraint(store);
+									mandatory.Model = model;
+									mandatory.ClosesUnaryFactType = this;
+									new ConstraintRoleSequenceHasRole(mandatory, unaryRole);
+									new ConstraintRoleSequenceHasRole(mandatory, negationRole);
+									if (!deonticMandatory)
+									{
+										mandatory.ExclusiveOrExclusionConstraint = exclusion;
+									}
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(mandatory, true);
+									}
+								}
+								else if (deonticMandatory)
+								{
+									mandatory.ExclusiveOrExclusionConstraint = null;
+									mandatory.Modality = ConstraintModality.Deontic;
+								}
+								else
+								{
+									mandatory.Modality = ConstraintModality.Alethic;
+									mandatory.ExclusiveOrExclusionConstraint = exclusion;
+								}
+							}
+							else if (mandatory != null)
+							{
+								mandatory.Delete();
+							}
+						}
+						else
+						{
+							clearNegationLinks = true;
+						}
+					}
+				}
+				else if (pattern == UnaryValuePattern.Negation)
+				{
+					ensureInit();
+					this.UnaryPattern = UnaryValuePattern.NotUnary;
+					clearNegationLinks = notifyAdded != null;
+					clearRoleValues = true; // Role cardinality can be set independently on the negation role
+				}
+				else if (pattern != UnaryValuePattern.NotUnary)
+				{
+					ensureInit();
+					this.UnaryPattern = UnaryValuePattern.NotUnary;
+					clearRoleValues = true;
+					clearNegationLinks = true;
+					clearInternalUniqueness = true;
+				}
+
+				if (clearNegationLinks)
+				{
+					// Note that these all have delete propagation, even when rules are not active.
+					this.NegationUnaryFactType = null;
+					this.NegationMandatoryConstraint = null;
+					this.NegationExclusionConstraint = null;
+				}
+
+				if (clearInternalUniqueness)
+				{
+					foreach (UniquenessConstraint internalUniqueness in this.GetInternalConstraints<UniquenessConstraint>())
+					{
+						internalUniqueness.Delete();
+						break;
+					}
+				}
+
+				if (clearRoleValues)
+				{
+					foreach (RoleBase roleBase in roles)
+					{
+						Role role = roleBase as Role;
+						if (role != null)
+						{
+							role.Cardinality = null;
+							role.DefaultState = DefaultValueState.UseValue;
+							role.DefaultValue = "";
+							role.EntityInstancesForUnary.Clear();
+						}
+					}
+				}
+			}
+			finally
+			{
+				if (clearInitializingFlag)
+				{
+					contextInfo.Remove(UnaryPatternInitializingKey);
+				}
+			}
+		}
+		/// <summary>
+		/// Create a basic unary negation fact type with a link to a positive unary.
+		/// </summary>
+		/// <param name="positiveUnaryFactType">The positive unary to pair with.</param>
+		/// <param name="unaryRole">The known unary role. This should always be set as we do not necessary
+		/// know the state of the transitional state of the positive fact type when this is called.</param>
+		/// <param name="model">The context model. This is calculated if not set.</param>
+		/// <param name="notifyAdded">Notification callback set during deserialization fixup</param>
+		/// <returns>The unary negation role.</returns>
+		private static Role CreateInitialUnaryNegation(FactType positiveUnaryFactType, Role unaryRole, ORMModel model, INotifyElementAdded notifyAdded)
+		{
+			Store store = positiveUnaryFactType.Store;
+			FactType negation = new FactType(store, new PropertyAssignment(FactType.UnaryPatternDomainPropertyId, UnaryValuePattern.Negation));
+			negation.Model = model ?? positiveUnaryFactType.ResolvedModel;
+			negation.PositiveUnaryFactType = positiveUnaryFactType;
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(negation, true);
+			}
+
+			Role negationRole = new Role(store);
+			negationRole.FactType = negation;
+			negationRole.RolePlayer = unaryRole.RolePlayer;
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(negationRole);
+			}
+
+			UniquenessConstraint unaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(negation);
+			new ConstraintRoleSequenceHasRole(unaryUniqueness, negationRole);
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(unaryUniqueness, true);
+			}
+			return negationRole;
+		}
+		/// <summary>
+		/// Create a unary negation fact type for this unary fact type.
+		/// </summary>
+		/// <returns>The unary role of a new fact type that is the negation of this one.</returns>
+		/// <remarks>The preliminary state for this is not verified. This should be called when
+		/// a unary negation does not yet exist. Results outside this state are not defined. This should
+		/// be created inside a transaction to create enough negation state to attach other state (such as
+		/// constraint and readings) that cannot be specified by the unary pattern. The full unary pattern
+		/// will be established via rules based on the UnaryPattern state specified by the caller.</remarks>
+		public Role CreateUnaryNegationFactType()
+		{
+			return CreateInitialUnaryNegation(this, UnaryRole, null, null);
+		}
+#endregion // UnaryFactTypeFixupListener
 	}
 	#region RolePlayer Hierarchy Context Navigation
 	partial class ObjectTypePlaysRole : IHierarchyContextLinkFilter

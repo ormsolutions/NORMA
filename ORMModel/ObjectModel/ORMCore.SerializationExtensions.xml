@@ -689,11 +689,26 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Attribute ID="IsImplicitBooleanValue" WriteCustomStorage="true">
+		<se:Attribute ID="IsImplicitBooleanValue" ReadOnly="true"/>
+		<se:Attribute ID="DefaultState" WriteStyle="Attribute" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:unaryOperator type="booleanNot">
-					<plx:callThis name="IsImplicitBooleanValue" type="property"/>
-				</plx:unaryOperator>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="DefaultState" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="DefaultValueState" name="UseValue" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="IsValueType" type="property"/>
+						</plx:unaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
 		<se:Container Name="Definitions">
@@ -720,6 +735,42 @@
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
+		<se:Attribute ID="DefaultValue" WriteStyle="Element">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+							<plx:passParam>
+								<plx:callThis name="DefaultValue" type="property"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:left>
+					<plx:right>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="IsValueType" type="property"/>
+						</plx:unaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="InvariantDefaultValue" WriteStyle="Element">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+							<plx:passParam>
+								<plx:callThis name="InvariantDefaultValue" type="property"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:left>
+					<plx:right>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="IsValueType" type="property"/>
+						</plx:unaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Link Name="Role" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole">
 			<se:ConditionalName Name="" WriteStyle="NotWritten">
 				<plx:binaryOperator type="identityInequality">
@@ -790,6 +841,8 @@
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RolePathObjectTypeRoot" RoleName="RolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="QueryParameterHasParameterType" RoleName="Parameter" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueTypeHasDefaultValueMismatchError" RoleName="DefaultValueMismatchError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueTypeHasDefaultValueOutOfRangeError" RoleName="DefaultValueOutOfRangeError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RecognizedPhrase" Override="true">
 		<se:Container Name="Abbreviations">
@@ -798,39 +851,6 @@
 		<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
-		<se:ConditionalSerialization>
-			<plx:return>
-				<plx:binaryOperator type="booleanOr">
-					<plx:left>
-						<plx:unaryOperator type="booleanNot">
-							<plx:callInstance name="IsImplicitBooleanValue" type="property">
-								<plx:callObject>
-									<plx:callThis name="ValueType" type="property"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:unaryOperator>
-					</plx:left>
-					<plx:right>
-						<plx:binaryOperator type="inequality">
-							<plx:left>
-								<plx:callInstance name="Count" type="property">
-									<plx:callObject>
-										<plx:callStatic dataTypeName="EntityTypeRoleInstance" name="GetLinksToRoleCollection">
-											<plx:passParam>
-												<plx:thisKeyword/>
-											</plx:passParam>
-										</plx:callStatic>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:left>
-							<plx:right>
-								<plx:value data="0" type="i4"/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:right>
-				</plx:binaryOperator>
-			</plx:return>
-		</se:ConditionalSerialization>
 		<se:Attribute ID="Value" WriteStyle="Element"/>
 		<se:Attribute ID="InvariantValue" WriteStyle="Element">
 			<se:Condition WriteStyle="NotWritten">
@@ -847,10 +867,12 @@
 		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" SortChildElements="true" Override="true">
-		<se:Container Name="RoleInstances">
+		<se:Container Name="RoleInstances" SortChildElements="true">
 			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
+			<se:Link RelationshipName="EntityTypeInstancePopulatesUnaryRole" RoleName="UnaryRole"/>
 		</se:Container>
 		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
+		<se:Link Name="EntityTypeUnaryRoleInstance" RelationshipName="EntityTypeInstancePopulatesUnaryRole" RoleName="UnaryRole"/>
 		<se:Link Name="ObjectifiedInstance" RelationshipName="ObjectificationInstance" RoleName="ObjectifiedInstance"/>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
@@ -991,6 +1013,7 @@
 		</se:Attribute>
 		<se:Link RelationshipName="ValueRangeHasMinValueMismatchError" RoleName="MinValueMismatchError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="MaxValueMismatchError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueRangeHasOutOfRangeError" RoleName="OutOfRangeError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Name="BaseCardinalityConstraint" Class="CardinalityConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="Modality">
@@ -1054,6 +1077,18 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="UnaryPattern">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="NotUnary" type="field" dataTypeName="UnaryValuePattern"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="UnaryPattern" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Definitions">
 			<se:Embed RelationshipName="FactTypeHasDefinition" RoleName="Definition"/>
 		</se:Container>
@@ -1079,6 +1114,9 @@
 		<se:Container Name="InternalConstraints">
 			<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraint"/>
 		</se:Container>
+		<se:Link Name="NegatedByUnaryFactType" RelationshipName="UnaryFactTypeHasNegationFactType" RoleName="NegativeFactType"/>
+		<se:Link Name="UnaryNegationExclusionConstraint" RelationshipName="ExclusionConstraintAllowsUnaryFactTypeNegation" RoleName="ExclusionConstraint"/>
+		<se:Link Name="UnaryNegationMandatoryConstraint" RelationshipName="MandatoryConstraintClosesUnaryFactType" RoleName="MandatoryConstraint"/>
 		<se:Container Name="DerivationRule" SortChildElements="true">
 			<!-- UNDONE: File format change, remove derivation expression. -->
 			<se:Embed RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
@@ -1137,6 +1175,7 @@
 		</se:Link>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedByObjectification"/>
 		<se:Link RelationshipName="Objectification" RoleName="NestingType" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="UnaryFactTypeHasNegationFactType" RoleName="PositiveFactType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
@@ -1154,21 +1193,6 @@
 		<se:Link RelationshipName="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" RoleName="ObjectifyingInstanceRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeRoleInstance">
-		<se:ConditionalSerialization>
-			<plx:return>
-				<plx:unaryOperator type="booleanNot">
-					<plx:callInstance name="IsImplicitBooleanValue" type="property">
-						<plx:callObject>
-							<plx:callInstance name="RolePlayer" type="property">
-								<plx:callObject>
-									<plx:callThis name="Role" type="property"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:unaryOperator>
-			</plx:return>
-		</se:ConditionalSerialization>
 		<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="FactTypeInstance" WriteStyle="NotWritten" />
 		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
@@ -1434,10 +1458,40 @@
 	<se:Element Class="Role" Override="true" SortChildElements="true">
 		<se:Attribute ID="IsMandatory" Name ="_IsMandatory" WriteCustomStorage="true"/>
 		<se:Attribute ID="Multiplicity" Name ="_Multiplicity" WriteCustomStorage="true"/>
+		<se:Attribute ID="DefaultState" WriteStyle="Attribute">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DefaultState" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="DefaultValueState" name="UseValue" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
+		<se:Attribute ID="DefaultValue" WriteStyle="Element">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="DefaultValue" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="InvariantDefaultValue" WriteStyle="Element">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="InvariantDefaultValue" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="CardinalityRestriction">
 			<se:Embed RelationshipName="UnaryRoleHasCardinalityConstraint" RoleName="CardinalityConstraint"/>
 		</se:Container>
@@ -1462,6 +1516,10 @@
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRole" RoleName="RolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="DerivedRoleProjection" RoleName="DerivationProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="RoleHasDefaultValueMismatchError" RoleName="DefaultValueMismatchError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="RoleHasDefaultValueOutOfRangeError" RoleName="DefaultValueOutOfRangeError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="RoleHasDefaultValueValueTypeDetachedError" RoleName="DefaultValueValueTypeDetachedError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypeInstancePopulatesUnaryRole" RoleName="EntityTypeInstance" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--RoleProxy-->
 	<se:Element Class="RoleProxy" Override="true">
@@ -1617,6 +1675,7 @@
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionContradictsMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="NotWellModeledSubsetAndMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MandatoryConstraintClosesUnaryFactType" RoleName="UnaryFactType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintExactlyOneError" RoleName="FrequencyConstraintExactlyOneError" WriteStyle="NotWritten"/>
@@ -1644,6 +1703,7 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsEqualityError" RoleName="ExclusionContradictsEqualityError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" RoleName="ExclusionContradictsSubsetError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ExclusionConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionContradictsMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ExclusionConstraintAllowsUnaryFactTypeNegation" RoleName="UnaryFactType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SubsetConstraint" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" RoleName="ExclusionContradictsSubsetError" WriteStyle="NotWritten"/>
@@ -2162,6 +2222,9 @@
 	<se:Element Class="ValueConstraintValueTypeDetachedError" Name="ValueTypeDetachedError" Override="true">
 		<se:Link RelationshipName="ValueConstraintHasValueTypeDetachedError" RoleName="ValueConstraint" Name="ValueConstraint"/>
 	</se:Element>
+	<se:Element Class="ValueRangeOutOfRangeError" Name="ValueRangeOutOfRangeError" Override="true">
+		<se:Link RelationshipName="ValueRangeHasOutOfRangeError" RoleName="ValueRange" Name="ValueRange"/>
+	</se:Element>
 	<se:Element Class="RingConstraintTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraint" Name="RingConstraint"/>
 	</se:Element>
@@ -2550,6 +2613,17 @@
 	</se:Element>
 	<se:Element Class="DynamicObjectificationAddRequiresLinkFactTypesError" Override="true" Name="DynamicObjectificationAddRequiresLinkFactTypesError">
 		<se:Link RelationshipName="PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="DefaultValueMismatchError" Override="true" Name="DefaultValueMismatchError">
+		<se:Link RelationshipName="RoleHasDefaultValueMismatchError" RoleName="Role" Name="Role"/>
+		<se:Link RelationshipName="ValueTypeHasDefaultValueMismatchError" RoleName="ValueType" Name="ValueType"/>
+	</se:Element>
+	<se:Element Class="DefaultValueOutOfRangeError" Override="true" Name="DefaultValueOutOfRangeError">
+		<se:Link RelationshipName="RoleHasDefaultValueOutOfRangeError" RoleName="Role" Name="Role"/>
+		<se:Link RelationshipName="ValueTypeHasDefaultValueOutOfRangeError" RoleName="ValueType" Name="ValueType"/>
+	</se:Element>
+	<se:Element Class="DefaultValueValueTypeDetachedError" Override="true" Name="DefaultValueValueTypeDetachedError">
+		<se:Link RelationshipName="RoleHasDefaultValueValueTypeDetachedError" RoleName="Role" Name="Role"/>
 	</se:Element>
 
 	<!-- Grouping constructs -->

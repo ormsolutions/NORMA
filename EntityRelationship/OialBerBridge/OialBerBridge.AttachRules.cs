@@ -37,6 +37,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 						typeof(ModificationTracker).GetNestedType("AbstractionModelChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("ConceptTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("ConceptTypeChildChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("InverseConceptTypeChildChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("ConceptTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMAbstractionToBarkerERBridgeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
@@ -71,7 +72,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMAbstractionToBarkerERBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 4; ++i)
+			for (int i = 0; i < 5; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -164,6 +165,32 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule");
 					ModificationTracker.ConceptTypeChildChangedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class InverseConceptTypeChildChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public InverseConceptTypeChildChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild)
+				/// /// </summary>
+				/// private static void InverseConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.InverseConceptTypeChildChangedRule");
+					ModificationTracker.InverseConceptTypeChildChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.InverseConceptTypeChildChangedRule");
 				}
 			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]

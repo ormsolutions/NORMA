@@ -95,6 +95,15 @@
 					<RoleName/>
 				</SnippetReplacements>
 			</ConditionalSnippet>
+			<Snippet ref="DefaultValuePrefix" conditionalMatch="HasDefaultValue">
+				<ConditionalSnippet>
+					<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+					<Snippet ref="NonTextInstanceValue"/>
+					<SnippetReplacements>
+						<DefaultValue/>
+					</SnippetReplacements>
+				</ConditionalSnippet>
+			</Snippet>
 		</Role>
 		<!-- Generate ObjectType verbalization along with constraints -->
 		<ObjectType>
@@ -145,6 +154,15 @@
 					<SnippetReplacements>
 						<PortableDataTypeLength/>
 						<PortableDataTypeScale/>
+					</SnippetReplacements>
+				</ConditionalSnippet>
+			</Snippet>
+			<Snippet ref="DefaultValuePrefix" conditionalMatch="HasDefaultValue">
+				<ConditionalSnippet>
+					<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+					<Snippet ref="NonTextInstanceValue"/>
+					<SnippetReplacements>
+						<DefaultValue/>
 					</SnippetReplacements>
 				</ConditionalSnippet>
 			</Snippet>

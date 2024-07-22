@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Globalization;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -51,7 +52,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#region Member Variables
 		private ToolWindowDiagramView myDiagramView;
 		private ORMDesignerCommandManager myCommandManager;
-		private LinkLabel myWatermarkLabel;
+		private WebBrowser myWatermarkLabel;
 		private bool myDiagramSetChanged;
 		private bool myDisassociating;
 		private IToolboxService myToolboxService;
@@ -205,6 +206,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			return false;
 		}
 		/// <summary>
+		/// Activate the 'All Diagrams' view in the Diagram Spy window
+		/// </summary>
+		public void ActivateAllDiagrams()
+		{
+			Disassociate();
+			AdjustVisibility(false, true);
+		}
+		/// <summary>
 		/// Get an accurate bounding box for a shape, which we'll define as
 		/// the bounding box for the top-most non-diagram shape in the parent hierarchy.
 		/// </summary>
@@ -344,17 +353,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (myDiagramSetChanged)
 			{
 				myDiagramSetChanged = false;
-				LinkLabel watermarkLabel = myWatermarkLabel;
+				WebBrowser watermarkLabel = myWatermarkLabel;
 				Store store = myStore;
 				ReadOnlyCollection<Diagram> diagrams;
 				int diagramCount;
-				LinkLabel.LinkCollection links = watermarkLabel.Links;
 				if (store == null ||
 					store.Disposed ||
 					0 == (diagramCount = (diagrams = store.ElementDirectory.FindElements<Diagram>(true)).Count))
 				{
-					watermarkLabel.Text = ResourceStrings.DiagramSpyNoSelection;
-					links.Clear();
+					watermarkLabel.DocumentText = BuildHtml(ResourceStrings.DiagramSpyNoSelection);
 				}
 				else
 				{
@@ -363,7 +370,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					Partition targetPartition = store.DefaultPartition;
 					Array.Sort<Diagram>(
 						diagramArray,
-						delegate(Diagram left, Diagram right)
+						delegate (Diagram left, Diagram right)
 						{
 							// Filter diagrams, such as the context window, that are not in the default partition
 							if (left.Partition != targetPartition)
@@ -387,36 +394,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						--diagramCount;
 					}
+
 					if (diagramCount == 0)
 					{
-						watermarkLabel.Text = ResourceStrings.DiagramSpyNoSelection;
-						links.Clear();
+						watermarkLabel.DocumentText = BuildHtml(ResourceStrings.DiagramSpyNoSelection);
 					}
 					else
 					{
-						StringBuilder builder = new StringBuilder(ResourceStrings.DiagramSpyDiagramListStart);
-						string listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
-						int separatorLength = listSeparator.Length;
-						int offset = builder.Length;
-						links.Clear();
+						string[] links = new string[diagramCount];
 						for (int i = 0; i < diagramCount; ++i)
 						{
 							Diagram diagram = diagramArray[i];
-							string diagramName = diagram.Name;
-							int nameLength = diagramName.Length;
-							if (i != 0)
-							{
-								offset += separatorLength;
-								builder.Append(listSeparator);
-							}
-							builder.Append(diagramName);
-							links.Add(offset, nameLength, diagram);
-							offset += nameLength;
+							links[i] = string.Format("<a href=\"diagramid:{0}\">{1}</a>", diagram.Id.ToString("D"), WebUtility.HtmlEncode(diagram.Name));
 						}
-						watermarkLabel.Text = builder.ToString();
+						watermarkLabel.DocumentText = BuildHtml(string.Format("<strong>{0}</strong><br>", ResourceStrings.DiagramSpyDiagramListStart) + string.Join(CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ", links));
 					}
 				}
 			}
+		}
+		private static string BuildHtml(string bodyContent)
+		{
+			Color backColor = SystemColors.ControlLight;
+			Color foreColor = SystemColors.ControlText;
+			return string.Format("<html><body style=\"color:rgb({0},{1},{2});background-color:rgb({3},{4},{5});text-align:center;margin-top:2em;font-family:Tahoma;font-size:9pt;\">{6}</body></html>", foreColor.R, foreColor.G, foreColor.B, backColor.R, backColor.G, backColor.B, bodyContent);
 		}
 		/// <summary>
 		/// called when document current selected document changes
@@ -642,60 +642,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#endregion // IProvideFrameVisibility Implementation
 		#region ORMDiagramSpyToolWindow specific
 		/// <summary>
-		/// MSBUG: Quick fix for a GDI+ bug that crashes the LinkLabel if there
-		/// are too many diagrams.
-		/// </summary>
-		private sealed class SafeLinkLabel : LinkLabel
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			protected override void OnPaint(PaintEventArgs e)
-			{
-				try
-				{
-					base.OnPaint(e);
-				}
-				catch (OverflowException)
-				{
-					// The SetMeasureableCharacterRanges API fails with an OverflowException
-					// if the is too much text in the LinkLabel. If I could turn UseCompatibleTextRendering
-					// off for this one control then this would work, but this is controlled
-					// at the application level.
-					Links.Clear();
-				}
-			}
-			[System.Diagnostics.DebuggerStepThrough()]
-			protected override void OnMouseMove(MouseEventArgs e)
-			{
-				try
-				{
-					base.OnMouseMove(e);
-				}
-				catch (OverflowException)
-				{
-					// See comments in OnPaint
-					Links.Clear();
-				}
-			}
-		}
-		/// <summary>
 		/// Loads the SurveyTreeControl from the current document
 		/// </summary>
 		protected void LoadWindow()
 		{
 			ToolWindowDiagramView diagramView = myDiagramView;
-			LinkLabel watermarkLabel = myWatermarkLabel;
+			WebBrowser watermarkLabel = myWatermarkLabel;
 			if (diagramView == null)
 			{
 				ContainerControl container = new ContainerControl();
 				myDiagramView = diagramView = new ToolWindowDiagramView(this);
 				diagramView.DiagramClientView.DiagramDisassociating += new EventHandler(DiagramDisassociatingEvent);
-				myWatermarkLabel = watermarkLabel = new SafeLinkLabel();
+				myWatermarkLabel = watermarkLabel = new WebBrowser();
 				watermarkLabel.Dock = DockStyle.Fill;
 				watermarkLabel.Site = diagramView.Site;
-				watermarkLabel.TextAlign = ContentAlignment.MiddleCenter;
-				watermarkLabel.BackColor = SystemColors.ControlLight;
-				watermarkLabel.ForeColor = SystemColors.ControlText;
-				watermarkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(WatermarkLinkClicked);
+				watermarkLabel.ScrollBarsEnabled = false;
+				watermarkLabel.IsWebBrowserContextMenuEnabled = false;
+				watermarkLabel.Navigating += new WebBrowserNavigatingEventHandler(WatermarkLinkClicked);
 				container.Site = diagramView.Site;
 				diagramView.BackColor = SystemColors.Window;
 				diagramView.Dock = DockStyle.Fill;
@@ -721,9 +684,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				AdjustVisibility(false, false);
 			}
 		}
-		private void WatermarkLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		private void WatermarkLinkClicked(object sender, WebBrowserNavigatingEventArgs e)
 		{
-			ActivateDiagram(e.Link.LinkData as Diagram);
+			Uri uri = e.Url;
+			if (uri.Scheme == "diagramid")
+			{
+				Store store = myStore;
+				Diagram diagram;
+				if (store != null &&
+					!store.Disposed &&
+					null != (diagram = store.ElementDirectory.FindElement(new Guid(uri.LocalPath)) as Diagram))
+				{
+					ActivateDiagram(diagram);
+				}
+				e.Cancel = true;
+			}
 		}
 		#endregion // ORMDiagramSpyToolWindow specific
 		#region ContextMenu

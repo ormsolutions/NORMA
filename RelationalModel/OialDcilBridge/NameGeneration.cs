@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -540,10 +541,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					// possible to avoid using the list for a single entry
 					NamePart singleName = default(NamePart);
 					List<NamePart> nameCollection = null;
-					AddNamePart addPart = delegate(NamePart newPart, int? insertIndex)
-						{
-							NamePart.AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
-						};
+					AddNamePart addPart = (newPart, insertIndex) => NamePart.AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
 					ObjectType previousResolvedSupertype = null;
 					ObjectType previousResolvedObjectType = null;
 					ConceptType primaryConceptType = TableIsPrimarilyForConceptType.GetConceptType(column.Table);
@@ -574,6 +572,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							if (!(lastStepConsumedNextNode || lastStepUsedExplicitRoleName) || currentNode.Previous.Value.TargetObjectType != step.StartingObjectType)
 							{
+								if ((ColumnPathStepFlags.AssimilationIsSubtype | ColumnPathStepFlags.AbsorptionIndicator) == (stepFlags & (ColumnPathStepFlags.AssimilationIsSubtype | ColumnPathStepFlags.AbsorptionIndicator)))
+								{
+									addPart(new NamePart("is"), null);
+								}
 								ReferenceModeNaming.SeparateObjectTypeParts(step.ResolvedSupertype, generator, addPart);
 								lastStepConsumedNextNode = false;
 								lastStepUsedExplicitRoleName = false;
@@ -626,13 +628,18 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									}
 								}
 								Role nearRole = step.FromRole;
-								Role farRole = (0 == (stepFlags & ColumnPathStepFlags.ObjectifiedFactType)) ?
+								bool isUnary = 0 != (stepFlags & (ColumnPathStepFlags.PositiveUnary | ColumnPathStepFlags.NegativeUnary));
+								if (isUnary && (ColumnPathStepFlags.NegativeUnary | ColumnPathStepFlags.InvertibleUnary) == (stepFlags & (ColumnPathStepFlags.NegativeUnary | ColumnPathStepFlags.InvertibleUnary)))
+								{
+									// Switch to the positive unary
+									nearRole = nearRole.FactType.PositiveUnaryFactType?.UnaryRole ?? nearRole;
+								}
+								Role farRole = isUnary ? nearRole : ((0 == (stepFlags & ColumnPathStepFlags.ObjectifiedFactType)) ?
 									nearRole.OppositeRoleAlwaysResolveProxy.Role :
-									nearRole.OppositeRole.Role;
+									nearRole.OppositeRole.Role);
 								string explicitFarRoleName = farRole.Name;
 								FactType factType = nearRole.FactType;
 								LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
-								bool isUnary = FactType.GetUnaryRoleIndex(factTypeRoles).HasValue;
 								LinkedElementCollection<ReadingOrder> readingOrders = null;
 								IReading reading = null;
 								if ((decorate && decorateWithPredicateText) || (isUnary && string.IsNullOrEmpty(explicitFarRoleName)))
@@ -720,7 +727,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									{
 										foreach (Reading testReading in readingOrder.ReadingCollection)
 										{
-											hyphenBoundFormatString = VerbalizationHyphenBinder.GetFormatStringForHyphenBoundRole(testReading, farRole, isUnary);
+											hyphenBoundFormatString = VerbalizationHyphenBinder.GetFormatStringForHyphenBoundRole(testReading, farRole);
 											if (hyphenBoundFormatString != null)
 											{
 												break;
@@ -918,8 +925,25 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					/// forward/reverse notions.
 					/// </summary>
 					AssimilationTowardsSubtype = 0x200,
+					/// <summary>
+					/// This is a unary role with a true value. <see cref="ColumnPathStep.ObjectType"/> will not be set.
+					/// </summary>
+					PositiveUnary = 0x400,
+					/// <summary>
+					/// This is a unary role with a false value. <see cref="ColumnPathStep.ObjectType"/> will not be set.
+					/// </summary>
+					NegativeUnary = 0x800,
+					/// <summary>
+					/// The unary role is invertible. Use the positive form if it is available.
+					/// </summary>
+					InvertibleUnary = 0x1000,
+					/// <summary>
+					/// This step is an absorption indicator, flagging a column that exists solely to
+					/// indicate that the data row represents an instance of an assimilation.
+					/// </summary>
+					AbsorptionIndicator = 0x2000,
 				}
-				[DebuggerDisplay("{System.String.Concat(ObjectType.Name, (FromRole != null) ? System.String.Concat(\", \", FromRole.FactType.Name) : \"\", \" Flags=\", Flags.ToString(\"g\"))}")]
+				[DebuggerDisplay("{System.String.Concat(ObjectType != null ? ObjectType.Name : \"Unary Value\", FromRole != null ? System.String.Concat(\", \", FromRole.FactType.Name) : \"\", \" Flags=\", Flags.ToString(\"g\"))}")]
 				private struct ColumnPathStep
 				{
 					private ColumnPathStepFlags myFlags;
@@ -1162,7 +1186,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						Debug.WriteLine("Column: " + currentColumn.Name);
 						Debug.Indent();
 #endif // DEBUGCOLUMNPATH
-						LinkedElementCollection<ConceptTypeChild> childPath = ColumnHasConceptTypeChild.GetConceptTypeChildPath(currentColumn);
+						ReadOnlyCollection<ColumnHasConceptTypeChild> childPath = ColumnHasConceptTypeChild.GetLinksToConceptTypeChildPath(currentColumn);
 						int childPathCount = childPath.Count;
 						LinkedNode<ColumnPathStep> headNode = null;
 						LinkedNode<ColumnPathStep> tailNode = null;
@@ -1173,7 +1197,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						for (int iChild = 0; iChild < childPathCount; ++iChild)
 						{
 							ConceptType comingFromConceptType = nextComingFromConceptType;
-							ConceptTypeChild child = childPath[iChild];
+							ColumnHasConceptTypeChild childLink = childPath[iChild];
+							ConceptTypeChild child = childLink.ConceptTypeChild;
 							ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
 							bool reverseAssimilation = false;
 							bool forwardToReverseTransition = false;
@@ -1202,7 +1227,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									{
 										// Keep going forward
 										if (0 != (stepFlags & ColumnPathStepFlags.AssimilationIsSubtype) &&
-											AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) != AssimilationAbsorptionChoice.Absorb &&
+											AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb &&
 											comingFromConceptType == (0 == (stepFlags & ColumnPathStepFlags.AssimilationTowardsSubtype) ? assimilation.AssimilatedConceptType : assimilation.AssimilatorConceptType))
 										{
 											forwardToReverseTransition = true;
@@ -1216,12 +1241,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									else
 									{
 										// Figure it out from this step
-										reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) != AssimilationAbsorptionChoice.Absorb;
+										reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
 									}
 								}
 								else
 								{
-									reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) != AssimilationAbsorptionChoice.Absorb;
+									reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
 								}
 							}
 							else
@@ -1237,12 +1262,15 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							{
 								FactType factType = factTypes[iFactType];
 								Role targetRole = FactTypeMapsTowardsRole.GetTowardsRole(factType).Role;
-								ColumnPathStepFlags flags = passedIdentifier ? ColumnPathStepFlags.PassedIdentifier : 0;
+								ColumnPathStepFlags flags =
+									(passedIdentifier ? ColumnPathStepFlags.PassedIdentifier : 0) |
+									(childLink.AbsorptionIndicator ? ColumnPathStepFlags.AbsorptionIndicator : 0);
 								ColumnPathStep pathStep = default(ColumnPathStep);
 								bool processPreviousTail = false;
 								Objectification previousAssimilationObjectification = assimilationObjectification;
 								assimilationObjectification = null;
 								bool processAsFactType = true;
+								bool ignoreObjectification = false;
 								if (assimilation != null)
 								{
 									Role nonAssimilationTargetRole = targetRole;
@@ -1258,84 +1286,107 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 										null != (objectification = factType.ImpliedByObjectification) &&
 										objectification.NestingType == targetRole.RolePlayer)
 									{
-										assimilationObjectification = objectification;
-									}
-									if (tailNode != null)
-									{
-										pathStep = tailNode.Value;
-										ColumnPathStepFlags tailFlags = pathStep.Flags;
-										if (0 != (tailFlags & (ColumnPathStepFlags.ForwardAssimilation | ColumnPathStepFlags.ReverseAssimilation)))
+										if (0 != (flags & ColumnPathStepFlags.AbsorptionIndicator) && objectification.NestedFactType.UnaryPattern != UnaryValuePattern.NotUnary)
 										{
-											bool tailIsSubtype = 0 != (tailFlags & ColumnPathStepFlags.AssimilationIsSubtype);
-											if (tailIsSubtype && assimilationIsSubtype)
+											// For an absorption indicator, treat this just like a direct
+											// use of the unary fact type.
+											flags &= ~ColumnPathStepFlags.AbsorptionIndicator;
+											targetRole = nonAssimilationTargetRole;
+											factType = targetRole.FactType;
+											processAsFactType = true;
+											ignoreObjectification = true;
+										}
+										else
+										{
+											assimilationObjectification = objectification;
+										}
+									}
+									if (!processAsFactType)
+									{
+										if (tailNode != null)
+										{
+											pathStep = tailNode.Value;
+											ColumnPathStepFlags tailFlags = pathStep.Flags;
+											if (0 != (tailFlags & (ColumnPathStepFlags.ForwardAssimilation | ColumnPathStepFlags.ReverseAssimilation)))
 											{
-												if (forwardToReverseTransition)
+												bool tailIsSubtype = 0 != (tailFlags & ColumnPathStepFlags.AssimilationIsSubtype);
+												if (tailIsSubtype && assimilationIsSubtype)
+												{
+													if (forwardToReverseTransition)
+													{
+														flags |= ColumnPathStepFlags.DeclinedAssimilation;
+														targetRole = towardsSubtype ? targetRole.OppositeRoleAlwaysResolveProxy.Role : nonAssimilationTargetRole;
+														processAsFactType = true;
+													}
+													else
+													{
+														ColumnPathStepFlags addTailFlags = (flags & ColumnPathStepFlags.AbsorptionIndicator) |
+															(secondarySubtype && 0 == (tailFlags & ColumnPathStepFlags.NonPreferredSubtype) ? ColumnPathStepFlags.NonPreferredSubtype : 0);
+														if (addTailFlags != 0)
+														{
+															tailNode.Value = new ColumnPathStep(
+																pathStep.FromRole,
+																pathStep.ObjectType,
+																0 != (addTailFlags & ColumnPathStepFlags.AbsorptionIndicator) ? targetRole.RolePlayer : pathStep.AlternateObjectType,
+																tailFlags | addTailFlags
+															);
+														}
+														// If this is a subtype chain, then keep going, using the first
+														// subtype in the chain as a node used in the final name.
+														continue;
+													}
+												}
+												else if (assimilationObjectification != null)
+												{
+													// The type of assimilation has changed, but we have an objectifying object type,
+													// so we treat it like a separate link in the chain, or the previous element was
+													// also not a subtype.
+													tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, nonAssimilationTargetRole.RolePlayer, pathStep.Flags);
+													processPreviousTail = processTailDelayed;
+												}
+												else
 												{
 													flags |= ColumnPathStepFlags.DeclinedAssimilation;
 													targetRole = towardsSubtype ? targetRole.OppositeRoleAlwaysResolveProxy.Role : nonAssimilationTargetRole;
 													processAsFactType = true;
 												}
-												else
-												{
-													if (secondarySubtype && 0 == (tailFlags & ColumnPathStepFlags.NonPreferredSubtype))
-													{
-														tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, pathStep.AlternateObjectType, tailFlags | ColumnPathStepFlags.NonPreferredSubtype);
-													}
-													// If this is a subtype chain, then keep going, using the first
-													// subtype in the chain as a node used in the final name.
-													continue;
-												}
 											}
-											else if (assimilationObjectification != null)
+										}
+										else if (!assimilationIsSubtype && assimilationObjectification == null)
+										{
+											flags |= ColumnPathStepFlags.DeclinedAssimilation;
+											targetRole = towardsSubtype ? targetRole.OppositeRoleAlwaysResolveProxy.Role : nonAssimilationTargetRole;
+											processAsFactType = true;
+										}
+										if (!processAsFactType)
+										{
+											if (reverseAssimilation)
 											{
-												// The type of assimilation has changed, but we have an objectifying object type,
-												// so we treat it like a separate link in the chain, or the previous element was
-												// also not a subtype.
-												tailNode.Value = new ColumnPathStep(pathStep.FromRole, pathStep.ObjectType, nonAssimilationTargetRole.RolePlayer, pathStep.Flags);
-												processPreviousTail = processTailDelayed;
+												flags |= ColumnPathStepFlags.ReverseAssimilation;
 											}
 											else
 											{
-												flags |= ColumnPathStepFlags.DeclinedAssimilation;
-												targetRole = towardsSubtype ? targetRole.OppositeRoleAlwaysResolveProxy.Role : nonAssimilationTargetRole;
-												processAsFactType = true;
+												flags |= ColumnPathStepFlags.ForwardAssimilation;
 											}
-										}
-									}
-									else if (!assimilationIsSubtype && assimilationObjectification == null)
-									{
-										flags |= ColumnPathStepFlags.DeclinedAssimilation;
-										targetRole = towardsSubtype ? targetRole.OppositeRoleAlwaysResolveProxy.Role : nonAssimilationTargetRole;
-										processAsFactType = true;
-									}
-									if (!processAsFactType)
-									{
-										if (reverseAssimilation)
-										{
-											flags |= ColumnPathStepFlags.ReverseAssimilation;
-										}
-										else
-										{
-											flags |= ColumnPathStepFlags.ForwardAssimilation;
-										}
-										if (assimilationIsSubtype)
-										{
-											flags |= ColumnPathStepFlags.AssimilationIsSubtype;
-											if (secondarySubtype)
+											if (assimilationIsSubtype)
 											{
-												flags |= ColumnPathStepFlags.NonPreferredSubtype;
+												flags |= ColumnPathStepFlags.AssimilationIsSubtype;
+												if (secondarySubtype)
+												{
+													flags |= ColumnPathStepFlags.NonPreferredSubtype;
+												}
+												if (towardsSubtype)
+												{
+													flags |= ColumnPathStepFlags.AssimilationTowardsSubtype;
+												}
 											}
-											if (towardsSubtype)
-											{
-												flags |= ColumnPathStepFlags.AssimilationTowardsSubtype;
-											}
+											pathStep = new ColumnPathStep(
+												null,
+												towardsSubtype ? ConceptTypeIsForObjectType.GetObjectType(comingFromConceptType) : targetRole.RolePlayer,
+												towardsSubtype ? targetRole.RolePlayer : null,
+												flags);
+											processTailDelayed = true;
 										}
-										pathStep = new ColumnPathStep(
-											null,
-											towardsSubtype ? ConceptTypeIsForObjectType.GetObjectType(comingFromConceptType) : targetRole.RolePlayer,
-											towardsSubtype ? targetRole.RolePlayer : null,
-											flags);
-										processTailDelayed = true;
 									}
 								}
 								if (processAsFactType)
@@ -1385,14 +1436,34 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									}
 									if (!haveStep)
 									{
-										Role oppositeRole = targetRole.OppositeRoleAlwaysResolveProxy.Role;
+										RoleBase oppositeRoleBase = ignoreObjectification ? targetRole.OppositeRole : targetRole.OppositeRoleAlwaysResolveProxy;
+										Role possibleIdRole;
+										ObjectType targetObjectType;
+										if (oppositeRoleBase != null)
+										{
+											possibleIdRole = oppositeRoleBase.Role;
+											targetObjectType = possibleIdRole.RolePlayer;
+										}
+										else
+										{
+											// Unary case
+											targetObjectType = null;
+											flags |= targetRole.FactType.UnaryPattern == UnaryValuePattern.Negation ? ColumnPathStepFlags.NegativeUnary : ColumnPathStepFlags.PositiveUnary;
+											if (childLink.InverseConceptTypeChild != null)
+											{
+												flags |= ColumnPathStepFlags.InvertibleUnary;
+											}
+											possibleIdRole = targetRole;
+										}
+
 										ORMUniquenessConstraint pid = targetRole.RolePlayer.PreferredIdentifier;
-										if (pid != null && pid.RoleCollection.Contains(oppositeRole))
+										if (pid != null && pid.RoleCollection.Contains(possibleIdRole))
 										{
 											flags |= ColumnPathStepFlags.IsIdentifier;
 											passedIdentifier = true;
 										}
-										pathStep = new ColumnPathStep(targetRole, oppositeRole.RolePlayer, null, flags);
+
+										pathStep = new ColumnPathStep(targetRole, targetObjectType, null, flags);
 									}
 									processPreviousTail = processTailDelayed;
 									processTailDelayed = false;
@@ -1433,6 +1504,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				{
 					ColumnPathStep step = tailNode.Value;
 					ObjectType objectType = step.TargetObjectType;
+					if (objectType == null)
+					{
+						return;
+					}
 					Role fromRole = step.FromRole;
 					LinkedNode<LinkedNode<ColumnPathStep>> existingNodesHead;
 					LinkedNode<LinkedNode<ColumnPathStep>> newNode = new LinkedNode<LinkedNode<ColumnPathStep>>(tailNode);

@@ -224,19 +224,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -382,19 +382,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -526,19 +526,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -658,19 +658,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
@@ -807,19 +807,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -941,19 +941,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
@@ -1074,19 +1074,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -1214,19 +1214,19 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;

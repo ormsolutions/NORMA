@@ -15,6 +15,8 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.Modeling;
 
@@ -127,4 +129,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		void DomainModelUnloading(Store store);
 	}
 	#endregion // IDomainModelUnloading interface
+	#region IUpgradeMessageProvider interface
+	/// <summary>
+	/// Interface implemented on a class declared with the <see cref="UpgradeMessageProviderAttribute"/>
+	/// that can be declared on a domain model.
+	/// </summary>
+	public interface IUpgradeMessageProvider
+	{
+		/// <summary>
+		/// A list of names that can be used to retrieve upgrade messages.
+		/// The names should be valid resource key names.
+		/// </summary>
+		IEnumerable<string> UpgradeMessageNames { get; }
+		/// <summary>
+		/// Retrieve an upgrade message by name.
+		/// </summary>
+		/// <param name="messageName">The message name, from the <see cref="UpgradeMessageNames"/> list.</param>
+		/// <returns>Message as a full-page html string.</returns>
+		/// <remarks>Links should be absolute URLs with a default target (not target="_blank"). This allows
+		/// additional information to be displayed outside the upgrade message popup. The html is standalone,
+		/// so any style information must be embedded with the message.</remarks>
+		string GetUpgradeMessage(string messageName);
+	}
+	#endregion // IUpgradeMessageProvider interface
 }

@@ -153,6 +153,22 @@
     <value>A partitioned ObjectType cannot be absorbed into another ObjectType.</value>
     <comment>The exception message used when an attempt is made to absorb a partitioned object type.</comment>
   </data>
+  <data name="ColumnProperty.DataType.Description" xml:space="preserve">
+    <value>The DataType for this Column. Corresponds to the DataType of the terminal ValueType in the FactType path for this Column.&#xd;&#xa;    Changing this DataType changes the DataType for all columns that terminate at the same ValueType.&#xd;&#xa;    This is a portable DataType. The final physical DataType is dependent on the generation target.</value>
+    <comment>The description for the DataType extension property displayed with a column. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ColumnProperty.DataType.DisplayName" xml:space="preserve">
+    <value>DataType</value>
+    <comment>The display name for the DataType extension property displayed with a column. Displays as the name of a property in the Properties Window.</comment>
+  </data>
+  <data name="ColumnProperty.DefaultValue.Description" xml:space="preserve">
+    <value>The DefaultValue for this Column. Corresponds to the first value role in the path for this column.</value>
+    <comment>The description for the DefaultValue extension property displayed with a column. Displays as a detailed description in the Properties Window.</comment>
+  </data>
+  <data name="ColumnProperty.DefaultValue.DisplayName" xml:space="preserve">
+    <value>DefaultValue</value>
+    <comment>The display name for the DefaultValue extension property displayed with a column. Displays as the name of a property in the Properties Window.</comment>
+  </data>
   <data name="NameGeneration.ValueTypeValueColumn" xml:space="preserve">
     <value>Value</value>
     <comment>The name of the identifier column for a ValueType mapped to its own top-level table.</comment>
@@ -162,7 +178,7 @@
     <comment>The category for relational mapping customizations. Displays as a grouping category in the Properties Window.</comment>
   </data>
   <data name="ObjectTypeAbsorptionChoiceProperty.Description" xml:space="preserve">
-    <value>Absorption state for an ObjectType involved in Subtyping and some other one-to-one FactType relationships. The choice to absorb is ignored if absorbing removes all evidence of the absorbed ObjectType.</value>
+    <value>Absorption state for an ObjectType involved in Subtyping and some other one-to-one FactType relationships. This can produce an extra column in the parent table if the type of the absorbed instance cannot always be deduced from other data.</value>
     <comment>The description for the AbsorptionChoice property on an ObjectType. Displays as a detailed description in the Properties Window.</comment>
   </data>
   <data name="ObjectTypeAbsorptionChoiceProperty.DisplayName" xml:space="preserve">

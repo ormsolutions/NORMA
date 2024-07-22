@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
@@ -82,16 +83,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							return false;
 						}
 					}
-					return !FactType.GetUnaryRoleIndex(roles).HasValue;
+					return true;
 				}
 				return false;
 			}
-			else if (propertyId == Role.IsMandatoryDomainPropertyId ||
-				propertyId == Role.ValueRangeTextDomainPropertyId)
+			else if (propertyId == Role.IsMandatoryDomainPropertyId)
 			{
 				if (ModelElement.FactType is QueryBase)
 				{
 					return false;
+				}
+			}
+			else if (propertyId == Role.ValueRangeTextDomainPropertyId)
+			{
+				Role role = ModelElement;
+				FactType factType = role.FactType;
+				if (factType is QueryBase)
+				{
+					return false;
+				}
+				else if (factType is SubtypeFact)
+				{
+					// Allow a legacy value constraint. If we want to support value constraint and default values on
+					// a subtype it needs to be model on the subtype object type to properly handle multiple primary
+					// subtype paths.
+					return role.ValueConstraint != null;
 				}
 			}
 			else if (propertyId == Role.MandatoryConstraintNameDomainPropertyId ||
@@ -101,15 +117,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 			else if (propertyId == Role.ObjectificationOppositeRoleNameDomainPropertyId)
 			{
-				FactType fact = ModelElement.FactType;
-				return fact != null && fact.Objectification != null;
+				FactType factType = ModelElement.FactType;
+				return factType != null && factType.Objectification != null;
+			}
+			else if (propertyId == Role.DefaultValueDomainPropertyId)
+			{
+				Role role = ModelElement;
+				FactType factType = role.FactType;
+				if (factType != null)
+				{
+					return !(factType is SubtypeFact) && (role.FactType.UnaryPattern != UnaryValuePattern.NotUnary || role.IsValueRole || role.ResolvedDirectDefaultValue != null);
+				}
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}
 
 		/// <summary>
-		/// Ensure that the <see cref="Role.ValueRangeText"/> property is read-only when the
-		/// <see cref="Role.RolePlayer"/> is an entity type without a <see cref="ReferenceMode"/>.
+		/// Manage read-only state of properties.
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
@@ -143,7 +167,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					return true;
 				}
 			}
+			else if (propertyId == Role.DefaultValueDomainPropertyId)
+			{
+				Role role = ModelElement;
+				FactType factType = role.FactType;
+				if (factType != null && factType.UnaryPattern != UnaryValuePattern.NotUnary)
+				{
+					return true;
+				}
+			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
+
+		/// <summary>
+		/// Create custom property descriptors as needed.
+		/// </summary>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
+		{
+			Guid propertyId = domainPropertyInfo.Id;
+			if (propertyId == Role.DefaultValueDomainPropertyId)
+			{
+				// Use the DefaultValuePropertyDescriptor to manage both the DefaultValue and DefaultState settings unless this is a unary role,
+				// where it is displayed normally (and read only).
+				Role role = ModelElement;
+				FactType factType = role.FactType;
+				if (factType != null && factType.UnaryPattern == UnaryValuePattern.NotUnary)
+				{
+					return new DefaultValuePropertyDescriptor(this, requestor, domainPropertyInfo, attributes, false);
+				}
+			}
+			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
 		}
 		#endregion // Base overrides
 		#region Non-DSL Custom Property Descriptors
@@ -155,13 +208,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		public static PropertyDescriptor GetRolePlayerDisplayPropertyDescriptor(Role role)
 		{
 			bool isReadOnly = false;
-			ObjectType rolePlayer;
 			FactType factType;
 			if (role is SubtypeMetaRole ||
 				role is SupertypeMetaRole ||
 				(null != (factType = role.FactType) &&
-				null != factType.ImpliedByObjectification) ||
-				(null != (rolePlayer = role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
+				null != factType.ImpliedByObjectification))
 			{
 				isReadOnly = true;
 			}

@@ -49,7 +49,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 		/// <summary>
 		/// The algorithm version written to the file for the core algorithm
 		/// </summary>
-		public const string CurrentCoreAlgorithmVersion = "1.001";
+		public const string CurrentCoreAlgorithmVersion = "1.002";
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
@@ -176,16 +176,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 			{
 				if (!child.IsMandatory)
 				{
-					ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
-					if (assimilation != null)
+					ConceptTypeAssimilatesConceptType assimilation;
+					if (null != (assimilation = child as ConceptTypeAssimilatesConceptType))
 					{
 						// The IsMandatory property applies when stepping parent-to-target, However, stepping target-to-parent
 						// is always considered mandatory. See if we're in this situation.
 						if (firstPass)
 						{
 							lastTarget = EntityTypeIsPrimarilyForConceptType.GetConceptType(entity);
-
 						}
+
 						if (lastTarget != null &&
 							lastTarget == assimilation.Target)
 						{
@@ -194,8 +194,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 							continue;
 						}
 					}
-					allStepsMandatory = false;
-					break;
+
+					InverseConceptTypeChild inverseLink;
+					if (!(child is InformationType && null != (inverseLink = InverseConceptTypeChild.GetLinkToNegativeInverseChild(child)) && inverseLink.PairIsMandatory && inverseLink.NegativeChild is InformationType))
+					{
+						allStepsMandatory = false;
+						break;
+					}
 				}
 				lastTarget = child.Target as ConceptType;
 				firstPass = false;
@@ -228,7 +233,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 
 			foreach (InformationType informationType in InformationType.GetLinksToInformationTypeFormatCollection(conceptType))
 			{
-				attributesForConceptType.Add(CreateAttributeForInformationType(informationType, new Stack<ConceptTypeChild>()));
+				InformationTypeFormat format = informationType.InformationTypeFormat;
+				ConceptTypeChild inverseChild;
+				if (format.GetType() == typeof(InformationTypeFormat) ||
+					// Ignore any negation that is paired up with a positive information type
+					!(format is NegativeUnaryInformationTypeFormat) ||
+					null == (inverseChild = InverseConceptTypeChild.GetPositiveInverseChild(informationType)) ||
+					!(inverseChild is InformationType))
+				{
+					attributesForConceptType.Add(CreateAttributeForInformationType(informationType, new Stack<ConceptTypeChild>()));
+				}
 			}
 			foreach (ConceptTypeRelatesToConceptType conceptTypeRelation in ConceptTypeRelatesToConceptType.GetLinksToRelatedConceptTypeCollection(conceptType))
 			{
@@ -236,7 +250,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 				{
 					//if binary association was not created - let's create an attribute for it
 					attributesForConceptType.AddRange(GetAttributesForConceptTypeRelation(conceptTypeRelation, new Stack<ConceptTypeChild>()));
-				}				
+				}
 			}
 			foreach (ConceptTypeAssimilatesConceptType conceptTypeAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 			{
@@ -476,9 +490,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 		private static Attribute CreateAttributeForInformationType(InformationType informationType, Stack<ConceptTypeChild> conceptTypeChildPath)
 		{
 			conceptTypeChildPath.Push(informationType);
-			Attribute attribute = new Attribute(informationType.Store,
-								new PropertyAssignment[]{
-									new PropertyAssignment(Attribute.NameDomainPropertyId, informationType.Name)});
+			Attribute attribute = new Attribute(
+				informationType.Store,
+				new PropertyAssignment[] { new PropertyAssignment(Attribute.NameDomainPropertyId, informationType.Name) }
+			);
 			foreach (Uniqueness u in UniquenessIncludesConceptTypeChild.GetUniquenessCollection(informationType))
 			{
 				if (u.IsPreferred)

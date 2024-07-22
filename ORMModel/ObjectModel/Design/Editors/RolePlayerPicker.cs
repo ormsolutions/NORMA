@@ -57,8 +57,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					{
 						ObjectType objType = candidates[0]; 
 						Objectification objectification;
-						if (objType.IsImplicitBooleanValue ||
-							(null != (objectification = objType.Objectification) && !objectification.IsImplied && objectification == instance.FactType.Objectification))
+						if (null != (objectification = objType.Objectification) && !objectification.IsImplied && objectification == instance.FactType.Objectification)
 						{
 							return new ObjectType[0];
 						}
@@ -72,8 +71,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						foreach (ObjectType objType in candidates)
 						{
 							Objectification objectification = objType.Objectification;
-							if (!objType.IsImplicitBooleanValue && 
-								(null == (objectification = objType.Objectification) || (objectification != thisObjectification && !objectification.IsImplied)))
+							if (null == (objectification = objType.Objectification) || (objectification != thisObjectification && !objectification.IsImplied))
 							{
 								types.Add(objType);
 							}

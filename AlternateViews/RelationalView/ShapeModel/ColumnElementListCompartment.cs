@@ -197,26 +197,29 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		}
 		#region DataType Helper Methods
 		/// <summary>
-		/// Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
+		/// Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.RelationalModels.ConceptualDataBase.ColumnValueType"/>.
 		/// </summary>
-		/// <param name="valueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+		/// <param name="columnValueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.RelationalModels.ConceptualDataBase.ColumnValueType"/> whose data type is of interest.</param>
 		/// <returns>The data type, a <see cref="T:System.String"/>.</returns>
-		private static string GetDataType(ObjectType valueType)
+		private static string GetDataType(ColumnValueType? columnValueType)
 		{
-			return GetDataTypeInternal(valueType).ToLowerInvariant();
+			return columnValueType.HasValue ? GetDataTypeInternal(columnValueType.Value).ToLowerInvariant() : string.Empty;
 		}
 		/// <summary>
-		/// Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
+		/// Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.RelationalModels.ConceptualDataBase.ColumnValueType"/>.
 		/// </summary>
-		/// <param name="valueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+		/// <param name="columnValueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.RelationalModels.ConceptualDataBase.ColumnValueType"/> whose data type is of interest.</param>
 		/// <returns>The data type, a <see cref="T:System.String"/>.</returns>
-		private static string GetDataTypeInternal(ObjectType valueType)
+		private static string GetDataTypeInternal(ColumnValueType columnValueType)
 		{
-			// A boolean data type for unaries will not have an associated value type
-			if (valueType == null)
+			// Check for boolean types
+			bool? trueOnlyBool = columnValueType;
+			if (trueOnlyBool.HasValue)
 			{
-				return "BOOLEAN";
+				return trueOnlyBool.Value ? "TRUE" : "BOOLEAN";
 			}
+
+			ObjectType valueType = columnValueType;
 			DataType dataType = valueType.DataType;
 			int precision = Math.Max(valueType.DataTypeLength, 0);
 			int scale = Math.Max(valueType.DataTypeScale, 0);

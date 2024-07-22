@@ -305,6 +305,13 @@
 			</Target>
 		</DomainRelationship>
 		<DomainRelationship Id="CCBCAB63-ADE4-43FA-8E29-8A598B0969F5" Name="ColumnHasConceptTypeChild" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" AllowsDuplicates="true">
+			<Properties>
+				<DomainProperty Name="AbsorptionIndicator" DefaultValue="false" DisplayName="AbsorptionIndicator" IsBrowsable="false" Id="6D4C221C-9E0D-4E66-943B-160FD22455CD">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 			<Source>
 				<DomainRole Id="BC7EA8A8-8772-4CA4-B914-B78B4B583338" Description="" Name="Column" PropertyName="ConceptTypeChildPath" Multiplicity="OneMany">
 					<RolePlayer>
@@ -314,6 +321,22 @@
 			</Source>
 			<Target>
 				<DomainRole Id="B162A279-A4C1-4271-AD37-9CDDFC421722" Description="" Name="ConceptTypeChild" PropertyName="Column" Multiplicity="OneMany">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.ORMAbstraction/ConceptTypeChild"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Id="594910C7-141E-4236-8487-90356A7F8172" Name="ColumnHasInverseConceptTypeChild" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge">
+			<Source>
+				<DomainRole Id="322C6B8C-3B60-41C5-837B-CCEC15A19002" Description="" Name="ColumnChildNode" PropertyName="InverseConceptTypeChild" Multiplicity="ZeroOne">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ColumnHasConceptTypeChild"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Id="A6754ED9-4C00-4986-B0DC-563331079F35" Description="" Name="InverseConceptTypeChild" PropertyName="InverseChildNode" Multiplicity="OneMany">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.ORMAbstraction/ConceptTypeChild"/>
 					</RolePlayer>

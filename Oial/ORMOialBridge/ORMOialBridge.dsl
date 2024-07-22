@@ -141,7 +141,7 @@
 
 		<DomainRelationship Name="InformationTypeFormatIsForValueType" Namespace="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge" Id="FB9FCDA4-030C-4F2F-8201-5287F79C25AF">
 			<Source>
-				<DomainRole Name="InformationTypeFormat" PropertyName="ValueType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="InformationTypeFormat" Id="E7453C11-962F-4D37-9E69-F01E83810CC8">
+				<DomainRole Name="InformationTypeFormat" PropertyName="ValueType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="InformationTypeFormat" Id="E7453C11-962F-4D37-9E69-F01E83810CC8">
 					<RolePlayer>
 						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.ORMAbstraction/InformationTypeFormat"/>
 					</RolePlayer>

@@ -26,6 +26,7 @@ using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using System.Windows.Forms;
 
 namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 {
@@ -57,41 +58,31 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 		/// <returns>A list of candidates</returns>
 		protected sealed override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
-			Debug.Assert(!(value is object[]));
-			Column instance = (Column)EditorUtility.ResolveContextInstance(context.Instance, true); // true to pick any element. We can use any element to get at the datatypes on the model
-			ObjectType valueType = instance.AssociatedValueType;
+			Column instance;
+			ColumnValueType? columnValueType;
+			ObjectType valueType;
 			IList retVal = null;
-			if (valueType != null)
+			if (null != (instance = EditorUtility.ResolveContextInstance(context.Instance, true) as Column) &&
+				(columnValueType = instance.AssociatedValueType).HasValue &&
+				null != (valueType = columnValueType))
 			{
 				LinkedElementCollection<DataType> dataTypes = valueType.ResolvedModel.DataTypeCollection;
 				retVal = dataTypes;
 				int count = dataTypes.Count;
-				int unspecifiedIndex = dataTypes.FindIndex(delegate(DataType testType){return testType is UnspecifiedDataType;});
-				if (unspecifiedIndex >= 0 || count > 1)
+				DataType[] types = new DataType[count - DataType.ImplicitDataTypeCount - 1];
+				int nextIndex = 0;
+				for (int i = 0; i < count; ++i)
 				{
-					DataType[] types;
-					if (unspecifiedIndex >= 0)
+					DataType type = dataTypes[i];
+					if (type.ImplicitOnly || type is UnspecifiedDataType)
 					{
-						int nextIndex = 0;
-						types = new DataType[count - 1];
-						for (int i = 0; i < count; ++i)
-						{
-							if (i == unspecifiedIndex)
-							{
-								continue;
-							}
-							types[nextIndex] = dataTypes[i];
-							++nextIndex;
-						}
+						continue;
 					}
-					else
-					{
-						types = new DataType[count];
-						dataTypes.CopyTo(types, 0);
-					}
-					Array.Sort<DataType>(types, new DataTypeToStringComparer());
-					retVal = types;
+					types[nextIndex] = type;
+					++nextIndex;
 				}
+				Array.Sort<DataType>(types, new DataTypeToStringComparer());
+				retVal = types;
 			}
 			return retVal;
 		}

@@ -176,8 +176,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
+				FactType contextFactType = null;
 				Objectification objectification = ImpliedByObjectification;
-				return (objectification != null) ? objectification.NestedFactType : null;
+				if (objectification != null)
+				{
+					contextFactType = objectification.NestedFactType;
+				}
+				else if (UnaryPattern == UnaryValuePattern.Negation)
+				{
+					contextFactType = PositiveUnaryFactType;
+				}
+				return contextFactType;
 			}
 		}
 		object ISurveyNodeContext.SurveyNodeContext
@@ -209,10 +218,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				switch (roles.Count)
 				{
 					case 1:
-						// This case should not get hit with unary binarization, but it isn't hurting anything
 						return (int)SurveyQuestionGlyph.UnaryFactType;
 					case 2:
-						return GetUnaryRoleIndex(roles).HasValue ? (int)SurveyQuestionGlyph.UnaryFactType : (int)SurveyQuestionGlyph.BinaryFactType;
+						return (int)SurveyQuestionGlyph.BinaryFactType;
 					case 3:
 						return (int)SurveyQuestionGlyph.TernaryFactType;
 					default:
@@ -232,9 +240,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected int AskFactTypeDetailQuestion(object contextElement)
 		{
-			// If this question is being asked, then we must be an implicit fact type
-			Debug.Assert(this.ImpliedByObjectification != null);
-			return (int)SurveyFactTypeDetailType.ImpliedFactType;
+			int answer = -1;
+			if (this.UnaryPattern == UnaryValuePattern.Negation)
+			{
+				answer = (int)SurveyFactTypeDetailType.UnaryNegationFactType;
+			}
+			else if (this.ImpliedByObjectification != null)
+			{
+				// This is the only other possibility if this is being asked.
+				answer = (int)SurveyFactTypeDetailType.ImpliedFactType;
+			}
+			return answer;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
 		#region IAnswerSurveyQuestion<SurveyDerivationType> Implementation

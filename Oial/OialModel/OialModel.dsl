@@ -83,6 +83,18 @@
 			</Properties>
 		</DomainClass>
 
+		<DomainClass Name="PositiveUnaryInformationTypeFormat" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="4A9C00F2-686E-42F1-9A94-5522D7CB3A35" DisplayName="PositiveUnaryInformationTypeFormat" Description="An InformationTypeFormat representing a true value.">
+			<BaseClass>
+				<DomainClassMoniker Name="InformationTypeFormat"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="NegativeUnaryInformationTypeFormat" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="8347C1D4-23A0-4810-932A-E93BBD4650EC" DisplayName="PositiveUnaryInformationTypeFormat" Description="An InformationTypeFormat representing a false value.">
+			<BaseClass>
+				<DomainClassMoniker Name="InformationTypeFormat"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="Uniqueness" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="0AF67F1F-66D6-4C2B-B85C-D556894AC300" DisplayName="Uniqueness" Description="">
 			<Properties>
 				<DomainProperty Name="Name" DisplayName="Name" IsElementName="true" Id="82013A44-5BAE-43AF-8472-A53473ADAC7E">
@@ -134,6 +146,40 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="AbstractionModelHasPositiveUnaryInformationTypeFormat" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="E73B7ADD-537C-49CA-A22A-E37E94458FD1">
+			<Source>
+				<DomainRole Name="Model" PropertyName="PositiveUnaryInformationTypeFormat" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="2C8BBA6B-EBFE-410B-BA13-DBB5872045A1">
+					<RolePlayer>
+						<DomainClassMoniker Name="AbstractionModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="InformationTypeFormat" PropertyName="Model" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="InformationTypeFormat" Id="3E40F442-BC82-47DA-84CD-0424DF77CBD8">
+					<RolePlayer>
+						<DomainClassMoniker Name="PositiveUnaryInformationTypeFormat"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="AbstractionModelHasNegativeUnaryInformationTypeFormat" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="A3AD6338-DDDE-4DFE-8CAE-7ACD93061219">
+			<Source>
+				<DomainRole Name="Model" PropertyName="NegativeUnaryInformationTypeFormat" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="5DFBC582-C72F-4A41-982F-D6898F7B61D8">
+					<RolePlayer>
+						<DomainClassMoniker Name="AbstractionModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="InformationTypeFormat" PropertyName="Model" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="InformationTypeFormat" Id="F81F8223-72B4-4917-9B54-0ED8A59335EC">
+					<RolePlayer>
+						<DomainClassMoniker Name="NegativeUnaryInformationTypeFormat"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ConceptTypeHasUniqueness" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" IsEmbedding="true" Id="356BCEA9-13E0-406D-BC0C-404909856A8F">
 			<Source>
 				<DomainRole Name="ConceptType" PropertyName="UniquenessCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptType" Id="B425BC77-4990-40F6-8C6F-B670B134AD88">
@@ -175,6 +221,30 @@
 				<DomainRole Name="Target" PropertyName="Parent" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Child" Id="B00473B0-6E23-481D-9AEE-3785EEC35786">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="InverseConceptTypeChild" AllowsDuplicates="false" Namespace="ORMSolutions.ORMArchitect.ORMAbstraction" Id="5E2DE8E5-C5B7-46A5-8582-7CE031D1341D" InheritanceModifier="Sealed">
+			<Properties>
+				<DomainProperty Name="PairIsMandatory" DefaultValue="false" DisplayName="PairIsMandatory" Id="64897A7F-49E6-40C7-8FA0-A3DD18AB1353">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+			<Source>
+				<DomainRole Name="PositiveChild" PropertyName="NegativeInverseChild" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PositiveInverse" Id="918008AC-1307-446F-AA29-41C3BDDA2090">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConceptTypeChild"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="NegativeChild" PropertyName="PositiveInverseChild" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NegativeInverse" Id="13B23B26-78CD-4121-A2EC-5AF25CE80103">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConceptTypeChild"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

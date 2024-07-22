@@ -29,6 +29,7 @@ using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework;
+using System.Net.NetworkInformation;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 {
@@ -97,10 +98,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			if (null != shape && null != (factType = shape.AssociatedFactType))
 			{
 				arity = (roles = factType.RoleCollection).Count;
-				if (arity == 2 && FactType.GetUnaryRoleIndex(roles).HasValue)
-				{
-					arity = 1;
-				}
 			}
 			return arity;
 		}
@@ -115,6 +112,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		private static Attribute[] DisplayReadingDirectionDomainPropertyAttributes;
 		private static Attribute[] NameDomainPropertyAttributes;
 		private static Attribute[] IsIndependentDomainPropertyAttributes;
+		private static Attribute[] UnaryPatternDomainPropertyAttributes;
 		private static Attribute[] DisplayAsObjectTypeDomainPropertyAttributes;
 		private static Attribute[] DisplayRefModeDomainPropertyAttributes;
 		private static Attribute[] NestedFactTypeDomainRoleAttributes;
@@ -138,6 +136,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 						DisplayRefModeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRefModeDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
 						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
+						UnaryPatternDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactType.UnaryPatternDomainPropertyId));
 						NestedFactTypeDomainRoleAttributes = AddExpandableElementTypeConverterAttribute(GetRolePlayerPropertyAttributes(domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId)));
 						NestingTypeDomainRoleAttributes = AddExpandableElementTypeConverterAttribute(GetRolePlayerPropertyAttributes(domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId)));
 						myCustomPropertyAttributesInitialized = true;
@@ -201,36 +200,50 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 				}
 				else
 				{
-					int descriptorCount = 8;
+					int descriptorCount = 9;
 					int arity = ResolveFactTypeArity(factTypeShape);
+					bool isUnaryNegation = false;
 					if (nestingTypeHasRelatedTypes)
 					{
 						++descriptorCount;
 					}
-					if (arity > 1)
+					// Arity one adds unary pattern but removes ConstraintDisplayPosition, arity > 1 display reverse reading
+					if (arity == 1)
 					{
-						++descriptorCount;
-						if (arity == 2)
+						if (!(isUnaryNegation = factType.UnaryPattern == UnaryValuePattern.Negation))
 						{
-							++descriptorCount;
+							--descriptorCount;
 						}
 					}
+					else if (arity == 2)
+					{
+						++descriptorCount;
+					}
 					PropertyDescriptor[] descriptors = new PropertyDescriptor[descriptorCount];
-					descriptors[0] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes);
-					descriptors[1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes);
-					descriptors[2] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes);
-					descriptors[3] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId), DisplayAsObjectTypeDomainPropertyAttributes);
-					descriptors[4] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId), NameDomainPropertyAttributes);
-					descriptors[5] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId), IsIndependentDomainPropertyAttributes);
-					descriptors[6] = new ObjectifyingEntityTypePropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes);
-					descriptors[7] = new ObjectifiedFactTypePropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes);
+					descriptors[0] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes);
+					descriptors[1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes);
+					descriptors[2] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId), DisplayAsObjectTypeDomainPropertyAttributes);
+					descriptors[3] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId), NameDomainPropertyAttributes);
+					descriptors[4] = CreatePropertyDescriptor(nestingType, domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId), IsIndependentDomainPropertyAttributes);
+					descriptors[5] = new ObjectifyingEntityTypePropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes);
+					descriptors[6] = new ObjectifiedFactTypePropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes);
 					if (nestingTypeHasRelatedTypes)
 					{
-						descriptors[8] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes);
+						descriptors[7] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes);
 					}
-					if (arity > 1)
+					if (arity == 1)
 					{
-						descriptors[descriptorCount - (arity == 2 ? 2 : 1)] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReadingDirectionDomainPropertyId), DisplayReadingDirectionDomainPropertyAttributes);
+						if (isUnaryNegation)
+						{
+							descriptors[descriptorCount - 2] = EditorUtility.RedirectPropertyDescriptor(factType, FactTypeTypeDescriptor<FactType>.UnaryNegationPropertyDescriptor, typeof(FactTypeShape));
+						}
+						descriptors[descriptorCount - 1] = new AutomatedElementFilterPropertyDescriptor(this, isUnaryNegation ? factType.PositiveUnaryFactType : factType, domainDataDirectory.FindDomainProperty(FactType.UnaryPatternDomainPropertyId), UnaryPatternDomainPropertyAttributes);
+					}
+					else if (arity > 1)
+					{
+						int lengthAdjust = arity == 2 ? 2 : 1;
+						descriptors[descriptorCount - lengthAdjust - 1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes);
+						descriptors[descriptorCount - lengthAdjust] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReadingDirectionDomainPropertyId), DisplayReadingDirectionDomainPropertyAttributes);
 						if (arity == 2)
 						{
 							descriptors[descriptorCount - 1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReverseReadingDomainPropertyId), DisplayReverseReadingDomainPropertyAttributes);

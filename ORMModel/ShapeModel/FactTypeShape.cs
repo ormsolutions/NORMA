@@ -42,7 +42,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IRedirectVerbalization, IConfigureAsChildShape, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint, IDisplayMultiplePresentations
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IRedirectVerbalization, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint, IDisplayMultiplePresentations
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -622,49 +622,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 			return displayRoles;
-		}
-		/// <summary>
-		/// Implements <see cref="IConfigureAsChildShape.ConfiguringAsChildOf"/>
-		/// </summary>
-		protected void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
-		{
-			EnsureUnaryRoleDisplayOrder();
-		}
-		private void EnsureUnaryRoleDisplayOrder()
-		{
-			// Make sure the factType shape is prepared to display as a unary
-			FactType factType;
-			Role unaryRole;
-			if (null != (factType = AssociatedFactType) &&
-				null != (unaryRole = factType.UnaryRole))
-			{
-				// Create a RoleDisplayOrder for Unary FactTypes.
-				LinkedElementCollection<RoleBase> displayRoles = RoleDisplayOrderCollection;
-				switch (displayRoles.Count)
-				{
-					case 0:
-						// The RoleDisplayOrder is empty, so we don't need to do anything.
-						break;
-					case 1:
-						// We already have only one role in the RoleDisplayOrder, so all
-						// we have to do is make sure it is the right one.
-						if (displayRoles[0] != unaryRole)
-						{
-							displayRoles[0] = unaryRole;
-						}
-						return;
-					default:
-						// We have more than one role in the RoleDisplayOrder, so we
-						// have to clear it.
-						displayRoles.Clear();
-						break;
-				}
-				displayRoles.Add(unaryRole);
-			}
-		}
-		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
-		{
-			ConfiguringAsChildOf(parentShape, createdDuringViewFixup);
 		}
 		/// <summary>
 		/// Retrieve an editable version of the <see cref="DisplayedRoleOrder"/> property. Editing
@@ -2717,7 +2674,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					try
 					{
 						restoreRoleBoxPenColor = parentFactShape.UpdateDynamicColor(roleBoxPenId, roleBoxPen);
-						Role impliedUnaryRole = (roleCount == 1) ? impliedUnaryRole = roles[0].OppositeRole.Role : null;
 						for (int i = 0; i < roleCount; ++i)
 						{
 							StyleSetResourceId backgroundFillResourceId = null;
@@ -2805,12 +2761,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									// of the currently selected constraint.
 									if (stickyObject.StickySelectable(currentRole))
 									{
-										ConstraintType constraintType;
-										Role constraintRole = (impliedUnaryRole != null &&
-											((constraintType = stickyConstraint.ConstraintType) == ConstraintType.ExternalUniqueness ||
-											constraintType == ConstraintType.Frequency)) ?
-												impliedUnaryRole :
-												currentRole;
 										// We need to find out if this role is in one of the role sequences being edited, or if it's just selected.
 										backgroundHighlighted = highlightThisRole;
 										SetComparisonConstraint mcec;
@@ -2826,12 +2776,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 												int sequenceCollectionCount = sequenceCollection.Count;
 												for (int sequenceIndex = 0; sequenceIndex < sequenceCollectionCount; ++sequenceIndex)
 												{
-													int roleIndex = sequenceCollection[sequenceIndex].RoleCollection.IndexOf(constraintRole);
+													int roleIndex = sequenceCollection[sequenceIndex].RoleCollection.IndexOf(currentRole);
 													if (roleIndex >= 0)
 													{
 														for (int j = sequenceIndex + 1; j < sequenceCollectionCount; ++j)
 														{
-															if (sequenceCollection[j].RoleCollection.IndexOf(constraintRole) >= 0)
+															if (sequenceCollection[j].RoleCollection.IndexOf(currentRole) >= 0)
 															{
 																// Indicate overlapping role sequences
 																indexString = ResourceStrings.SetConstraintStickyRoleOverlapping;
@@ -2848,7 +2798,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 											}
 											else if (null != (scec = stickyConstraint as SetConstraint))
 											{
-												indexString = (scec.RoleCollection.IndexOf(constraintRole) + 1).ToString();
+												indexString = (scec.RoleCollection.IndexOf(currentRole) + 1).ToString();
 											}
 
 											if ((object)indexString != null)
@@ -4302,7 +4252,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return false;
 				}
-				return !string.IsNullOrEmpty(role.Name) && (role != AssociatedFactType.ImplicitBooleanRole);
+				return !string.IsNullOrEmpty(role.Name);
 			}
 			else if (null != (objectType = element as ObjectType))
 			{
@@ -5520,15 +5470,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						foreach (RoleBase roleBase in factType.RoleCollection)
 						{
 							RoleProxy proxy;
-							ObjectifiedUnaryRole objectifiedUnaryRole;
 							if (null != (proxy = roleBase as RoleProxy))
 							{
 								targetRole = proxy.TargetRole;
-								break;
-							}
-							else if (null != (objectifiedUnaryRole = roleBase as ObjectifiedUnaryRole))
-							{
-								targetRole = objectifiedUnaryRole.TargetRole;
 								break;
 							}
 						}
@@ -7149,36 +7093,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // RoleName fixup
-		#region ImplicitBooleanValueTypeDeletedRule
-		/// <summary>
-		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
-		/// Deletion of an implicit boolean value type means that the FactType is no longer unary.
-		/// </summary>
-		private static void ImplicitBooleanValueTypeDeletedRule(ElementDeletedEventArgs e)
-		{
-			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
-			ObjectType impliedBoolean = link.RolePlayer;
-			Role role;
-			if (impliedBoolean.IsImplicitBooleanValue &&
-				!(role = link.PlayedRole).IsDeleted)
-			{
-				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(role.FactType))
-				{
-					FactTypeShape shape = pel as FactTypeShape;
-					if (shape != null)
-					{
-						// When a binarized Unary Fact is no longer a unary, clear the displayed role orders
-						shape.RoleDisplayOrderCollection.Clear();
-						shape.AutoResize();
-					}
-				}
-				if (!string.IsNullOrEmpty(role.Name))
-				{
-					FixupRoleNameShapes(role);
-				}
-			}
-		}
-		#endregion // ImplicitBooleanValueTypeDeletedRule
 		#region Display options change rules
 		private static void UpdateDefaultReverseReadings(ORMDiagram diagram)
 		{
@@ -7607,7 +7521,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				if (!element.IsDeleted)
 				{
-					element.EnsureUnaryRoleDisplayOrder();
 					PointD centerPoint = RolesField.GetBounds(element).Center;
 					element.RolesPosition = (element.DisplayOrientation != DisplayOrientation.Horizontal) ? centerPoint.X : centerPoint.Y;
 					element.UpdateRoleNameDisplay(true);

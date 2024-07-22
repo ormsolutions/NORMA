@@ -68,6 +68,38 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "AssimilationMapping.InvalidPartitionPatternForAbsorbException");
 			}
 		}
+		/// <summary>The description for the DataType extension property displayed with a column. Displays as a detailed description in the Properties Window.</summary>
+		public static string ColumnPropertyDataTypeDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ColumnProperty.DataType.Description");
+			}
+		}
+		/// <summary>The display name for the DataType extension property displayed with a column. Displays as the name of a property in the Properties Window.</summary>
+		public static string ColumnPropertyDataTypeDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ColumnProperty.DataType.DisplayName");
+			}
+		}
+		/// <summary>The description for the DefaultValue extension property displayed with a column. Displays as a detailed description in the Properties Window.</summary>
+		public static string ColumnPropertyDefaultValueDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ColumnProperty.DefaultValue.Description");
+			}
+		}
+		/// <summary>The display name for the DefaultValue extension property displayed with a column. Displays as the name of a property in the Properties Window.</summary>
+		public static string ColumnPropertyDefaultValueDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.CustomizationModel, "ColumnProperty.DefaultValue.DisplayName");
+			}
+		}
 		/// <summary>The category for relational mapping customizations. Displays as a grouping category in the Properties Window.</summary>
 		public static string MappingCustomizationPropertyCategory
 		{

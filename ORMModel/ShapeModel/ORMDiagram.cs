@@ -749,9 +749,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			// Handle other shapes related to roles.
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 			int roleCount = roleCollection.Count;
-			int? unaryRoleIndex = FactType.GetUnaryRoleIndex(roleCollection);
-			Role unaryRole = unaryRoleIndex.HasValue ? roleCollection[unaryRoleIndex.Value].Role : null;
-			bool impliedFactType = factType.ImpliedByObjectification != null;
 			for (int i = 0; i < roleCount; ++i)
 			{
 				RoleBase roleBase = roleCollection[i];
@@ -786,7 +783,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 				// Get the role value constraint and the link to it.
 				RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
-				UnaryRoleCardinalityConstraint unaryRoleCardinality = (unaryRole == role) ? unaryRole.Cardinality : null;
+				UnaryRoleCardinalityConstraint unaryRoleCardinality = roleCount == 1 ? role.Cardinality : null;
 				if (!childShapesMerged)
 				{
 					if (valueConstraintLink != null)
@@ -1431,7 +1428,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// We don't ever display a nesting ObjectType, even if the Objectification is not drawn.
 			// This also applies to Implicit Boolean ValueTypes (those that are part of a binarized unary).
-			if (objectType.NestedFactType == null && !objectType.IsImplicitBooleanValue)
+			if (objectType.NestedFactType == null)
 			{
 				return ShouldDisplayPartOfReferenceMode(objectType);
 			}
@@ -2743,15 +2740,31 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					foreach (RoleBase roleBase in factType.RoleCollection)
 					{
 						RoleProxy proxy;
-						ObjectifiedUnaryRole objectifiedUnaryRole;
 						if (null != (proxy = roleBase as RoleProxy))
 						{
 							return proxy.TargetRole;
 						}
-						else if (null != (objectifiedUnaryRole = roleBase as ObjectifiedUnaryRole))
-						{
-							return objectifiedUnaryRole.TargetRole;
-						}
+					}
+				}
+				else
+				{
+					FactType inverseFactType;
+					switch (factType.UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+							inverseFactType = null;
+							break;
+						case UnaryValuePattern.Negation:
+							inverseFactType = factType.PositiveUnaryFactType;
+							break;
+						default:
+							inverseFactType = factType.NegationUnaryFactType;
+							break;
+					}
+
+					if (inverseFactType != null)
+					{
+						return inverseFactType;
 					}
 				}
 			}

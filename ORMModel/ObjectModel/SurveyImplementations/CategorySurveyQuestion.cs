@@ -64,6 +64,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		Role,
 		/// <summary>
+		/// A unary negation fact type
+		/// </summary>
+		UnaryNegationFactType,
+		/// <summary>
+		/// A constraint implied by a unary pattern
+		/// </summary>
+		ImpliedUnaryConstraint,
+		/// <summary>
 		/// An internal constraint node
 		/// </summary>
 		InternalConstraint,

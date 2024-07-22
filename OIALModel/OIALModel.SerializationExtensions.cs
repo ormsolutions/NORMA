@@ -168,7 +168,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildElements;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -243,46 +243,48 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
-		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		private static IComparer<DomainObjectInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainObjectInfo>
 		{
-			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private readonly Dictionary<string, int> myElementOrderDictionary;
 			public CustomSortChildComparer(Store store)
 			{
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
-				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				Dictionary<string, int> elementOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasORMModel.ORMModelDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasConceptType.ConceptTypeDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
-				this.myRoleOrderDictionary = roleOrderDictionary;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				this.myElementOrderDictionary = elementOrderDictionary;
 			}
-			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			int IComparer<DomainObjectInfo>.Compare(DomainObjectInfo x, DomainObjectInfo y)
 			{
 				int xPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				DomainRoleInfo xRole;
+				if (!((xRole = x as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(xRole.DomainRelationship.ImplementationClass.FullName, ".", xRole.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				DomainRoleInfo yRole;
+				if (!((yRole = y as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(yRole.DomainRelationship.ImplementationClass.FullName, ".", yRole.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
-				IComparer<DomainRoleInfo> retVal = OIALModel.myCustomSortChildComparer;
+				IComparer<DomainObjectInfo> retVal = OIALModel.myCustomSortChildComparer;
 				if (null == retVal)
 				{
 					retVal = new CustomSortChildComparer(this.Store);
@@ -291,11 +293,11 @@ namespace Neumont.Tools.ORM.OIALModel
 				return retVal;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -415,19 +417,19 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -536,19 +538,19 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -889,19 +891,19 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -953,7 +955,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles | CustomSerializedElementSupportedOperations.EmbeddingLinkInfo;
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildElements | CustomSerializedElementSupportedOperations.EmbeddingLinkInfo;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -1034,54 +1036,56 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
-		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		private static IComparer<DomainObjectInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainObjectInfo>
 		{
-			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private readonly Dictionary<string, int> myElementOrderDictionary;
 			public CustomSortChildComparer(Store store)
 			{
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
-				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				Dictionary<string, int> elementOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasObjectType.ObjectTypeDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(InformationType.InformationTypeFormatDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencedConceptTypeDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencingConceptTypeDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeChild.ParentDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeChild.TargetDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
-				this.myRoleOrderDictionary = roleOrderDictionary;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
+				this.myElementOrderDictionary = elementOrderDictionary;
 			}
-			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			int IComparer<DomainObjectInfo>.Compare(DomainObjectInfo x, DomainObjectInfo y)
 			{
 				int xPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				DomainRoleInfo xRole;
+				if (!((xRole = x as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(xRole.DomainRelationship.ImplementationClass.FullName, ".", xRole.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				DomainRoleInfo yRole;
+				if (!((yRole = y as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(yRole.DomainRelationship.ImplementationClass.FullName, ".", yRole.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
-				IComparer<DomainRoleInfo> retVal = ConceptType.myCustomSortChildComparer;
+				IComparer<DomainObjectInfo> retVal = ConceptType.myCustomSortChildComparer;
 				if (null == retVal)
 				{
 					retVal = new CustomSortChildComparer(this.Store);
@@ -1090,11 +1094,11 @@ namespace Neumont.Tools.ORM.OIALModel
 				return retVal;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -1232,19 +1236,19 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;

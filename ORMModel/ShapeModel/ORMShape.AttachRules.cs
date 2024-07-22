@@ -47,7 +47,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(FactTypeShape).GetNestedType("ConnectionPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeShape).GetNestedType("ImplicitBooleanValueTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ObjectificationIsImpliedChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ObjectificationRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("RoleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -129,6 +128,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(ReadingShape).GetNestedType("RolePlayerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RingConstraintShape).GetNestedType("RingConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePlayerLink).GetNestedType("FactTypeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueComparisonConstraintShape).GetNestedType("ValueComparisonConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueConstraintTextChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueConstraintShapeDisplayChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
@@ -531,32 +531,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.FactTypeShapeChangeRule");
 				FactTypeShape.FactTypeShapeChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.FactTypeShapeChangeRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
-		private sealed class ImplicitBooleanValueTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public ImplicitBooleanValueTypeDeletedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape
-			/// /// <summary>
-			/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
-			/// /// </summary>
-			/// private static void ImplicitBooleanValueTypeDeletedRule(ElementDeletedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.ImplicitBooleanValueTypeDeletedRule");
-				FactTypeShape.ImplicitBooleanValueTypeDeletedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.ImplicitBooleanValueTypeDeletedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
@@ -2714,6 +2688,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // Rule classes for RingConstraintShape
+	#region Rule classes for RolePlayerLink
+	partial class RolePlayerLink
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.LocalCommit)]
+		private sealed class FactTypeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public FactTypeChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), FireTime=LocalCommit
+			/// /// </summary>
+			/// private static void FactTypeChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink.FactTypeChangedRule");
+				RolePlayerLink.FactTypeChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink.FactTypeChangedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for RolePlayerLink
 	#region Rule classes for ValueComparisonConstraintShape
 	partial class ValueComparisonConstraintShape
 	{

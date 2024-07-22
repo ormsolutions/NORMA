@@ -141,6 +141,15 @@
     <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptor.cs" />
     <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptionProvider.cs" />
     <Compile Include="Framework\HashSet.cs" />
+    <Compile Include="Framework\Shell\UpdateMessageDialog.cs">
+      <CustomToolNamespace>ORMSolutions.ORMArchitect.Framework.Shell</CustomToolNamespace>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Framework\Shell\UpdateMessageDialog.Designer.cs">
+      <DependentUpon>UpdateMessageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Shell\UpgradeMessage.cs" />
+    <Compile Include="ObjectModel\Design\DefaultValuePropertyDescriptor.cs" />
     <Compile Include="ObjectModel\DynamicRule.cs" />
     <Compile Include="ObjectModel\GeneralRule.cs" />
     <Compile Include="ObjectModel\Design\FactTypeTypeDescriptor.cs" />
@@ -170,7 +179,6 @@
     <Compile Include="ObjectModel\HierarchyContext.cs" />
     <Compile Include="ObjectModel\NamePart.cs" />
     <Compile Include="ObjectModel\ReferenceModeNaming.cs" />
-    <Compile Include="ObjectModel\UnaryBinarization.cs" />
     <Compile Include="ShapeModel\Design\ObjectifiedFactTypeNameShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseBinaryLinkShapeTypeDescriptor.cs" />
@@ -178,6 +186,7 @@
     <Compile Include="ShapeModel\ModelNoteLink.cs" />
     <Compile Include="ShapeModel\ModelNoteConnectAction.cs" />
     <Compile Include="ShapeModel\ModelNoteShape.cs" />
+    <Compile Include="ShapeModel\ModelElementDragAction.cs" />
     <Compile Include="Shell\ORMLayoutEngines.cs" />
     <Compile Include="Shell\LayoutManager.cs" />
     <Compile Include="Shell\ORMContextWindow.cs" />
@@ -403,6 +412,10 @@
     <None Include="ObjectModel\VerbalizationGenerator.xsd">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Framework\Shell\UpdateMessageDialog.resx">
+      <DependentUpon>UpdateMessageDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Shell\ReadingEditor.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ReadingEditor.cs</DependentUpon>

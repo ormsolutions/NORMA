@@ -16,5 +16,10 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="AbstractionDomainModel">
+		<arg:RuleContainer class="AbstractionDomainModel">
+			<arg:AddRule methodName="EnsureUnaryFormat" alwaysOn="true">
+				<arg:RuleOn targetType="AbstractionModelHasInformationTypeFormat"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

@@ -421,7 +421,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// <returns>A wrapper <see cref="PropertyDescriptor"/></returns>
 		public static PropertyDescriptor ModifyPropertyDescriptorDisplay(PropertyDescriptor basedOnDescriptor, string descriptorName, string displayName, string description, string category)
 		{
-			return new DisplayModifiedPropertyDescriptor(basedOnDescriptor, descriptorName, displayName, description, category);
+			return new DisplayModifiedPropertyDescriptor(basedOnDescriptor, descriptorName, displayName, description, category, false);
+		}
+		/// <summary>
+		/// Modify the display settings for a <see cref="PropertyDescriptor"/> by
+		/// wrapping the base descriptor with another property descriptor instance.
+		/// </summary>
+		/// <param name="basedOnDescriptor">The original descriptor.</param>
+		/// <param name="descriptorName">A customized descriptor name. It this is <see langword="null"/>, then the name is read from <paramref name="basedOnDescriptor"/>.</param>
+		/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
+		/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
+		/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
+		/// <param name="readOnly">Force readonly. Defers to the inner descriptor if false;</param>
+		/// <returns>A wrapper <see cref="PropertyDescriptor"/></returns>
+		public static PropertyDescriptor ModifyPropertyDescriptorDisplay(PropertyDescriptor basedOnDescriptor, string descriptorName, string displayName, string description, string category, bool readOnly)
+		{
+			return new DisplayModifiedPropertyDescriptor(basedOnDescriptor, descriptorName, displayName, description, category, readOnly);
 		}
 		/// <summary>
 		/// Modify the display settings for a <see cref="PropertyDescriptor"/> by
@@ -446,6 +461,29 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 		}
 		/// <summary>
+		/// Modify the display settings for a <see cref="PropertyDescriptor"/> by
+		/// wrapping the base descriptor with another property descriptor instance.
+		/// </summary>
+		/// <param name="descriptorCollection">A collection of descriptors.</param>
+		/// <param name="propertyName">The non-localized name of the property to modify.</param>
+		/// <param name="newDescriptorName">A customized descriptor name. It this is <see langword="null"/>, then the <paramref name="propertyName"/> is used.
+		/// Setting this changes the lookup name for the property.</param>
+		/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
+		/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
+		/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
+		/// <param name="readOnly">Force readonly. Defers to the inner descriptor if false;</param>
+		/// <returns>A wrapper <see cref="PropertyDescriptor"/></returns>
+		public static void ModifyPropertyDescriptorDisplay(PropertyDescriptorCollection descriptorCollection, string propertyName, string newDescriptorName, string displayName, string description, string category, bool readOnly)
+		{
+			PropertyDescriptor descriptor;
+			if (descriptorCollection != null &&
+				null != (descriptor = descriptorCollection[propertyName]))
+			{
+				descriptorCollection.Remove(descriptor);
+				descriptorCollection.Add(ModifyPropertyDescriptorDisplay(descriptor, newDescriptorName, displayName, description, category, readOnly));
+			}
+		}
+		/// <summary>
 		/// Wrapper <see cref="PropertyDescriptor"/> class to support display modification
 		/// </summary>
 		private sealed class DisplayModifiedPropertyDescriptor : PropertyDescriptor
@@ -455,6 +493,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			private readonly string myDisplayName;
 			private readonly string myDescription;
 			private readonly string myCategory;
+			private readonly bool myReadOnly;
 			#endregion // Member Variables
 			#region Constructor
 			/// <summary>
@@ -465,7 +504,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
 			/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
 			/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
-			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
+			/// <param name="readOnly">Specify if the descriptor should be read only. A false setting defers to the wrapped descriptor.</param>
+			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category, bool readOnly)
 				: base(descriptorName ?? modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
 			{
 				DisplayModifiedPropertyDescriptor wrappedModifier = modifyDescriptor as DisplayModifiedPropertyDescriptor;
@@ -475,6 +515,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 					myDisplayName = displayName != null ? displayName : wrappedModifier.myDisplayName;
 					myDescription = description != null ? description : wrappedModifier.myDescription;
 					myCategory = category != null ? category : wrappedModifier.myCategory;
+					myReadOnly = readOnly || wrappedModifier.myReadOnly;
 				}
 				else
 				{
@@ -482,6 +523,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 					myDisplayName = displayName;
 					myDescription = description;
 					myCategory = category;
+					myReadOnly = readOnly;
 				}
 			}
 			#endregion // Constructor
@@ -535,7 +577,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 			public override bool IsReadOnly
 			{
-				get { return myInner.IsReadOnly; }
+				get { return myReadOnly || myInner.IsReadOnly; }
 			}
 			public override Type PropertyType
 			{

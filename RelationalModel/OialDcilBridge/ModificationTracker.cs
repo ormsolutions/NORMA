@@ -16,16 +16,14 @@
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework;
 using System.Diagnostics;
-using System.Collections;
 using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
 using ORMSolutions.ORMArchitect.ORMAbstraction;
 using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
-using System.Collections.ObjectModel;
 using ORMCore = ORMSolutions.ORMArchitect.Core.ObjectModel;
+using System.Linq;
 
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
@@ -79,6 +77,18 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			private static void InformationTypeFormatDeletedRule(ElementDeletedEventArgs e)
 			{
 				RebuildAbstractionModel(((AbstractionModelHasInformationTypeFormat)e.ModelElement).Model);
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild)
+			/// </summary>
+			private static void InverseConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == InverseConceptTypeChild.PairIsMandatoryDomainPropertyId)
+				{
+					InverseConceptTypeChild childLink = (InverseConceptTypeChild)e.ModelElement;
+					ValidateAssociatedColumnsIsNullable(childLink.PositiveChild);
+					ValidateAssociatedColumnsIsNullable(childLink.NegativeChild);
+				}
 			}
 			/// <summary>
 			/// AddRule: typeof(AssimilationMappingCustomizesFactType)
@@ -207,7 +217,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 			private static void ValidateAssociatedColumnsIsNullable(ConceptTypeChild child)
 			{
-				bool canBeNullable = !child.IsMandatory;
 				foreach (Column column in ColumnHasConceptTypeChild.GetColumn(child))
 				{
 					FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
@@ -539,6 +548,357 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
+			/// Helper function to resolve an existing absorbed assimilations from an object type.
+			/// </summary>
+			private static IEnumerable<ConceptTypeAssimilatesConceptType> AbsorbedAssimilationsFromObjectType(ORMCore.ObjectType objectType)
+			{
+				ConceptType conceptType;
+				if (null != objectType &&
+					null != (conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType)))
+				{
+					foreach (ConceptTypeAssimilatesConceptType assimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
+					{
+						if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
+						{
+							yield return assimilation;
+						}
+					}
+				}
+			}
+
+			/// <summary>
+			/// Determine which absorbed assilimations need the existence of an absorption indicator column to be validated
+			/// </summary>
+			private static void DelayValidateAbsorptionIndicator(ORMCore.ConstraintRoleSequenceHasRole roleLink)
+			{
+				ORMCore.MandatoryConstraint constraint;
+				if (null != (constraint = roleLink.ConstraintRoleSequence as ORMCore.MandatoryConstraint) &&
+					constraint.Modality == ORMCore.ConstraintModality.Alethic)
+				{
+					// Mandatory roles can span different object types and affect different columns, so we
+					// need to test all of the roles, not just the modified one.
+					ORMCore.Role initialRole = roleLink.Role;
+					ORMCore.ObjectType initialRolePlayer = roleLink.Role.RolePlayer;
+					if (constraint.IsDeleted || constraint.IsDeleting)
+					{
+						if (initialRolePlayer != null)
+						{
+							foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(initialRolePlayer))
+							{
+								foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+								{
+									FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+								}
+							}
+						}
+					}
+					else
+					{
+						foreach (ORMCore.Role constrainedRole in constraint.RoleCollection)
+						{
+							ORMCore.ObjectType rolePlayer = constrainedRole.RolePlayer;
+							if (constrainedRole == initialRole || initialRolePlayer != rolePlayer) // Some duplicate processing is possible, but unusual enough we don't care
+							{
+								foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(rolePlayer))
+								{
+									foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+									{
+										FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// Determine which absorbed assilimations need the existence of an absorption indicator column to be validated
+			/// </summary>
+			private static void DelayValidateAbsorptionIndicator(ORMCore.MandatoryConstraint constraint)
+			{
+				ORMCore.ObjectType firstRolePlayer = null;
+				foreach (ORMCore.Role constrainedRole in constraint.RoleCollection)
+				{
+					ORMCore.ObjectType rolePlayer = constrainedRole.RolePlayer;
+					if (firstRolePlayer == null)
+					{
+						firstRolePlayer = rolePlayer;
+					}
+					else if (rolePlayer == firstRolePlayer)
+					{
+						continue;
+					}
+					foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(rolePlayer))
+					{
+						foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+						{
+							FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// Delay validate incrementable existence of absorption indicator columns. element1 is an
+			/// assimilation, element2 is a Table. Including the table as a pair lets us test if the
+			/// table has been deleted with the full regeneration independently of what happens with the
+			/// absorption model. This manages absorption indicator columns and inverse relationships
+			/// on columns mapped to unary fact types.
+			/// </summary>
+			[DelayValidatePriority(5, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateAbsorptionIndicator(ModelElement element1, ModelElement element2)
+			{
+				if (element1.IsDeleted || element2.IsDeleted)
+				{
+					return;
+				}
+
+				FrameworkDomainModel.DelayValidateElement(element1, DelayValidateAbsorptionIndicator);
+			}
+			/// <summary>
+			/// The second half, with assimilations passed through from <see cref="DelayValidateAbsorptionIndicator(ModelElement, ModelElement)"/>.
+			/// </summary>
+			[DelayValidatePriority(6, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateAbsorptionIndicator(ModelElement element)
+			{
+				ConceptTypeAssimilatesConceptType assimilation = (ConceptTypeAssimilatesConceptType)element;
+				// Note that a absorption choice change triggers regeneration, so we do not need to verify that
+				// this is still absorbed.
+				bool isSelfEvident = AssimilationMapping.AssimilationIsSelfEvident(assimilation) == AssimilationMapping.AssimilationEvidence.MandatoryEvidence;
+				InverseConceptTypeChild inverseChildLink = null;
+				ConceptTypeChild inverseChild = null;
+				if (!assimilation.RefersToSubtype)
+				{
+					if (null != (inverseChildLink = InverseConceptTypeChild.GetLinkToNegativeInverseChild(assimilation) ?? InverseConceptTypeChild.GetLinkToPositiveInverseChild(assimilation)))
+					{
+						inverseChild = inverseChildLink.PositiveChild; // guess
+						if (inverseChild == assimilation)
+						{
+							inverseChild = inverseChildLink.NegativeChild; // guessed wrong
+						}
+					}
+				}
+
+				if (inverseChild != null)
+				{
+					if (inverseChild is InformationType)
+					{
+						// This is placed as the inverse of the information, which means this half of the
+						// negatable unary is objectified but the other is not.
+						foreach (ColumnHasConceptTypeChild columnLink in ColumnHasConceptTypeChild.GetLinksToColumn(inverseChild))
+						{
+							ColumnHasInverseConceptTypeChild inverseColumnLink = ColumnHasInverseConceptTypeChild.GetLinkToInverseConceptTypeChild(columnLink);
+							if (inverseColumnLink != null)
+							{
+								if (isSelfEvident)
+								{
+									inverseColumnLink.Delete();
+								}
+								// else we already have what we need
+							}
+							else
+							{
+								columnLink.InverseConceptTypeChild = assimilation;
+								FrameworkDomainModel.DelayValidateElement(columnLink.Column, ValidateColumnIsNullableDelayed);
+								ValidateSchemaNamesChanged(columnLink.Column.Table?.Schema);
+							}
+						}
+					}
+					else
+					{
+						// Both the positive and negative ends are assimilations. With dynamic cases either end can be bound to
+						// the column or the inverse. It is likely these will be the same for all tables (multiple are possible with
+						// partitioning) that use this, but we shouldn't rely on this, so each table is tracked separately.
+						LinkedElementCollection<Table> tables = TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType);
+						int tableCount;
+						if (0 != (tableCount = tables.Count))
+						{
+							int remainingTableCount = tableCount;
+							Table table;
+							Column column;
+							int tableIndex;
+							BitTracker tableHandled = new BitTracker(tableCount);
+
+							// See if this is an existing inverse
+							foreach (ColumnHasInverseConceptTypeChild inverseConceptTypeLink in ColumnHasInverseConceptTypeChild.GetLinksToInverseChildNode(assimilation))
+							{
+								column = inverseConceptTypeLink.ColumnChildNode.Column;
+								table = column?.Table;
+								if (-1 != (tableIndex = tables.IndexOf(table)))
+								{
+									if (isSelfEvident)
+									{
+										// Reaonly collection, OK to delete
+										inverseConceptTypeLink.Delete();
+										FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
+										// Removing the inverse won't change the column name
+									}
+									// Otherwise, we're handled for this table (column inversion exists)
+
+									if (0 == --remainingTableCount)
+									{
+										break;
+									}
+									tableHandled[tableIndex] = true;
+								}
+							}
+
+							if (remainingTableCount != 0)
+							{
+								foreach (ColumnHasConceptTypeChild inverseColumnLink in ColumnHasConceptTypeChild.GetLinksToColumn(inverseChild).Where(link => link.AbsorptionIndicator))
+								{
+									column = inverseColumnLink.Column;
+									table = column.Table;
+									if (-1 != (tableIndex = tables.IndexOf(table)))
+									{
+										if (isSelfEvident)
+										{
+											if (inverseColumnLink.InverseConceptTypeChild != null)
+											{
+												inverseColumnLink.InverseConceptTypeChild = null;
+												FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
+											}
+										}
+										else if (inverseColumnLink.InverseConceptTypeChild == null)
+										{
+											inverseColumnLink.InverseConceptTypeChild = assimilation;
+											FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
+										}
+
+										if (0 == --remainingTableCount)
+										{
+											break;
+										}
+										tableHandled[tableIndex] = true;
+									}
+								}
+
+								if (remainingTableCount != 0)
+								{
+									foreach (ColumnHasConceptTypeChild columnLink in ColumnHasConceptTypeChild.GetLinksToColumn(assimilation).Where(link => link.AbsorptionIndicator))
+									{
+										column = columnLink.Column;
+										table = column.Table;
+										if (-1 != (tableIndex = tables.IndexOf(table)))
+										{
+											if (isSelfEvident)
+											{
+												// If there is an inverse, delete it and move the concept type to this link. Otherwise,
+												// delete the column.
+												ColumnHasInverseConceptTypeChild inverseColumnLink = ColumnHasInverseConceptTypeChild.GetLinkToInverseConceptTypeChild(columnLink);
+												if (inverseColumnLink != null)
+												{
+													columnLink.ConceptTypeChild = inverseColumnLink.InverseConceptTypeChild;
+													inverseColumnLink.Delete();
+												}
+												else
+												{
+													columnLink.Delete();
+												}
+												FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
+											}
+
+											if (0 == --remainingTableCount)
+											{
+												break;
+											}
+											tableHandled[tableIndex] = true;
+										}
+									}
+
+									if (remainingTableCount != 0 && !isSelfEvident)
+									{
+										for (int i = 0; i < tableCount; ++i)
+										{
+											if (!tableHandled[i])
+											{
+												CreateDynamicAbsorptionIndicatorColumn(assimilation, tables[i]);
+												if (--remainingTableCount == 0)
+												{
+													break;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				else if (isSelfEvident)
+				{
+					foreach (ColumnHasConceptTypeChild columnLink in ColumnHasConceptTypeChild.GetLinksToColumn(assimilation).Where(link => link.AbsorptionIndicator))
+					{
+						columnLink.Column.Delete();
+					}
+				}
+				else
+				{
+					IList<Table> handledTables = ColumnHasConceptTypeChild.GetLinksToColumn(assimilation)
+						.Where(link => link.AbsorptionIndicator)
+						.Select(link => link.Column.Table)
+						.Where(t => t != null)
+						.ToList();
+					foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType).Where(t => handledTables.IndexOf(t) == -1))
+					{
+						CreateDynamicAbsorptionIndicatorColumn(assimilation, table);
+					}
+				}
+			}
+			private static void CreateDynamicAbsorptionIndicatorColumn(ConceptTypeAssimilatesConceptType assimilation, Table table)
+			{
+				Column column = new Column(
+					assimilation.Partition,
+					new PropertyAssignment(Column.NameDomainPropertyId, assimilation.AssimilatedConceptType.Name)
+				);
+				new TableContainsColumn(table, column);
+
+				TableIsAlsoForConceptType secondaryType = TableIsAlsoForConceptType.GetLink(table, assimilation.AssimilatedConceptType);
+				if (secondaryType != null)
+				{
+					ColumnHasConceptTypeChild lastLink = null;
+					foreach (ConceptTypeAssimilatesConceptType pathAssimilation in secondaryType.AssimilationPath)
+					{
+						lastLink = new ColumnHasConceptTypeChild(column, pathAssimilation);
+					}
+					lastLink.AbsorptionIndicator = true;
+				}
+
+				FrameworkDomainModel.DelayValidateElement(column, ValidateColumnIsNullableDelayed);
+				ValidateSchemaNamesChanged(table.Schema);
+			}
+			/// <summary>
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// Dynamically track absorption indicator columns
+			/// </summary>
+			private static void MandatoryRoleAddedRule(ElementAddedEventArgs e)
+			{
+				DelayValidateAbsorptionIndicator((ORMCore.ConstraintRoleSequenceHasRole)e.ModelElement);
+			}
+			/// <summary>
+			/// DeletedRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
+			/// </summary>
+			private static void MandatoryRoleDeletedRule(ElementDeletedEventArgs e)
+			{
+				ORMCore.ConstraintRoleSequenceHasRole link = (ORMCore.ConstraintRoleSequenceHasRole)e.ModelElement;
+				ORMCore.Role role = link.Role;
+				if (role.IsDeleted)
+				{
+					return;
+				}
+
+				DelayValidateAbsorptionIndicator(link);
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint)
+			/// </summary>
+			private static void MandatoryChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ORMCore.SetConstraint.ModalityDomainPropertyId)
+				{
+					DelayValidateAbsorptionIndicator((ORMCore.MandatoryConstraint)e.ModelElement);
+				}
+			}
+			/// <summary>
 			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator)
 			/// Regenerate names when settings change
 			/// </summary>
@@ -795,8 +1155,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					}
 				}
 			}
-			#endregion // Name modification rules
+#endregion // Name modification rules
 		}
-		#endregion // Regeneration rule delay validation methods
+#endregion // Regeneration rule delay validation methods
 	}
 }

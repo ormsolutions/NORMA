@@ -105,6 +105,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				typeof(TableIsAlsoForConceptType),
 				typeof(TableIsAlsoForConceptTypeHasAssimilationPath),
 				typeof(ColumnHasConceptTypeChild),
+				typeof(ColumnHasInverseConceptTypeChild),
 				typeof(UniquenessConstraintIsForUniqueness),
 				typeof(DomainIsForInformationTypeFormat),
 				typeof(GenerationSettingTargetsSchema),
@@ -122,6 +123,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				new DomainMemberInfo(typeof(AssimilationMapping), "AbsorptionChoice", AssimilationMapping.AbsorptionChoiceDomainPropertyId, typeof(AssimilationMapping.AbsorptionChoicePropertyHandler)),
 				new DomainMemberInfo(typeof(SchemaGenerationSetting), "CoreAlgorithmVersion", SchemaGenerationSetting.CoreAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.CoreAlgorithmVersionPropertyHandler)),
 				new DomainMemberInfo(typeof(SchemaGenerationSetting), "NameAlgorithmVersion", SchemaGenerationSetting.NameAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.NameAlgorithmVersionPropertyHandler)),
+				new DomainMemberInfo(typeof(ColumnHasConceptTypeChild), "AbsorptionIndicator", ColumnHasConceptTypeChild.AbsorptionIndicatorDomainPropertyId, typeof(ColumnHasConceptTypeChild.AbsorptionIndicatorPropertyHandler)),
 			};
 		}
 		/// <summary>
@@ -154,6 +156,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				new DomainRolePlayerInfo(typeof(TableIsAlsoForConceptTypeHasAssimilationPath), "Assimilation", TableIsAlsoForConceptTypeHasAssimilationPath.AssimilationDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ColumnHasConceptTypeChild), "Column", ColumnHasConceptTypeChild.ColumnDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ColumnHasConceptTypeChild), "ConceptTypeChild", ColumnHasConceptTypeChild.ConceptTypeChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ColumnHasInverseConceptTypeChild), "ColumnChildNode", ColumnHasInverseConceptTypeChild.ColumnChildNodeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ColumnHasInverseConceptTypeChild), "InverseConceptTypeChild", ColumnHasInverseConceptTypeChild.InverseConceptTypeChildDomainRoleId),
 				new DomainRolePlayerInfo(typeof(UniquenessConstraintIsForUniqueness), "UniquenessConstraint", UniquenessConstraintIsForUniqueness.UniquenessConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(UniquenessConstraintIsForUniqueness), "Uniqueness", UniquenessConstraintIsForUniqueness.UniquenessDomainRoleId),
 				new DomainRolePlayerInfo(typeof(DomainIsForInformationTypeFormat), "Domain", DomainIsForInformationTypeFormat.DomainDomainRoleId),
@@ -229,7 +233,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(14);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(15);
 				createElementLinkMap.Add(typeof(AssimilationMappingCustomizesFactType), 0);
 				createElementLinkMap.Add(typeof(MappingCustomizationModelHasAssimilationMapping), 1);
 				createElementLinkMap.Add(typeof(ReferenceModeNamingCustomizesObjectType), 2);
@@ -241,9 +245,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				createElementLinkMap.Add(typeof(TableIsAlsoForConceptType), 8);
 				createElementLinkMap.Add(typeof(TableIsAlsoForConceptTypeHasAssimilationPath), 9);
 				createElementLinkMap.Add(typeof(ColumnHasConceptTypeChild), 10);
-				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 11);
-				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 12);
-				createElementLinkMap.Add(typeof(GenerationSettingTargetsSchema), 13);
+				createElementLinkMap.Add(typeof(ColumnHasInverseConceptTypeChild), 11);
+				createElementLinkMap.Add(typeof(UniquenessConstraintIsForUniqueness), 12);
+				createElementLinkMap.Add(typeof(DomainIsForInformationTypeFormat), 13);
+				createElementLinkMap.Add(typeof(GenerationSettingTargetsSchema), 14);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -269,9 +274,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				case 8: return new TableIsAlsoForConceptType(partition, roleAssignments, propertyAssignments);
 				case 9: return new TableIsAlsoForConceptTypeHasAssimilationPath(partition, roleAssignments, propertyAssignments);
 				case 10: return new ColumnHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
-				case 11: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
-				case 12: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
-				case 13: return new GenerationSettingTargetsSchema(partition, roleAssignments, propertyAssignments);
+				case 11: return new ColumnHasInverseConceptTypeChild(partition, roleAssignments, propertyAssignments);
+				case 12: return new UniquenessConstraintIsForUniqueness(partition, roleAssignments, propertyAssignments);
+				case 13: return new DomainIsForInformationTypeFormat(partition, roleAssignments, propertyAssignments);
+				case 14: return new GenerationSettingTargetsSchema(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}

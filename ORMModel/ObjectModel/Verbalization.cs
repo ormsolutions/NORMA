@@ -29,6 +29,7 @@ using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Core.Shell;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -958,6 +959,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					retVal = readingOrders[(ignoreReadingOrderIndex == 0) ? 1 : 0].PrimaryReading;
 				}
 			}
+			else if (UnaryPattern == UnaryValuePattern.Negation)
+			{
+				FactType positiveFactType;
+				IReading positiveReading;
+				if (null != (positiveFactType = PositiveUnaryFactType) &&
+					null != (positiveReading = positiveFactType.GetMatchingReading(positiveFactType.ReadingOrderCollection, null, matchLeadRole, matchAnyLeadRole, defaultRoleOrder, readingOptions)))
+				{
+					retVal = new ImplicitReading(NegateUnaryReadingText(positiveReading.Text), RoleCollection);
+				}
+			}
 			return retVal;
 		}
 		/// <summary>
@@ -1318,6 +1329,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return false;
 		}
+		/// <summary>
+		/// Return a reading required error only if it blocks verbalization.
+		/// Readings are not required for most verbalization on negated unary fact types.
+		/// </summary>
+		public FactTypeRequiresReadingError VerbalizationBlockingReadingRequiredError
+		{
+			get
+			{
+				FactTypeRequiresReadingError readingRequiredError = ReadingRequiredError;
+				FactType positiveFactType;
+				if (readingRequiredError != null &&
+					UnaryPattern == UnaryValuePattern.Negation &&
+					null != (positiveFactType = PositiveUnaryFactType) &&
+					positiveFactType.ReadingRequiredError == null)
+				{
+					readingRequiredError = null;
+				}
+				return readingRequiredError;
+			}
+		}
 	}
 	#endregion // Static verbalization helpers on FactType class
 	#region VerbalizationHyphenBinder struct
@@ -1428,13 +1459,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="formatProvider">A <see cref="IFormatProvider"/>, or null to use the current culture</param>
 		/// <param name="defaultOrder">The roles from the parent fact type. Provides the order of the expected replacement fields.
 		/// If this is <see langword="null"/>, then the order of the <paramref name="reading"/> roles is used directly.</param>
-		/// <param name="unaryRoleIndex">Treat as a unary role if this index is set.</param>
 		/// <param name="replacementFormatString">The string used to format replacement fields. The format string is used to build another
 		/// format string with one replacement field. It must consist of a {{0}} representing the eventual replacement field, a {0} for the leading
 		/// hyphen-bound text, and a {1} for the trailing hyphen-bound text.</param>
 		/// <param name="predicatePartDecorator">A format string applied to predicate text between fields. Provides supplemental formatting
 		/// for the leading and trailing replacement fields in <paramref name="replacementFormatString"/>.</param>
-		public VerbalizationHyphenBinder(IReading reading, IFormatProvider formatProvider, IList<RoleBase> defaultOrder, int? unaryRoleIndex, string replacementFormatString, string predicatePartDecorator)
+		public VerbalizationHyphenBinder(IReading reading, IFormatProvider formatProvider, IList<RoleBase> defaultOrder, string replacementFormatString, string predicatePartDecorator)
 		{
 			string readingText;
 			int roleCount;
@@ -1447,10 +1477,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				myModifiedReadingText = null;
 				myFormatReplacementFields = null;
 				return;
-			}
-			else if (unaryRoleIndex.HasValue)
-			{
-				roleCount = 1;
 			}
 			else
 			{
@@ -1825,9 +1851,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="reading">The reading to use</param>
 		/// <param name="role">The role to get a string for</param>
-		/// <param name="isUnary">Treat as a unary role if set.</param>
 		/// <returns>A format string with a single replacement field if the role is hyphen bound, or <see langword="null"/> otherwise.</returns>
-		public static string GetFormatStringForHyphenBoundRole(IReading reading, RoleBase role, bool isUnary)
+		public static string GetFormatStringForHyphenBoundRole(IReading reading, RoleBase role)
 		{
 			IList<RoleBase> roles = reading.RoleCollection;
 			int roleCount = roles.Count;
@@ -1842,8 +1867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					string stringReplaceIndex = groups["ReplaceIndex"].Value;
 					int replaceIndex = int.Parse(stringReplaceIndex, formatProvider);
-					if ((isUnary && replaceIndex == 0) ||
-						(replaceIndex < roleCount && roles[replaceIndex] == role))
+					if (replaceIndex < roleCount && roles[replaceIndex] == role)
 					{
 						return NormalizeLeftHyphen(leftWord, groups["AfterLeftHyphen"].Value) + "{0}" + NormalizeRightHyphen(groups["BeforeRightHyphen"].Value, rightWord);
 					}
@@ -5087,6 +5111,83 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			/// <summary>
+			/// Visit all pathed nodes following a specified role
+			/// </summary>
+			/// <param name="startNode">The initial <see cref="RolePathNode"/></param>
+			/// <param name="visitStartNode"><see langword="true"/> if the <paramref name="startNode"/> should
+			/// be included in the enumeration.</param>
+			/// <param name="visitor">Callback to view the node.</param>
+			/// <returns>true if iteration completed.</returns>
+			public bool GetFollowingPathNodes(RolePathNode startNode, bool visitStartNode, Predicate<RolePathNode> visitor)
+			{
+				object pathContext = startNode.Context;
+				PathedRole startRole = startNode;
+				PathInfo pathInfo;
+				ReadOnlyCollection<PathedRole> pathedRoles;
+				int pathedRoleCount;
+				int pathedRoleIndex;
+				if (startRole != null)
+				{
+					pathInfo = GetPathInfo(startRole.RolePath);
+					pathedRoles = pathInfo.PathedRoles;
+					pathedRoleCount = pathedRoles.Count;
+					pathedRoleIndex = (pathedRoleCount == 1 ? 0 : pathedRoles.IndexOf(startRole)) + (visitStartNode ? 0 : 1);
+				}
+				else
+				{
+					if (visitStartNode)
+					{
+						if (!visitor(startNode))
+						{
+							return false;
+						}
+					}
+					pathInfo = GetPathInfo(startNode.PathRoot.RolePath);
+					pathedRoles = pathInfo.PathedRoles;
+					pathedRoleCount = pathedRoles.Count;
+					pathedRoleIndex = 0;
+				}
+
+				if (pathedRoleIndex < pathedRoleCount)
+				{
+					for (int i = pathedRoleIndex; i < pathedRoleCount; ++i)
+					{
+						if (!visitor(new RolePathNode(pathedRoles[i], pathContext)))
+						{
+							return false;
+						}
+					}
+				}
+
+				LinkedElementCollection<RoleSubPath> subpaths = pathInfo.SubPaths;
+				int subpathCount = subpaths.Count;
+				if (subpathCount != 0)
+				{
+					for (int i = 0; i < subpathCount; ++i)
+					{
+						RoleSubPath subpath = subpaths[i];
+						pathInfo = GetPathInfo(subpath);
+						RolePathObjectTypeRoot pathRoot = pathInfo.RootObjectTypeLink;
+						if (pathRoot != null)
+						{
+							if (!this.GetFollowingPathNodes(new RolePathNode(pathRoot, pathContext), true, visitor))
+							{
+								return false;
+							}
+						}
+						else
+						{
+							pathedRoles = pathInfo.PathedRoles;
+							if (pathedRoles.Count != 0 && !this.GetFollowingPathNodes(new RolePathNode(pathedRoles[0], pathContext), true, visitor))
+							{
+								return false;
+							}
+						}
+					}
+				}
+				return true;
+			}
+			/// <summary>
 			/// Get a correlation root object for a <see cref="RolePathNode"/>
 			/// </summary>
 			/// <param name="pathNode">A non-empty <see cref="RolePathNode"/>.</param>
@@ -5141,7 +5242,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								PathedRole precedingPathedRole = precedingPathNode;
 								if (precedingPathedRole != null &&
 									precedingPathedRole.Role is SupertypeMetaRole &&
-									!precedingPathedRole.IsNegated)
+									0 == (precedingPathedRole.NegationState & PathedRoleNegationState.NegatedStates))
 								{
 									return GetCorrelationRoot(new RolePathNode(precedingPathedRole, pathContext));
 								}
@@ -5792,6 +5893,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			NegatedChain,
 			/// <summary>
+			/// A variant on NegatedChain to state 'it is known to be false that' instead of 'it is not true that'.
+			/// If this is set, then <see cref="VerbalizationPlanNode.BranchType"/> will return
+			/// <see cref="VerbalizationPlanBranchType.NegatedChain"/> while this distinction will be reflected
+			/// in <see cref="VerbalizationPlanNode.NegatedBranchStyle"/>
+			/// </summary>
+			KnownFalseChain,
+			/// <summary>
+			/// A variant on NegatedChain to state 'it is not known to be false that' instead of 'it is not true that'.
+			/// If this is set, then <see cref="VerbalizationPlanNode.BranchType"/> will return
+			/// <see cref="VerbalizationPlanBranchType.NegatedChain"/> while this distinction will be reflected
+			/// in <see cref="VerbalizationPlanNode.NegatedBranchStyle"/>
+			/// </summary>
+			KnownNotFalseChain,
+			/// <summary>
 			/// An and split
 			/// </summary>
 			AndSplit,
@@ -5817,6 +5932,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			NegatedXorSplit,
 		}
 		#endregion // VerbalizationPlanBranchType enum
+		#region VerbalizationPlanNegatedBranchStyle enum
+		/// <summary>
+		/// Distinguish different negation styles for a negated chain node type
+		/// </summary>
+		private enum VerbalizationPlanNegatedBranchStyle
+		{
+			/// <summary>
+			/// This is not a negated branch
+			/// </summary>
+			None,
+			/// <summary>
+			/// Use standard 'it is not true that' phrase
+			/// </summary>
+			Negation,
+			/// <summary>
+			/// Use 'it is known to be false that' phrase
+			/// </summary>
+			KnownFalse,
+			/// <summary>
+			/// Use 'it is not known to be false that' phrase
+			/// </summary>
+			KnownNotFalse,
+		}
+		#endregion // VerbalizationPlanNegatedBranchStyle enum
 		#region VerbalizationPlanReadingOptions enum
 		/// <summary>
 		/// Options to specify if the reading associated with
@@ -5970,7 +6109,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					parentNode = AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, pathContext, null, ref rootNode);
 				}
-				return new FactTypeNode(pathContext, parentNode, factType, factTypeEntry);
+				return new FactTypeNode(pathContext, parentNode, 0 != (factTypeEntry.NegationState & PathedRoleNegationState.InvertUnary) ? factType.InverseUnaryFactType ?? factType : factType, factTypeEntry);
 			}
 			/// <summary>
 			/// Create and attach a new branching node.
@@ -6247,6 +6386,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				set
 				{
+				}
+			}
+			/// <summary>
+			/// Negation style for a node with a branch type of NegatedChain
+			/// </summary>
+			public virtual VerbalizationPlanNegatedBranchStyle NegatedBranchStyle
+			{
+				get
+				{
+					return VerbalizationPlanNegatedBranchStyle.None;
 				}
 			}
 			/// <summary>
@@ -6749,11 +6898,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					get
 					{
-						return (VerbalizationPlanBranchType)(mySettings & BranchTypeMask);
+						VerbalizationPlanBranchType branchType = (VerbalizationPlanBranchType)(mySettings & BranchTypeMask);
+						switch (branchType)
+						{
+							// These are all the same except for the chosen verbalization snippet.
+							// Limit code exposure to the alternate negation phrases.
+							case VerbalizationPlanBranchType.KnownFalseChain:
+							case VerbalizationPlanBranchType.KnownNotFalseChain:
+								return VerbalizationPlanBranchType.NegatedChain;
+						}
+						return branchType;
 					}
 					set
 					{
 						mySettings = (int)value | (mySettings & ~BranchTypeMask);
+					}
+				}
+				public override VerbalizationPlanNegatedBranchStyle NegatedBranchStyle
+				{
+					get
+					{
+						switch ((VerbalizationPlanBranchType)(mySettings & BranchTypeMask))
+						{
+							case VerbalizationPlanBranchType.NegatedChain:
+								return VerbalizationPlanNegatedBranchStyle.Negation;
+							case VerbalizationPlanBranchType.KnownFalseChain:
+								return VerbalizationPlanNegatedBranchStyle.KnownFalse;
+							case VerbalizationPlanBranchType.KnownNotFalseChain:
+								return VerbalizationPlanNegatedBranchStyle.KnownNotFalse;
+						}
+						return VerbalizationPlanNegatedBranchStyle.None;
 					}
 				}
 				public override VerbalizationPlanBranchRenderingStyle BranchRenderingStyle
@@ -7543,7 +7717,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 								roleUseBaseIndex = PopFactType(factTypeRolesStack, !isSubqueryRole, ref roleUseTracker);
-								if (currentPathedRole.IsNegated)
+								if (0 != (currentPathedRole.NegationState & PathedRoleNegationState.NegatedStates))
 								{
 									PopNegatedChainNode(pathConditions, ref processedPathConditions);
 								}
@@ -7756,7 +7930,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									pendingPathedRoles = null;
 								}
 								RegisterFactTypeEntryRolePlayerUse(pathContext, currentPathedRole, contextPathNode, contextDynamicState != null && contextDynamicState.Count != 0 ? contextDynamicState.Peek() : DynamicRuleNodeState.Current);
-								if (currentPathedRole.IsNegated)
+								if (0 != (currentPathedRole.NegationState & PathedRoleNegationState.NegatedStates))
 								{
 									ChainNewlyCalculatableConditions(pathConditions, ref processedPathConditions);
 									PushNegatedChainNode(pathContext, currentPathedRole, ref pendingRequiredVariableKeys);
@@ -8697,10 +8871,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (role.FactType != factType)
 			{
-				RoleProxy proxy = role.Proxy;
-				if (proxy != null && proxy.FactType == factType)
+				switch (factType.UnaryPattern)
 				{
-					return proxy;
+					case UnaryValuePattern.NotUnary:
+						RoleProxy proxy = role.Proxy;
+						if (proxy != null && proxy.FactType == factType)
+						{
+							return proxy;
+						}
+						break;
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						break;
+					case UnaryValuePattern.Negation:
+						if (role == factType.PositiveUnaryFactType?.UnaryRole)
+						{
+							return factType.UnaryRole ?? role;
+						}
+						break;
+					default:
+						if (role == factType.NegationUnaryFactType?.UnaryRole)
+						{
+							return factType.UnaryRole ?? role;
+						}
+						break;
 				}
 			}
 			return role;
@@ -9388,8 +9582,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ObjectType rolePlayer;
 					if (!usedRoles[baseRoleIndex + i] &&
-						null != (rolePlayer = factTypeRoles[i].Role.RolePlayer) &&
-						!rolePlayer.IsImplicitBooleanValue)
+						null != (rolePlayer = factTypeRoles[i].Role.RolePlayer))
 					{
 						RegisterRolePlayerUse(rolePlayer, null, null, RolePathNode.Empty, DynamicRuleNodeState.Current); // Roles with no path node cannot specify a dynamic state, always use Current
 					}
@@ -9763,6 +9956,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (negatedEntryRole != null)
 			{
 				newNode.RequireContextVariables(new LinkedNode<object>(new RolePathNode(negatedEntryRole, pathContext)));
+				switch (negatedEntryRole.NegationState & PathedRoleNegationState.NegatedStates)
+				{
+					case PathedRoleNegationState.KnownFalse:
+						newNode.BranchType = VerbalizationPlanBranchType.KnownFalseChain;
+						break;
+					case PathedRoleNegationState.KnownNotFalse:
+						newNode.BranchType = VerbalizationPlanBranchType.KnownNotFalseChain;
+						break;
+				}
 			}
 			myCurrentBranchNode = newNode;
 		}
@@ -11003,18 +11205,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Get a list of role path nodes containing all join nodes that occur at or
 		/// before the projected nodes (roles or roots) of a path, and all nodes at or
 		/// above nodes correlated with these variables. The return nodes correspond
-		/// to the first occur use of the project nodes (or correlated nodes) in the path
+		/// to the first occurrence of the projected nodes (or correlated nodes) in the path
+		/// based on a depth-first iteration.
+		/// </summary>
+		/// <param name="projectionKeys">The constrained roles. These correspond to registered variable use keys in the path verbalizer.</param>
+		/// <returns>List of nodes, or <see langword="null"/>.</returns>
+		public IList<object> GetPreProjectionPrimaryNodeKeys(IEnumerable<ConstraintRoleSequenceHasRole> projectionKeys)
+		{
+			return GetPreProjectionPrimaryNodeKeys<ConstraintRoleSequenceHasRole>(projectionKeys, constraintRole =>
+			{
+				Role unaryRole = constraintRole.Role;
+				return unaryRole.FactType.UnaryPattern == UnaryValuePattern.NotUnary ? null : unaryRole;
+			});
+		}
+		/// <summary>
+		/// Get a list of role path nodes containing all join nodes that occur at or
+		/// before the projected nodes (roles or roots) of a path, and all nodes at or
+		/// above nodes correlated with these variables. The return nodes correspond
+		/// to the first occurrence of the projected nodes (or correlated nodes) in the path
 		/// based on a depth-first iteration. Currently supported only for set constraint
 		/// role paths.
 		/// </summary>
-		/// <param name="projectionKeys">The keys used to .</param>
+		/// <param name="projectionKeys">The keys used to use as projection. These correspond to registered variable use keys in the path verbalizer.</param>
+		/// <param name="projectedUnaryRole"></param>
 		/// <returns>List of nodes, or <see langword="null"/>.</returns>
-		public IList<object> GetPreProjectionPrimaryNodeKeys<KeyType>(IEnumerable<KeyType> projectionKeys) where KeyType : class
+		private IList<object> GetPreProjectionPrimaryNodeKeys<KeyType>(IEnumerable<KeyType> projectionKeys, Func<KeyType, Role> projectedUnaryRole) where KeyType : class
 		{
 			if (projectionKeys != null)
 			{
 				List<RolePlayerVariableUse> variableUses = new List<RolePlayerVariableUse>();
-				// Key the correlation root to the project key
+				// Key the correlation root to the projection key
 				Dictionary<object, object> normalizedProjectionKeys = new Dictionary<object, object>();
 				// Keyed to itself, includes correlation roots and anything in the head above
 				Dictionary<object, object> correlatedNodes = new Dictionary<object,object>();
@@ -11098,27 +11318,79 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (testVariableUse.HasValue &&
 						null != (correlationRoot = (variableUse = testVariableUse.Value).CorrelationRoot))
 					{
-						normalizedProjectionKeys[correlationRoot] = key;
+						// The handling of unary roles was complicated here by removing unary binarization. Previously, the
+						// implicit boolean value role was projected, which was always a 'same fact type' role and did not
+						// correspond to a correlated variable. Now, the unary role acts as both the object type and value
+						// roles, so it will be both projected and correlated. If we find this case, then the projection key
+						// we want to navigate the path down from the current node to match the joined path role for the unary
+						// fact type, then treat this as our normalized project key instead of the key itself.
+						Role unaryRole = projectedUnaryRole(key);
+						PathedRole pathedUnaryRole;
 						PathObjectUnifier unifier;
 						PathedRole pathedRole;
 						RolePathObjectTypeRoot pathRoot;
 						if (null != (pathedRole = correlationRoot as PathedRole))
 						{
+							if (unaryRole != null && null != (pathedUnaryRole = this.ResolvedJoinedUnaryRole(pathedRole, unaryRole)))
+							{
+								normalizedProjectionKeys[pathedUnaryRole] = key;
+								pathedRole = pathedUnaryRole;
+							}
+							else
+							{
+								normalizedProjectionKeys[correlationRoot] = key;
+							}
 							processNode(new RolePathNode(pathedRole));
 						}
 						else if (null != (pathRoot = correlationRoot as RolePathObjectTypeRoot))
 						{
-							processNode(new RolePathNode(pathRoot));
+							if (unaryRole != null && null != (pathedUnaryRole = this.ResolvedJoinedUnaryRole(pathRoot, unaryRole)))
+							{
+								normalizedProjectionKeys[pathedUnaryRole] = key;
+								processNode(new RolePathNode(pathedUnaryRole));
+							}
+							else
+							{
+								normalizedProjectionKeys[correlationRoot] = key;
+								processNode(new RolePathNode(pathRoot));
+							}
 						}
 						else if (null != (unifier = correlationRoot as PathObjectUnifier))
 						{
+							bool seenNotUnary = false;
 							foreach (PathedRole unifiedPathedRole in unifier.PathedRoleCollection)
 							{
-								processNode(new RolePathNode(unifiedPathedRole));
+								if (unaryRole != null && null != (pathedUnaryRole = this.ResolvedJoinedUnaryRole(unifiedPathedRole, unaryRole)))
+								{
+									unaryRole = null;
+									normalizedProjectionKeys[pathedUnaryRole] = key;
+									processNode(new RolePathNode(pathedUnaryRole));
+								}
+								else
+								{
+									seenNotUnary = true;
+									processNode(new RolePathNode(unifiedPathedRole));
+								}
 							}
+
 							foreach (RolePathObjectTypeRoot unifiedPathRoot in unifier.PathRootCollection)
 							{
-								processNode(new RolePathNode(unifiedPathRoot));
+								if (unaryRole != null && null != (pathedUnaryRole = this.ResolvedJoinedUnaryRole(unifiedPathRoot, unaryRole)))
+								{
+									unaryRole = null;
+									normalizedProjectionKeys[pathedUnaryRole] = key;
+									processNode(new RolePathNode(pathedUnaryRole));
+								}
+								else
+								{
+									seenNotUnary = true;
+									processNode(new RolePathNode(unifiedPathRoot));
+								}
+							}
+
+							if (!seenNotUnary)
+							{
+								normalizedProjectionKeys[correlationRoot] = key;
 							}
 						}
 					}
@@ -11230,6 +11502,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return null;
 		}
 		/// <summary>
+		/// Helper for GetPreProjectionPrimaryNodeKeys{KeyType}. Find a pathed role matching the unary role.
+		/// </summary>
+		private PathedRole ResolvedJoinedUnaryRole(RolePathNode node, Role unaryRole)
+		{
+			PathedRole boundRole = null;
+			// There is no need to visit this node. A unary is always an entry role in the path,
+			// which means that the preceding node (or something else well before it) is canonical
+			// binding point for the variable.
+			this.myRolePathCache.GetFollowingPathNodes(node, false, (testNode) => {
+				PathedRole pathedRole = testNode.PathedRole;
+				if (pathedRole != null && pathedRole.Role == unaryRole)
+				{
+					boundRole = pathedRole;
+					return false;
+				}
+				return true;
+			});
+			return boundRole;
+		}
+		/// <summary>
 		/// Determine if a rendering of the provided variable leads the verbalization.
 		/// </summary>
 		/// <remarks>Always returns false if there are multiple available verbalization plans.</remarks>
@@ -11316,7 +11608,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					PathedRole[] pathedRoles = new PathedRole[factRoleCount];
 					int replacedRoleCount = 0;
 					string predicatePartDecorator = renderer.GetPredicatePartDecorator(factType);
-					VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(reading, renderer.FormatProvider, factRoles, null, renderer.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart), predicatePartDecorator);
+					VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(reading, renderer.FormatProvider, factRoles, renderer.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart), predicatePartDecorator);
 					bool negateExitRole = 0 != (readingOptions & VerbalizationPlanReadingOptions.NegatedExitRole);
 					int negatedExitRoleIndex = -1;
 
@@ -11697,7 +11989,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									readingOptions = ResolveDynamicNegatedExitRole(childNode);
 									if (0 == (readingOptions & VerbalizationPlanReadingOptions.NegatedExitRole))
 									{
-										snippet = CoreVerbalizationSnippetType.NegatedChainedListOpen;
+										switch (node.NegatedBranchStyle)
+										{
+											case VerbalizationPlanNegatedBranchStyle.KnownFalse:
+												snippet = CoreVerbalizationSnippetType.KnownFalseChainedListOpen;
+												break;
+											case VerbalizationPlanNegatedBranchStyle.KnownNotFalse:
+												snippet = CoreVerbalizationSnippetType.KnownNotFalseChainedListOpen;
+												break;
+											default:
+												snippet = CoreVerbalizationSnippetType.NegatedChainedListOpen;
+												break;
+										}
 									}
 									else
 									{
@@ -14246,7 +14549,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Overlay all projection information
 				ConstraintRoleSequenceJoinPath joinPath = (ConstraintRoleSequenceJoinPath)pathOwner;
 				ConstraintRoleSequence roleSequence = joinPath.RoleSequence;
-				bool correlateProjectedRoles = 0 != (((IConstraint)roleSequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns);
+				RoleSequenceStyles styles = ((IConstraint)roleSequence).RoleSequenceStyles;
+				bool correlateProjectedRoles = 0 != (styles & RoleSequenceStyles.CompatibleColumns);
+				bool doNotPairUnaries = !correlateProjectedRoles && 0 != (styles & RoleSequenceStyles.ProjectOppositeValues);
 				RolePlayerVariable correlatedProjectionVariable = null;
 				ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(roleSequence);
 				IDictionary<LeadRolePath, IList<IList<object>>> retVal = null;
@@ -14271,7 +14576,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							ConstraintRoleProjection constraintRoleProjection = constraintRoleProjections[i];
 							RolePathNode correlationNode = ResolveCorrelationNode(constraintRoleProjection);
 							ConstraintRoleSequenceHasRole constraintRole = constraintRoleProjection.ProjectedConstraintRole;
-							if (!correlateProjectedRoles && !correlationNode.IsEmpty)
+							if (!correlateProjectedRoles &&
+								!correlationNode.IsEmpty &&
+								!(doNotPairUnaries && constraintRole.Role.FactType.UnaryPattern != UnaryValuePattern.NotUnary))
 							{
 								object correlationKey = cache.GetCorrelationRoot(correlationNode);
 								ObjectType objectType = correlationNode.ObjectType;
@@ -14298,7 +14605,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// the role path itself, so there is no need to call CorrelationRootToContextBoundKey
 									// or use Equals instead of == to compare the correlation keys.
 									if (!testCorrelationNode.IsEmpty &&
-										correlationKey == cache.GetCorrelationRoot(testCorrelationNode))
+										correlationKey == cache.GetCorrelationRoot(testCorrelationNode) &&
+										!(doNotPairUnaries && testRoleProjection.ProjectedConstraintRole.Role.FactType.UnaryPattern != UnaryValuePattern.NotUnary))
 									{
 										projectionHandledThroughEquality[j] = true;
 										if (equalRolePairing == null)

@@ -200,7 +200,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					if (regenerateForVersion || excludedBridgedElement)
 					{
 						// Something is very wrong, regenerate (does not regenerate the excluded elements we already have)
-						DelayValidateModel(element);
+						ValidateORMModel(element, true);
 					}
 				}
 			}

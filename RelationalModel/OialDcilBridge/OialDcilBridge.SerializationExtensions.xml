@@ -52,10 +52,26 @@
 				</se:RootLink>
 			</se:Container>
 		</se:RootLinks>
-		<se:OmittedDomainElements>
-			<se:OmitRelationship Class="TableIsAlsoForConceptTypeHasAssimilationPath"/>
-		</se:OmittedDomainElements>
 	</se:DomainModel>
+	<se:Element Class="ColumnHasConceptTypeChild">
+		<se:Attribute ID="AbsorptionIndicator">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis type="property" name="AbsorptionIndicator"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link RelationshipName="ColumnHasInverseConceptTypeChild" RoleName="InverseConceptTypeChild" Name="InverseConceptTypeChild"/>
+	</se:Element>
+	<se:Element Class="TableIsAlsoForConceptType">
+		<se:Container Name="AssimilationPath">
+			<!-- These were originally not saved because they were supposed only used during the transaction that create them with a full regeneration.
+			However, this path matches an AbsorptionIndicator column and is not trivial to reverse engineer when these columns are dynamically created
+			for assimilations, so we keep this data around. -->
+			<se:Link RelationshipName="TableIsAlsoForConceptTypeHasAssimilationPath" RoleName="Assimilation"/>
+		</se:Container>
+		<se:Link RelationshipName="TableIsAlsoForConceptTypeHasAssimilationPath" RoleName="Assimilation" Name="AssimilatedConceptType"/>
+	</se:Element>
 	<se:Element Class="MappingCustomizationModel" Name="MappingCustomization" SortChildElements="true">
 		<se:ConditionalSerialization>
 			<!-- Only serialize if there is a child that will serialize -->

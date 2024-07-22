@@ -93,6 +93,46 @@
 	</xs:complexType>
 	<xs:element name="boolean" type="odt:boolean" substitutionGroup="odt:dataType"/>
 
+	<xs:complexType name="booleanTrue">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:attribute name="fixed" use="optional">
+					<xs:annotation>
+						<xs:documentation>If present, this attribute indicates that only the value specified in it is allowed.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:whiteSpace value="collapse" fixed="true"/>
+							<xs:enumeration value="true"/>
+							<xs:enumeration value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="booleanTrue" type="odt:booleanFalse" substitutionGroup="odt:dataType"/>
+
+	<xs:complexType name="booleanFalse">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:attribute name="fixed" use="optional">
+					<xs:annotation>
+						<xs:documentation>If present, this attribute indicates that only the value specified in it is allowed.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:token">
+							<xs:whiteSpace value="collapse" fixed="true"/>
+							<xs:enumeration value="false"/>
+							<xs:enumeration value="0"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="booleanFalse" type="odt:booleanFalse" substitutionGroup="odt:dataType"/>
+
 	<xs:complexType name="integerNumber">
 		<xs:complexContent>
 			<xs:extension base="odt:dataType">

@@ -254,43 +254,28 @@
 										</plx:binaryOperator>
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="booleanOr">
+										<plx:binaryOperator type="inequality">
 											<plx:left>
-												<plx:binaryOperator type="inequality">
-													<plx:left>
-														<plx:value data="2" type="i4"/>
-													</plx:left>
-													<plx:right>
-														<plx:callInstance name="Count" type="property">
-															<plx:callObject>
-																<plx:inlineStatement dataTypeName="IList">
-																	<plx:parametrizedDataTypeQualifier dataTypeName="RoleBase" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
-																	<plx:assign>
-																		<plx:left>
-																			<plx:nameRef name="roles"/>
-																		</plx:left>
-																		<plx:right>
-																			<plx:callInstance name="RoleCollection" type="property">
-																				<plx:callObject>
-																					<plx:nameRef name="factType"/>
-																				</plx:callObject>
-																			</plx:callInstance>
-																		</plx:right>
-																	</plx:assign>
-																</plx:inlineStatement>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:right>
-												</plx:binaryOperator>
+												<plx:value data="2" type="i4"/>
 											</plx:left>
 											<plx:right>
-												<plx:callInstance name="HasValue" type="property">
+												<plx:callInstance name="Count" type="property">
 													<plx:callObject>
-														<plx:callStatic name="GetUnaryRoleIndex" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
-															<plx:passParam>
-																<plx:nameRef name="roles"/>
-															</plx:passParam>
-														</plx:callStatic>
+														<plx:inlineStatement dataTypeName="IList">
+															<plx:parametrizedDataTypeQualifier dataTypeName="RoleBase" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="roles"/>
+																</plx:left>
+																<plx:right>
+																	<plx:callInstance name="RoleCollection" type="property">
+																		<plx:callObject>
+																			<plx:nameRef name="factType"/>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:right>
+															</plx:assign>
+														</plx:inlineStatement>
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:right>
@@ -381,12 +366,54 @@
 		<se:Attribute ID="RolesPosition" WriteStyle="NotWritten"/>
 		<se:Attribute ID="ConstraintDisplayPosition" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="equality">
+				<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:binaryOperator type="booleanOr">
 					<plx:left>
-						<plx:callThis name="ConstraintDisplayPosition" type="property"/>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="ConstraintDisplayPosition" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="ConstraintDisplayPosition" name="Top" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic dataTypeName="ConstraintDisplayPosition" name="Top" type="field"/>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:nullKeyword/>
+									</plx:left>
+									<plx:right>
+										<plx:inlineStatement dataTypeName="ObjectType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="factType"/>
+												</plx:left>
+												<plx:right>
+													<plx:callThis name="AssociatedFactType" type="property"/>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="inequality">
+									<plx:left>
+										<plx:callInstance name="UnaryPattern" type="property">
+											<plx:callObject>
+												<plx:nameRef name="factType"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="NotUnary" type="field" dataTypeName="UnaryValuePattern" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>

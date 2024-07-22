@@ -41,13 +41,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		ValidateElements = (int)ORMToORMAbstractionBridgeDeserializationFixupPhase.CreateImplicitElements + 10,
 	}
-	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IDeserializationFixupListenerProvider
+	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IDeserializationFixupListenerProvider, IAbstractionModelRebuilding
 	{
 		#region Algorithm Version Constants
 		/// <summary>
 		/// The algorithm version written to the file for the core algorithm
 		/// </summary>
-		public const string CurrentCoreAlgorithmVersion = "1.005";
+		public const string CurrentCoreAlgorithmVersion = "1.006";
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
@@ -183,7 +183,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				foreach (ConceptTypeAssimilatesConceptType assimilation
 					in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 				{
-					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) == AssimilationAbsorptionChoice.Absorb)
+					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
 					{
 						// If we find any absorb assimilation that this concept type is the target of, we don't need a table.
 						needsTable = false;
@@ -195,7 +195,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					foreach (ConceptTypeAssimilatesConceptType assimilation
 						in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 					{
-						if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, false) == AssimilationAbsorptionChoice.Partition) // Partition is not overridden, do not do the extra work to check ghosts
+						if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Partition) // Partition is not overridden, do not do the extra work to check ghosts
 						{
 							// If we find any partition assimilation that this concept type is the parent of, we don't need a table.
 							needsTable = false;
@@ -228,7 +228,24 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				LinkedElementCollection<UniquenessConstraint> tableUniquenessConstraints = table.UniquenessConstraintCollection;
 				ConceptType conceptType = TableIsPrimarilyForConceptType.GetConceptType(table);
 
-				GenerateContentForConceptTypeChildren(table, tableColumns, tableUniquenessConstraints, conceptTypeChildPath, conceptType, true, true);
+				// Cache answers determining if an assimilation is self-evident
+				Dictionary<ConceptTypeAssimilatesConceptType, AssimilationMapping.AssimilationEvidence> selfEvidentCache = null;
+				Func<ConceptTypeAssimilatesConceptType, AssimilationMapping.AssimilationEvidence> assimilationIsSelfEvident = assimilation =>
+				{
+					AssimilationMapping.AssimilationEvidence answer;
+					if (selfEvidentCache == null)
+					{
+						selfEvidentCache = new Dictionary<ConceptTypeAssimilatesConceptType, AssimilationMapping.AssimilationEvidence>();
+					}
+					else if (selfEvidentCache.TryGetValue(assimilation, out answer))
+					{
+						return answer;
+					}
+					selfEvidentCache[assimilation] = answer = AssimilationMapping.AssimilationIsSelfEvident(assimilation);
+					return answer;
+				};
+
+				GenerateContentForConceptTypeChildren(table, tableColumns, tableUniquenessConstraints, conceptTypeChildPath, conceptType, true, true, assimilationIsSelfEvident);
 
 				Debug.Assert(conceptTypeChildPath.Count == 0,
 					"The path stack should be empty after processing a concept type.");
@@ -305,24 +322,55 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <param name="informationType">
 		/// The <see cref="InformationType"/> for which a new <see cref="Column"/> should be generated.
 		/// </param>
+		/// <param name="inverseChild">
+		/// An inverse child node that should be associated with teminal path in the column.
+		/// </param>
+		/// <param name="forceCurrentMandatory">
+		/// The current column is mandatory. Use if inverseChild is set. Ignored if isMandatorySoFar is false.
+		/// </param>
 		/// <param name="isMandatorySoFar">
 		/// Indicates whether all of the steps in <paramref name="conceptTypeChildPath"/> so far are mandatory
 		/// (not including <paramref name="informationType"/> itself).
 		/// </param>
-		private static Column GenerateColumnForInformationType(LinkedElementCollection<Column> tableColumns, PathStack<ConceptTypeChild> conceptTypeChildPath, InformationType informationType, bool isMandatorySoFar)
+		private static Column GenerateColumnForInformationType(LinkedElementCollection<Column> tableColumns, PathStack<ConceptTypeChild> conceptTypeChildPath, InformationType informationType, ConceptTypeChild inverseChild, bool forceCurrentMandatory, bool isMandatorySoFar)
 		{
 			conceptTypeChildPath.Push(informationType);
 
 			Column column = new Column(informationType.Partition,
 				new PropertyAssignment(Column.NameDomainPropertyId, informationType.Name),
-				new PropertyAssignment(Column.IsNullableDomainPropertyId, !(isMandatorySoFar && informationType.IsMandatory)));
+				new PropertyAssignment(Column.IsNullableDomainPropertyId, !(isMandatorySoFar && (forceCurrentMandatory || informationType.IsMandatory))));
 			tableColumns.Add(column);
-
-			ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).AddRange(conceptTypeChildPath);
+			PopulateColumnPath(column, conceptTypeChildPath, inverseChild, false);
 
 			conceptTypeChildPath.Pop(); // We don't need to assert here since we're not recursing.
 
 			return column;
+		}
+
+		private static void PopulateColumnPath(Column column, PathStack<ConceptTypeChild> conceptTypeChildPath, ConceptTypeChild inverseChild, bool absorptionIndicator)
+		{
+			if (inverseChild != null || absorptionIndicator)
+			{
+				ColumnHasConceptTypeChild lastLink = null;
+				for (int i = 0, pathCount = conceptTypeChildPath.Count; i < pathCount; ++i)
+				{
+					lastLink = new ColumnHasConceptTypeChild(column, conceptTypeChildPath[i]);
+				}
+
+				if (inverseChild != null)
+				{
+					lastLink.InverseConceptTypeChild = inverseChild;
+				}
+
+				if (absorptionIndicator)
+				{
+					lastLink.AbsorptionIndicator = true;
+				}
+			}
+			else
+			{
+				ColumnHasConceptTypeChild.GetConceptTypeChildPath(column).AddRange(conceptTypeChildPath);
+			}
 		}
 
 		/// <summary>
@@ -368,17 +416,87 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// is primarily for</see> <paramref name="conceptType"/> (and therefore <paramref name="conceptTypeChildPath"/>
 		/// is empty), this parameter must be <see langword="true"/>.
 		/// </param>
-		private static void GenerateContentForConceptTypeChildren(Table table, LinkedElementCollection<Column> tableColumns, LinkedElementCollection<UniquenessConstraint> tableUniquenessConstraints, PathStack<ConceptTypeChild> conceptTypeChildPath, ConceptType conceptType, bool isMandatorySoFar, bool isPreferredSoFar)
+		/// <param name="assimilationIsSelfEvident">
+		/// A helper function to cache results of the <see cref="AssimilationMapping.AssimilationIsSelfEvident"/> function.
+		/// </param>
+		private static void GenerateContentForConceptTypeChildren(Table table, LinkedElementCollection<Column> tableColumns, LinkedElementCollection<UniquenessConstraint> tableUniquenessConstraints, PathStack<ConceptTypeChild> conceptTypeChildPath, ConceptType conceptType, bool isMandatorySoFar, bool isPreferredSoFar, Func<ConceptTypeAssimilatesConceptType, AssimilationMapping.AssimilationEvidence> assimilationIsSelfEvident)
 		{
 			Dictionary<ConceptTypeChild, List<Column>> newColumnsByConceptTypeChild = new Dictionary<ConceptTypeChild, List<Column>>();
+			Dictionary<ConceptTypeChild, ConceptTypeChild> inverseConceptTypeChildren = null;
 
 			// Make a column for each information type.
 			foreach (InformationType informationType in InformationType.GetLinksToInformationTypeFormatCollection(conceptType))
 			{
-				Column newColumn = GenerateColumnForInformationType(tableColumns, conceptTypeChildPath, informationType, isMandatorySoFar);
-				List<Column> newColumns = new List<Column>(1);
-				newColumns.Add(newColumn);
+				// All information types will have a column EXCEPT for the inverse side of a negatable unary fact type.
+				// 1) If there are positive and unary forms and neither is objectified then we create the column for the
+				//    positive unary and mark the negative unary concept types as the inverse.
+				// 2) If we have one information type and one non-self-evident assimilation then we also create the column here.
+				//
+				// Note that this means that, although we prefer the positive unary as the column and the negative as the inverse,
+				// it is possible that these will be switched. Name generators for the column need to be aware of this possibility.
+				InformationTypeFormat format = informationType.InformationTypeFormat;
+				ConceptTypeChild inverseChild = null;
+				bool forceMandatory = false;
+				if (format.GetType() != typeof(InformationTypeFormat))
+				{
+					InverseConceptTypeChild inverseLink;
+					if (format is PositiveUnaryInformationTypeFormat)
+					{
+						if (null != (inverseLink = InverseConceptTypeChild.GetLinkToNegativeInverseChild(informationType)))
+						{
+							inverseChild = inverseLink.NegativeChild;
+						}
+					}
+					// Negative unary format is all that's left
+					else if (null != (inverseLink = InverseConceptTypeChild.GetLinkToPositiveInverseChild(informationType)))
+					{
+						inverseChild = inverseLink.PositiveChild;
+						if (inverseChild is InformationType)
+						{
+							// We'll pick this up as the inverse of the positive column.
+							continue;
+						}
+					}
+
+					if (inverseChild != null)
+					{
+						// This is mandatory if we have an information type or if we are assimilated and the assimilation
+						// is absorbed and needs evidence in the table.
+						ConceptTypeAssimilatesConceptType assimilation;
+						if (inverseChild is InformationType)
+						{
+							forceMandatory = inverseLink.PairIsMandatory;
+						}
+						else if (null != (assimilation = inverseChild as ConceptTypeAssimilatesConceptType))
+						{
+							if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb)
+							{
+								inverseChild = null;
+							}
+							else
+							{
+								AssimilationMapping.AssimilationEvidence assimilationEvidence = assimilationIsSelfEvident(assimilation);
+								if (assimilationEvidence == AssimilationMapping.AssimilationEvidence.MandatoryEvidence)
+								{
+									inverseChild = null;
+								}
+								else
+								{
+									forceMandatory = inverseLink.PairIsMandatory && assimilationEvidence == AssimilationMapping.AssimilationEvidence.NoEvidence;
+								}
+							}
+						}
+					}
+				}
+
+				Column newColumn = GenerateColumnForInformationType(tableColumns, conceptTypeChildPath, informationType, inverseChild, forceMandatory, isMandatorySoFar);
+				List<Column> newColumns = new List<Column>(1) { newColumn };
 				newColumnsByConceptTypeChild.Add(informationType, newColumns);
+				if (inverseChild != null)
+				{
+					newColumnsByConceptTypeChild.Add(inverseChild, newColumns);
+					(inverseConceptTypeChildren ?? (inverseConceptTypeChildren = new Dictionary<ConceptTypeChild, ConceptTypeChild>()))[inverseChild] = inverseChild;
+				}
 			}
 
 			// Make columns for the preferred identifier of each related concept type.
@@ -399,6 +517,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			// Map uniqueness constraints on any information types and/or concept type relations.
 			foreach (Uniqueness oialUniquenessConstraint in conceptType.UniquenessCollection)
 			{
+				LinkedElementCollection<ConceptTypeChild> uniqueChildren = oialUniquenessConstraint.ConceptTypeChildCollection;
+				if (inverseConceptTypeChildren != null && uniqueChildren.Count == 1 && inverseConceptTypeChildren.ContainsKey(uniqueChildren[0]))
+				{
+					// There will be two oial uniqueness constraints for the combined column. Just use the primary one.
+					continue;
+				}
+
 				UniquenessConstraint newUniquenessConstraint = new UniquenessConstraint(table.Partition,
 					new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, oialUniquenessConstraint.Name),
 					new PropertyAssignment(UniquenessConstraint.IsPrimaryDomainPropertyId, isPreferredSoFar && oialUniquenessConstraint.IsPreferred));
@@ -408,9 +533,14 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					new UniquenessConstraintIsForUniqueness(newUniquenessConstraint, oialUniquenessConstraint);
 
 				LinkedElementCollection<Column> newUniquenessConstraintColumns = newUniquenessConstraint.ColumnCollection;
-				foreach (ConceptTypeChild conceptTypeChild in oialUniquenessConstraint.ConceptTypeChildCollection)
+				foreach (ConceptTypeChild conceptTypeChild in uniqueChildren)
 				{
-					newUniquenessConstraintColumns.AddRange(newColumnsByConceptTypeChild[conceptTypeChild]);
+					ConceptTypeChild inverse;
+					if (null == (inverse = conceptTypeChild.PositiveInverseChild) ||
+						!uniqueChildren.Contains(inverse))
+					{
+						newUniquenessConstraintColumns.AddRange(newColumnsByConceptTypeChild[conceptTypeChild]);
+					}
 				}
 			}
 
@@ -419,7 +549,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						if (TableIsAlsoForConceptType.GetLink(table, assimilation.AssimilatedConceptType) != null)
@@ -431,6 +561,66 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						TableIsAlsoForConceptType tableIsAlsoForConceptType =
 							new TableIsAlsoForConceptType(table, assimilation.AssimilatedConceptType);
 
+						AssimilationMapping.AssimilationEvidence assimilationEvidence = assimilationIsSelfEvident(assimilation);
+						if (assimilationEvidence != AssimilationMapping.AssimilationEvidence.MandatoryEvidence)
+						{
+							// Create an extra column for the assimilation itself.
+							bool hasResolvedColumn = false;
+							bool forceCurrentMandatory = false;
+							ConceptTypeChild inverseChild = null;
+							if (!assimilation.RefersToSubtype)
+							{
+								InverseConceptTypeChild inverseChildLink;
+								bool assimilationIsPositive = false;
+								if (null != (inverseChildLink = InverseConceptTypeChild.GetLinkToNegativeInverseChild(assimilation)))
+								{
+									assimilationIsPositive = true;
+									inverseChild = inverseChildLink.NegativeChild;
+								}
+								else if (null != (inverseChildLink = InverseConceptTypeChild.GetLinkToPositiveInverseChild(assimilation)))
+								{
+									inverseChild = inverseChildLink.PositiveChild;
+								}
+
+								if (inverseChild != null)
+								{
+									ConceptTypeAssimilatesConceptType inverseAssimilation;
+									if (inverseChild is InformationType)
+									{
+										// The column and child inversion link were created when the column
+										// was bound to the information type
+										hasResolvedColumn = true;
+									}
+									else if (null != (inverseAssimilation = inverseChild as ConceptTypeAssimilatesConceptType))
+									{
+										AssimilationMapping.AssimilationEvidence inverseAssimilationEvidence = assimilationIsSelfEvident(inverseAssimilation);
+										if (inverseAssimilationEvidence == AssimilationMapping.AssimilationEvidence.MandatoryEvidence)
+										{
+											inverseChild = null;
+										}
+										else if (assimilationIsPositive)
+										{
+											forceCurrentMandatory = assimilationEvidence == AssimilationMapping.AssimilationEvidence.NoEvidence && inverseChildLink.PairIsMandatory && inverseAssimilationEvidence == AssimilationMapping.AssimilationEvidence.NoEvidence;
+										}
+										else
+										{
+											hasResolvedColumn = true;
+										}
+									}
+								}
+							}
+
+							if (!hasResolvedColumn)
+							{
+								Column column = new Column(assimilation.Partition,
+									new PropertyAssignment(Column.NameDomainPropertyId, assimilation.AssimilatedConceptType.Name),
+									new PropertyAssignment(Column.IsNullableDomainPropertyId, !(isMandatorySoFar && (forceCurrentMandatory || assimilation.IsMandatory))));
+								tableColumns.Add(column);
+
+								PopulateColumnPath(column, conceptTypeChildPath, inverseChild, true);
+							}
+						}
+
 						// The conceptTypeChildPath is also the assimilation path: We will get
 						// here only if everything before this point is an assimilation, since
 						// this method is recursively called only for absorb and partition.
@@ -438,11 +628,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							new CastEnumerator<ConceptTypeChild, PathStack<ConceptTypeChild>.Enumerator,
 								ConceptTypeAssimilatesConceptType>(conceptTypeChildPath.GetEnumerator()));
 
-						GenerateContentForConceptTypeChildren(table, tableColumns,
-							tableUniquenessConstraints,	conceptTypeChildPath,
+						GenerateContentForConceptTypeChildren(
+							table,
+							tableColumns,
+							tableUniquenessConstraints,
+							conceptTypeChildPath,
 							assimilation.AssimilatedConceptType,
 							isMandatorySoFar && assimilation.IsMandatory,
-							isPreferredSoFar && assimilation.IsPreferredForParent);
+							isPreferredSoFar && assimilation.IsPreferredForParent,
+							assimilationIsSelfEvident
+						);
 						break;
 
 					case AssimilationAbsorptionChoice.Partition:
@@ -483,7 +678,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						// We don't need to do anything for this case,
@@ -507,11 +702,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							new CastEnumerator<ConceptTypeChild, PathStack<ConceptTypeChild>.Enumerator,
 								ConceptTypeAssimilatesConceptType>(conceptTypeChildPath.GetEnumerator()));
 
-						GenerateContentForConceptTypeChildren(table, tableColumns,
-							tableUniquenessConstraints, conceptTypeChildPath,
+						GenerateContentForConceptTypeChildren(
+							table,
+							tableColumns,
+							tableUniquenessConstraints,
+							conceptTypeChildPath,
 							assimilation.AssimilatorConceptType,
 							isMandatorySoFar /* Assimilations are always mandatory from the target side. */,
-							isPreferredSoFar && assimilation.IsPreferredForTarget);
+							isPreferredSoFar && assimilation.IsPreferredForTarget,
+							assimilationIsSelfEvident
+						);
 						break;
 
 					case AssimilationAbsorptionChoice.Separate:
@@ -613,7 +813,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						InformationType informationType = conceptTypeChild as InformationType;
 						if (informationType != null)
 						{
-							Column column = GenerateColumnForInformationType(tableColumns, conceptTypeChildPath, informationType, isMandatorySoFar);
+							Column column = GenerateColumnForInformationType(tableColumns, conceptTypeChildPath, informationType, null, false, isMandatorySoFar);
 							newColumns.Add(column);
 							continue;
 						}
@@ -723,7 +923,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						// Recurse and let the assimilated concept type handle any
@@ -760,7 +960,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						// We don't need to do anything for this case,
@@ -1103,8 +1303,23 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			bool isNullable = false;
 			ConceptType previousConceptType = null;
-			foreach (ConceptTypeChild child in ColumnHasConceptTypeChild.GetConceptTypeChildPath(column))
+			foreach (ColumnHasConceptTypeChild childLink in ColumnHasConceptTypeChild.GetLinksToConceptTypeChildPath(column))
 			{
+				ConceptTypeChild child = childLink.ConceptTypeChild;
+				InverseConceptTypeChild inverseChildLink;
+				ConceptTypeChild inverseChild = null;
+				if (null != (inverseChildLink = InverseConceptTypeChild.GetLinkToNegativeInverseChild(child)))
+				{
+					if (inverseChildLink.PairIsMandatory)
+					{
+						inverseChild = inverseChildLink.NegativeChild;
+					}
+				}
+				else if (null != (inverseChildLink = InverseConceptTypeChild.GetLinkToPositiveInverseChild(child)) && inverseChildLink.PairIsMandatory)
+				{
+					inverseChild = inverseChildLink.PositiveChild;
+				}
+
 				ConceptTypeAssimilatesConceptType assimilation = child as ConceptTypeAssimilatesConceptType;
 				if (assimilation != null)
 				{
@@ -1121,7 +1336,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					if (assimilation.Parent == previousConceptType)
 					{
 						// We are walking this assimilation from parent to target, so we go off the IsMandatory value.
-						if (!child.IsMandatory)
+						ConceptTypeAssimilatesConceptType inverseAssimilation;
+						if (!child.IsMandatory &&
+							!(inverseChild != null &&
+							AssimilationMapping.AssimilationIsSelfEvident(assimilation) == AssimilationMapping.AssimilationEvidence.NoEvidence &&
+							// Inverses are either assimilations or InformationTypes.
+							(null == (inverseAssimilation = inverseChild as ConceptTypeAssimilatesConceptType) || AssimilationMapping.AssimilationIsSelfEvident(inverseAssimilation) == AssimilationMapping.AssimilationEvidence.NoEvidence)))
 						{
 							isNullable = true;
 							break;
@@ -1141,8 +1361,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 				else
 				{
+					ConceptTypeAssimilatesConceptType inverseAssimilation;
 					// This is not an assimilation, so we always go off of the IsMandatory value.
-					if (!child.IsMandatory)
+					if (!child.IsMandatory &&
+						!(inverseChild != null && (null == (inverseAssimilation = inverseChild as ConceptTypeAssimilatesConceptType) || AssimilationMapping.AssimilationIsSelfEvident(inverseAssimilation) == AssimilationMapping.AssimilationEvidence.NoEvidence)))
 					{
 						isNullable = true;
 						break;
@@ -1154,10 +1376,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					Debug.Assert((previousConceptType != null) || (child is InformationType));
 				}
 			}
-			if (column.IsNullable != isNullable)
-			{
-				column.IsNullable = isNullable;
-			}
+			column.IsNullable = isNullable;
 		}
 		#endregion // Incremental update methods
 		#region IDeserializationFixupListenerProvider Implementation
@@ -1198,8 +1417,22 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 		}
 		#endregion // IDeserializationFixupListenerProvider Implementation
+		#region IAbstractionModelRebuilding Implementation
+		/// <summary>
+		/// If an abstraction model is rebuilt during load then we need to know beforehand
+		/// that it is going to be deleted
+		/// </summary>
+		/// <param name="abstractionModel"></param>
+		void IAbstractionModelRebuilding.AbstractionModelRebuilding(AbstractionModel abstractionModel)
+		{
+			Schema schema = SchemaIsForAbstractionModel.GetSchema(abstractionModel);
+			if (schema != null)
+			{
+				SchemaCustomization.SetCustomization(schema, new SchemaCustomization(schema));
+			}
+		}
+		#endregion // IAbstractionModelRebuilding Implementation
 		#region GenerateConceptualDatabaseFixupListener class
-
 		private class GenerateConceptualDatabaseFixupListener : DeserializationFixupListener<AbstractionModel>
 		{
 			/// <summary>
@@ -1250,21 +1483,36 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				else
 				{
 					SchemaGenerationSetting generationSetting = GenerationSettingTargetsSchema.GetGenerationSetting(schema);
+					SchemaCustomization prebuiltCustomization = SchemaCustomization.GetCustomization(schema);
+					if (prebuiltCustomization != null)
+					{
+						SchemaCustomization.SetCustomization(schema, null);
+					}
+
 					bool regenerateAll = generationSetting == null || generationSetting.CoreAlgorithmVersion != CurrentCoreAlgorithmVersion;
 					bool regenerateNames = false;
 					if (!regenerateAll)
 					{
-						foreach (Table table in schema.TableCollection)
+						if (prebuiltCustomization != null)
 						{
-							if (null == TableIsPrimarilyForConceptType.GetLinkToConceptType(table))
+							regenerateAll = true;
+						}
+						else
+						{
+							// Original check to verify table bridge elements predates the prebuilt call,
+							// but this is still an effective sanity check.
+							foreach (Table table in schema.TableCollection)
 							{
-								regenerateAll = true;
-								break;
+								if (null == TableIsPrimarilyForConceptType.GetLinkToConceptType(table))
+								{
+									regenerateAll = true;
+									break;
+								}
+								// Theoretically we should also check that all columns and uniqueness constraints
+								// are pathed back to the abstraction model. However, this is far from a full validation,
+								// and the scenario we're trying to cover is the abstraction model regenerating during
+								// load and removing our bridge elements. The table check above is sufficient.
 							}
-							// Theoretically we should also check that all columns and uniqueness constraints
-							// are pathed back to the abstraction model. However, this is far from a full validation,
-							// and the scenario we're trying to cover is the abstraction model regenerating during
-							// load and removing our bridge elements. The table check above is sufficient.
 						}
 						regenerateNames = !regenerateAll && generationSetting.NameAlgorithmVersion != CurrentNameAlgorithmVersion;
 						generationSetting.NameAlgorithmVersion = CurrentNameAlgorithmVersion;
@@ -1284,9 +1532,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							generationSetting.NameAlgorithmVersion = CurrentNameAlgorithmVersion;
 						}
 					}
-					SchemaCustomization initialCustomization = new SchemaCustomization(schema);
+
 					if (regenerateAll || regenerateNames)
 					{
+						SchemaCustomization initialCustomization = prebuiltCustomization ?? new SchemaCustomization(schema);
 						if (regenerateAll)
 						{
 							schema.TableCollection.Clear();
@@ -1297,12 +1546,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							NameGeneration.GenerateAllNames(schema, initialCustomization);
 						}
-						SchemaCustomization.SetCustomization(schema, new SchemaCustomization(schema));
 					}
-					else
-					{
-						SchemaCustomization.SetCustomization(schema, initialCustomization);
-					}
+					SchemaCustomization.SetCustomization(schema, new SchemaCustomization(schema));
 				}
 			}
 		}

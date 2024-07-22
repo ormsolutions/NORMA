@@ -602,7 +602,25 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				visibleCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny;
 				if (factType.ImpliedByObjectification == null)
 				{
-					enabledCommands = visibleCommands;
+					switch (factType.UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+						case UnaryValuePattern.OptionalWithoutNegation:
+						case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+							enabledCommands = visibleCommands;
+							break;
+						case UnaryValuePattern.Negation:
+							// Disable deletion on the negation fact type
+							enabledCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							visibleCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							toleratedCommands |= ORMDesignerCommands.DeleteAny;
+							break;
+						default:
+							enabledCommands = visibleCommands | ORMDesignerCommands.DragInverseUnaryFactType;
+							visibleCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							break;
+					}
+
 					Objectification objectification = factType.Objectification;
 					if (objectification == null || objectification.IsImplied)
 					{
@@ -617,8 +635,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else
 				{
-					toleratedCommands |= visibleCommands;
+					toleratedCommands |= ORMDesignerCommands.DeleteAny;
 				}
+
 				if (presentationElement is FactTypeShape ||
 					(readingOrder != null && presentationElement is ReadingShape))
 				{
@@ -714,26 +733,40 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					if (setConstraint.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
 					{
-						if (((MandatoryConstraint)setConstraint).ExclusiveOrExclusionConstraint != null)
+						if (((MandatoryConstraint)setConstraint).ClosesUnaryFactType == null)
 						{
-							visibleCommands |= ORMDesignerCommands.ExclusiveOrDecoupler;
-							enabledCommands |= ORMDesignerCommands.ExclusiveOrDecoupler;
+							if (((MandatoryConstraint)setConstraint).ExclusiveOrExclusionConstraint != null)
+							{
+								visibleCommands |= ORMDesignerCommands.ExclusiveOrDecoupler;
+								enabledCommands |= ORMDesignerCommands.ExclusiveOrDecoupler;
+							}
+							else
+							{
+								// We'll do deeper processing of this command in OnStatusCommand
+								visibleCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
+								enabledCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
+							}
 						}
 						else
+						{
+							enabledCommands &= ~(ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny);
+						}
+					}
+				}
+				else if (null != (exclusionConstraint = setComparisonConstraint as ExclusionConstraint))
+				{
+					if (exclusionConstraint.ControlledByUnaryFactType == null)
+					{
+						if (exclusionConstraint.ExclusiveOrMandatoryConstraint == null)
 						{
 							// We'll do deeper processing of this command in OnStatusCommand
 							visibleCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
 							enabledCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
 						}
 					}
-				}
-				else if (null != (exclusionConstraint = setComparisonConstraint as ExclusionConstraint))
-				{
-					if (exclusionConstraint.ExclusiveOrMandatoryConstraint == null)
+					else
 					{
-						// We'll do deeper processing of this command in OnStatusCommand
-						visibleCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
-						enabledCommands |= ORMDesignerCommands.ExclusiveOrCoupler;
+						enabledCommands &= ~(ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny);
 					}
 				}
 				if (presentationElement is ExternalConstraintShape)
@@ -799,6 +832,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				else
 				{
 					visibleCommands = enabledCommands = ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
+					if (factType.UnaryPattern == UnaryValuePattern.Negation)
+					{
+						enabledCommands &= ~ORMDesignerCommands.InsertRole;
+					}
+
+					if (role.Proxy != null)
+					{
+						visibleCommands |= ORMDesignerCommands.DragLinkFactType;
+						enabledCommands |= ORMDesignerCommands.DragLinkFactType;
+					}
 				}
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
@@ -810,7 +853,37 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				// Disable role deletion if the FactType is a unary
 				if (unaryRole != null)
 				{
-					enabledCommands &= ~ORMDesignerCommands.ToggleSimpleMandatory;
+					UnaryValuePattern unaryPattern = factType.UnaryPattern;
+					if (unaryPattern == UnaryValuePattern.Negation)
+					{
+						FactType positiveFactType = factType.PositiveUnaryFactType;
+						if (positiveFactType != null) // Sanity check, should always be there
+						{
+							unaryPattern = positiveFactType.UnaryPattern; // The positive pattern has more detailed state.
+						}
+					}
+
+					switch (unaryPattern)
+					{
+						// We leave ORMDsignerCommands.ToggleSimpleMandatory on even for OptionalWithoutNegation[DefaultTrue].
+						// This was relaxed from the earlier design where a unary negation was needed before the mandatory
+						// toggle was enabled. While it may be technically more correct to leave it off, simply being able
+						// to toggle Is Mandatory to get a true/false negation is nicer to the user.
+						//case UnaryValuePattern.OptionalWithoutNegation:
+						//case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						//	enabledCommands &= ~ORMDesignerCommands.ToggleSimpleMandatory;
+						//	// Leave enabled for all other patterns, including from the negation fact type
+						//	break;
+						case UnaryValuePattern.RequiredWithNegation:
+						case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+						case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+						case UnaryValuePattern.DeonticRequiredWithNegation:
+						case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+						case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+							checkedCommands = ORMDesignerCommands.ToggleSimpleMandatory;
+							break;
+					}
+
 					if (presentationElement == null || !(presentationElement is RoleNameShape))
 					{
 						enabledCommands &= ~ORMDesignerCommands.DeleteRole;
@@ -829,6 +902,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						visibleCommands |= ORMDesignerCommands.UnobjectifyFactType;
 						enabledCommands |= ORMDesignerCommands.UnobjectifyFactType;
+					}
+
+					switch (factType.UnaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+						case UnaryValuePattern.OptionalWithoutNegation:
+						case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+							break;
+						default:
+							visibleCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							enabledCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							break;
 					}
 				}
 
@@ -856,7 +941,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								if (constraintRoles.Contains(role) ||
 									(((constraintType = constraint.ConstraintType) == ConstraintType.ExternalUniqueness || constraintType == ConstraintType.Frequency) &&
 									role.Role == unaryRole &&
-									constraintRoles.Contains(role.OppositeRole as Role)))
+									constraintRoles.Contains(role.OppositeOrUnaryRole as Role)))
 								{
 									visibleCommands |= ORMDesignerCommands.ActivateRoleSequence;
 									enabledCommands |= ORMDesignerCommands.ActivateRoleSequence;
@@ -988,8 +1073,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			else
 			{
-				visibleCommands |= ORMDesignerCommands.SelectInDocumentWindow;
-				enabledCommands |= ORMDesignerCommands.SelectInDocumentWindow;
+				visibleCommands |= ORMDesignerCommands.SelectInDocumentWindow | ORMDesignerCommands.DiagramSpyAllDiagrams;
+				enabledCommands |= ORMDesignerCommands.SelectInDocumentWindow | ORMDesignerCommands.DiagramSpyAllDiagrams;
 			}
 			if (elementReference != null)
 			{
@@ -1112,10 +1197,42 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							Role role = mel as Role;
 							if (role != null)
 							{
+								FactType factType = role.FactType;
+								UnaryValuePattern unaryPattern = factType.UnaryPattern;
+								if (unaryPattern == UnaryValuePattern.NotUnary)
+								{
+									command.Checked = role.IsMandatory;
+								}
+								else
+								{
+									if (unaryPattern == UnaryValuePattern.Negation)
+									{
+										FactType positiveFactType = factType.PositiveUnaryFactType;
+										if (positiveFactType != null) // Sanity check, should always be there
+										{
+											unaryPattern = positiveFactType.UnaryPattern; // The positive pattern has more detailed state.
+										}
+									}
+
+									switch (unaryPattern)
+									{
+										case UnaryValuePattern.RequiredWithNegation:
+										case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+										case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+										case UnaryValuePattern.DeonticRequiredWithNegation:
+										case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+										case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+											command.Checked = true;
+											break;
+										default:
+											command.Checked = false;
+											break;
+									}
+								}
+
 								// The command is only enabled when all selected roles have
 								// the same mandatory state. A quick check will let us know when
 								// the state has been changed.
-								command.Checked = role.IsMandatory;
 								break;
 							}
 						}
@@ -1720,23 +1837,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							if (fact != null && fact.ImpliedByObjectification == null && !encounteredNonRole)
 							{
-								foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
+								if (fact.UnaryPattern != UnaryValuePattern.NotUnary)
 								{
-									LinkedElementCollection<Role> factRoles = iuc.RoleCollection;
-									if (factRoles.Count == roleCount)
+									disable = true;
+								}
+								else
+								{
+									foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
 									{
-										int i = 0;
-										for (; i < roleCount; ++i)
+										LinkedElementCollection<Role> factRoles = iuc.RoleCollection;
+										if (factRoles.Count == roleCount)
 										{
-											if (!factRoles.Contains(roles[i]))
+											int i = 0;
+											for (; i < roleCount; ++i)
 											{
+												if (!factRoles.Contains(roles[i]))
+												{
+													break;
+												}
+											}
+											if (i == roleCount)
+											{
+												disable = true;
 												break;
 											}
-										}
-										if (i == roleCount)
-										{
-											disable = true;
-											break;
 										}
 									}
 								}
@@ -2015,9 +2139,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									if (null != (factTypeShape = pel as FactTypeShape))
 									{
 										if (null != (factType = pel.ModelElement as FactType) &&
-											null != factType.ImpliedByObjectification)
+											(null != factType.ImpliedByObjectification || (factType.UnaryPattern == UnaryValuePattern.Negation && null != factType.PositiveUnaryFactType)))
 										{
-											// Deletion tolerated by link fact type shapes, but the command is not
+											// Deletion tolerated by link and negation fact type shapes, but the command is not
 											// enabled individually and is ignored.
 											continue;
 										}
@@ -2615,29 +2739,104 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			DomainPropertyInfo isMandatoryPropertyInfo = store.DomainDataDirectory.FindDomainProperty(Role.IsMandatoryDomainPropertyId);
 			Debug.Assert(isMandatoryPropertyInfo != null);
 
-			using (Transaction t = store.TransactionManager.BeginTransaction(
-				Microsoft.VisualStudio.Modeling.Design.ElementPropertyDescriptor.GetSetValueTransactionName(isMandatoryPropertyInfo.DisplayName)))
+			IORMToolServices toolServices = null;
+			AutomatedElementFilterCallback callback = null;
+			try
 			{
-				bool hasNewIsMandatoryValue = false;
-				bool newIsMandatoryValue = false;
-				IList selectedElements = view.SelectedElements;
-				for (int i = selectedElements.Count - 1; i >= 0; i--)
+				using (Transaction t = store.TransactionManager.BeginTransaction(
+					Microsoft.VisualStudio.Modeling.Design.ElementPropertyDescriptor.GetSetValueTransactionName(isMandatoryPropertyInfo.DisplayName)))
 				{
-					RoleBase roleBase = selectedElements[i] as RoleBase;
-					if (roleBase != null)
+					bool hasNewIsMandatoryValue = false;
+					bool newIsMandatoryValue = false;
+					IList selectedElements = view.SelectedElements;
+					for (int i = selectedElements.Count - 1; i >= 0; i--)
 					{
-						Role role = roleBase.Role;
-						if (!hasNewIsMandatoryValue)
+						RoleBase roleBase = selectedElements[i] as RoleBase;
+						if (roleBase != null)
 						{
-							newIsMandatoryValue = !role.IsMandatory;
-							hasNewIsMandatoryValue = true;
+							Role role = roleBase.Role;
+							FactType factType = role.FactType;
+							UnaryValuePattern unaryPattern = factType.UnaryPattern;
+							if (unaryPattern == UnaryValuePattern.NotUnary)
+							{
+								if (!hasNewIsMandatoryValue)
+								{
+									newIsMandatoryValue = !role.IsMandatory;
+									hasNewIsMandatoryValue = true;
+								}
+								role.IsMandatory = newIsMandatoryValue;
+							}
+							else
+							{
+								if (unaryPattern == UnaryValuePattern.Negation)
+								{
+									factType = factType.PositiveUnaryFactType;
+									if (factType != null)
+									{
+										unaryPattern = factType.UnaryPattern;
+									}
+								}
+
+								if (factType != null)
+								{
+									UnaryValuePattern newUnaryPattern = UnaryValuePattern.NotUnary;
+									switch (unaryPattern)
+									{
+										case UnaryValuePattern.OptionalWithoutNegation:
+										case UnaryValuePattern.OptionalWithNegation:
+											newUnaryPattern = UnaryValuePattern.RequiredWithNegation;
+											break;
+										case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+										case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+											newUnaryPattern = UnaryValuePattern.RequiredWithNegationDefaultTrue;
+											break;
+										case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+											newUnaryPattern = UnaryValuePattern.RequiredWithNegationDefaultFalse;
+											break;
+										case UnaryValuePattern.RequiredWithNegation:
+										case UnaryValuePattern.DeonticRequiredWithNegation:
+											newUnaryPattern = UnaryValuePattern.OptionalWithNegation;
+											break;
+										case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+										case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+											newUnaryPattern = UnaryValuePattern.OptionalWithNegationDefaultTrue;
+											break;
+										case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+										case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+											newUnaryPattern = UnaryValuePattern.OptionalWithNegationDefaultFalse;
+											break;
+									}
+									if (newUnaryPattern != UnaryValuePattern.NotUnary)
+									{
+										if (callback == null)
+										{
+											toolServices = store as IORMToolServices;
+											if (toolServices != null)
+											{
+												callback = delegate (ModelElement filterElement)
+												{
+													return AutomatedElementDirective.Ignore;
+												};
+												toolServices.AutomatedElementFilter += callback;
+											}
+										}
+										factType.UnaryPattern = newUnaryPattern;
+									}
+								}
+							}
 						}
-						role.IsMandatory = newIsMandatoryValue;
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
 					}
 				}
-				if (t.HasPendingChanges)
+			}
+			finally
+			{
+				if (callback != null)
 				{
-					t.Commit();
+					toolServices.AutomatedElementFilter -= callback;
 				}
 			}
 		}
@@ -2937,6 +3136,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (designer != null)
 			{
 				ORMDesignerPackage.DiagramSpyWindow.ActivateDiagramItem(designer.DiagramClientView.Selection.PrimaryItem);
+			}
+		}
+		/// <summary>
+		/// Active the 'All Diagrams' view in the Diagram Spy window
+		/// </summary>
+		public virtual void OnMenuDiagramSpyAllDiagrams()
+		{
+			DiagramView designer = myDesignerView.CurrentDesigner;
+			if (designer != null)
+			{
+				ORMDesignerPackage.DiagramSpyWindow.ActivateAllDiagrams();
 			}
 		}
 		/// <summary>
@@ -3517,20 +3727,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 
 				Role role = view.SelectedElements[0] as Role;
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.ExternalUniqueness:
-					case ConstraintType.Frequency:
-						Role oppositeRole;
-						ObjectType oppositeRolePlayer;
-						if (null != (oppositeRole = role.OppositeRole as Role) &&
-							null != (oppositeRolePlayer = oppositeRole.RolePlayer) &&
-							oppositeRolePlayer.IsImplicitBooleanValue)
-						{
-							role = oppositeRole;
-						}
-						break;
-				}
 				ConstraintRoleSequence selectedSequence = null;
 				foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 				{
@@ -4050,6 +4246,58 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (toolServices != null)
 					{
 						toolServices.AutomatedElementFilter -= callback;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Place the inverse fact type of a unary fact type in drag mode.
+		/// </summary>
+		public virtual void OnMenuDragInverseUnaryFactType()
+		{
+			IORMDesignerView view = myDesignerView;
+			ORMDiagram diagram;
+			DiagramView diagramView;
+			if (null != (diagram = view.CurrentDiagram as ORMDiagram) &&
+				null != (diagramView = view.CurrentDesigner))
+			{
+				IList selectedElements = view.SelectedElements;
+				int selectedElementsCount = selectedElements.Count;
+				for (int i = 0; i < selectedElementsCount; ++i)
+				{
+					// ResolveContextFactType will resolve an ObjectType to the FactType that it nests,
+					// so we don't need to worry about doing that ourselves.
+					FactType factType;
+					FactType inverseFactType;
+					if (null != (factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i])) &&
+						null != (inverseFactType = factType.InverseUnaryFactType))
+					{
+						diagramView.DiagramClientView.ActiveMouseAction = new ModelElementDragAction(diagram, inverseFactType);
+						break;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Place the link fact type of an objectified role in drag mode.
+		/// </summary>
+		public virtual void OnMenuDragLinkFactType()
+		{
+			IORMDesignerView view = myDesignerView;
+			ORMDiagram diagram;
+			DiagramView diagramView;
+			if (null != (diagram = view.CurrentDiagram as ORMDiagram) &&
+				null != (diagramView = view.CurrentDesigner))
+			{
+				IList selectedElements = view.SelectedElements;
+				int selectedElementsCount = selectedElements.Count;
+				for (int i = 0; i < selectedElementsCount; ++i)
+				{
+					FactType linkFactType;
+					if (null != (linkFactType = (EditorUtility.ResolveContextInstance(selectedElements[i], false) as Role)?.Proxy?.FactType))
+					{
+						diagramView.DiagramClientView.ActiveMouseAction = new ModelElementDragAction(diagram, linkFactType);
+						break;
 					}
 				}
 			}

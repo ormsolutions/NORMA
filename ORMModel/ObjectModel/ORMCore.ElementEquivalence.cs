@@ -122,21 +122,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactType objectifiedFactType = null;
 			DataType dataType = null;
 			bool isValueType = false;
-			if (IsImplicitBooleanValue)
-			{
-				// Match through the unary fact type, the name is of minimal use here
-				foreach (Role playedRole in PlayedRoleCollection)
-				{
-					if (null != CopyMergeUtility.GetEquivalentElement(playedRole.FactType, foreignStore, elementTracker))
-					{
-						otherObjectType = (ObjectType)elementTracker.GetEquivalentElement(this);
-						dataType = DataType;
-						isValueType = true;
-					}
-					break;
-				}
-			}
-			else if (null != (objectifiedFactType = NestedFactType))
+			if (null != (objectifiedFactType = NestedFactType))
 			{
 				// Match through the fact type. Note that this is exclusion with the next branch (value types are not objectified)
 				FactType otherFactType = CopyMergeUtility.GetEquivalentElement(objectifiedFactType, foreignStore, elementTracker);
@@ -764,26 +750,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
 		{
 			FactType otherFactType = null;
+			FactType positiveFactType;
 			IList<RoleBase> roleOrder = null;
 			IList<RoleBase> otherRoleOrder = null;
 			IList<RoleBase> roles = RoleCollection;
 			int roleCount = roles.Count;
 			LinkedElementCollection<ReadingOrder> readingOrders = null;
 			LinkedElementCollection<ReadingOrder> otherReadingOrders = null;
-			RoleBase implicitBooleanRole = null;
-			RoleBase otherImplicitBooleanRole = null;
 			bool impliedPopulation = false;
 			if (roleCount == 2 &&
 				null != ImpliedByObjectification)
 			{
 				// This is a link fact type and is effectively identified by the target
-				// of its RoleProxy or ObjectifiedUnaryRole. Pragmatically, readings for
-				// these fact types also tend to be somewhat unreliable because they are
-				// auto generated and it is easy to have duplication errors. Therefore,
-				// we match this fact type based on the roles in the primary fact type.
+				// of its RoleProxy Pragmatically, readings for these fact types also
+				// tend to be somewhat unreliable because they are auto generated and
+				// it is easy to have duplication errors. Therefore, we match this
+				// fact type based on the roles in the primary fact type.
 				Role matchFactTypeForRole = null;
 				RoleProxy roleProxy;
-				ObjectifiedUnaryRole objectifiedUnaryRole;
 				RoleBase objectifyingEntityRole = null;
 				RoleBase mirrorRole = null;
 				foreach (RoleBase roleBase in roles)
@@ -792,11 +776,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						mirrorRole = roleProxy;
 						matchFactTypeForRole = roleProxy.TargetRole;
-					}
-					else if (null != (objectifiedUnaryRole = roleBase as ObjectifiedUnaryRole))
-					{
-						mirrorRole = objectifiedUnaryRole;
-						matchFactTypeForRole = objectifiedUnaryRole.TargetRole;
 					}
 					else
 					{
@@ -815,10 +794,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							otherMirrorRole = roleProxy;
 						}
-						else if (null != (objectifiedUnaryRole = otherMatchingRole.ObjectifiedUnaryRole))
-						{
-							otherMirrorRole = objectifiedUnaryRole;
-						}
 						RoleBase otherObjectifyingEntityRole;
 						if (otherMirrorRole != null &&
 							null != (otherObjectifyingEntityRole = otherMirrorRole.OppositeRole))
@@ -831,18 +806,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				impliedPopulation = true;
 			}
+			else if (this.UnaryPattern == UnaryValuePattern.Negation)
+			{
+				// Always match on the positive fact type. The negated fact type and implied constraints are added when the positive fact type is added.
+				FactType otherPositiveFactType;
+				if (null != (positiveFactType = this.PositiveUnaryFactType) &&
+					null != (otherPositiveFactType = CopyMergeUtility.GetEquivalentElement(positiveFactType, foreignStore, elementTracker)) &&
+					null != elementTracker.GetEquivalentElement(this))
+				{
+					return true;
+				}
+			}
 			else
 			{
 				// Handle other fact type patterns based on predicate readings
 				// UNDONE: COPYMERGE This would be a quick lookup if we kept a dictionary based on normalized predicate names.
 				// Note that there are no proxies here, these were all handled in the previous branch
-				int unaryRoleIndex = roleCount == 2 ? FactType.GetUnaryRoleIndex(roles).GetValueOrDefault(-1) : -1;
-				if (unaryRoleIndex != -1)
-				{
-					implicitBooleanRole = roles[1 - unaryRoleIndex];
-					roles = new RoleBase[] { roles[unaryRoleIndex] };
-					roleCount = 1;
-				}
+
 				// UNDONE: COPYMERGE Should a role player match for a refmode scheme add the value type?
 				// If so, then we need a way here to share code adding other elements.
 				ObjectType[] matchingRolePlayers = new ObjectType[roleCount];
@@ -933,13 +913,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// We have at least as many roles as we need. Make sure we
 						// have the correct kind of fact type and no extra roles.
 						if (testFactType.ImpliedByObjectification == null &&
-							!(testFactType is SubtypeFact))
+							!(testFactType is SubtypeFact) &&
+							testFactType.UnaryPattern != UnaryValuePattern.Negation)
 						{
 							LinkedElementCollection<RoleBase> otherRoles = testFactType.RoleCollection;
 							int otherRoleCount = otherRoles.Count;
-							int otherUnaryRoleIndex = -1;
-							if (otherRoleCount == roleCount ||
-								(roleCount == 1 && otherRoleCount == 2 && -1 != (otherUnaryRoleIndex = FactType.GetUnaryRoleIndex(otherRoles).GetValueOrDefault(-1))))
+							if (otherRoleCount == roleCount)
 							{
 								// We have matching fact types, so we can turn to testing predicates for a match.
 								if (orderedReplacementReadings == null)
@@ -997,10 +976,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											otherFactType = testFactType;
 											otherRoleOrder = readingRoles;
 											otherReadingOrders = testReadingOrders;
-											if (otherUnaryRoleIndex != -1)
-											{
-												otherImplicitBooleanRole = otherRoles[1 - otherUnaryRoleIndex];
-											}
 											nextFactTypeStart = totalPlayedRoles; // Break outer loop
 											break;
 										}
@@ -1022,11 +997,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					elementTracker.AddEquivalentElement(roleOrder[i], otherRoleOrder[i]);
 					// UNDONE: COPYMERGE Map internal constraints, including adding deletion semantics for
 					// constraints weaker than the new constraint
-				}
-				if (implicitBooleanRole != null)
-				{
-					elementTracker.AddEquivalentElement(implicitBooleanRole, otherImplicitBooleanRole);
-					elementTracker.AddEquivalentElement(implicitBooleanRole.Role.RolePlayer, otherImplicitBooleanRole.Role.RolePlayer);
 				}
 
 				// Add reading orders and readings
@@ -1058,36 +1028,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									if (j == roleCount)
 									{
 										// We have a match, record readings with an exact text match
-										elementTracker.AddEquivalentElement(readingOrder, otherReadingOrder);
-										LinkedElementCollection<Reading> otherReadings = otherReadingOrder.ReadingCollection;
-										int otherReadingCount = otherReadings.Count;
-										if (otherReadingCount != 0)
-										{
-											BitTracker matchedOtherReading = new BitTracker(otherReadingCount);
-											int unmatchedOtherReadingCount = otherReadingCount;
-											foreach (Reading reading in readingOrder.ReadingCollection)
-											{
-												string matchText = reading.Text;
-												for (int k = 0; k < otherReadingCount; ++k)
-												{
-													if (!matchedOtherReading[k])
-													{
-														Reading otherReading = otherReadings[k];
-														if (matchText == otherReading.Text)
-														{
-															elementTracker.AddEquivalentElement(reading, otherReading);
-															matchedOtherReading[k] = true;
-															--unmatchedOtherReadingCount;
-															break;
-														}
-													}
-												}
-												if (unmatchedOtherReadingCount == 0)
-												{
-													break;
-												}
-											}
-										}
+										MapEquivalentReadingOrders(readingOrder, otherReadingOrder, elementTracker);
 										matchedOtherOrder[i] = true;
 										--unmatchedOtherReadingOrderCount;
 										break;
@@ -1102,150 +1043,280 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 
+				UnaryValuePattern unaryPattern = this.UnaryPattern;
+				switch (unaryPattern)
+				{
+					case UnaryValuePattern.NotUnary:
+					case UnaryValuePattern.Negation:
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						break;
+					default:
+						{
+							FactType negationFactType;
+							if (null != (negationFactType = this.NegationUnaryFactType))
+							{
+								FactType otherNegationFactType;
+								ExclusionConstraint negationExclusion = this.NegationExclusionConstraint;
+								MandatoryConstraint negationMandatory = null;
+								switch (unaryPattern)
+								{
+									case UnaryValuePattern.RequiredWithNegation:
+									case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+									case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+									case UnaryValuePattern.DeonticRequiredWithNegation:
+									case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+									case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+										negationMandatory = this.NegationMandatoryConstraint;
+										break;
+								}
+
+								if (null != (otherNegationFactType = otherFactType.NegationUnaryFactType))
+								{
+									Role negationUnaryRole = negationFactType.UnaryRole;
+									Role otherNegationUnaryRole = otherNegationFactType.UnaryRole;
+									elementTracker.AddEquivalentElement(negationFactType, otherNegationFactType);
+									elementTracker.AddEquivalentElement(negationUnaryRole, otherNegationUnaryRole);
+
+									// There is only one possible reading order.
+									if ((readingOrders = negationFactType.ReadingOrderCollection).Count != 0)
+									{
+										if ((otherReadingOrders = otherNegationFactType.ReadingOrderCollection).Count != 0)
+										{
+											// There is at most one order for a unary fact type.
+											MapEquivalentReadingOrders(readingOrders[0], otherReadingOrders[0], elementTracker);
+										}
+									}
+
+									MapEquivalentInstances(negationFactType, otherNegationFactType, 1, new RoleBase[] { negationUnaryRole }, new RoleBase[] { otherNegationUnaryRole }, foreignStore, elementTracker);
+
+									if (null != negationExclusion)
+									{
+										ExclusionConstraint otherNegationExclusion;
+										if (null != (otherNegationExclusion = otherFactType.NegationExclusionConstraint))
+										{
+											// The existence and structure of these constraints is tightly controlled. Any code to handle
+											// other patterns would be dead code.
+											LinkedElementCollection<SetComparisonConstraintRoleSequence> comparisonSequences = negationExclusion.RoleSequenceCollection;
+											LinkedElementCollection<SetComparisonConstraintRoleSequence> otherComparisonSequences = otherNegationExclusion.RoleSequenceCollection;
+											elementTracker.AddEquivalentElement(comparisonSequences[0], otherComparisonSequences[0]);
+											elementTracker.AddEquivalentElement(comparisonSequences[1], otherComparisonSequences[1]);
+										}
+										else
+										{
+											elementTracker.AddFailedEquivalentElement(negationExclusion);
+											// SetComparisonConstraint equivalence code does not add explicit failures for sequences, don't do it here either
+										}
+									}
+
+									if (negationMandatory != null)
+									{
+										MandatoryConstraint otherNegationMandatory = otherFactType.NegationMandatoryConstraint;
+										if (otherNegationMandatory != null)
+										{
+											elementTracker.AddEquivalentElement(negationMandatory, otherNegationMandatory);
+										}
+										else
+										{
+											elementTracker.AddFailedEquivalentElement(negationMandatory);
+										}
+									}
+								}
+								else
+								{
+									elementTracker.AddFailedEquivalentElement(negationFactType);
+									if (negationExclusion != null)
+									{
+										elementTracker.AddFailedEquivalentElement(negationExclusion);
+									}
+									if (negationMandatory != null)
+									{
+										elementTracker.AddFailedEquivalentElement(negationMandatory);
+									}
+								}
+							}
+						}
+						break;
+				}
+
 				// Add fact type instances
 				if (!impliedPopulation)
 				{
-					LinkedElementCollection<FactTypeInstance> instances;
-					int instanceCount;
-					LinkedElementCollection<FactTypeInstance> otherInstances;
-					int otherInstanceCount;
-					if (0 != (instanceCount = (instances = FactTypeInstanceCollection).Count) &&
-						0 != (otherInstanceCount = (otherInstances = otherFactType.FactTypeInstanceCollection).Count))
+					MapEquivalentInstances(this, otherFactType, roleCount, roleOrder, otherRoleOrder, foreignStore, elementTracker);
+				}
+				return true;
+			}
+			return false;
+		}
+		private static void MapEquivalentReadingOrders(ReadingOrder readingOrder, ReadingOrder otherReadingOrder, IEquivalentElementTracker elementTracker)
+		{
+			elementTracker.AddEquivalentElement(readingOrder, otherReadingOrder);
+			LinkedElementCollection<Reading> otherReadings = otherReadingOrder.ReadingCollection;
+			int otherReadingCount = otherReadings.Count;
+			if (otherReadingCount != 0)
+			{
+				BitTracker matchedOtherReading = new BitTracker(otherReadingCount);
+				int unmatchedOtherReadingCount = otherReadingCount;
+				foreach (Reading reading in readingOrder.ReadingCollection)
+				{
+					string matchText = reading.Text;
+					for (int k = 0; k < otherReadingCount; ++k)
 					{
-						ObjectTypeInstance[] mappedInstances = null;
-						Dictionary<ObjectTypeInstance[], int> instanceMap = null;
-						int[] duplicatedAt = null;
-						for (int i = 0; i < instanceCount; ++i)
+						if (!matchedOtherReading[k])
 						{
-							FactTypeInstance instance = instances[i];
-							foreach (FactTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
+							Reading otherReading = otherReadings[k];
+							if (matchText == otherReading.Text)
 							{
-								ObjectTypeInstance objectTypeInstance = roleInstance.ObjectTypeInstance;
-								ObjectTypeInstance otherObjectTypeInstance;
-								int roleIndex;
-								if (null != (otherObjectTypeInstance = CopyMergeUtility.GetEquivalentElement(objectTypeInstance, foreignStore, elementTracker)) &&
-									-1 != (roleIndex = roleOrder.IndexOf(roleInstance.Role)))
-								{
-									(mappedInstances ?? (mappedInstances = new ObjectTypeInstance[roleCount]))[roleIndex] = otherObjectTypeInstance;
-								}
-								else
-								{
-									mappedInstances = null;
-									break;
-								}
+								elementTracker.AddEquivalentElement(reading, otherReading);
+								matchedOtherReading[k] = true;
+								--unmatchedOtherReadingCount;
+								break;
 							}
-							if (mappedInstances != null)
+						}
+					}
+					if (unmatchedOtherReadingCount == 0)
+					{
+						break;
+					}
+				}
+			}
+		}
+		private static void MapEquivalentInstances(FactType factType, FactType otherFactType, int roleCount, IList<RoleBase> roleOrder, IList<RoleBase> otherRoleOrder, Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			LinkedElementCollection<FactTypeInstance> instances;
+			int instanceCount;
+			LinkedElementCollection<FactTypeInstance> otherInstances;
+			int otherInstanceCount;
+			if (0 != (instanceCount = (instances = factType.FactTypeInstanceCollection).Count) &&
+				0 != (otherInstanceCount = (otherInstances = otherFactType.FactTypeInstanceCollection).Count))
+			{
+				ObjectTypeInstance[] mappedInstances = null;
+				Dictionary<ObjectTypeInstance[], int> instanceMap = null;
+				int[] duplicatedAt = null;
+				for (int i = 0; i < instanceCount; ++i)
+				{
+					FactTypeInstance instance = instances[i];
+					foreach (FactTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
+					{
+						ObjectTypeInstance objectTypeInstance = roleInstance.ObjectTypeInstance;
+						ObjectTypeInstance otherObjectTypeInstance;
+						int roleIndex;
+						if (null != (otherObjectTypeInstance = CopyMergeUtility.GetEquivalentElement(objectTypeInstance, foreignStore, elementTracker)) &&
+							-1 != (roleIndex = roleOrder.IndexOf(roleInstance.Role)))
+						{
+							(mappedInstances ?? (mappedInstances = new ObjectTypeInstance[roleCount]))[roleIndex] = otherObjectTypeInstance;
+						}
+						else
+						{
+							mappedInstances = null;
+							break;
+						}
+					}
+					if (mappedInstances != null)
+					{
+						int existingIndex;
+						if (instanceMap == null)
+						{
+							instanceMap = new Dictionary<ObjectTypeInstance[], int>(ObjectTypeInstanceArrayEqualityComparer.Instance);
+							instanceMap.Add(mappedInstances, i);
+						}
+						else if (instanceMap.TryGetValue(mappedInstances, out existingIndex))
+						{
+							// Track duplicates. The duplicated at value for existing index
+							// points to the duplicate index, which points to the next duplicate, etc.
+							// Note that 0 is the default value and means 'not duplicated'.
+							if (duplicatedAt == null)
 							{
-								int existingIndex;
-								if (instanceMap == null)
-								{
-									instanceMap = new Dictionary<ObjectTypeInstance[], int>(ObjectTypeInstanceArrayEqualityComparer.Instance);
-									instanceMap.Add(mappedInstances, i);
-								}
-								else if (instanceMap.TryGetValue(mappedInstances, out existingIndex))
-								{
-									// Track duplicates. The duplicated at value for existing index
-									// points to the duplicate index, which points to the next duplicate, etc.
-									// Note that 0 is the default value and means 'not duplicated'.
-									if (duplicatedAt == null)
-									{
-										duplicatedAt = new int[instanceCount];
-									}
-									else
-									{
-										int duplicateIndex;
-										while (0 != (duplicateIndex = duplicatedAt[existingIndex]))
-										{
-											existingIndex = duplicateIndex;
-										}
-									}
-									duplicatedAt[existingIndex] = i;
-								}
-								else
-								{
-									instanceMap.Add(mappedInstances, i);
-								}
-								mappedInstances = null;
+								duplicatedAt = new int[instanceCount];
 							}
 							else
 							{
-								elementTracker.AddFailedEquivalentElement(instance);
+								int duplicateIndex;
+								while (0 != (duplicateIndex = duplicatedAt[existingIndex]))
+								{
+									existingIndex = duplicateIndex;
+								}
 							}
+							duplicatedAt[existingIndex] = i;
 						}
-						if (instanceMap != null)
+						else
 						{
-							// UNDONE: CLOSEDWORLDUNARY Closed world unary population will need
-							// to store a value for the implied boolean role, which will mean that
-							// the trivial unary role order here will fail. Currently, only the
-							// unary role is populated, so this is sufficient.
-							mappedInstances = new ObjectTypeInstance[roleCount];
-							for (int i = 0; i < otherInstanceCount; ++i)
+							instanceMap.Add(mappedInstances, i);
+						}
+						mappedInstances = null;
+					}
+					else
+					{
+						elementTracker.AddFailedEquivalentElement(instance);
+					}
+				}
+				if (instanceMap != null)
+				{
+					mappedInstances = new ObjectTypeInstance[roleCount];
+					for (int i = 0; i < otherInstanceCount; ++i)
+					{
+						FactTypeInstance otherInstance = otherInstances[i];
+						Array.Clear(mappedInstances, 0, roleCount);
+						bool matchedAll = true;
+						LinkedElementCollection<FactTypeRoleInstance> otherRoleInstances = otherInstance.RoleInstanceCollection;
+						foreach (FactTypeRoleInstance otherRoleInstance in otherRoleInstances)
+						{
+							ObjectTypeInstance objectTypeInstance = otherRoleInstance.ObjectTypeInstance;
+							int roleIndex;
+							if (-1 == (roleIndex = otherRoleOrder.IndexOf(otherRoleInstance.Role)))
 							{
-								FactTypeInstance otherInstance = otherInstances[i];
-								Array.Clear(mappedInstances, 0, roleCount);
-								bool matchedAll = true;
-								LinkedElementCollection<FactTypeRoleInstance> otherRoleInstances = otherInstance.RoleInstanceCollection;
+								matchedAll = false;
+								break;
+							}
+							mappedInstances[roleIndex] = otherRoleInstance.ObjectTypeInstance;
+						}
+						int existingIndex;
+						if (matchedAll &&
+							instanceMap.TryGetValue(mappedInstances, out existingIndex) &&
+							existingIndex != -1)
+						{
+							FactTypeInstance instance = instances[existingIndex];
+							elementTracker.AddEquivalentElement(instance, otherInstance);
+							// Role instances allow duplicates and will not bind.
+							foreach (FactTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
+							{
+								Role findRole = (Role)otherRoleOrder[roleOrder.IndexOf(roleInstance.Role)];
 								foreach (FactTypeRoleInstance otherRoleInstance in otherRoleInstances)
 								{
-									ObjectTypeInstance objectTypeInstance = otherRoleInstance.ObjectTypeInstance;
-									int roleIndex;
-									if (-1 == (roleIndex = otherRoleOrder.IndexOf(otherRoleInstance.Role)))
+									if (otherRoleInstance.Role == findRole)
 									{
-										matchedAll = false;
+										elementTracker.AddEquivalentElement(roleInstance, otherRoleInstance);
 										break;
 									}
-									mappedInstances[roleIndex] = otherRoleInstance.ObjectTypeInstance;
-								}
-								int existingIndex;
-								if (matchedAll &&
-									instanceMap.TryGetValue(mappedInstances, out existingIndex) &&
-									existingIndex != -1)
-								{
-									FactTypeInstance instance = instances[existingIndex];
-									elementTracker.AddEquivalentElement(instance, otherInstance);
-									// Role instances allow duplicates and will not bind.
-									foreach (FactTypeRoleInstance roleInstance in instance.RoleInstanceCollection)
-									{
-										Role findRole = (Role)otherRoleOrder[roleOrder.IndexOf(roleInstance.Role)];
-										foreach (FactTypeRoleInstance otherRoleInstance in otherRoleInstances)
-										{
-											if (otherRoleInstance.Role == findRole)
-											{
-												elementTracker.AddEquivalentElement(roleInstance, otherRoleInstance);
-												break;
-											}
-										}
-									}
-									if (null == duplicatedAt ||
-										0 == (existingIndex = duplicatedAt[existingIndex]))
-									{
-										existingIndex = -1;
-									}
-									instanceMap[mappedInstances] = existingIndex;
 								}
 							}
-							// Mark remaining items as unmatched
-							foreach (int index in instanceMap.Values)
+							if (null == duplicatedAt ||
+								0 == (existingIndex = duplicatedAt[existingIndex]))
 							{
-								if (index != -1)
+								existingIndex = -1;
+							}
+							instanceMap[mappedInstances] = existingIndex;
+						}
+					}
+
+					// Mark remaining items as unmatched
+					foreach (int index in instanceMap.Values)
+					{
+						if (index != -1)
+						{
+							elementTracker.AddFailedEquivalentElement(instances[index]);
+							if (duplicatedAt != null)
+							{
+								int duplicateIndex = index;
+								while (0 != (duplicateIndex = duplicatedAt[duplicateIndex]))
 								{
-									elementTracker.AddFailedEquivalentElement(instances[index]);
-									if (duplicatedAt != null)
-									{
-										int duplicateIndex = index;
-										while (0 != (duplicateIndex = duplicatedAt[duplicateIndex]))
-										{
-											elementTracker.AddFailedEquivalentElement(instances[duplicateIndex]);
-										}
-									}
+									elementTracker.AddFailedEquivalentElement(instances[duplicateIndex]);
 								}
 							}
 						}
 					}
 				}
-				return true;
 			}
-			return false;
 		}
 		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
 		{
@@ -1761,6 +1832,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			//}
 			//else
 			{
+				if (constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+				{
+					FactType positiveUnary;
+					if (null != (positiveUnary = ((MandatoryConstraint)this).ClosesUnaryFactType))
+					{
+						return null != CopyMergeUtility.GetEquivalentElement(positiveUnary, foreignStore, elementTracker) &&
+							null != elementTracker.GetEquivalentElement(this);
+					}
+				}
+
 				SetConstraint otherSetConstraint = null;
 				SetConstraint otherSetConstraintMismatchedModality = null;
 				ReadOnlyCollection<ConstraintRoleSequenceHasRole> roleLinks = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
@@ -1860,6 +1941,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
 		{
+			ExclusionConstraint exclusion;
+			FactType positiveUnary;
+			if (null != (exclusion = this as ExclusionConstraint) &&
+				null != (positiveUnary = exclusion.ControlledByUnaryFactType))
+			{
+				return null != CopyMergeUtility.GetEquivalentElement(positiveUnary, foreignStore, elementTracker) &&
+					null != elementTracker.GetEquivalentElement(this);
+			}
+
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = RoleSequenceCollection;
 			int sequenceCount = sequences.Count;
 			int roleCount; // Note that we allow jagged (arity mismatch) sequences, roleCount is retrieved per row

@@ -306,6 +306,25 @@
 	<xs:complexType name="conceptTypeChild" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="oial:identified">
+				<xs:sequence>
+					<xs:element name="negatesChild" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A concept type child that negates this element.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="oial:conceptTypeChildRef">
+									<xs:attribute name="id" use="required" type="xs:ID"/>
+									<xs:attribute name="pairIsMandatory" use="optional" type="oial:trueOnlyBoolean">
+										<xs:annotation>
+											<xs:documentation>If present, indicates that one of this child or its inverse are alethically mandatory.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
 				<xs:attribute name="isMandatory" use="optional" type="oial:trueOnlyBoolean">
 					<xs:annotation>
 						<xs:documentation>If present, indicates that this concept type child is alethicly mandatory.</xs:documentation>

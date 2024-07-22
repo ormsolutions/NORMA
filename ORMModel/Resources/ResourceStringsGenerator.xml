@@ -65,6 +65,8 @@
 	<ResourceString name="ModelModelErrorDisplayFilterDisplayDescription" model="Model" resourceName="ObjectModel.Model.ModelErrorDisplayFilterDisplay.Description"/>
 	<ResourceString name="ModelModelErrorDisplayFilterDisplayDisplayName" model="Model" resourceName="ObjectModel.Model.ModelErrorDisplayFilterDisplay.DisplayName"/>
 	<ResourceString name="ModelNameDescription" model="Model" resourceName="ObjectModel.Model.Name.Description"/>
+	<ResourceString name="FactTypeUnaryNegationDescription" model="Model" resourceName="ObjectModel.FactType.UnaryNegation.Description"/>
+	<ResourceString name="FactTypeUnaryNegationDisplayName" model="Model" resourceName="ObjectModel.FactType.UnaryNegation.DisplayName"/>
 	<ResourceString name="ObjectTypeCardinalityDisplayDescription" model="Model" resourceName="ObjectModel.ObjectType.CardinalityDisplay.Description"/>
 	<ResourceString name="ObjectTypeCardinalityDisplayDisplayName" model="Model" resourceName="ObjectModel.ObjectType.CardinalityDisplay.DisplayName"/>
 	<ResourceString name="ObjectTypeDataTypeDisplayDescription" model="Model" resourceName="ObjectModel.ObjectType.DataTypeDisplay.Description"/>
@@ -86,6 +88,8 @@
 	<ResourceString name="NestedFactTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestedFactTypePicker.NullItemText"/>
 	<ResourceString name="NestingTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestingTypePicker.NullItemText"/>
 	<ResourceString name="EntityTypeDefaultNamePattern" model="Model" resourceName="ObjectModel.EntityType.DefaultNamePattern"/>
+	<ResourceString name="DefaultValuePickerNoDefaultText" model="Model" resourceName="ObjectModel.Editors.DefaultValuePicker.NoDefaultValueText"/>
+	<ResourceString name="DefaultValuePickerContextDefaultFormat" model="Model" resourceName="ObjectModel.Editors.DefaultValuePicker.ContextDefaultValueFormat"/>
 	<ResourceString name="DataTypeExactLengthDescription" model="Model" resourceName="ObjectModel.DataType.Length.ExactLengthDescription"/>
 	<ResourceString name="DataTypePrecision" model="Model" resourceName="ObjectModel.DataType.Precision"/>
 	<ResourceString name="DataTypePrecisionDescription" model="Model" resourceName="ObjectModel.DataType.Precision.Description"/>
@@ -116,6 +120,7 @@
 	<ResourceString name="PortableDataTypeTemporalTime" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Temporal.Time.Text"/>
 	<ResourceString name="PortableDataTypeTemporalDate" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Temporal.Date.Text"/>
 	<ResourceString name="PortableDataTypeTemporalDateAndTime" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text"/>
+	<ResourceString name="PortableDataTypeLogicalTrue" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Logical.True.Text"/>
 	<ResourceString name="PortableDataTypeLogicalTrueOrFalse" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text"/>
 	<ResourceString name="PortableDataTypeLogicalYesOrNo" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text"/>
 	<ResourceString name="PortableDataTypeOtherRowId" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Other.RowId.Text"/>
@@ -232,6 +237,12 @@
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendum" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum.Compact"/>
+	<ResourceString name="ModelErrorDefaultValueMismatchCompact" model="Model" resourceName="ModelError.DefaultValueMismatchError.CompactMessage"/>
+	<ResourceString name="ModelErrorDefaultValueMismatch" model="Model" resourceName="ModelError.DefaultValueMismatchError.Message"/>
+	<ResourceString name="ModelErrorDefaultValueOutOfRangeCompact" model="Model" resourceName="ModelError.DefaultValueOutOfRangeError.CompactMessage"/>
+	<ResourceString name="ModelErrorDefaultValueOutOfRange" model="Model" resourceName="ModelError.DefaultValueOutOfRangeError.Message"/>
+	<ResourceString name="ModelErrorDefaultValueValueTypeDetachedCompact" model="Model" resourceName="ModelError.DefaultValueValueTypeDetachedError.CompactMessage"/>
+	<ResourceString name="ModelErrorDefaultValueValueTypeDetached" model="Model" resourceName="ModelError.DefaultValueValueTypeDetachedError.Message"/>
 	<ResourceString name="ModelErrorDisplayContextDynamicRule" model="Model" resourceName="ModelError.DisplayContext.DynamicRule"/>
 	<ResourceString name="ModelErrorDisplayContextFactType" model="Model" resourceName="ModelError.DisplayContext.FactType"/>
 	<ResourceString name="ModelErrorDisplayContextFactTypeRole" model="Model" resourceName="ModelError.DisplayContext.FactTypeRole"/>
@@ -293,6 +304,8 @@
 	<ResourceString name="ModelErrorValueRangeMaxValueMismatchErrorCompact" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.CompactMessage"/>
 	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Message"/>
 	<ResourceString name="ModelErrorValueRangeMinValueMismatchErrorCompact" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.CompactMessage"/>
+	<ResourceString name="ModelErrorValueRangeOutOfRangeError" model="Model" resourceName="ModelError.ValueRange.OutOfRangeError.Message"/>
+	<ResourceString name="ModelErrorValueRangeOutOfRangeErrorCompact" model="Model" resourceName="ModelError.ValueRange.OutOfRangeError.CompactMessage"/>
 	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName"/>
 	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText"/>
 	<ResourceString name="ModelExceptionPathConstantInconsistentWithBagInput" model="Model" resourceName="ModelException.CalculatedPathValueInputBindsToPathConstant.PathConstantInconsistentWithBagInput"/>
@@ -300,7 +313,6 @@
 	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text"/>
 	<ResourceString name="ModelExceptionEnforceValueTypeNotNestingType" model="Model" resourceName="ModelException.ObjectType.EnforceValueTypeNotNestingType"/>
 	<ResourceString name="ModelExceptionEnforceRolePlayerNotNestingType" model="Model" resourceName="ModelException.FactType.EnforceRolePlayerNotNestingType"/>
-	<ResourceString name="ModelExceptionFactTypeEnforceNoImplicitBooleanValueTypeRolePlayerChange" model="Model" resourceName="ModelException.FactType.EnforceNoImplicitBooleanValueTypeRolePlayerChange"/>
 	<ResourceString name="ModelExceptionFactTypeEnforceNoRoleMigration" model="Model" resourceName="ModelException.FactType.EnforceNoRoleMigration"/>
 	<ResourceString name="ModelExceptionObjectTypeEnforceIsIndependentPattern" model="Model" resourceName="ModelException.ObjectType.EnforceIsIndependentPattern"/>
 	<ResourceString name="ModelExceptionObjectTypeInstanceEnforceFixedRolePlayers" model="Model" resourceName="ModelException.ObjectTypeInstance.EnforceFixedRolePlayers"/>
@@ -369,6 +381,8 @@
 	<ResourceString name="ModelReadingEditorChangePrimaryReadingText" model="Model" resourceName="ModelReadingEditor.ChangePrimaryReadingText"/>
 	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle"/>
 	<ResourceString name="ModelReadingEditorImpliedFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.ImpliedFactTypeReadingsText"/>
+	<ResourceString name="ModelReadingEditorInverseNegationFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.InverseNegationFactTypeReadingsText"/>
+	<ResourceString name="ModelReadingEditorInversePositiveFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.InversePositiveFactTypeReadingsText"/>
 	<ResourceString name="ModelReadingEditorPrimaryFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.PrimaryFactTypeReadingsText"/>
 	<ResourceString name="ModelDescriptionWindowEmptyDisplayText" model="Model" resourceName="ModelDescriptionWindow.EmptyDisplayText"/>
 	<ResourceString name="ModelDescriptionWindowTitle" model="Model" resourceName="ModelDescriptionWindow.WindowTitle"/>
@@ -377,8 +391,10 @@
 	<ResourceString name="ModelContextWindowTitle" model="Model" resourceName="ModelContextWindow.WindowTitle"/>
 	<ResourceString name="ModelNotesWindowRootTypeNameNotesSeparatorFormatString" model="Model" resourceName="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString"/>
 	<ResourceString name="ModelReadingEditorUnsupportedSelectionText" model="Model" resourceName="ModelReadingEditor.UnsupportedSelectionText"/>
-	<ResourceString name="ModelSamplePopulationEditorNewInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.NewInstanceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorAddObjectInstanceReferenceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.AddObjectInstanceReferenceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorAddUnaryRoleInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.AddUnaryRoleInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorEditInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.EditInstanceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorNewInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.NewInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorObjectifyingIdentifierAlreadyUsedExceptionText" model="Model" resourceName="ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText"/>
 	<ResourceString name="ModelSamplePopulationEditorObjectifyingIdentifierRelationshipConflictsExceptionText" model="Model" resourceName="ModelSamplePopulationEditor.ObjectifyingIdentifierRelationshipConflictsExceptionText"/>
 	<ResourceString name="ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText" model="Model" resourceName="ModelSamplePopulationEditor.RefuseDeleteRoleInstanceExceptionText"/>
@@ -386,6 +402,7 @@
 	<ResourceString name="ModelSamplePopulationEditorRemoveFactInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveFactInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveObjectInstanceReferenceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorRemoveObjectInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveObjectInstanceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorRemoveUnaryRoleInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveUnaryRoleInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorSeparateObjectifiedInstanceIdentifierTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorEmptyDisplayText" model="Model" resourceName="ModelSamplePopulationEditor.EmptyDisplayText"/>
 	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle"/>
@@ -476,7 +493,7 @@
 	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueCompactMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.CompactMessage"/>
 	<ResourceString name="ExclusiveOrConstraint" model="Model" resourceName="ExclusiveOrConstraint.ClassName"/>
 	<ResourceString name="ExclusiveOrConstraintMandatoryConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName"/>
-	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName"/>
+	<ResourceString name="ExclusiveOrConstraintExclusionConstraintSurveyNameFormat" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraint.SurveyNameFormat"/>
 	<ResourceString name="RoleSurveyNameFormat" model="Model" resourceName="Role.SurveyNameFormat"/>
 	<ResourceString name="RoleSurveyNameMissingRolePlayer" model="Model" resourceName="Role.SurveyNameMissingRolePlayer"/>
 	<ResourceString name="SubquerySignatureFormat" model="Model" resourceName="Subquery.SignatureFormat"/>
@@ -644,11 +661,11 @@
 	<ResourceString name="SetConstraintStickyRoleTooltipFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayTooltipFormatString"/>
 	<ResourceString name="SetConstraintStickyRoleOverlapping" model="Diagram" resourceName="SetConstraintStickyRole.DisplayOverlapping"/>
 	<ResourceString name="SchemaValidationFailureInstructions" model="Model" resourceName="SchemaValidationFailure.Instructions"/>
-	<ResourceString name="ImplicitBooleanValueTypeRestriction" model="Model" resourceName="ImplicitBooleanValueType.Restriction"/>
-	<ResourceString name="ImplicitBooleanValueTypePropertyRestriction" model="Model" resourceName="ImplicitBooleanValueType.PropertyRestriction"/>
-	<ResourceString name="ImplicitBooleanValueTypeNoReadingFormatString" model="Model" resourceName="ImplicitBooleanValueType.NoReadingFormatString"/>
 	<ResourceString name="FrequencyConstraintUnboundedMaxValueText" model="Model" resourceName="FrequencyConstraint.UnboundedMaxValueText"/>
 	<ResourceString name="RoleProxyTypeName" model="ObjectModel" resourceName="ORMSolutions.ORMArchitect.Core.ObjectModel.Role.DisplayName"/>
+	<ResourceString name="UnaryFactTypeNegationDefaultFullPredicateFormat" model="Model" resourceName="UnaryFactTypeNegation.DefaultFullPredicateFormat"/>
+	<ResourceString name="UnaryFactTypeNegationDefaultPredicatePartFormat" model="Model" resourceName="UnaryFactTypeNegation.DefaultPredicatePartFormat"/>
+	<ResourceString name="UpgradeMessageDebinarizeUnary" model="Model" resourceName="UpgradeMessage.DebinarizeUnary"/>
 	<ResourceString name="ConvertFrequencyToUniquenessTransactionName" model="Model" resourceName="FrequencyConstraint.ConvertToUniquenessConstraint.TransactionName"/>
 	<ResourceString name="VerbalizationTargetHtmlReportDisplayName" model="Model" resourceName="VerbalizationTarget.HtmlReport.DisplayName"/>
 	<ResourceString name="VerbalizationTargetHtmlReportCommandName" model="Model" resourceName="VerbalizationTarget.HtmlReport.CommandName"/>

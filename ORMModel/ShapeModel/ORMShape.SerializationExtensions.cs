@@ -178,7 +178,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildElements;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -292,44 +292,46 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
-		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		private static IComparer<DomainObjectInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainObjectInfo>
 		{
-			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private readonly Dictionary<string, int> myElementOrderDictionary;
 			public CustomSortChildComparer(Store store)
 			{
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
-				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				Dictionary<string, int> elementOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(ORMDiagramHasExtensionElement.ExtensionDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				this.myRoleOrderDictionary = roleOrderDictionary;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				this.myElementOrderDictionary = elementOrderDictionary;
 			}
-			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			int IComparer<DomainObjectInfo>.Compare(DomainObjectInfo x, DomainObjectInfo y)
 			{
 				int xPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				DomainRoleInfo xRole;
+				if (!((xRole = x as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(xRole.DomainRelationship.ImplementationClass.FullName, ".", xRole.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				DomainRoleInfo yRole;
+				if (!((yRole = y as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(yRole.DomainRelationship.ImplementationClass.FullName, ".", yRole.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
-				IComparer<DomainRoleInfo> retVal = ORMDiagram.myCustomSortChildComparer;
+				IComparer<DomainObjectInfo> retVal = ORMDiagram.myCustomSortChildComparer;
 				if (null == retVal)
 				{
 					retVal = new CustomSortChildComparer(this.Store);
@@ -338,11 +340,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return retVal;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -415,7 +417,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildElements;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -490,46 +492,48 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
-		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		private static IComparer<DomainObjectInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainObjectInfo>
 		{
-			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private readonly Dictionary<string, int> myElementOrderDictionary;
 			public CustomSortChildComparer(Store store)
 			{
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
-				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				Dictionary<string, int> elementOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(ParentShapeHasRelativeChildShapes.RelativeChildShapesDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				domainRole = domainDataDirectory.FindDomainRole(ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
-				this.myRoleOrderDictionary = roleOrderDictionary;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				this.myElementOrderDictionary = elementOrderDictionary;
 			}
-			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			int IComparer<DomainObjectInfo>.Compare(DomainObjectInfo x, DomainObjectInfo y)
 			{
 				int xPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				DomainRoleInfo xRole;
+				if (!((xRole = x as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(xRole.DomainRelationship.ImplementationClass.FullName, ".", xRole.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				DomainRoleInfo yRole;
+				if (!((yRole = y as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(yRole.DomainRelationship.ImplementationClass.FullName, ".", yRole.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
-				IComparer<DomainRoleInfo> retVal = ORMBaseShape.myCustomSortChildComparer;
+				IComparer<DomainObjectInfo> retVal = ORMBaseShape.myCustomSortChildComparer;
 				if (null == retVal)
 				{
 					retVal = new CustomSortChildComparer(this.Store);
@@ -538,11 +542,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return retVal;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -898,7 +902,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildElements;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -955,7 +959,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType;
 				IList<ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase> roles;
 				bool skipReverseReading = this.DisplayReverseReading == CustomBinaryFactTypeReadingDisplay.Default;
-				if (!skipReverseReading && (null == (factType = this.AssociatedFactType) || 2 != (roles = factType.RoleCollection).Count || ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.GetUnaryRoleIndex(roles).HasValue))
+				if (!skipReverseReading && (null == (factType = this.AssociatedFactType) || 2 != (roles = factType.RoleCollection).Count))
 				{
 					skipReverseReading = true;
 				}
@@ -988,7 +992,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			if (domainPropertyInfo.Id == FactTypeShape.ConstraintDisplayPositionDomainPropertyId)
 			{
-				if (this.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
+				ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType;
+				if (this.ConstraintDisplayPosition == ConstraintDisplayPosition.Top || null != (factType = this.AssociatedFactType) && factType.UnaryPattern != ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryValuePattern.NotUnary)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1053,22 +1058,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
-		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		private static IComparer<DomainObjectInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainObjectInfo>
 		{
-			private readonly Dictionary<string, int> myRoleOrderDictionary;
-			private IComparer<DomainRoleInfo> myBaseComparer;
-			public CustomSortChildComparer(Store store, IComparer<DomainRoleInfo> baseComparer)
+			private readonly Dictionary<string, int> myElementOrderDictionary;
+			private IComparer<DomainObjectInfo> myBaseComparer;
+			public CustomSortChildComparer(Store store, IComparer<DomainObjectInfo> baseComparer)
 			{
 				this.myBaseComparer = baseComparer;
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
-				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				Dictionary<string, int> elementOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderDomainRoleId).OppositeDomainRole;
-				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				this.myRoleOrderDictionary = roleOrderDictionary;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				this.myElementOrderDictionary = elementOrderDictionary;
 			}
-			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			int IComparer<DomainObjectInfo>.Compare(DomainObjectInfo x, DomainObjectInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -1079,30 +1084,32 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 				}
 				int xPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				DomainRoleInfo xRole;
+				if (!((xRole = x as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(xRole.DomainRelationship.ImplementationClass.FullName, ".", xRole.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				DomainRoleInfo yRole;
+				if (!((yRole = y as DomainRoleInfo) != null && this.myElementOrderDictionary.TryGetValue(string.Concat(yRole.DomainRelationship.ImplementationClass.FullName, ".", yRole.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
 				return xPos.CompareTo(yPos);
 			}
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected new IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected new IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
-				IComparer<DomainRoleInfo> retVal = FactTypeShape.myCustomSortChildComparer;
+				IComparer<DomainObjectInfo> retVal = FactTypeShape.myCustomSortChildComparer;
 				if (null == retVal)
 				{
-					IComparer<DomainRoleInfo> baseComparer = null;
-					if (0 != (CustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))
+					IComparer<DomainObjectInfo> baseComparer = null;
+					if (0 != (CustomSerializedElementSupportedOperations.CustomSortChildElements & base.SupportedCustomSerializedOperations))
 					{
-						baseComparer = base.CustomSerializedChildRoleComparer;
+						baseComparer = base.CustomSerializedChildElementComparer;
 					}
 					retVal = new CustomSortChildComparer(this.Store, baseComparer);
 					FactTypeShape.myCustomSortChildComparer = retVal;
@@ -1110,11 +1117,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return retVal;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
@@ -1237,19 +1244,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
@@ -1373,19 +1380,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
-		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildElementComparer</summary>
+		protected IComparer<DomainObjectInfo> CustomSerializedChildElementComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainObjectInfo> ICustomSerializedElement.CustomSerializedChildElementComparer
 		{
 			get
 			{
-				return this.CustomSerializedChildRoleComparer;
+				return this.CustomSerializedChildElementComparer;
 			}
 		}
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>

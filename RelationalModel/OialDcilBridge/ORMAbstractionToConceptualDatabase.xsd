@@ -147,9 +147,25 @@
 		<xs:attribute name="AbstractionModel" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ColumnHasConceptTypeChildType">
+		<xs:sequence>
+			<xs:element name="InverseConceptTypeChild" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The inverse concept type child that is also stored in this column. This can be set for unary fact types that
+support negation. With unary objectification, the inverse could be an assimilation type that requires a type marker.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="Column" type="xs:IDREF" use="required"/>
 		<xs:attribute name="ConceptTypeChild" type="xs:IDREF" use="required"/>
+		<xs:attribute name="AbsorptionIndicator" type="xs:boolean" default="false" use="optional">
+			<xs:annotation>
+				<xs:documentation>This column indicates that the data row represents an instance of the absorbed type. These columns are created if there is no definitive evident elsewhere in the data (in this row or references to it) that the instance is of the absorbed type. This will be last ColumnHasConceptTypeChild entry for this column.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="DomainIsForInformationTypeFormatType">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
@@ -157,6 +173,22 @@
 		<xs:attribute name="InformationTypeFormat" type="xs:IDREF" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="TableIsForConceptTypeType">
+		<xs:sequence>
+			<xs:element name="AssimilationPath" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The assimilation path that places this concept type in this table, with references to assimilatedConceptType elements.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AssimilatedConceptType" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="ref" type="xs:IDREF"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="Table" type="xs:IDREF" use="required"/>
 		<xs:attribute name="ConceptType" type="xs:IDREF" use="required"/>

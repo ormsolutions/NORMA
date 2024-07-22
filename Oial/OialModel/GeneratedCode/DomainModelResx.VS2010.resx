@@ -173,6 +173,22 @@
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;InformationTypeFormat&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.PositiveUnaryInformationTypeFormat.Description" xml:space="preserve">
+    <value>An InformationTypeFormat representing a true value.</value>
+    <comment>Description for DomainClass &apos;PositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.PositiveUnaryInformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>PositiveUnaryInformationTypeFormat</value>
+    <comment>DisplayName for DomainClass &apos;PositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.NegativeUnaryInformationTypeFormat.Description" xml:space="preserve">
+    <value>An InformationTypeFormat representing a false value.</value>
+    <comment>Description for DomainClass &apos;NegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.NegativeUnaryInformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>PositiveUnaryInformationTypeFormat</value>
+    <comment>DisplayName for DomainClass &apos;NegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;Uniqueness&apos;</comment>
@@ -261,6 +277,70 @@
     <value>Model</value>
     <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasInformationTypeFormat&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat</value>
+    <comment>Description for DomainClass &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>Abstraction Model Has Positive Unary Information Type Format</value>
+    <comment>DisplayName for DomainClass &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/Model.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Positive Unary Information Type Format</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat.InformationTypeFormat</value>
+    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>InformationTypeFormat</value>
+    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasPositiveUnaryInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasPositiveUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat</value>
+    <comment>Description for DomainClass &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>Abstraction Model Has Negative Unary Information Type Format</value>
+    <comment>DisplayName for DomainClass &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/Model.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Negative Unary Information Type Format</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/InformationTypeFormat.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat.InformationTypeFormat</value>
+    <comment>Description for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/InformationTypeFormat.DisplayName" xml:space="preserve">
+    <value>InformationTypeFormat</value>
+    <comment>DisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasNegativeUnaryInformationTypeFormat/InformationTypeFormat.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InformationTypeFormat&apos; on DomainRelationship &apos;AbstractionModelHasNegativeUnaryInformationTypeFormat&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness</value>
     <comment>Description for DomainClass &apos;ConceptTypeHasUniqueness&apos;</comment>
@@ -340,6 +420,46 @@
   <data name="ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild/Target.PropertyDisplayName" xml:space="preserve">
     <value>Parent</value>
     <comment>PropertyDisplayName for DomainRole &apos;Target&apos; on DomainRelationship &apos;ConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild</value>
+    <comment>Description for DomainClass &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.DisplayName" xml:space="preserve">
+    <value>Inverse Concept Type Child</value>
+    <comment>DisplayName for DomainClass &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PairIsMandatory.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PairIsMandatory</value>
+    <comment>Description for DomainProperty &apos;PairIsMandatory&apos; on DomainClass &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PairIsMandatory.DisplayName" xml:space="preserve">
+    <value>PairIsMandatory</value>
+    <comment>DisplayName for DomainProperty &apos;PairIsMandatory&apos; on DomainClass &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PositiveChild.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.PositiveChild</value>
+    <comment>Description for DomainRole &apos;PositiveChild&apos; on DomainRelationship &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PositiveChild.DisplayName" xml:space="preserve">
+    <value>PositiveInverse</value>
+    <comment>DisplayName for DomainRole &apos;PositiveChild&apos; on DomainRelationship &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/PositiveChild.PropertyDisplayName" xml:space="preserve">
+    <value>Negative Inverse Child</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PositiveChild&apos; on DomainRelationship &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/NegativeChild.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild.NegativeChild</value>
+    <comment>Description for DomainRole &apos;NegativeChild&apos; on DomainRelationship &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/NegativeChild.DisplayName" xml:space="preserve">
+    <value>NegativeInverse</value>
+    <comment>DisplayName for DomainRole &apos;NegativeChild&apos; on DomainRelationship &apos;InverseConceptTypeChild&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstraction.InverseConceptTypeChild/NegativeChild.PropertyDisplayName" xml:space="preserve">
+    <value>Positive Inverse Child</value>
+    <comment>PropertyDisplayName for DomainRole &apos;NegativeChild&apos; on DomainRelationship &apos;InverseConceptTypeChild&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation</value>

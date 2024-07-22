@@ -136,13 +136,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			}
 			return retVal;
 		}
-		private static void GetMappingPatterns(RoleBase towardsRole, out MappingUniquenessPattern uniquenessPattern, out MappingMandatoryPattern mandatoryPattern)
+		private static void GetMappingPatterns(RoleBase towardsRoleBase, out MappingUniquenessPattern uniquenessPattern, out MappingMandatoryPattern mandatoryPattern)
 		{
-			Role role = towardsRole.Role;
-			GetMappingPatterns(role, role.OppositeRoleAlwaysResolveProxy.Role, out uniquenessPattern, out mandatoryPattern);
-		}
-		private static void GetMappingPatterns(Role towardsRole, Role fromRole, out MappingUniquenessPattern uniquenessPattern, out MappingMandatoryPattern mandatoryPattern)
-		{
+			Role towardsRole = towardsRoleBase.Role;
 			if (towardsRole.FactType is SubtypeFact)
 			{
 				uniquenessPattern = MappingUniquenessPattern.Subtype;
@@ -150,6 +146,16 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			}
 			else
 			{
+				RoleBase oppositeRole = towardsRole.OppositeRoleAlwaysResolveProxy;
+				if (oppositeRole == null)
+				{
+					// Unobjectified unary
+					uniquenessPattern = MappingUniquenessPattern.OneToMany;
+					mandatoryPattern = MappingMandatoryPattern.NotMandatory;
+					return;
+				}
+
+				Role fromRole = oppositeRole.Role;
 				bool towardsRoleUnique;
 				bool towardsRoleMandatory;
 				bool towardsRoleImpliedMandatory;

@@ -29,6 +29,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
@@ -45,6 +46,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private IList<RoleBase> mySelectedRoleOrder;
 			private FactType myEditFactType;
 			private ParsedFactType myParsedFactType;
+			private bool myDragShapes;
 
 			/// <summary>
 			/// Add facts to the model
@@ -55,13 +57,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="selectedReadingOrder">Non-binding currently selected reading order</param>
 			/// <param name="selectedRoleOrder">Non-binding currently selected role order that does not match and existing reading order.</param>
 			/// <param name="parsedFactType">Parsed FactType</param>
+			/// <param name="dragShapes">Click add diagram shapes instead of using auto layout</param>
 			/// <returns>The <see cref="ReadingOrder"/> that was created or modified</returns>
-			public static ReadingOrder IntegrateParsedFactType(ORMDesignerDocData docData, IORMDesignerView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType)
+			public static ReadingOrder IntegrateParsedFactType(ORMDesignerDocData docData, IORMDesignerView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType, bool dragShapes)
 			{
-				return (new FactSaver(docData, docView, selectedFactType, selectedReadingOrder, selectedRoleOrder, parsedFactType)).Go();
+				return (new FactSaver(docData, docView, selectedFactType, selectedReadingOrder, selectedRoleOrder, parsedFactType, dragShapes)).Go();
 			}
 
-			private FactSaver(ORMDesignerDocData docData, IORMDesignerView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType)
+			private FactSaver(ORMDesignerDocData docData, IORMDesignerView docView, FactType selectedFactType, ReadingOrder selectedReadingOrder, IList<RoleBase> selectedRoleOrder, ParsedFactType parsedFactType, bool dragShapes)
 			{
 				myCurrentDocView = docView;
 				myCurrentDocument = docData;
@@ -69,6 +72,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				mySelectedRoleOrder = selectedRoleOrder;
 				myEditFactType = selectedFactType;
 				myParsedFactType = parsedFactType;
+				myDragShapes = dragShapes;
 			}
 			#region NewElementTracker class
 			/// <summary>
@@ -169,7 +173,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					IORMDesignerView docView = myCurrentDocView;
 					ORMDiagram diagram = (docView != null) ? docView.CurrentDiagram as ORMDiagram : null;
-					LayoutManager layoutManager = (diagram != null) ? new LayoutManager(diagram, (diagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine))) : null;
+					LayoutManager layoutManager = (diagram != null && !myDragShapes) ? new LayoutManager(diagram, (diagram.Store as IORMToolServices).GetLayoutEngine(typeof(ORMRadialLayoutEngine))) : null;
 					NodeShape rightOfShape = null;
 
 					IORMToolServices toolServices = (IORMToolServices)store;
@@ -252,8 +256,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 											foundShape = diagram.FindShapeForElement<FactTypeShape>(nestedFactType);
 											if (foundShape != null)
 											{
-												rightOfShape = (i == 0) ? (NodeShape)foundShape : null;
-												layoutManager.AddShape(foundShape, true);
+												if (layoutManager != null)
+												{
+													rightOfShape = (i == 0) ? (NodeShape)foundShape : null;
+													layoutManager.AddShape(foundShape, true);
+												}
 											}
 											else
 											{
@@ -265,8 +272,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 											foundShape = diagram.FindShapeForElement<ObjectTypeShape>(currentObjectType);
 											if (foundShape != null)
 											{
-												rightOfShape = (i == 0) ? (NodeShape)foundShape : null;
-												layoutManager.AddShape(foundShape, true);
+												if (layoutManager != null)
+												{
+													layoutManager.AddShape(foundShape, true);
+													rightOfShape = (i == 0) ? (NodeShape)foundShape : null;
+												}
 											}
 											else
 											{
@@ -281,7 +291,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 											foundShape = diagram.FindShapeForElement<FactTypeShape>(factType);
 											if (foundShape != null)
 											{
-												layoutManager.AddShape(foundShape, true);
+												if (layoutManager != null)
+												{
+													layoutManager.AddShape(foundShape, true);
+												}
 											}
 											else
 											{
@@ -364,7 +377,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								readingText = null;
 							}
-							string reverseReadingText = (newFactArity == 2) ? myParsedFactType.ReverseReadingText : null;
+							string reverseReadingText = (newFactArity <= 2) ? myParsedFactType.ReverseReadingText : null;
 							bool deleteReverseReading = false;
 							Reading matchedReading = (readingText != null && startingFactType == null) ?
 								FindExistingReading(model, readingText, objectTypes, false) :
@@ -378,7 +391,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								FactType matchedFactType = matchedReadingOrder.FactType;
 								if (matchedReverseReading != null)
 								{
-									if (matchedReverseReading.ReadingOrder.FactType == matchedFactType)
+									if (matchedReverseReading.ReadingOrder.FactType == (newFactArity == 1 ? matchedFactType.InverseUnaryFactType : matchedFactType))
 									{
 										matchedReverseReading.Text = reverseReadingText;
 										reverseReadingText = null;
@@ -395,7 +408,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								if (matchedFactType != null)
 								{
 									matchedReading.Text = readingText;
-									tracker.Add(matchedFactType, true);
+									tracker.Add(matchedFactType, layoutManager != null || diagram.FindShapeForElement<FactTypeShape>(matchedFactType) == null);
 									readingText = null;
 									// Add in the reverse reading text
 									if (reverseReadingText != null)
@@ -408,27 +421,64 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							else if (matchedReverseReading != null)
 							{
-								// Update the reverse reading here
 								ReadingOrder matchedReadingOrder = matchedReverseReading.ReadingOrder;
 								FactType matchedFactType = matchedReadingOrder.FactType;
-								tracker.Add(matchedFactType, true);
+
+								// Update the reverse reading here
 								matchedReverseReading.Text = reverseReadingText;
 								reverseReadingText = null;
+
 								if (readingText != null)
 								{
-									// Use the matched reading order roles in reverse for the forward reading
-									LinkedElementCollection<RoleBase> readingRoles = matchedReadingOrder.RoleCollection;
-									mySelectedReadingOrder = null;
-									RoleBase[] reversedRoles = new RoleBase[readingRoles.Count];
-									readingRoles.CopyTo(reversedRoles, 0);
-									Array.Reverse(reversedRoles);
-									mySelectedRoleOrder = reversedRoles;
-									mySelectedReadingOrder = null;
-									startingFactType = matchedFactType;
+									if (newFactArity == 1)
+									{
+										FactType forwardFactType = matchedFactType.InverseUnaryFactType;
+										Role forwardUnaryRole;
+										if (forwardFactType != null)
+										{
+											forwardUnaryRole = forwardFactType.UnaryRole;
+										}
+										else
+										{
+											// With no inverse, the 'reverse' fact type must be a positive-only unary.
+											// We need to create and select the negated fact type.
+											forwardUnaryRole = matchedFactType.CreateUnaryNegationFactType();
+											forwardFactType = forwardUnaryRole.FactType;
+											switch (matchedFactType.UnaryPattern)
+											{
+												case UnaryValuePattern.NotUnary:
+												case UnaryValuePattern.OptionalWithoutNegation:
+													matchedFactType.UnaryPattern = UnaryValuePattern.OptionalWithNegation;
+													break;
+												case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+													matchedFactType.UnaryPattern = UnaryValuePattern.OptionalWithNegationDefaultTrue;
+													break;
+											}
+										}
+										mySelectedRoleOrder = new RoleBase[] { forwardUnaryRole };
+										mySelectedReadingOrder = null;
+										startingFactType = matchedFactType = forwardFactType;
+									}
+									else
+									{
+										// Use the matched reading order roles in reverse for the forward reading
+										LinkedElementCollection<RoleBase> readingRoles = matchedReadingOrder.RoleCollection;
+										RoleBase[] reversedRoles = new RoleBase[readingRoles.Count];
+										readingRoles.CopyTo(reversedRoles, 0);
+										Array.Reverse(reversedRoles);
+										mySelectedRoleOrder = reversedRoles;
+										mySelectedReadingOrder = null;
+										startingFactType = matchedFactType;
+									}
 								}
+
+								// Give a unary match the chance to switch fact types
+								tracker.Add(matchedFactType, layoutManager != null || diagram.FindShapeForElement<FactTypeShape>(matchedFactType) == null);
 							}
+
 							if (string.IsNullOrEmpty(readingText) &&
-								!(string.IsNullOrEmpty(reverseReadingText)))
+								!(string.IsNullOrEmpty(reverseReadingText)) &&
+								newFactArity == 2)
 							{
 								// Get an explicit reading order for reversing a reading so
 								// where the role players are not changed. Without the explicit
@@ -470,7 +520,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								// The reverse text is set to empty instead of null to indicate 'specified with no data'
 								// as opposed to 'not specified'. If the user enters A r/ B, then we have an empty
 								// instead of a null.
-								deleteReverseReading = reverseReadingText != null && reverseReadingText.Length == 0;
+								deleteReverseReading = reverseReadingText != null && reverseReadingText.Length == 0 && newFactArity != 1;
 							}
 
 							// Add a FactType unless there is no information other than ObjectTypes
@@ -478,6 +528,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								!string.IsNullOrEmpty(reverseReadingText) ||
 								!string.IsNullOrEmpty(readingText))
 							{
+								FactType inverseUnaryFactType = null;
+								Role inverseUnaryRole = null;
 								RoleBase[] matchedRoles = new RoleBase[newFactArity];
 
 								// Get the facttype if it exists, otherwise create a new one.
@@ -496,6 +548,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										matchedRoles[i] = role;
 									}
 									resetReadingOrders = true;
+
+									if (newFactArity == 1)
+									{
+										// Negation fact types are allowed to have no readings. We create even if A r~ is specified
+										if (reverseReadingText != null)
+										{
+											inverseUnaryFactType = (inverseUnaryRole = currentFactType.CreateUnaryNegationFactType()).FactType;
+											currentFactType.UnaryPattern = UnaryValuePattern.OptionalWithNegation;
+										}
+										else
+										{
+											currentFactType.UnaryPattern = UnaryValuePattern.OptionalWithoutNegation;
+										}
+									}
 								}
 								else
 								{
@@ -748,7 +814,47 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										}
 									}
 
-									if (!string.IsNullOrEmpty(reverseReadingText))
+									if (newFactArity == 1)
+									{
+										if (reverseReadingText != null)
+										{
+											if (inverseUnaryFactType == null)
+											{
+												if (null != (inverseUnaryFactType = currentFactType.InverseUnaryFactType))
+												{
+													inverseUnaryRole = inverseUnaryFactType.UnaryRole;
+												}
+												else
+												{
+													inverseUnaryFactType = (inverseUnaryRole = currentFactType.CreateUnaryNegationFactType()).FactType;
+													switch (currentFactType.UnaryPattern)
+													{
+														case UnaryValuePattern.NotUnary:
+														case UnaryValuePattern.OptionalWithoutNegation:
+															currentFactType.UnaryPattern = UnaryValuePattern.OptionalWithNegation;
+															break;
+														case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+															currentFactType.UnaryPattern = UnaryValuePattern.OptionalWithNegationDefaultTrue;
+															break;
+													}
+												}
+											}
+
+											if (reverseReadingText.Length == 0)
+											{
+												ReadingOrder order = inverseUnaryFactType.FindMatchingReadingOrder(new RoleBase[] { inverseUnaryRole });
+												if (order != null)
+												{
+													order.Delete();
+												}
+											}
+											else
+											{
+												SetPrimaryReading(store, inverseUnaryFactType, new RoleBase[] { inverseUnaryRole }, reverseReadingText);
+											}
+										}
+									}
+									else if (!string.IsNullOrEmpty(reverseReadingText))
 									{
 										Array.Reverse(matchedRoles);
 										SetPrimaryReading(store, currentFactType, matchedRoles, reverseReadingText);
@@ -756,14 +862,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 							}
 
-							// Attempt a layout even if there were no elements created.
-							// This will place shapes of preexisting elements on the diagram
-							tracker.BlockAllElements = false;
 							if (diagram != null && tracker.HasElements)
 							{
-								AutoLayout(diagram, layoutManager, tracker, rightOfShape);
+								if (myDragShapes)
+								{
+									DiagramClientView clientView;
+									if (tracker.HasElements && null != (clientView = docView.CurrentDesigner?.DiagramClientView))
+									{
+										FactType factType = null;
+										foreach (KeyValuePair<ModelElement, bool> element in tracker)
+										{
+											if (element.Value && null != (factType = element.Key as FactType))
+											{
+												break;
+											}
+										}
+
+										ModelElementDragAction action = factType != null ?
+											new ModelElementDragAction(diagram, factType) :
+											new ModelElementDragAction(diagram, tracker.Where(kvp => kvp.Value).Select(kvp => kvp.Key)); // This will be a set of object types
+
+										if (action.HasRemainingElements)
+										{
+											clientView.ActiveMouseAction = action;
+										}
+									}
+								}
+								else
+								{
+									// Attempt a layout even if there were no elements created.
+									// This will place shapes of preexisting elements on the diagram
+									tracker.BlockAllElements = false;
+									AutoLayout(diagram, layoutManager, tracker, rightOfShape);
+									tracker.BlockAllElements = true;
+								}
 							}
-							tracker.BlockAllElements = true;
 
 							if (t.HasPendingChanges)
 							{

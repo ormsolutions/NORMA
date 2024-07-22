@@ -229,10 +229,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					foreach (ObjectType objectType in store.ElementDirectory.FindElements<ObjectType>())
 					{
 						Objectification objectification;
-						if (objectType.IsImplicitBooleanValue ||
-							(objectType.IsIndependent && // Preliminary check before pulling objectification
+						if (objectType.IsIndependent && // Preliminary check before pulling objectification
 							null != (objectification = objectType.Objectification) &&
-							objectification.IsImplied))
+							objectification.IsImplied)
 						{
 							continue;
 						}

@@ -36,9 +36,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.OLE.Interop;
 using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
@@ -965,14 +968,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					int roleInstancesCount = roleInstances.Count;
 					if (roleCollectionCount != roleInstancesCount)
 					{
-						int? unaryRoleIndex;
-						if (!(roleCollectionCount == 2 &&
-							roleInstancesCount == 1 &&
-							(unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles)).HasValue &&
-							factRoles[unaryRoleIndex.Value].Role == roleInstances[0].Role))
-						{
-							hasError = true;
-						}
+						hasError = true;
 					}
 					else
 					{
@@ -1051,7 +1047,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					EntityTypeSubtypeInstance subtypeInstance = objectifyingInstance as EntityTypeSubtypeInstance;
 					EntityTypeInstance entityInstance = (subtypeInstance != null) ? subtypeInstance.SupertypeInstance : (EntityTypeInstance)objectifyingInstance;
-					hasError = entityInstance.RoleInstanceCollection.Count == 0;
+					hasError = entityInstance.RoleInstanceCollection.Count == 0 && entityInstance.UnaryRoleInstanceCollection.Count == 0;
 				}
 				ObjectifyingInstanceRequiredError error = this.ObjectifyingInstanceRequiredError;
 				if (hasError)
@@ -1136,29 +1132,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(ObjectTypePlaysRole)
-		/// Treat deletion of an implicit boolean role player where the role
-		/// is not deleted the same as a role add.
-		/// </summary>
-		private static void ImpliedBooleanRolePlayerDeletedRule(ElementDeletedEventArgs e)
-		{
-			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ModelElement;
-			Role role;
-			FactType factType;
-			if (link.RolePlayer.IsImplicitBooleanValue &&
-				!(role = link.PlayedRole).IsDeleted &&
-				null != (factType = role.FactType))
-			{
-				foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
-				{
-					FrameworkDomainModel.DelayValidateElement(factInstance, DelayValidateTooFewFactTypeRoleInstancesError);
-				}
-			}
-		}
-		/// <summary>
 		/// DeleteRule: typeof(FactTypeHasRole)
 		/// If a Role is removed from a FactType's role collection, it will
-		/// automatically propagate and destroy any role instances.  This rule
+		/// automatically propagate and destroy any role instances. This rule
 		/// will force deletion of any FactTypeInstances which no longer have
 		/// any FactTypeRoleInstances.
 		/// </summary>
@@ -1221,18 +1197,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				LinkedElementCollection<FactType> pidFactTypes;
 				FactType identifierFactType;
-				Role unaryRole = null;
-				ObjectifiedUnaryRole objectifiedUnaryRole = null;
 				if (pid.PreferredIdentifierFor == entityType &&
 					pid.IsInternal &&
 					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-					((identifierFactType = pidFactTypes[0]) == factType ||
-					(null != (unaryRole = factType.UnaryRole) &&
-					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-					identifierFactType == objectifiedUnaryRole.FactType)))
+					(identifierFactType = pidFactTypes[0]) == factType)
 				{
-					// Create a new EntityTypeInstance, populate it based on existing
-					// population in the FactTypeInstance, and associated it with
+					// Create a new EntityTypeInstance, populate it based on the existing
+					// population in the FactTypeInstance, and associate it with
 					// the FactTypeInstance.
 					EntityTypeInstance entityInstance = new EntityTypeInstance(factType.Partition);
 					entityInstance.EntityType = entityType;
@@ -1246,19 +1217,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							FactTypeRoleInstance factRoleInstance = roleInstances[i];
 							Role role = factRoleInstance.Role;
-							if (unaryRole != null)
+							if (pidRoles.Contains(role))
 							{
-								if (role == unaryRole)
-								{
-									new EntityTypeRoleInstance(objectifiedUnaryRole, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
-								}
-							}
-							else
-							{
-								if (pidRoles.Contains(role))
-								{
-									new EntityTypeRoleInstance(role, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
-								}
+								new EntityTypeRoleInstance(role, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
 							}
 						}
 					}
@@ -1299,32 +1260,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			UniquenessConstraint pid;
 			LinkedElementCollection<FactType> pidFactTypes;
 			FactType identifierFactType;
-			Role unaryRole = null;
-			ObjectifiedUnaryRole objectifiedUnaryRole = null;
 			if (null != (factType = factInstance.FactType) &&
 				null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance) && // Note that an EntityTypeSubtypeInstance is externally identified and has no implicit population
 				null != (entityType = entityInstance.ObjectType) &&
 				null != (pid = entityType.PreferredIdentifier) &&
 				pid.IsInternal &&
 				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-				((identifierFactType = pidFactTypes[0]) == factType ||
-				(null != (unaryRole = factType.UnaryRole) &&
-				null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-				identifierFactType == objectifiedUnaryRole.FactType)))
+				(identifierFactType = pidFactTypes[0]) == factType)
 			{
-				if (unaryRole != null)
+				if (pid.RoleCollection.Contains(role))
 				{
-					if (pid.RoleCollection.Contains(objectifiedUnaryRole))
-					{
-						entityInstance.EnsureRoleInstance(objectifiedUnaryRole, factRoleInstance.ObjectTypeInstance);
-					}
-				}
-				else
-				{
-					if (pid.RoleCollection.Contains(role))
-					{
-						entityInstance.EnsureRoleInstance(role, factRoleInstance.ObjectTypeInstance);
-					}
+					entityInstance.EnsureRoleInstance(role, factRoleInstance.ObjectTypeInstance);
 				}
 			}
 		}
@@ -1359,8 +1305,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RoleInstance linkRoleInstance = link.RoleInstance;
 					Role role = linkRoleInstance.Role; // Note that role will not be null because both steps are links
 					FactType identifierFactType;
-					Role unaryRole = null;
-					ObjectifiedUnaryRole objectifiedUnaryRole = null;
 					if (!role.IsDeleted &&
 						null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance) &&
 						null != (factType = factInstance.FactType) &&
@@ -1368,17 +1312,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						null != (pid = entityType.PreferredIdentifier) &&
 						pid.IsInternal &&
 						1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-						((identifierFactType = pidFactTypes[0]) == factType ||
-						(null != (unaryRole = factType.UnaryRole) &&
-						null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-						identifierFactType == objectifiedUnaryRole.FactType)))
+						(identifierFactType = pidFactTypes[0]) == factType)
 					{
 						LinkedElementCollection<Role> pidRoles = pid.RoleCollection;
 						EntityTypeRoleInstance roleInstance;
-						if (unaryRole != null)
-						{
-							role = objectifiedUnaryRole;
-						}
 						if (pidRoles.Contains(role) &&
 							null != (roleInstance = entityInstance.FindRoleInstance(role)) &&
 							!roleInstance.IsDeleting &&
@@ -1507,7 +1444,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected override void DelayValidateIfEmpty()
 		{
-			if (RoleInstanceCollection.Count == 0)
+			if (RoleInstanceCollection.Count == 0 && UnaryRoleInstanceCollection.Count == 0)
 			{
 				FrameworkDomainModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
 			}
@@ -1551,40 +1488,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// should be created directly only for new <see cref="EntityTypeInstance"/> elements.
 		/// </summary>
 		/// <param name="identifierRole">A role from the entity identifier to attach to</param>
-		/// <param name="instance">The instance to attach</param>
-		/// <returns>The new (or exisitng) <see cref="EntityTypeRoleInstance"/></returns>
-		public EntityTypeRoleInstance EnsureRoleInstance(Role identifierRole, ObjectTypeInstance instance)
+		/// <param name="instance">The instance to attach. Null for a unary identifier role.</param>
+		public void EnsureRoleInstance(Role identifierRole, ObjectTypeInstance instance)
 		{
-			EntityTypeRoleInstance roleInstance = FindRoleInstance(identifierRole);
-			bool sameInstance = false;
-			if (roleInstance != null)
+			if (identifierRole.FactType.UnaryPattern == UnaryValuePattern.NotUnary)
 			{
-				sameInstance = roleInstance.ObjectTypeInstance == instance;
-#if !ROLEINSTANCE_ROLEPLAYERCHANGE
+				EntityTypeRoleInstance roleInstance = FindRoleInstance(identifierRole);
+				bool sameInstance = false;
+				if (roleInstance != null)
+				{
+					sameInstance = roleInstance.ObjectTypeInstance == instance;
+	#if !ROLEINSTANCE_ROLEPLAYERCHANGE
+					if (!sameInstance)
+					{
+						roleInstance.Delete();
+					}
+	#endif // !ROLEINSTANCE_ROLEPLAYERCHANGE
+				}
+
 				if (!sameInstance)
 				{
-					roleInstance.Delete();
+	#if ROLEINSTANCE_ROLEPLAYERCHANGE
+					if (roleInstance == null)
+					{
+	#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
+						roleInstance = new EntityTypeRoleInstance(identifierRole, instance);
+						roleInstance.EntityTypeInstance = this;
+	#if ROLEINSTANCE_ROLEPLAYERCHANGE
+					}
+					else
+					{
+						roleInstance.ObjectTypeInstance = instance;
+					}
+	#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
 				}
-#endif // !ROLEINSTANCE_ROLEPLAYERCHANGE
 			}
-			if (!sameInstance)
+			else if (null == EntityTypeInstancePopulatesUnaryRole.GetLink(this, identifierRole))
 			{
-
-#if ROLEINSTANCE_ROLEPLAYERCHANGE
-				if (roleInstance == null)
-				{
-#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
-					roleInstance = new EntityTypeRoleInstance(identifierRole, instance);
-					roleInstance.EntityTypeInstance = this;
-#if ROLEINSTANCE_ROLEPLAYERCHANGE
-				}
-				else
-				{
-					roleInstance.ObjectTypeInstance = instance;
-				}
-#endif // ROLEINSTANCE_ROLEPLAYERCHANGE
+				new EntityTypeInstancePopulatesUnaryRole(this, identifierRole);
 			}
-			return roleInstance;
 		}
 		#endregion // Helper Methods
 		#region IModelErrorOwner Implementation
@@ -1651,6 +1593,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Validator callback for TooFewEntityTypeRoleInstancesError
 		/// </summary>
+		[DelayValidatePriority(2)]
 		private static void DelayValidateTooFewEntityTypeRoleInstancesError(ModelElement element)
 		{
 			(element as EntityTypeInstance).ValidateTooFewEntityTypeRoleInstancesError(null);
@@ -1667,12 +1610,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				bool hasError = false;
 				LinkedElementCollection<EntityTypeRoleInstance> roleInstances = RoleInstanceCollection;
+				LinkedElementCollection<Role> unaryRoleInstances = UnaryRoleInstanceCollection;
 				ObjectType parent = EntityType;
 				UniquenessConstraint pid;
-				if (parent != null && roleInstances != null && (pid = parent.PreferredIdentifier) != null)
+				if (parent != null && (pid = parent.PreferredIdentifier) != null)
 				{
 					int roleInstanceCount = roleInstances.Count;
-					if (roleInstanceCount == 0)
+					int unaryRoleInstanceCount = unaryRoleInstances.Count;
+					if ((roleInstanceCount + unaryRoleInstanceCount) == 0)
 					{
 						// The instance is alive so that a FactTypeInstance can be referenced
 						// via an ObjectTypeInstance and the associated ObjectificationInstance.
@@ -1724,30 +1669,77 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						LinkedElementCollection<Role> pidRoles = pid.RoleCollection;
 						int pidRoleCount = pidRoles.Count;
-						if (pidRoleCount != roleInstanceCount)
+						if (pid.IsObjectifiedPreferredIdentifier) // This indicates all roles are required, do not look at mandatory role states
 						{
-							hasError = true;
+							hasError = pidRoleCount != (roleInstanceCount + unaryRoleInstanceCount);
 						}
 						else
 						{
-							for (int i = 0; !hasError && i < pidRoleCount; ++i)
+							Predicate<Role> roleIsPopulated = testRole =>
 							{
-								bool roleMatch = false;
-								for (int j = 0; !hasError && j < roleInstanceCount; ++j)
+								if (testRole.FactType.UnaryPattern == UnaryValuePattern.NotUnary)
 								{
-									if (pidRoles[i] == roleInstances[j].Role)
+									for (int i = 0; i < roleInstanceCount; ++i)
 									{
-										roleMatch = true;
+										if (testRole == roleInstances[i].Role)
+										{
+											return true;
+										}
+									}
+								}
+								else
+								{
+									return unaryRoleInstances.IndexOf(testRole) != -1;
+								}
+								return false;
+							};
+
+							Func<Role, Role> matchIdentifierRole = mandatoryRole =>
+							{
+								Role opposite = mandatoryRole.OppositeOrUnaryRole as Role;
+								return opposite != null && pidRoles.IndexOf(opposite) != -1 ? opposite : null;
+							};
+
+							for (int i = 0; i < pidRoleCount; ++i)
+							{
+								Role pidRole = pidRoles[i];
+								if (!roleIsPopulated(pidRole))
+								{
+									Role checkMandatoryRole = pidRole.OppositeOrUnaryRole as Role;
+									if (checkMandatoryRole != null)
+									{
+										foreach (MandatoryConstraint mandatory in checkMandatoryRole.ConstraintRoleSequenceCollection.OfType<MandatoryConstraint>().Where(mc => mc.Modality == ConstraintModality.Alethic))
+										{
+											LinkedElementCollection<Role> mandatoryRoles;
+											if (mandatory.IsSimple || (mandatoryRoles = mandatory.RoleCollection).Count == 1)
+											{
+												hasError = true;
+												break;
+											}
+											else
+											{
+												if (
+													// The mandatory constraint does not have roles outside the identifier
+													!mandatoryRoles.Any(mandatoryRole => mandatoryRole != checkMandatoryRole && null == matchIdentifierRole(mandatoryRole)) &&
+													// And none of the roles in the mandatory constraint are populated
+													!mandatoryRoles.Any(mandatoryRole => mandatoryRole != checkMandatoryRole && roleIsPopulated(matchIdentifierRole(mandatoryRole)))
+												)
+												{
+													hasError = true;
+													break;
+												}
+											}
+										}
+									}
+									else
+									{
+										hasError = true;
 										break;
 									}
 								}
-								if (!roleMatch)
-								{
-									hasError = true;
-									break;
-								}
 							}
 						}
+
 						// We have at least one role, so make sure related FactTypeInstances
 						// do not have an ObjectifyingInstanceRequiredError
 						if (null == notifyAdded)
@@ -1767,6 +1759,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
+
 				TooFewEntityTypeRoleInstancesError tooFew = this.TooFewEntityTypeRoleInstancesError;
 				if (hasError)
 				{
@@ -1793,7 +1786,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Validate objectification instances for a new <see cref="Objectification"/>
 		/// </summary>
-		[DelayValidatePriority(3)] // Run after subtype instances are in validated
+		[DelayValidatePriority(5)] // Run after subtype instances are in validated
 		private static void DelayValidateObjectificationInstances(ModelElement element)
 		{
 			Objectification objectification = (Objectification)element;
@@ -1804,17 +1797,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			UniquenessConstraint pid = null;
 			LinkedElementCollection<FactType> pidFactTypes;
 			FactType identifierFactType;
-			Role unaryRole = null;
-			ObjectifiedUnaryRole objectifiedUnaryRole = null;
 			if (!deletedLink &&
 				null != (pid = entityType.ResolvedPreferredIdentifier) &&
 				pid.PreferredIdentifierFor == entityType &&
 				pid.IsInternal &&
 				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-				((identifierFactType = pidFactTypes[0]) == factType ||
-				(null != (unaryRole = factType.UnaryRole) &&
-				null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-				identifierFactType == objectifiedUnaryRole.FactType)))
+				(identifierFactType = pidFactTypes[0]) == factType)
 			{
 				// Preferred uniqueness constraint is internal to the objectified FactType,
 				// so the EntityType instances are implied
@@ -1832,33 +1820,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						entityInstance.ObjectifiedInstance = factInstance;
 
 						// Attach role instances
-						if (unaryRole != null)
+						LinkedElementCollection<FactTypeRoleInstance> roleInstances = factInstance.RoleInstanceCollection;
+						int roleInstanceCount = roleInstances.Count;
+						if (roleInstanceCount != 0)
 						{
-							FactTypeRoleInstance factRoleInstance = factInstance.FindRoleInstance(unaryRole);
-							if (factRoleInstance != null)
+							pidRoles = pidRoles ?? pid.RoleCollection;
+							for (int j = 0; j < roleInstanceCount; ++j)
 							{
-								pidRoles = pidRoles ?? pid.RoleCollection;
-								if (pidRoles.Contains(objectifiedUnaryRole))
+								FactTypeRoleInstance factRoleInstance = roleInstances[j];
+								Role role = factRoleInstance.Role;
+								if (pidRoles.Contains(role))
 								{
-									new EntityTypeRoleInstance(objectifiedUnaryRole, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
-								}
-							}
-						}
-						else
-						{
-							LinkedElementCollection<FactTypeRoleInstance> roleInstances = factInstance.RoleInstanceCollection;
-							int roleInstanceCount = roleInstances.Count;
-							if (roleInstanceCount != 0)
-							{
-								pidRoles = pidRoles ?? pid.RoleCollection;
-								for (int j = 0; j < roleInstanceCount; ++j)
-								{
-									FactTypeRoleInstance factRoleInstance = roleInstances[j];
-									Role role = factRoleInstance.Role;
-									if (pidRoles.Contains(role))
-									{
-										new EntityTypeRoleInstance(role, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
-									}
+									new EntityTypeRoleInstance(role, factRoleInstance.ObjectTypeInstance).EntityTypeInstance = entityInstance;
 								}
 							}
 						}
@@ -2170,7 +2143,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			FrameworkDomainModel.DelayValidateElement(objectification, DelayValidateObjectificationInstances);
 		}
-		[DelayValidatePriority(1)] // Needs to run after implied mandatory validation on the role players and removal of subtype instances
+		[DelayValidatePriority(3)] // Needs to run after implied mandatory validation on the role players and removal of subtype instances
 		private static void DelayValidatePreferredIdentifier(ModelElement element)
 		{
 			if (!element.IsDeleted)
@@ -2198,7 +2171,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							Role identifierRole = identifierRoles[i];
 							ObjectType identifyingObjectType = identifierRole.RolePlayer;
-							Role identifiedRole = identifierRole.OppositeRole as Role;
+							Role identifiedRole = identifierRole.OppositeOrUnaryRole as Role;
 
 							identifierRole.FactType.FactTypeInstanceCollection.Clear();
 
@@ -2380,92 +2353,194 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void PreferredIdentifierRoleAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 			UniquenessConstraint pid;
+			MandatoryConstraint mandatory;
 			ObjectType entityType;
-			if (null != (pid = link.ConstraintRoleSequence as UniquenessConstraint) &&
-				null != (entityType = pid.PreferredIdentifierFor))
+			Role newRole;
+			Role oppositeRole;
+			if (null != (pid = sequence as UniquenessConstraint))
 			{
-				// Structural check
+				if (null != (entityType = pid.PreferredIdentifierFor))
+				{
+					// Structural check
+					foreach (EntityTypeInstance entityInstance in entityType.EntityTypeInstanceCollection)
+					{
+						FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+					}
+
+					// ObjectificationInstance verification
+					FactType factType;
+					LinkedElementCollection<FactType> pidFactTypes;
+					if (null != (factType = entityType.NestedFactType) &&
+						pid.IsInternal &&
+						1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+						pidFactTypes[0] == factType)
+					{
+						newRole = link.Role;
+						bool newRoleIsUnary = newRole.FactType.UnaryPattern != UnaryValuePattern.NotUnary;
+						foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
+						{
+							EntityTypeInstance entityInstance;
+							FactTypeRoleInstance factRoleInstance;
+							if (null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance))
+							{
+								ObjectTypeInstance bindInstance = null;
+								if (newRoleIsUnary)
+								{
+									if (null != EntityTypeInstancePopulatesUnaryRole.GetLink(entityInstance, newRole))
+									{
+										continue;
+									}
+								}
+								else if (null != entityInstance.FindRoleInstance(newRole) ||
+									null == (factRoleInstance = factInstance.FindRoleInstance(newRole)))
+								{
+									continue;
+								}
+								else
+								{
+									bindInstance = factRoleInstance.ObjectTypeInstance;
+								}
+								entityInstance.EnsureRoleInstance(newRole, bindInstance);
+							}
+						}
+					}
+				}
+			}
+			else if (
+				null != (mandatory = sequence as MandatoryConstraint) &&
+				mandatory.Modality == ConstraintModality.Alethic &&
+				null != (entityType = (newRole = link.Role).RolePlayer) &&
+				null != (pid = entityType.PreferredIdentifier) &&
+				null != (oppositeRole = newRole.OppositeOrUnaryRole?.Role) &&
+				pid.RoleCollection.Contains(oppositeRole)
+			)
+			{
 				foreach (EntityTypeInstance entityInstance in entityType.EntityTypeInstanceCollection)
 				{
 					FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
-				}
-
-				// ObjectificationInstance verification
-				FactType factType;
-				LinkedElementCollection<FactType> pidFactTypes;
-				if (null != (factType = entityType.NestedFactType) &&
-					pid.IsInternal &&
-					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-					pidFactTypes[0] == factType)
-				{
-					Role newRole = link.Role;
-					foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
-					{
-						EntityTypeInstance entityInstance;
-						FactTypeRoleInstance factRoleInstance;
-						if (null != (entityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance) &&
-							null == entityInstance.FindRoleInstance(newRole) &&
-							null != (factRoleInstance = factInstance.FindRoleInstance(newRole)))
-						{
-							entityInstance.EnsureRoleInstance(newRole, factRoleInstance.ObjectTypeInstance);
-						}
-					}
 				}
 			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
 		/// If a Role is removed from an EntityType's preferred identifier collection, it will
-		/// automatically propagate and destroy any role instances.  This rule
+		/// automatically propagate and destroy any role instances. This rule
 		/// will force deletion of any EntityTypeInstances which no longer have
 		/// any EntityTypeRoleInstances.
 		/// </summary>
 		private static void PreferredIdentifierRoleDeletedRule(ElementDeletedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
-			UniquenessConstraint uniConstraint = sequence as UniquenessConstraint;
-			ObjectType parent;
-			if (uniConstraint != null && (parent = uniConstraint.PreferredIdentifierFor) != null)
+			Role removedRole = link.Role;
+			if (removedRole.IsDeleted)
 			{
-				Role removedRole = link.Role;
-				LinkedElementCollection<EntityTypeRoleInstance> roleInstances;
-				LinkedElementCollection<EntityTypeInstance> instances = parent.EntityTypeInstanceCollection;
-				EntityTypeInstance currentInstance;
-				for (int i = instances.Count - 1; i >= 0; --i)
+				return;
+			}
+			ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+			UniquenessConstraint pid;
+			MandatoryConstraint mandatory;
+			ObjectType entityType;
+			Role oppositeRole;
+			if (null != (pid = sequence as UniquenessConstraint))
+			{
+				if (null != (entityType = pid.PreferredIdentifierFor))
 				{
-					currentInstance = instances[i];
-					if (!currentInstance.IsDeleting)
+					LinkedElementCollection<EntityTypeRoleInstance> roleInstances;
+					ReadOnlyCollection<EntityTypeInstancePopulatesUnaryRole> unaryRoleInstances;
+					LinkedElementCollection<EntityTypeInstance> instances = entityType.EntityTypeInstanceCollection;
+					EntityTypeInstance currentInstance;
+					for (int i = instances.Count - 1; i >= 0; --i)
 					{
-						bool cleanUp = true;
-						roleInstances = currentInstance.RoleInstanceCollection;
-						EntityTypeRoleInstance currentRoleInstance;
-						for (int j = roleInstances.Count - 1; j >= 0; --j)
+						currentInstance = instances[i];
+						if (!currentInstance.IsDeleting)
 						{
-							currentRoleInstance = roleInstances[j];
-							if (!currentRoleInstance.IsDeleting)
+							bool cleanUp = true;
+							roleInstances = currentInstance.RoleInstanceCollection;
+							unaryRoleInstances = EntityTypeInstancePopulatesUnaryRole.GetLinksToUnaryRoleInstanceCollection(currentInstance);
+							EntityTypeRoleInstance currentRoleInstance;
+							for (int j = roleInstances.Count - 1; j >= 0; --j)
 							{
-								if (currentRoleInstance.Role == removedRole)
+								currentRoleInstance = roleInstances[j];
+								if (!currentRoleInstance.IsDeleting)
 								{
-									currentRoleInstance.Delete();
+									if (currentRoleInstance.Role == removedRole)
+									{
+										currentRoleInstance.Delete();
+									}
+									else
+									{
+										cleanUp = false;
+									}
+								}
+							}
+
+							for (int j = unaryRoleInstances.Count - 1; j >= 0; --j)
+							{
+								EntityTypeInstancePopulatesUnaryRole currentUnaryRoleInstance = unaryRoleInstances[j];
+								if (currentUnaryRoleInstance.UnaryRole == removedRole)
+								{
+									currentUnaryRoleInstance.Delete();
 								}
 								else
 								{
 									cleanUp = false;
 								}
 							}
-						}
-						if (cleanUp)
-						{
-							currentInstance.Delete();
-						}
-						else
-						{
-							FrameworkDomainModel.DelayValidateElement(currentInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+
+							if (cleanUp)
+							{
+								currentInstance.Delete();
+							}
+							else
+							{
+								FrameworkDomainModel.DelayValidateElement(currentInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+							}
 						}
 					}
 				}
+			}
+			else if (
+				null != (mandatory = sequence as MandatoryConstraint) &&
+				mandatory.Modality == ConstraintModality.Alethic &&
+				null != (oppositeRole = removedRole.OppositeOrUnaryRole?.Role) &&
+				null != (entityType = removedRole.RolePlayer) &&
+				null != (pid = entityType.PreferredIdentifier) &&
+				pid.RoleCollection.Contains(oppositeRole)
+			)
+			{
+				foreach (EntityTypeInstance entityInstance in entityType.EntityTypeInstanceCollection)
+				{
+					FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(MandatoryConstraint)
+		/// </summary>
+		private static void MandatoryModalityChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == MandatoryConstraint.ModalityDomainPropertyId)
+			{
+				foreach (Role role in ((SetConstraint)e.ModelElement)
+					.RoleCollection
+					.Select(r => r.OppositeOrUnaryRole.Role)
+					.Where(r => r != null))
+				{
+					foreach (ObjectType entityType in role.ConstraintRoleSequenceCollection.OfType<UniquenessConstraint>().Select(uniqueness => uniqueness.PreferredIdentifierFor).Where(entity => entity != null))
+					{
+						FrameworkDomainModel.DelayValidateElement(entityType, DelayValidateInstancesOfEntityType);
+					}
+				}
+			}
+		}
+		[DelayValidatePriority(1)]
+		private static void DelayValidateInstancesOfEntityType(ModelElement element)
+		{
+			foreach (EntityTypeInstance instance in ((ObjectType)element).EntityTypeInstanceCollection)
+			{
+				FrameworkDomainModel.DelayValidateElement(instance, DelayValidateTooFewEntityTypeRoleInstancesError);
 			}
 		}
 		/// <summary>
@@ -2512,7 +2587,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DeleteRule: typeof(EntityTypeInstanceHasRoleInstance), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// Revalidate the EntityTypeInstance when it loses one of its RoleInstances,
-		/// to ensure that the EntityTypeInstance is fully populated.  If the EntityTypeRoleInstance
+		/// to ensure that the EntityTypeInstance is fully populated. If the EntityTypeRoleInstance
 		/// removed is the last one, remove the parent EntityTypeInstance.
 		/// </summary>
 		private static void EntityTypeRoleInstanceDeletedRule(ElementDeletedEventArgs e)
@@ -2527,8 +2602,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				UniquenessConstraint pid = null;
 				LinkedElementCollection<FactType> pidFactTypes;
 				FactType identifierFactType;
-				Role unaryRole = null;
-				ObjectifiedUnaryRole objectifiedUnaryRole = null;
 				FactTypeRoleInstance factRoleInstance;
 				RoleInstance linkRoleInstance;
 				Role role;
@@ -2538,12 +2611,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != (pid = entityType.PreferredIdentifier) &&
 					pid.IsInternal &&
 					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-					((identifierFactType = pidFactTypes[0]) == factType ||
-					(null != (unaryRole = factType.UnaryRole) &&
-					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-					identifierFactType == objectifiedUnaryRole.FactType)) &&
+					(identifierFactType = pidFactTypes[0]) == factType &&
 					pid.RoleCollection.Contains(role = (linkRoleInstance = link.RoleInstance).Role) &&
-					null != (factRoleInstance = factInstance.FindRoleInstance((role == objectifiedUnaryRole) ? unaryRole : role)) &&
+					null != (factRoleInstance = factInstance.FindRoleInstance(role)) &&
 					factRoleInstance.ObjectTypeInstance == linkRoleInstance.ObjectTypeInstance)
 				{
 					// The instances are implied. This is allowed if the
@@ -2551,6 +2621,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// deleted, otherwise it is a direct edit of an implied pattern
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
 				}
+
 				// Defer to TooFew validation for a full check on FactTypeInstance references on empty instances
 				FrameworkDomainModel.DelayValidateElement(entityInstance, ObjectTypeInstance.DelayValidateNamePartChanged);
 				FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
@@ -2558,6 +2629,71 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!oppositeInstance.IsDeleted)
 				{
 					FrameworkDomainModel.DelayValidateElement(oppositeInstance, ObjectTypeInstance.DelayValidateInstancePopulationMandatoryError);
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(EntityTypeInstancePopulatesUnaryRole)
+		/// Ensure that every unary role instance added to an EntityTypeInstance involves a role
+		/// in the EntityType parent's PreferredIdentifier.
+		/// Also validate the EntityTypeInstance to ensure a full instance population.
+		/// </summary>
+		private static void EntityTypeUnaryRoleInstanceAddedRule(ElementAddedEventArgs e)
+		{
+			EntityTypeInstancePopulatesUnaryRole link = e.ModelElement as EntityTypeInstancePopulatesUnaryRole;
+			Role role = link.UnaryRole;
+			EntityTypeInstance entityInstance = link.EntityTypeInstance;
+			entityInstance.EnsureConsistentRoleCollections(entityInstance.EntityType, role);
+			FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+			FrameworkDomainModel.DelayValidateElement(entityInstance, ObjectTypeInstance.DelayValidateNamePartChanged);
+			FrameworkDomainModel.DelayValidateElement(link, ObjectTypeInstance.DelayValidateRemovePopulationMandatoryError);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(EntityTypeInstancePopulatesUnaryRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Revalidate the EntityTypeInstance when it loses one of its RoleInstances,
+		/// to ensure that the EntityTypeInstance is fully populated. If the EntityTypeRoleInstance
+		/// removed is the last one, remove the parent EntityTypeInstance.
+		/// </summary>
+		private static void EntityTypeUnaryRoleInstanceDeletedRule(ElementDeletedEventArgs e)
+		{
+			EntityTypeInstancePopulatesUnaryRole link = (EntityTypeInstancePopulatesUnaryRole)e.ModelElement;
+			EntityTypeInstance entityInstance = link.EntityTypeInstance;
+			if (!entityInstance.IsDeleted)
+			{
+				ObjectType entityType;
+				FactType factType;
+				FactTypeInstance factInstance;
+				UniquenessConstraint pid = null;
+				LinkedElementCollection<FactType> pidFactTypes;
+				FactType identifierFactType;
+				FactTypeRoleInstance factRoleInstance;
+				Role role = link.UnaryRole;
+				if (null != (factInstance = entityInstance.ObjectifiedInstance) &&
+					null != (factType = factInstance.FactType) &&
+					null != (entityType = entityInstance.EntityType) &&
+					null != (pid = entityType.PreferredIdentifier) &&
+					pid.IsInternal &&
+					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
+					(identifierFactType = pidFactTypes[0]) == factType &&
+					pid.RoleCollection.Contains(role) &&
+					null != (factRoleInstance = factInstance.FindRoleInstance(role)) &&
+					factRoleInstance.ObjectTypeInstance == entityInstance)
+				{
+					// The instances are implied. This is allowed if the
+					// corresponding role instance on the fact instance is
+					// deleted, otherwise it is a direct edit of an implied pattern
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
+				}
+
+				// Defer to TooFew validation for a full check on FactTypeInstance references on empty instances
+				FrameworkDomainModel.DelayValidateElement(entityInstance, ObjectTypeInstance.DelayValidateNamePartChanged);
+				FrameworkDomainModel.DelayValidateElement(entityInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+
+				// Handle checks for this as the ObjectTypeInstance
+				entityInstance.DelayValidateIfEmpty();
+				if (!role.IsDeleted)
+				{
+					FrameworkDomainModel.DelayValidateElement(role, DelayValidateRolePopulationMandatoryError);
 				}
 			}
 		}
@@ -2935,6 +3071,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								instance.InvariantValue = invariantValue;
 							}
 						}
+
+						// Regarding ObjectType.InvariantDefaultValue and Role.InvariantDefaultValue:
+						// This fixup (and ValueConstraint.InvariantValueFixupListener) were added at when InvariantValue support
+						// was first added, so the normal state was to not have an invariant value on file load for previous files.
+						// Role.DefaultValue and ObjectType.DefaultValue, on the other hand, were introduced in the same commit as
+						// the invariant forms, so we have never written a file without the paired values (when needed). Given the
+						// startup cost of calling Role.WalkDescendedValueRoles for all value types and the lack of benefit for files
+						// created by the tool, we do not attempt to backfill invariant default values in this deserialize phase.
 					}
 				}
 			}
@@ -3888,12 +4032,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					else
 					{
 						LinkedElementCollection<EntityTypeRoleInstance> entityRoleInstances = null;
+						LinkedElementCollection<Role> entityUnaryRoleInstances = null;
 						LinkedElementCollection<FactTypeRoleInstance> factRoleInstances = null;
 						int roleInstanceCount = 0;
+						int unaryRoleCount = 0;
 						if (entityInstance != null)
 						{
 							entityRoleInstances = entityInstance.RoleInstanceCollection;
 							roleInstanceCount = entityRoleInstances.Count;
+							entityUnaryRoleInstances = entityInstance.UnaryRoleInstanceCollection;
+							unaryRoleCount = entityUnaryRoleInstances.Count;
 						}
 						else if (factInstance != null)
 						{
@@ -3916,21 +4064,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							Role role = roles[i];
 							RoleInstance matchInstance = null;
+							bool unaryRole = parentObjectType != null && role.FactType.UnaryPattern != UnaryValuePattern.NotUnary;
 							if (i != 0)
 							{
 								outputText.Append(listSeparator);
 							}
-							if (roleInstanceCount != 0)
+
+							if ((roleInstanceCount + unaryRoleCount) != 0)
 							{
 								if (entityInstance != null)
 								{
-									for (int j = 0; j < roleInstanceCount; ++j)
+									if (!unaryRole)
 									{
-										EntityTypeRoleInstance instance = entityRoleInstances[j];
-										if (instance.Role == role)
+										for (int j = 0; j < roleInstanceCount; ++j)
 										{
-											matchInstance = instance;
-											break;
+											EntityTypeRoleInstance instance = entityRoleInstances[j];
+											if (instance.Role == role)
+											{
+												matchInstance = instance;
+												break;
+											}
 										}
 									}
 								}
@@ -3947,21 +4100,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							ObjectType rolePlayer = role.RolePlayer;
-							RecurseObjectTypeInstanceValue(
-								(matchInstance != null) ? matchInstance.ObjectTypeInstance : null,
-								rolePlayer,
-								false,
-								i == 0 && !outerGrouping,
-								null,
-								null,
-								ref listSeparator,
-								ref outputText,
-								formatProvider,
-								valueTextFormat,
-								valueNonTextFormat,
-								false,
-								recurseStackCheck ?? (recurseStackCheck = CreateRecursiveIdentifierStackCheck(rolePlayer, stackCheck)));
+
+							if (unaryRole)
+							{
+								outputText.Append(entityUnaryRoleInstances != null && entityUnaryRoleInstances.IndexOf(role) != -1 ? "\x2713" : blankValueText);
+							}
+							else
+							{
+								ObjectType rolePlayer = role.RolePlayer;
+								RecurseObjectTypeInstanceValue(
+									(matchInstance != null) ? matchInstance.ObjectTypeInstance : null,
+									rolePlayer,
+									false,
+									i == 0 && !outerGrouping,
+									null,
+									null,
+									ref listSeparator,
+									ref outputText,
+									formatProvider,
+									valueTextFormat,
+									valueNonTextFormat,
+									false,
+									recurseStackCheck ?? (recurseStackCheck = CreateRecursiveIdentifierStackCheck(rolePlayer, stackCheck)));
+							}
 						}
 						if (!outerGrouping)
 						{
@@ -4021,7 +4182,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Validator callback for PopulationMandatoryError
 		/// <remarks>DelayValidatePriority is set to run after implied mandatory constraint creation</remarks>
 		/// </summary>
-		[DelayValidatePriority(4)]
+		[DelayValidatePriority(6)]
 		protected static void DelayValidateInstancePopulationMandatoryError(ModelElement element)
 		{
 			(element as ObjectTypeInstance).ValidateInstancePopulationMandatoryError(null);
@@ -4144,6 +4305,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							Role currentRole = playedRoles[i];
 							ReadOnlyLinkedElementCollection<ObjectTypeInstance> currentRoleInstances = null;
+							LinkedElementCollection<EntityTypeInstance> currentUnaryRoleInstances = null;
 							ObjectType identifiedEntityType;
 							bool impliedObjectificationRole = false;
 							switch (currentRole.GetReferenceSchemePattern(out identifiedEntityType))
@@ -4161,7 +4323,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// pattern would not hold.
 									if (notifyAdded == null) // The opposite instance will be validated during load, no need to repeat
 									{
-										foreach (ConstraintRoleSequence sequence in currentRole.OppositeRole.Role.ConstraintRoleSequenceCollection)
+										foreach (ConstraintRoleSequence sequence in currentRole.OppositeOrUnaryRole.Role.ConstraintRoleSequenceCollection)
 										{
 											MandatoryConstraint constraint = sequence as MandatoryConstraint;
 											if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
@@ -4261,43 +4423,44 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 										int constraintRoleCount = constraintRoles.Count;
 										int j = 0;
-										if (!trackedInstanceType.IsImplicitBooleanValue)
+										for (; j < constraintRoleCount; ++j)
 										{
-											for (; j < constraintRoleCount; ++j)
+											Role constraintRole = constraintRoles[j];
+											SupertypeMetaRole supertypeRole = constraintRole as SupertypeMetaRole;
+											if (supertypeRole != null && ((SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier)
 											{
-												Role constraintRole = constraintRoles[j];
-												SupertypeMetaRole supertypeRole = constraintRole as SupertypeMetaRole;
-												if (supertypeRole != null && ((SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier)
+												if (null != (instanceTyper.TypedInstance(supertypeRole.OppositeRole.Role.RolePlayer)))
 												{
-													if (null != (instanceTyper.TypedInstance(supertypeRole.OppositeRole.Role.RolePlayer)))
+													break;
+												}
+											}
+											else
+											{
+												ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances;
+												LinkedElementCollection<EntityTypeInstance> unaryRoleInstances;
+												ObjectTypeInstance findInstance;
+												ObjectType roleType;
+												if (currentRole == constraintRole)
+												{
+													if (currentRoleInstances == null)
 													{
-														break;
+														currentRoleInstances = currentRole.ObjectTypeInstanceCollection;
+														currentUnaryRoleInstances = currentRole.EntityInstancesForUnary;
 													}
+													roleInstances = currentRoleInstances;
+													unaryRoleInstances = currentUnaryRoleInstances;
+													roleType = objectType;
 												}
 												else
 												{
-													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances;
-													ObjectTypeInstance findInstance;
-													ObjectType roleType;
-													if (currentRole == constraintRole)
-													{
-														if (currentRoleInstances == null)
-														{
-															currentRoleInstances = currentRole.ObjectTypeInstanceCollection;
-														}
-														roleInstances = currentRoleInstances;
-														roleType = objectType;
-													}
-													else
-													{
-														roleInstances = constraintRole.ObjectTypeInstanceCollection;
-														roleType = constraintRole.RolePlayer;
-													}
-													if (null != (findInstance = ((trackedInstanceType == roleType) ? typedInstance : instanceTyper.TypedInstance(roleType))) &&
-														roleInstances.Contains(findInstance))
-													{
-														break;
-													}
+													roleInstances = constraintRole.ObjectTypeInstanceCollection;
+													unaryRoleInstances = constraintRole.EntityInstancesForUnary;
+													roleType = constraintRole.RolePlayer;
+												}
+												if (null != (findInstance = ((trackedInstanceType == roleType) ? typedInstance : instanceTyper.TypedInstance(roleType))) &&
+													(roleInstances.Contains(findInstance) || unaryRoleInstances.Contains(findInstance)))
+												{
+													break;
 												}
 											}
 										}
@@ -4429,14 +4592,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new EntityTypeRoleInstance(identifierRole, instance).EntityTypeInstance = newInstance;
 			}
 		}
-		[DelayValidatePriority(1)]
-		private static void DelayValidateRemovePopulationMandatoryError(ModelElement element)
+		/// <summary>
+		/// See if a role instance addition change forces remove of a 
+		/// </summary>
+		/// <param name="element">A <see cref="RoleInstance"/> or <see cref="EntityTypeInstancePopulatesUnaryRole"/></param>
+		[DelayValidatePriority(3)]
+		protected static void DelayValidateRemovePopulationMandatoryError(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
-				RoleInstance roleInstance = (RoleInstance)element;
-				Role role = roleInstance.Role;
-				ObjectTypeInstance objectTypeInstance = roleInstance.ObjectTypeInstance;
+				Role role;
+				ObjectTypeInstance objectTypeInstance;
+				RoleInstance roleInstance;
+				EntityTypeInstancePopulatesUnaryRole unaryRoleInstance;
+				if (null != (roleInstance = element as RoleInstance))
+				{
+					role = roleInstance.Role;
+					objectTypeInstance = roleInstance.ObjectTypeInstance;
+				}
+				else
+				{
+					unaryRoleInstance = (EntityTypeInstancePopulatesUnaryRole)element;
+					role = unaryRoleInstance.UnaryRole;
+					objectTypeInstance = unaryRoleInstance.EntityTypeInstance;
+				}
 				foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 				{
 					MandatoryConstraint mandatory = sequence as MandatoryConstraint;
@@ -4460,7 +4639,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Validator callback for PopulationMandatoryError. Runs after the much cheaper <see cref="DelayValidateRemovePopulationMandatoryError"/>
 		/// </summary>
 		/// <remarks>Protected so that this can be triggered from subtypes.</remarks>
-		[DelayValidatePriority(4)]
+		[DelayValidatePriority(6)]
 		protected static void DelayValidateRolePopulationMandatoryError(ModelElement element)
 		{
 			Role role = (Role)element;
@@ -4488,9 +4667,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 								{
 									constraint = sequence as MandatoryConstraint;
-									if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
+									if (constraint != null)
 									{
-										if (impliedRolePopulation)
+										if (impliedRolePopulation || constraint.Modality != ConstraintModality.Alethic)
 										{
 											constraint.PopulationMandatoryErrorCollection.Clear();
 											continue;
@@ -4510,72 +4689,96 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										ObjectType trackedInstanceType = compatibleTypes[0];
 										int seenInstanceCount = 0;
 										int constraintRoleCount = 0;
-										if (!trackedInstanceType.IsImplicitBooleanValue)
+
+										// Get repeated stuff once
+										if (instancesOfType != trackedInstanceType)
 										{
-											// Get repeated stuff once
-											if (instancesOfType != trackedInstanceType)
+											instancesOfType = trackedInstanceType;
+											LinkedElementCollection<ObjectTypeInstance> instancesCollection = trackedInstanceType.ObjectTypeInstanceCollection;
+											if (0 == (instanceCount = instancesCollection.Count))
 											{
-												instancesOfType = trackedInstanceType;
-												LinkedElementCollection<ObjectTypeInstance> instancesCollection = trackedInstanceType.ObjectTypeInstanceCollection;
-												if (0 == (instanceCount = instancesCollection.Count))
-												{
-													instances = null;
-													continue;
-												}
-												instances = instancesCollection.ToArray();
-												Array.Sort<ObjectTypeInstance>(instances, comparer);
-												seenInstances = new BitTracker(instanceCount);
-											}
-											else if (instances == null)
-											{
+												instances = null;
 												continue;
 											}
-											else
-											{
-												seenInstances.Reset();
-											}
+											instances = instancesCollection.ToArray();
+											Array.Sort<ObjectTypeInstance>(instances, comparer);
+											seenInstances = new BitTracker(instanceCount);
+										}
+										else if (instances == null)
+										{
+											continue;
+										}
+										else
+										{
+											seenInstances.Reset();
+										}
 
-											// Intersect each role with the instances on the compatible role player.
-											// Note that we do not report population mandatory errors on constraints with
-											// incompatible roles.
-											constraintRoleCount = constraintRoles.Count;
-											for (int i = 0; i < constraintRoleCount && seenInstanceCount < instanceCount; ++i)
+										// Intersect each role with the instances on the compatible role player.
+										// Note that we do not report population mandatory errors on constraints with
+										// incompatible roles.
+										constraintRoleCount = constraintRoles.Count;
+										for (int i = 0; i < constraintRoleCount && seenInstanceCount < instanceCount; ++i)
+										{
+											Role currentRole = constraintRoles[i];
+											SupertypeMetaRole supertypeRole = currentRole as SupertypeMetaRole;
+											if (supertypeRole != null && ((SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier)
 											{
-												Role currentRole = constraintRoles[i];
-												SupertypeMetaRole supertypeRole = currentRole as SupertypeMetaRole;
-												if (supertypeRole != null && ((SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier)
+												foreach (EntityTypeSubtypeInstance subtypeInstance in supertypeRole.OppositeRole.Role.RolePlayer.EntityTypeSubtypeInstanceCollection)
 												{
-													foreach (EntityTypeSubtypeInstance subtypeInstance in supertypeRole.OppositeRole.Role.RolePlayer.EntityTypeSubtypeInstanceCollection)
+													InstanceTyper instanceTyper = new InstanceTyper(subtypeInstance);
+													ObjectTypeInstance findInstance;
+													int index;
+													if (null != (findInstance = instanceTyper.TypedInstance(trackedInstanceType)) &&
+														0 <= (index = Array.BinarySearch<ObjectTypeInstance>(instances, findInstance, comparer)) &&
+														!seenInstances[index])
 													{
-														InstanceTyper instanceTyper = new InstanceTyper(subtypeInstance);
-														ObjectTypeInstance findInstance;
-														int index;
-														if (null != (findInstance = instanceTyper.TypedInstance(trackedInstanceType)) &&
-															0 <= (index = Array.BinarySearch<ObjectTypeInstance>(instances, findInstance, comparer)) &&
-															!seenInstances[index])
+														++seenInstanceCount;
+														seenInstances[index] = true;
+														if (seenInstanceCount == instanceCount)
 														{
-															++seenInstanceCount;
-															seenInstances[index] = true;
-															if (seenInstanceCount == instanceCount)
-															{
-																break;
-															}
+															break;
 														}
 													}
 												}
-												else
+											}
+											else
+											{
+												ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances;
+												ObjectType differentRolePlayer;
+												roleInstances = currentRole.ObjectTypeInstanceCollection;
+												if (trackedInstanceType == (differentRolePlayer = currentRole.RolePlayer))
 												{
-													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances;
-													ObjectType differentRolePlayer;
-													roleInstances = currentRole.ObjectTypeInstanceCollection;
-													if (trackedInstanceType == (differentRolePlayer = currentRole.RolePlayer))
+													differentRolePlayer = null;
+												}
+												int roleInstanceCount = roleInstances.Count;
+												for (int j = 0; j < roleInstanceCount; ++j)
+												{
+													ObjectTypeInstance findInstance = roleInstances[j];
+													if (differentRolePlayer != null)
 													{
-														differentRolePlayer = null;
+														findInstance = new InstanceTyper(findInstance).TypedInstance(trackedInstanceType);
 													}
-													int roleInstanceCount = roleInstances.Count;
+													int index;
+													if (findInstance != null &&
+														0 <= (index = Array.BinarySearch<ObjectTypeInstance>(instances, findInstance, comparer)) &&
+														!seenInstances[index])
+													{
+														++seenInstanceCount;
+														seenInstances[index] = true;
+														if (seenInstanceCount == instanceCount)
+														{
+															break;
+														}
+													}
+												}
+
+												if (seenInstanceCount != instanceCount && currentRole.FactType.UnaryPattern != UnaryValuePattern.NotUnary)
+												{
+													LinkedElementCollection<EntityTypeInstance> unaryIdentifierInstances = currentRole.EntityInstancesForUnary;
+													roleInstanceCount = unaryIdentifierInstances.Count;
 													for (int j = 0; j < roleInstanceCount; ++j)
 													{
-														ObjectTypeInstance findInstance = roleInstances[j];
+														ObjectTypeInstance findInstance = unaryIdentifierInstances[j];
 														if (differentRolePlayer != null)
 														{
 															findInstance = new InstanceTyper(findInstance).TypedInstance(trackedInstanceType);
@@ -4664,7 +4867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							// Note that we always have an opposite role. Otherwise, the reference scheme
 							// pattern would not hold.
 							LinkedElementCollection<ObjectTypeInstance> rolePlayerInstances = null;
-							foreach (ConstraintRoleSequence sequence in role.OppositeRole.Role.ConstraintRoleSequenceCollection)
+							foreach (ConstraintRoleSequence sequence in role.OppositeOrUnaryRole.Role.ConstraintRoleSequenceCollection)
 							{
 								MandatoryConstraint constraint = sequence as MandatoryConstraint;
 								if (constraint != null)
@@ -4771,7 +4974,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RoleBase oppositeRoleBase;
 					Role oppositeRole;
 					ObjectType rolePlayer;
-					if (null != (oppositeRoleBase = link.Role.OppositeRole) &&
+					if (null != (oppositeRoleBase = link.Role.OppositeOrUnaryRole) &&
 						null != (oppositeRole = oppositeRoleBase.Role) &&
 						null != (rolePlayer = oppositeRole.RolePlayer))
 					{
@@ -4809,7 +5012,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Role oppositeRole;
 					ObjectType rolePlayer;
 					if (!(role = link.Role).IsDeleted &&
-						null != (oppositeRoleBase = role.OppositeRole) &&
+						null != (oppositeRoleBase = role.OppositeOrUnaryRole) &&
 						null != (oppositeRole = oppositeRoleBase.Role) &&
 						null != (rolePlayer = oppositeRole.RolePlayer))
 					{
@@ -5366,7 +5569,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		[DelayValidatePriority(2)] // Validate subtype instances after all other instances are in place
+		[DelayValidatePriority(4)] // Validate subtype instances after all other instances are in place
 		private static void DelayValidateSubtypeInstance(ModelElement element)
 		{
 			if (!element.IsDeleted)
@@ -5419,7 +5622,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		[DelayValidatePriority(2)] // Validate subtype instances after all other instances are in place
+		[DelayValidatePriority(4)] // Validate subtype instances after all other instances are in place
 		private static void DelayValidateSubtypeInstances(ModelElement element)
 		{
 			if (!element.IsDeleted)
@@ -5537,20 +5740,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				LinkedElementCollection<FactType> pidFactTypes;
 				FactType identifierFactType;
-				Role unaryRole;
-				ObjectifiedUnaryRole objectifiedUnaryRole;
 				if (pid.PreferredIdentifierFor == entityType && // quick check to rule out a subtype situation
 					pid.IsInternal &&
 					1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-					((identifierFactType = pidFactTypes[0]) == factType ||
-					(null != (unaryRole = factType.UnaryRole) &&
-					null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-					identifierFactType == objectifiedUnaryRole.FactType)))
+					(identifierFactType = pidFactTypes[0]) == factType)
 				{
 					// UNDONE: Better mechanism to check that this coming from the FactTypeInstance.FactTypeInstanceAddedRule,
 					// not just any rule. Note that the expense of turning this rule on/off is not worth it.
 					// A framework service allowing a rule to 'push' itself on a stack would be useful, but maintaining the
-					// statck is not worth doing arbitrarily, only for the unusual cases. This comment also applies to any
+					// stack is not worth doing arbitrarily, only for the unusual cases. This comment also applies to any
 					// other rule checking for ChangeSource.Rule.
 					if (e.ChangeSource != ChangeSource.Rule)
 					{
@@ -5892,9 +6090,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					UniquenessConstraint pid;
 					LinkedElementCollection<FactType> pidFactTypes;
 					FactType identifierFactType;
-					Role unaryRole = null;
-					ObjectifiedUnaryRole objectifiedUnaryRole = null;
-					Role findRole;
 					if (null != (factRoleInstance = link as FactTypeRoleInstance))
 					{
 						if (null != (factInstance = factRoleInstance.FactTypeInstance) &&
@@ -5904,11 +6099,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							null != (pid = entityType.PreferredIdentifier) &&
 							pid.IsInternal &&
 							1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-							((identifierFactType = pidFactTypes[0]) == factType ||
-							(null != (unaryRole = factType.UnaryRole) &&
-							null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-							identifierFactType == objectifiedUnaryRole.FactType)) &&
-							null != (entityRoleInstance = entityInstance.FindRoleInstance(((findRole = factRoleInstance.Role) == unaryRole) ? objectifiedUnaryRole : findRole)))
+							(identifierFactType = pidFactTypes[0]) == factType &&
+							null != (entityRoleInstance = entityInstance.FindRoleInstance(factRoleInstance.Role)))
 						{
 							myIsDisabled = true;
 							try
@@ -5930,10 +6122,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							null != (pid = entityType.PreferredIdentifier) &&
 							pid.IsInternal &&
 							1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-							((identifierFactType = pidFactTypes[0]) == factType ||
-							(null != (unaryRole = factType.UnaryRole) &&
-							null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-							identifierFactType == objectifiedUnaryRole.FactType)))
+							(identifierFactType = pidFactTypes[0]) == factType)
 						{
 							throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
 						}
@@ -5987,8 +6176,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			UniquenessConstraint pid;
 			LinkedElementCollection<FactType> pidFactTypes;
 			FactType identifierFactType;
-			Role unaryRole;
-			ObjectifiedUnaryRoleHasRole objectifiedUnaryLink;
 			bool factInstanceDeleting = factInstance.IsDeleting;
 			bool entityInstanceDeleting = objectInstance.IsDeleting;
 			EntityTypeInstance typedEntityInstance = null;
@@ -6005,11 +6192,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				!pidLink.IsDeleting &&
 				(pid = pidLink.PreferredIdentifier).IsInternal &&
 				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-				((identifierFactType = pidFactTypes[0]) == factType ||
-				(null != (unaryRole = factType.UnaryRole) &&
-				null != (objectifiedUnaryLink = ObjectifiedUnaryRoleHasRole.GetLinkToObjectifiedUnaryRole(unaryRole)) &&
-				!objectifiedUnaryLink.IsDeleting &&
-				identifierFactType == objectifiedUnaryLink.ObjectifiedUnaryRole.FactType)))
+				(identifierFactType = pidFactTypes[0]) == factType)
 			{
 				objectInstance.Delete();
 			}
@@ -6032,7 +6215,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (!entityInstanceDeleting)
 				{
-					if (typedEntityInstance != null && typedEntityInstance.RoleInstanceCollection.Count == 0)
+					if (typedEntityInstance != null && typedEntityInstance.RoleInstanceCollection.Count == 0 && typedEntityInstance.UnaryRoleInstanceCollection.Count == 0)
 					{
 						// The same logic applies to the other end: an empty EntityTypeInstance may need
 						// to be created so that it can be associated with a populated FactTypeInstance
@@ -6059,17 +6242,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			UniquenessConstraint pid;
 			LinkedElementCollection<FactType> pidFactTypes;
 			FactType identifierFactType;
-			Role unaryRole;
-			ObjectifiedUnaryRole objectifiedUnaryRole;
 			if (null != (factType = factInstance.FactType) &&
 				null != (entityType = objectInstance.ObjectType) &&
 				null != (pid = entityType.PreferredIdentifier) &&
 				!pid.IsInternal &&
 				1 == (pidFactTypes = pid.FactTypeCollection).Count &&
-				((identifierFactType = pidFactTypes[0]) == factType ||
-				(null != (unaryRole = factType.UnaryRole) &&
-				null != (objectifiedUnaryRole = unaryRole.ObjectifiedUnaryRole) &&
-				identifierFactType == objectifiedUnaryRole.FactType)))
+				(identifierFactType = pidFactTypes[0]) == factType)
 			{
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance);
 			}
@@ -6099,7 +6277,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationInstanceIncompleteRolePlayers);
 				}
 				EntityTypeInstance oldEntityInstance = oldObjectInstance as EntityTypeInstance;
-				if (oldEntityInstance != null && oldEntityInstance.RoleInstanceCollection.Count == 0)
+				if (oldEntityInstance != null && oldEntityInstance.RoleInstanceCollection.Count == 0 && oldEntityInstance.UnaryRoleInstanceCollection.Count == 0)
 				{
 					// See comments in ObjectificationInstanceDeletingRule
 					oldEntityInstance.Delete();
@@ -6165,10 +6343,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public readonly ObjectType IdentifyingSupertype;
 		/// <summary>
 		/// If the <see cref="FactType"/> is a link fact type implied by
-		/// objectification, then specifiy the associated <see cref="RoleProxy"/>
-		/// or <see cref="ObjectifiedUnaryRole"/>.
+		/// objectification, then specifiy the associated <see cref="RoleProxy"/>.
 		/// </summary>
-		public readonly RoleBase ImpliedProxyRole;
+		public readonly RoleProxy ImpliedProxyRole;
 		/// <summary>
 		/// If this is implied by an entity type and the identifying preferred identifier
 		/// has more than one role then set this to the identifying role in this fact type.
@@ -6186,7 +6363,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ObjectType impliedByEntityType = null;
 			ObjectType identifyingSuperType = null;
-			RoleBase impliedProxyRole = null;
+			RoleProxy impliedProxyRole = null;
 			Role identifyingRole = null;
 			IList<RoleBase> factRoles;
 			SubtypeFact subtypeFact;
@@ -6207,7 +6384,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (null != (objectification = factType.ImpliedByObjectification) &&
 					2 == (factRoles = factType.OrderedRoleCollection).Count &&
-					null != (impliedProxyRole = (RoleBase)((testRole = factRoles[0]) as RoleProxy) ?? testRole as ObjectifiedUnaryRole ?? (RoleBase)((testRole = factRoles[1]) as RoleProxy) ?? testRole as ObjectifiedUnaryRole))
+					null != (impliedProxyRole = (testRole = factRoles[0]) as RoleProxy ?? (testRole = factRoles[1]) as RoleProxy))
 				{
 					impliedByEntityType = objectification.NestingType;
 					pid = impliedByEntityType.ResolvedPreferredIdentifier;

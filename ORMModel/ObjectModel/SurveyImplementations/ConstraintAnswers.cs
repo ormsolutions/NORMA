@@ -24,6 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 using System.Windows.Forms;
 using System.Diagnostics;
 using ORMSolutions.ORMArchitect.Framework;
+using System.Runtime.CompilerServices;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -61,14 +62,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
 		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion(object contextElement)
 		{
-			return AskFactTypeDetailQuestion(contextElement);
+			return this.AskFactTypeDetailQuestion(contextElement);
 		}
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyFactTypeDetailType}.AskQuestion"/>
 		/// </summary>
-		protected static int AskFactTypeDetailQuestion(object contextElement)
+		protected int AskFactTypeDetailQuestion(object contextElement)
 		{
-			return (int)SurveyFactTypeDetailType.InternalConstraint;
+			int answer = -1;
+			switch (((IConstraint)this).ConstraintType)
+			{
+				case ConstraintType.InternalUniqueness:
+					// Group the implied internal uniqueness on a positive or negative unary with
+					// the other implied constraints. This avoids two group headers to show the constraints
+					// in the model browser. We do it for the negative form as well simply because it looks
+					// odd to group it differently the nested negation fact type.. Note that these are always
+					// deleted when a role is added to the unary, so there are no events associated with toggling
+					// the classification.
+					answer = (this.FactTypeCollection[0].UnaryPattern == UnaryValuePattern.NotUnary) ? (int)SurveyFactTypeDetailType.InternalConstraint : (int)SurveyFactTypeDetailType.ImpliedUnaryConstraint;
+					break;
+				case ConstraintType.SimpleMandatory:
+					answer = (int)SurveyFactTypeDetailType.InternalConstraint;
+					break;
+				case ConstraintType.DisjunctiveMandatory:
+					if (null != ((MandatoryConstraint)this).ClosesUnaryFactType)
+					{
+						answer = (int)SurveyFactTypeDetailType.ImpliedUnaryConstraint;
+					}
+					break;
+			}
+			return answer;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
 		#region ISurveyNode Implementation
@@ -131,12 +154,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				LinkedElementCollection<FactType> factTypes;
+				MandatoryConstraint mandatory;
+				FactType contextFactType = null;
 				if (Constraint.ConstraintIsInternal &&
 					(factTypes = FactTypeCollection).Count == 1)
 				{
-					return factTypes[0];
+					contextFactType = factTypes[0];
 				}
-				return null;
+				else if (null != (mandatory = this as MandatoryConstraint))
+				{
+					contextFactType = mandatory.ClosesUnaryFactType;
+				}
+				return contextFactType;
 			}
 		}
 		object ISurveyNodeContext.SurveyNodeContext
@@ -504,9 +533,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // ISurveyNode Implementation
 	}
-	public partial class ExclusionConstraint : ISurveyNode
+	public partial class ExclusionConstraint : ISurveyNode, IAnswerSurveyQuestion<SurveyFactTypeDetailType>
 	{
 		#region ISurveyNode Members
+		/// <summary>
+		/// Modify the survey name for a coupled exclusion constraint. This is
+		/// shown as part of a reference only--the mandatory half of the coupled
+		/// constraint is the element shown in the model browser.
+		/// </summary>
+		protected new string SurveyName
+		{
+			get
+			{
+				string name = base.Name;
+				return ExclusiveOrMandatoryConstraint != null ? string.Format(ResourceStrings.ExclusiveOrConstraintExclusionConstraintSurveyNameFormat, name) : name;
+			}
+		}
+		string ISurveyNode.SurveyName
+		{
+			get
+			{
+				return SurveyName;
+			}
+		}
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeDataObject"/>
 		/// </summary>
@@ -531,7 +580,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return SurveyNodeDataObject;
 			}
 		}
-		#endregion
+		#endregion // ISurveyNode Members
+		#region IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
+		int IAnswerSurveyQuestion<SurveyFactTypeDetailType>.AskQuestion(object contextElement)
+		{
+			return AskFactTypeDetailQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyFactTypeDetailType}.AskQuestion"/>
+		/// </summary>
+		protected static int AskFactTypeDetailQuestion(object contextElement)
+		{
+			// This is only in a fact type expansion if it is implied by a unary negation pattern
+			return (int)SurveyFactTypeDetailType.ImpliedUnaryConstraint;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyFactTypeDetailType> Implementation
 	}
 	public partial class MandatoryConstraint : ISurveyNode
 	{
@@ -547,8 +610,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				ISurveyNode exclusionNode = ExclusiveOrExclusionConstraint;
-				return exclusionNode != null ? exclusionNode.SurveyName : base.Name;
+				ExclusionConstraint exclusion = ExclusiveOrExclusionConstraint;
+				return exclusion != null ? exclusion.Name : base.Name;
 			}
 		}
 		string ISurveyNode.SurveyName
