@@ -732,6 +732,16 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			string projectItemRelPath = (new Uri(projectPath)).MakeRelativeUri(new Uri(projectItemFullPath)).ToString();
 #if VISUALSTUDIO_10_0
 			ProjectRootElement project = ProjectRootElement.TryOpen(projectPath);
+			if (project == null)
+			{
+				report(
+					// UNDONE: Localize message.
+					"This project type is not recognized by the NORMA generator. The ORMCustomTool value in the CustomTool property for this file is only supported with the classic .NET project format. Please use a project type with (.NET Framework) in the name to run the NORMA generators.",
+					ReportType.Error,
+					null
+				);
+				return;
+			}
 			ProjectItemGroupElement ormItemGroup = GetItemGroup(project, projectItemRelPath);
 #else // VISUALSTUDIO_10_0
 			Project project = Engine.GlobalEngine.GetLoadedProject(projectPath);
