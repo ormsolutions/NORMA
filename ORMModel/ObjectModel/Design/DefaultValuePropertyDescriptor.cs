@@ -40,8 +40,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 		private sealed class DefaultValueConverter : TypeConverter
 		{
-			public static TypeConverter Instance = new DefaultValueConverter();
-			private DefaultValueConverter() { }
+			private ModelElement myDescriptorInstance;
+			/// <summary>
+			/// Create a default value converter for a property descriptor
+			/// </summary>
+			/// <param name="descriptorInstance">The instance from the descriptor. Normally this would be
+			/// a singleton, but if this property descriptor is redirected context.Instance does not
+			/// match the backing object. Bind directory to the same element as the property descriptor
+			/// so other extension can redirect here.</param>
+			public DefaultValueConverter(ModelElement descriptorInstance)
+			{
+				myDescriptorInstance = descriptorInstance;
+			}
 			/// <summary>
 			/// Standard override. Allow string conversion.
 			/// </summary>
@@ -78,7 +88,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					else if (object.ReferenceEquals(value, DefaultInstance))
 					{
 						// Note that this is not a possible code path if we're targeting a value type
-						ModelElement element = EditorUtility.ResolveContextInstance(context.Instance, false) as ModelElement;
+						ModelElement element = EditorUtility.ResolveContextInstance(myDescriptorInstance ?? context.Instance, false) as ModelElement;
 						if (element != null)
 						{
 							ObjectType objectType;
@@ -435,7 +445,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			get
 			{
-				return DefaultValueConverter.Instance;
+				return new DefaultValueConverter(ModelElement);
 			}
 		}
 	}
