@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA July 2024 Readme</title>
+<title>NORMA August 2024 Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	.toggle{font-size:larger;cursor:pointer;font-family: monospace; color:rgb(97, 133, 160); display:inline; padding-right:.15em;}
@@ -35,9 +35,9 @@ function toggleDisp(sign,bodyId) {
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA July 2024 Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA August 2024 Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The July 2024 release adds support unary negation, adds <em>isSUBTYPE</em> columns to absorbed object types in the relational mapping, and allows entry of default values in the model. See detailed change notes below for general details.<br/><br/>
+The August 2024 release adds support unary negation, adds <em>isSUBTYPE</em> columns to absorbed object types in the relational mapping, and allows entry of default values in the model. See detailed change notes below for general details.<br/><br/>
 </p>
 <h2><span class="toggle" onclick="toggleDisp(this,'contents')">-</span>Contents</h2>
 <div id="contents">
@@ -70,18 +70,18 @@ The July 2024 release adds support unary negation, adds <em>isSUBTYPE</em> colum
 </div>-->
 
 <hr/>
-<h2><span class="toggle" onclick="toggleDisp(this,'jul2024')">-</span>July 2024 Changes</h2>
-<div id="jul2024">
-<div>The July 2024 release includes all modifications through git tag v1.0.50. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>. Given the complexity and implications of these changes,
-we recommend you take the time to view the overview video in the @ORMSolutions YouTube channel at <a href="https://youtu.be/5HZUjjDlFwg">Unary Negation Overview</a> and/or read the whitepaper at <a href="https://ormsolutions.com/whitepapers/NORMAJuly2024Release_UnaryNegationEtc">NORMA July 2024 Release, Unary Negation, etc.</a></div>
+<h2><span class="toggle" onclick="toggleDisp(this,'aug2024')">-</span>August 2024 Changes</h2>
+<div id="aug2024">
+<div>The August 2024 release includes all modifications through git tag v1.0.55. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>. Given the complexity and implications of these changes,
+we recommend you take the time to view the overview video in the @ORMSolutions YouTube channel at <a href="https://youtu.be/5HZUjjDlFwg">Unary Negation Overview</a> and/or read the whitepaper at <a href="https://ormsolutions.com/whitepapers/NORMAAugust2024Release_UnaryNegationEtc">NORMA August 2024 Release, Unary Negation, etc.</a></div>
 <ul>
 <li>Features:
 <ol>
-<li><a href="#Unary Negation 2024-07">Enhanced Unary Support with Explicit Negation</a>&nbsp;</li>
-<li><a href="#Default Values 2024-07">Default Value Properties</a>&nbsp;</li>
-<li><a href="#Is Subtype Columns 2024-07">Automatic isSUBTYPE Columns for Absorbed Types</a>&nbsp;</li>
-<li><a href="#Fact Editor Drag Shape 2024-07">Fact Editor Direct Shape Placement</a>&nbsp;</li>
-<li><a href="#Fact Editor Tilde 2024-07">Fact Editor Tilde (~) Support for Unary Negation</a>&nbsp;</li>
+<li><a href="#Unary Negation 2024-08">Enhanced Unary Support with Explicit Negation</a>&nbsp;</li>
+<li><a href="#Default Values 2024-08">Default Value Properties</a>&nbsp;</li>
+<li><a href="#Is Subtype Columns 2024-08">Automatic isSUBTYPE Columns for Absorbed Types</a>&nbsp;</li>
+<li><a href="#Fact Editor Drag Shape 2024-08">Fact Editor Direct Shape Placement</a>&nbsp;</li>
+<li><a href="#Fact Editor Tilde 2024-08">Fact Editor Tilde (~) Support for Unary Negation</a>&nbsp;</li>
 </ol>
 </li>
 <li>Enhancements:
@@ -810,7 +810,7 @@ ORM theory adds implied mandatory constraints for any object type that is not in
 To remedy this situation we have added the notion of an <em>inherent mandatory constraint</em>, which is defined as any mandatory constraint that would be implied if it were not explicitly specified. For mapping purposes these constraints are treated the same as an implied mandatory constraint <em>unless</em> the inherent constraint is opposite an implied constraint in a one-to-one fact type.
 Saving these constraints adds additional XML to an .ORM file which will cause a schema validation error in earlier versions of the tool, so all users should upgrade to the latest version for their Visual Studio environment or they will be forced to load with schema validation off (by holding down the shift key). There is currently no visual feedback that a mandatory constraint is considered inherent.
 </li>
-<li><a id="Unary Negation 2024-07" class="new" title="July 2024: Enhanced Unary Support with Explicit Negation">2024-07</a>&nbsp;
+<li><a id="Unary Negation 2024-08" class="new" title="August 2024: Enhanced Unary Support with Explicit Negation">2024-08</a>&nbsp;
 Unary fact types were previously binary fact types with an implied Boolean value role under the covers. This caused many issues, especially when trying to deal with the 'known false' state, which could not be attached to 
 constraints or objectified. The unary binarization has been removed. A unary fact type now only supports the <em>true</em> state unless the <em>UnaryPattern</em> property is changed to indicate that an explicit false state should also be supported, which creates a <em>second unary fact type</em> to represent the 'known false' state. While unary fact types cannot have simple mandatory constraints because this would mean the fact type is always populated (and, therefore, meaningless), the <em>pair</em> of inverse unary fact types (the positive fact type and its negation) can be disjunctively mandatory. The UnaryPattern property also enables a mandatory unary pair (with the <em>True/False</em> pattern), along with optional default values (true or false).
 <br/><br/>
@@ -820,7 +820,7 @@ The minus sign is used for the negation fact type if the shape is shown. The neg
 <br/><br/>
 Old-style unary fact types will transform on load. This is transition is unidirectional, so saving your models will make them incompatible with earlier NORMA versions. The import keeps the <em>True/False/Unspecified</em> UnaryPattern, which relationally maps the same as the previous binarized unary structure. You should review the unary fact types in the model-these are easy to spot in the Model Browser <em>Fact Types</em> list-and set the UnaryPattern accordingly. If you do not want explicit <em>false</em> support, just change the UnaryPattern property to <em>True/Unspecified</em>.
 </li>
-<li><a id="Default Values 2024-07" class="new" title="July 2024: Default Value Properties">2024-07</a>&nbsp;
+<li><a id="Default Values 2024-08" class="new" title="August 2024: Default Value Properties">2024-08</a>&nbsp;
 Any role with a role player ultimately identified by a single value now supports a <em>DefaultValue</em> property. This maps to a column default value in the relational mapping. However, default values cannot be generated for absorbed object types (subtypes, etc.) because this would make every new row of the supertype to automatically have data for a subtype with declared defaults. If the defaults are important on the subtype then place it in a separate table.
 <br/><br/>
 A default value must be parsable by the context data type and satisfy all context value constraints. A default can be specified on the value type itself, but this serves only as a contextual default for the attached roles (there is no affect on generated artifacts). A role with a contextual default value gets that default if another is not specified. The role can also be modified to hide a context default by choosing the <em>&lt;No Default Value&gt;</em> entry in the dropdown for the DefaultValue property.
@@ -882,7 +882,7 @@ Custom reference modes (available in the <em>ORM Reference Mode Editor</em> tool
 <li>Entering one or more ObjectType names in the Fact Editor, including the trailing () to indicate a ValueType or (.id) for a simple reference scheme, will add just the ObjectTypes as long as text is not specified between any of the ObjectType names. So 'Person(.id) Car(.code) PersonName()' followed by Control-Enter will add two EntityTypes and one ValueType to the model.</li>
 <li><a id="FactEditor Inverse Readings 2009-01" class="new" title="January 2009 CTP: Fact Editor inverse readings">2009-01</a>&nbsp;
 Selecting a binary FactType with an inverse reading only will display the inverse reading in the Fact Editor using a forward slash before the reading text. <em>A /s B</em> indicates an inverse reading, but no forward reading, for the selected order {A,B} order. This allows you to see an existing inverse reading without changing your selection, and to enter an inverse reading without a forward reading. If you leave a leading or trailing forward slash and a reading exists for that direction then the reading will be deleted. For example, changing <em>A r/s B</em> to <em>A r/ B</em> will remove the inverse <em>s</em> reading. However, changing to <em>A rr B</em> will modify the forward reading without touching the inverse reading.</li>
-<li><a id="Fact Editor Drag Shape 2024-07" class="new" title="July 2024: Fact Editor Direct Shape Placement">2024-07</a>&nbsp;
+<li><a id="Fact Editor Drag Shape 2024-08" class="new" title="August 2024: Fact Editor Direct Shape Placement">2024-08</a>&nbsp;
 The Fact Editor has always committed the line with Ctrl-Enter, which automatically placed the fact type on the diagram. Finding and properly placing the fact type could be cumbersome on complex diagrams. The Alt-Enter command is added to make the new fact type a drag source that can be directly placed on the diagram. A few notes:
 <ul>
 <li>There is a new toolbar on the left edge of the fact editor with one button for each command. If you focus the fact editor, then a mouse hover over the buttons will also remind you of the shortcuts.</li>
@@ -890,7 +890,7 @@ The Fact Editor has always committed the line with Ctrl-Enter, which automatical
 <li>A fact type will drop with just the fact type, not attached role players. If the role players are not already on the diagram, simply drag a role box and drop it on the diagram to create shapes for the object types.</li>
 <li>If the fact editor sees only object type names (space delimited) where all names have a lead capital letter, then it will ensure each of those object types exist--and add a shape for each if the use commits with Ctrl-Enter. With Alt-Enter, each object type will be given one click in the drag operation, which will clear when all object types have been clicked onto the diagram.</li>
 </ul></li>
-<li><a id="Fact Editor Tilde 2024-07" class="new" title="Fact Editor Tilde (~) Support for Unary Negation">2024-07</a>&nbsp;
+<li><a id="Fact Editor Tilde 2024-08" class="new" title="Fact Editor Tilde (~) Support for Unary Negation">2024-08</a>&nbsp;
 The Fact Editor can force a unary negation and add a reading for the negation. The chosen separator character is the tilde (~), which works similarly to the forward slash (/) for reverse binary readings. The text inside the ~ is for the selected unary (assumed to be positive if no fact type is currently selected), and text outside ~ is associated with the negation reading. ~ can appear before or after the inverse readings. Some examples:
 <ul>
 <li>Create a unary with negation support but no explicit reading on the negation:&nbsp;<em>Action is allowed~</em></li>
@@ -1208,7 +1208,7 @@ Prior to this release, the native data types (see previous item) mapped all of t
 In the past if a user chose to absorb a subtype (or other structurally similar 1-1 where absorption is offered) then NORMA would proceed with the absorption even if no columns remained for the subtype in the absorbing table. Now, the choice to absorb is treated as a suggestion that is only respected if evidence (at least one produced column) of the absorbed subtype exists in the supertype's table. Otherwise this is ignored. This change will be applied on load.</li>
 <li><a id="Oracle IDENTITY 2023-03" class="new" title="March 2023: IDENTITY support for Oracle">2023-03</a>&nbsp;
 Oracle added support for native IDENTITY columns in version 12c. All prior version are past end-of-life, so this is always generated in the Oracle DDL.</li>
-<li><a id="Is Subtype Columns 2024-07" class="new" title="July 2024: Automatic isSUBTYPE Columns for Absorbed Types">2024-07</a>&nbsp;
+<li><a id="Is Subtype Columns 2024-08" class="new" title="August 2024: Automatic isSUBTYPE Columns for Absorbed Types">2024-08</a>&nbsp;
 If a subtype is absorbed into a relational table (instead of separated into its own table) and the subtype has no mandatory roles (including no played roles), then we will now generate a column with the name <em>isSUBTYPE</em>, where SUBTYPE is based on the name of the absorbed object type (possibly adjusted to satisfy name generation settings). This allows all subtypes to be definitively asserted if the subtype state cannot be inferred from other data.
 <br/><br/>
 This pattern is also applied to other absorbed objects. For example, an objectified unary fact type will absorbed just like a subtype, except that the column naming will be based on the unary fact type readings instead of the object type name. This means that if the unary objectification itself plays roles with an explicit or implied mandatory constraint, then the data column for the unary itself will not be mapped. This makes the mapping for objectified unary fact types and subtypes highly consistent. As noted in the whitepaper and video linked for this change, the main different here is that the objectified unary fact type can be independent. In this case, the extra column will be produced if <em>IsIndependent</em> is false (or if there are no roles). This differs from the subtype, which cannot be independent. Therefore, all subtypes that do not play any explicit mandatory roles will have an isSUBTYPE column.</li>
