@@ -661,7 +661,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			private static void DelayValidateAbsorptionIndicator(ModelElement element)
 			{
 				ConceptTypeAssimilatesConceptType assimilation = (ConceptTypeAssimilatesConceptType)element;
-				// Note that a absorption choice change triggers regeneration, so we do not need to verify that
+				// Note that an absorption choice change triggers regeneration, so we do not need to verify that
 				// this is still absorbed.
 				bool isSelfEvident = AssimilationMapping.AssimilationIsSelfEvident(assimilation) == AssimilationMapping.AssimilationEvidence.MandatoryEvidence;
 				InverseConceptTypeChild inverseChildLink = null;
@@ -896,6 +896,109 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				if (e.DomainProperty.Id == ORMCore.SetConstraint.ModalityDomainPropertyId)
 				{
 					DelayValidateAbsorptionIndicator((ORMCore.MandatoryConstraint)e.ModelElement);
+				}
+			}
+			/// <summary>
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule)
+			/// </summary>
+			private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+			{
+				ORMCore.FactType factType = ((ORMCore.FactTypeHasDerivationRule)e.ModelElement).FactType;
+				ORMCore.ObjectType objectifyingType = factType.NestingType;
+				if (objectifyingType != null)
+				{
+					foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(objectifyingType))
+					{
+						foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+						{
+							FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule)
+			/// </summary>
+			private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				Guid propertyId = e.DomainProperty.Id;
+				ORMCore.ObjectType objectifyingType;
+				if ((propertyId == ORMCore.FactTypeDerivationRule.DerivationCompletenessDomainPropertyId || propertyId == ORMCore.FactTypeDerivationRule.DerivationStorageDomainPropertyId) &&
+					null != (objectifyingType = ((ORMCore.FactTypeDerivationRule)e.ModelElement)?.FactType?.NestingType))
+				{
+					foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(objectifyingType))
+					{
+						foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+						{
+							FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule)
+			/// </summary>
+			private static void FactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+			{
+				ORMCore.FactType factType = ((ORMCore.FactTypeHasDerivationRule)e.ModelElement).FactType;
+				ORMCore.ObjectType objectifyingType;
+				if (!factType.IsDeleted &&
+					null != (objectifyingType = factType.NestingType))
+				{
+					foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(objectifyingType))
+					{
+						foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+						{
+							FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule)
+			/// </summary>
+			private static void SubtypeDerivationRuleAddedRule(ElementAddedEventArgs e)
+			{
+				foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(((ORMCore.SubtypeHasDerivationRule)e.ModelElement).Subtype))
+				{
+					foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+					{
+						FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+					}
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule)
+			/// </summary>
+			private static void SubtypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				Guid propertyId = e.DomainProperty.Id;
+				if (propertyId == ORMCore.SubtypeDerivationRule.DerivationCompletenessDomainPropertyId || propertyId == ORMCore.SubtypeDerivationRule.DerivationStorageDomainPropertyId)
+				{
+					foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(((ORMCore.SubtypeDerivationRule)e.ModelElement).Subtype))
+					{
+						foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+						{
+							FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule)
+			/// </summary>
+			private static void SubtypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+			{
+				ORMCore.ObjectType subtype = ((ORMCore.SubtypeHasDerivationRule)e.ModelElement).Subtype;
+				if (!subtype.IsDeleted)
+				{
+					foreach (ConceptTypeAssimilatesConceptType assimilation in AbsorbedAssimilationsFromObjectType(subtype))
+					{
+						foreach (Table table in TableIsAlsoForConceptType.GetTable(assimilation.AssimilatedConceptType))
+						{
+							FrameworkDomainModel.DelayValidateElementPair(assimilation, table, DelayValidateAbsorptionIndicator);
+						}
+					}
 				}
 			}
 			/// <summary>

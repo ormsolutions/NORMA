@@ -68,6 +68,15 @@
 			<arg:ChangeRule methodName="DefaultReferenceModeNamingChangedRule">
 				<arg:RuleOn targetType="RelationalDefaultReferenceModeNaming"/>
 			</arg:ChangeRule>
+			<arg:AddRule methodName="FactTypeDerivationRuleAddedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="FactTypeDerivationRuleChangedRule">
+				<arg:RuleOn targetType="FactTypeDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="FactTypeDerivationRuleDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="FactTypeNameChangedRule">
 				<arg:RuleOn targetType="FactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
@@ -123,6 +132,15 @@
 			<arg:ChangeRule methodName="SchemaChangedRule">
 				<arg:RuleOn targetType="Schema" targetTypeQualifier="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
 			</arg:ChangeRule>
+			<arg:AddRule methodName="SubtypeDerivationRuleAddedRule">
+				<arg:RuleOn targetType="SubtypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="SubtypeDerivationRuleChangedRule">
+				<arg:RuleOn targetType="SubtypeDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="SubtypeDerivationRuleDeletedRule">
+				<arg:RuleOn targetType="SubtypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="TableChangedRule">
 				<arg:RuleOn targetType="Table" targetTypeQualifier="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
 			</arg:ChangeRule>

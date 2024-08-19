@@ -194,6 +194,49 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			bool seenMandatory = false; // A mandatory means the state of the assimilation can be deduced with out additional data
 			bool seenData = false;
 
+			// Do a preliminary check on derived state. This can be a derived subtype or an objectification.
+			// Note that there is no implied objectification for a fully derived fact type, fact types that are
+			// not explicitly marked as partially derived are not known to be well-formed so are ignored even
+			// if they are stored (unless the derivation rule is external, in which case objectification is again
+			// implied and a stored fact type will not be filtered). However, in the two cases we're checking
+			// derivation as a prerequisite (derived subtype and objectification of a derived fact type), we
+			// know that the implicit objectification is in place, so we can always check the storage state.
+			ObjectType assimilatedObjectType = ConceptTypeIsForObjectType.GetObjectType(assimilatedConceptType);
+			if (assimilatedObjectType != null)
+			{
+				FactType objectifiedFactType;
+				if (assimilation.RefersToSubtype)
+				{
+					SubtypeDerivationRule derivationRule = assimilatedObjectType.DerivationRule;
+					if (derivationRule != null && 
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						derivationRule.DerivationStorage == DerivationStorage.NotStored)
+					{
+						// This return is not obvious. What a fully derived state is saying is that the
+						// subtype can be determined from the supertype state (with no additional help from the subtype).
+						// This behaves the same as claiming that there is additional mandatory evidence in the subtype
+						// state that can be used to infer the subtype. Note that this can result in no column evidence
+						// for a fully derived subtype that plays no roles, which is intentional.
+						return AssimilationEvidence.MandatoryEvidence;
+					}
+				}
+				else if (null != (objectifiedFactType = assimilatedObjectType.Objectification?.NestedFactType))
+				{
+					FactTypeDerivationRule derivationRule = objectifiedFactType.DerivationRule as FactTypeDerivationRule;
+					if (derivationRule != null &&
+						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+						derivationRule.DerivationStorage == DerivationStorage.NotStored)
+					{
+						// This return is not obvious. What a fully derived state is saying is that the
+						// subtype can be determined from the supertype state (with no additional help from the subtype).
+						// This behaves the same as claiming that there is additional mandatory evidence in the subtype
+						// state that can be used to infer the subtype. Note that this can result in no column evidence
+						// for a fully derived subtype that plays no roles, which is intentional.
+						return AssimilationEvidence.MandatoryEvidence;
+					}
+				}
+			}
+
 			Dictionary<ConstraintRoleSequenceHasRole, MandatoryConstraint> constrainedRoleToMandatory = null; // Map unseen role to constraint, or null if we've already seen this one.
 			Dictionary<MandatoryConstraint, int> unseenRolesByMandatory = null; // Track the number of unseen roles by mandatory constraint. When one of these gets to zero we know there is at least one mandatory.
 			Func<Role, bool> completesDisjunctiveMandatoryConstraint = verifyRole =>

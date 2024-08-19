@@ -645,6 +645,24 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 								if ((decorate && decorateWithPredicateText) || (isUnary && string.IsNullOrEmpty(explicitFarRoleName)))
 								{
 									readingOrders = factType.ReadingOrderCollection;
+
+									if (isUnary && readingOrders.Count == 0 && (stepFlags & (ColumnPathStepFlags.NegativeUnary | ColumnPathStepFlags.InvertibleUnary)) == ColumnPathStepFlags.NegativeUnary)
+									{
+										// We have an unpaired unary negation mapped without a name. This is highly unusual because the name is required
+										// for situations that naturally unpair, like objectification of either form. However, if the positive form does
+										// not clear the filter then it is possible to bypass the name requirement. For example, if the positive unary
+										// is derived but not the negation. This is very much an edge case, but is better than ending up with COLUMN as
+										// the column name.
+										Role positiveUnaryRole = factType.PositiveUnaryFactType?.UnaryRole;
+										if (positiveUnaryRole != null)
+										{
+											nearRole = farRole = positiveUnaryRole;
+											factType = nearRole.FactType;
+											factTypeRoles = factType.RoleCollection;
+											readingOrders = factType.ReadingOrderCollection;
+											addPart(new NamePart("not"), null);
+										}
+									}
 									reading = factType.GetMatchingReading(readingOrders, null, nearRole, null, factTypeRoles, MatchingReadingOptions.NoFrontText | (isUnary ? MatchingReadingOptions.AllowAnyOrder : MatchingReadingOptions.None));
 								}
 								lastStepConsumedNextNode = false;

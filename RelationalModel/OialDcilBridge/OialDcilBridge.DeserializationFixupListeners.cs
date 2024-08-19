@@ -47,7 +47,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// The algorithm version written to the file for the core algorithm
 		/// </summary>
-		public const string CurrentCoreAlgorithmVersion = "1.006";
+		public const string CurrentCoreAlgorithmVersion = "1.007";
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
