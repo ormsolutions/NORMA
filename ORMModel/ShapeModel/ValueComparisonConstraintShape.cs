@@ -69,6 +69,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					penSettings.DashStyle = DashStyle.Dot;
 					retVal.OverridePen(ORMDiagram.StickyBackgroundResource, penSettings);
 					retVal.OverridePen(DiagramPens.ShapeOutline, penSettings);
+					penSettings.DashStyle = DashStyle.Solid;
+					penSettings.Width = 1 / 72f;
+					penSettings.StartCap = LineCap.Square;
+					penSettings.EndCap = LineCap.Square;
+					retVal.OverridePen(OperatorResource, penSettings);
 					myDeonticClassStyleSet = retVal;
 				}
 				return retVal;
