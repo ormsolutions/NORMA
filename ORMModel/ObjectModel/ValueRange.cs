@@ -1066,8 +1066,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				FrameworkDomainModel.DelayValidateElement(valueConstraint, DelayValidateValueRangeOverlapError);
 				if (checkDescendants)
 				{
-					RoleValueConstraint roleValueConstraint = valueConstraint as RoleValueConstraint;
-					FrameworkDomainModel.DelayValidateElement(roleValueConstraint != null ? (ModelElement)roleValueConstraint.Role : ((ValueTypeValueConstraint)valueConstraint).ValueType, DelayValidateDescendedValues);
+					ModelElement testElement = null;
+					RoleValueConstraint roleValueConstraint;
+					ValueTypeValueConstraint valueTypeValueConstraint;
+					PathConditionRoleValueConstraint pathedRoleConstraint;
+					PathConditionRootValueConstraint pathRootConstraint;
+					if (null != (roleValueConstraint = valueConstraint as RoleValueConstraint))
+					{
+						testElement = roleValueConstraint.Role;
+					}
+					else if (null != (valueTypeValueConstraint = valueConstraint as ValueTypeValueConstraint))
+					{
+						testElement = valueTypeValueConstraint.ValueType;
+					}
+					else if (null != (pathedRoleConstraint = valueConstraint as PathConditionRoleValueConstraint))
+					{
+						testElement = pathedRoleConstraint.PathedRole.Role;
+					}
+					else if (null != (pathRootConstraint = valueConstraint as PathConditionRootValueConstraint))
+					{
+						ObjectType objectType = pathRootConstraint.PathRoot.RootObjectType;
+						if (objectType.DataType != null)
+						{
+							testElement = objectType;
+						}
+						else
+						{
+							testElement = objectType.EntityTypeIdentifyingValueType;
+						}
+					}
+
+					if (testElement != null)
+					{
+						FrameworkDomainModel.DelayValidateElement(testElement, DelayValidateDescendedValues);
+					}
 				}
 			}
 		}

@@ -1915,7 +1915,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (afterHyphenBind.Length != 0)
 			{
-				if (leftWord.EndsWith("-") && afterHyphenBind.Length != 0 && char.IsWhiteSpace(afterHyphenBind, 0))
+				if (leftWord.EndsWith("-") && char.IsWhiteSpace(afterHyphenBind, 0))
 				{
 					return leftWord + afterHyphenBind.Substring(1);
 				}

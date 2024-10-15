@@ -1046,10 +1046,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(this, null, null, "{0}\x0{1}", null);
 			string alternateReadingText = hyphenBinder.ModifiedReadingText;
-			if (alternateReadingText != null)
-			{
-				readingText = alternateReadingText;
-			}
 			int precedingIndex = -1;
 			string pendingPredicateText = null;
 			bool wroteExpandedData = false;
