@@ -3449,6 +3449,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myUniquenessConstraint.RoleCollection;
 				}
 			}
+			private bool IsPreferred
+			{
+				get
+				{
+					return myUniquenessConstraint.IsPreferred;
+				}
+			}
+			private ObjectType PreferredIdentifierFor
+			{
+				get
+				{
+					return myUniquenessConstraint.PreferredIdentifierFor;
+				}
+			}
 			private ConstraintModality Modality
 			{
 				get

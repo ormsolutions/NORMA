@@ -1921,6 +1921,7 @@
 		<xsl:variable name="isSingleRoleConstraint" select="$isRoleValue or $isUnaryRoleCardinality"/>
 		<xsl:variable name="isInternal" select="$patternGroup='InternalConstraint' or $isSingleRoleConstraint"/>
 		<xsl:variable name="isSingleColumn" select="$patternGroup='SetConstraint'"/>
+		<xsl:variable name="resolveProxy" select="@impliedConstraint"/>
 		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
 		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
 		<xsl:variable name="errorReport" select="not($isChildHelper) or (@childHelperErrorReport='true' or @childHelperErrorReport='1')"/>
@@ -3034,6 +3035,7 @@
 					<xsl:otherwise>
 						<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 							<xsl:with-param name="PatternGroup" select="$patternGroup"/>
+							<xsl:with-param name="ResolveProxy" select="$resolveProxy"/>
 							<xsl:with-param name="TopLevel" select="true()"/>
 						</xsl:apply-templates>
 					</xsl:otherwise>
@@ -3057,8 +3059,10 @@
 	</xsl:template>
 	<xsl:template match="cvg:ConstrainedRoles" mode="ConstraintVerbalization">
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ResolveProxy"/>
 		<xsl:call-template name="ConstraintConditions">
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+			<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template name="InitializeFactArity">
@@ -4022,6 +4026,7 @@
 		 is sorted last. -->
 	<xsl:template name="ConstraintConditions">
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ResolveProxy"/>
 		<xsl:variable name="fallback" select="boolean(preceding-sibling::cvg:ConstrainedRoles)"/>
 		<xsl:variable name="lastBlock" select="position()=last()"/>
 		<xsl:variable name="conditionTestFragment">
@@ -4067,6 +4072,7 @@
 					</plx:condition>
 					<xsl:call-template name="ConstraintBodyContent">
 						<xsl:with-param name="PatternGroup" select="string($forwardPatternGroup)"/>
+						<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 					</xsl:call-template>
 				</xsl:element>
 				<xsl:if test="position()=last()">
@@ -4079,12 +4085,14 @@
 				<plx:fallbackBranch>
 					<xsl:call-template name="ConstraintBodyContent">
 						<xsl:with-param name="PatternGroup" select="string($forwardPatternGroup)"/>
+						<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 					</xsl:call-template>
 				</plx:fallbackBranch>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="ConstraintBodyContent">
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -5398,6 +5406,7 @@
 	</xsl:template>
 	<xsl:template name="ConstraintBodyContent">
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ResolveProxy"/>
 		<!-- If we're a SetConstraint acting like an internal constraint then
 			 initialize necessary variables -->
 		<xsl:if test="$PatternGroup='InternalSetConstraint'">
@@ -5443,6 +5452,7 @@
 		</xsl:call-template>
 		<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+			<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 			<xsl:with-param name="TopLevel" select="true()"/>
 		</xsl:apply-templates>
 	</xsl:template>
@@ -5453,6 +5463,7 @@
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ResolveProxy"/>
 		<xsl:variable name="useVariablePrefixFragment">
 			<xsl:choose>
 				<xsl:when test="$VariablePrefix">
@@ -5466,9 +5477,11 @@
 		<xsl:call-template name="PopulateReading">
 			<xsl:with-param name="ReadingChoice" select="@match"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+			<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 		</xsl:call-template>
 		<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+			<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 			<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
 			<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -5483,6 +5496,7 @@
 		<xsl:param name="VariablePrefix" select="''"/>
 		<xsl:param name="VariableDecorator" select="'1'"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ResolveProxy"/>
 		<xsl:for-each select="cvg:ReadingChoice">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="ProcessConditionalReadingChoice">
@@ -5492,6 +5506,7 @@
 					<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 					<xsl:with-param name="TopLevel" select="$TopLevel"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 				</xsl:call-template>
 			</xsl:if>
 			<xsl:if test="position()=last() and @match and ancestor::cvg:ConstrainedRoles[1]/parent::*/cvg:ConstrainedRoles[@sign]">
@@ -5507,6 +5522,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="Match" select="string(@match)"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ResolveProxy"/>
 		<xsl:param name="CurrentColumnExpression">
 			<plx:value type="i4" data="0"/>
 		</xsl:param>
@@ -5632,6 +5648,7 @@
 					<xsl:call-template name="PopulateReading">
 						<xsl:with-param name="ReadingChoice" select="$singleMatch"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+						<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 					</xsl:call-template>
 					<plx:branch>
 						<plx:condition>
@@ -5687,6 +5704,7 @@
 						<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 						<xsl:with-param name="TopLevel" select="$TopLevel"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+						<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 					</xsl:apply-templates>
 				</plx:branch>
 				<xsl:if test="position()!=last()">
@@ -5700,6 +5718,7 @@
 									<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
 									<xsl:with-param name="TopLevel" select="$TopLevel"/>
 									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+									<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 								</xsl:call-template>
 							</xsl:if>
 						</xsl:for-each>
@@ -5717,6 +5736,7 @@
 					<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 					<xsl:with-param name="TopLevel" select="$TopLevel"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:otherwise>
@@ -5726,6 +5746,7 @@
 						<xsl:call-template name="PopulateReading">
 							<xsl:with-param name="ReadingChoice" select="$Match"/>
 							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+							<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 						</xsl:call-template>
 						<plx:branch>
 							<plx:condition>
@@ -5748,6 +5769,7 @@
 								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+								<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 							</xsl:apply-templates>
 						</plx:branch>
 						<xsl:if test="position()!=last()">
@@ -5761,6 +5783,7 @@
 											<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
 											<xsl:with-param name="TopLevel" select="$TopLevel"/>
 											<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+											<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 										</xsl:call-template>
 									</xsl:if>
 								</xsl:for-each>
@@ -5777,6 +5800,7 @@
 							<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 							<xsl:with-param name="TopLevel" select="$TopLevel"/>
 							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+							<xsl:with-param name="ResolveProxy" select="$ResolveProxy"/>
 						</xsl:apply-templates>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -15247,6 +15271,7 @@
 		<xsl:param name="ConditionalReadingOrderIndex"/>
 		<xsl:param name="ReadingOnly" select="false()"/>
 		<xsl:param name="HyphenBinderOnly" select="$ReadingChoice='ConditionalContext'"/>
+		<xsl:param name="ResolveProxy" select="''"/>
 		<xsl:choose>
 			<xsl:when test="($ReadingChoice='Context' or $ReadingChoice='ConditionalContext') and $PatternGroup='SetConstraint'">
 				<xsl:if test="not($HyphenBinderOnly)">
@@ -15301,6 +15326,20 @@
 			</xsl:when>
 			<xsl:when test="not($ReadingChoice='Context')">
 				<xsl:if test="not($HyphenBinderOnly)">
+					<xsl:if test="$ResolveProxy='Check' and contains($ReadingChoice, 'LeadReading')">
+						<plx:local name="constrainedRole" dataTypeName="Role">
+							<plx:initialize>
+								<plx:callInstance type="indexerCall" name=".implied">
+									<plx:callObject>
+										<plx:nameRef name="includedRoles"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value data="0" type="i4"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:initialize>
+						</plx:local>
+					</xsl:if>
 					<plx:assign>
 						<plx:left>
 							<plx:nameRef name="reading"/>
@@ -15330,6 +15369,66 @@
 												<xsl:when test="$PatternGroup='SetConstraint'">
 													<plx:nameRef name="primaryRole"/>
 												</xsl:when>
+												<xsl:when test="$ResolveProxy">
+													<xsl:choose>
+														<xsl:when test="$ResolveProxy='Always'">
+															<plx:callInstance type="property" name="Proxy">
+																<plx:callObject>
+																	<plx:callInstance type="indexerCall" name=".implied">
+																		<plx:callObject>
+																			<plx:nameRef name="includedRoles"/>
+																		</plx:callObject>
+																		<plx:passParam>
+																			<plx:value data="0" type="i4"/>
+																		</plx:passParam>
+																	</plx:callInstance>
+																</plx:callObject>
+															</plx:callInstance>
+														</xsl:when>
+														<xsl:otherwise>
+															<!-- $ResolveProxy='Check' case. The role may not have a proxy. -->
+															<plx:inlineStatement dataTypeName="RoleBase">
+																<plx:conditionalOperator>
+																	<plx:condition>
+																		<plx:binaryOperator type="identityEquality">
+																			<plx:left>
+																				<plx:callInstance name="FactType" type="property">
+																					<plx:callObject>
+																						<plx:nameRef name="constrainedRole"/>
+																					</plx:callObject>
+																				</plx:callInstance>
+																			</plx:left>
+																			<plx:right>
+																				<plx:nameRef name="parentFact"/>
+																			</plx:right>
+																		</plx:binaryOperator>
+																	</plx:condition>
+																	<plx:left>
+																		<plx:nameRef name="constrainedRole"/>
+																	</plx:left>
+																	<plx:right>
+																		<plx:inlineStatement dataTypeName="RoleBase">
+																			<plx:nullFallbackOperator>
+																				<plx:left>
+																					<plx:cast dataTypeName="RoleBase" type="testCast">
+																						<plx:callInstance type="property" name="Proxy">
+																							<plx:callObject>
+																								<plx:nameRef name="constrainedRole"/>
+																							</plx:callObject>
+																						</plx:callInstance>
+																					</plx:cast>
+																				</plx:left>
+																				<plx:right>
+																					<plx:nameRef name="constrainedRole"/>
+																				</plx:right>
+																			</plx:nullFallbackOperator>
+																		</plx:inlineStatement>
+																	</plx:right>
+																</plx:conditionalOperator>
+															</plx:inlineStatement>
+														</xsl:otherwise>
+													</xsl:choose>
+												</xsl:when>
 												<xsl:otherwise>
 													<plx:nullKeyword/>
 												</xsl:otherwise>
@@ -15350,7 +15449,7 @@
 								<plx:passParam>
 									<!-- The matchAnyLeadRole param -->
 									<xsl:choose>
-										<xsl:when test="not($PatternGroup='SetConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading'))">
+										<xsl:when test="not($PatternGroup='SetConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading')) and not($ResolveProxy)">
 											<xsl:choose>
 												<xsl:when test="$PatternGroup='InternalSetConstraint'">
 													<plx:nameRef name="allConstraintRoles"/>

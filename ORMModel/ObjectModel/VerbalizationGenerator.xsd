@@ -2455,6 +2455,25 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="impliedConstraint" use="optional">
+			<xs:annotation>
+				<xs:documentation>This is verbalizing an implied single-role constraint on the proxy role for an implied fact type.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Always">
+						<xs:annotation>
+							<xs:documentation>The constraint is verbalizing for a proxy role on an implied fact type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Check">
+						<xs:annotation>
+							<xs:documentation>The constraint may be verbalizing for a proxy role on an implied fact type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 		<xs:attribute name="compatibleColumns" type="xs:boolean" default="false"/>
 		<xs:attributeGroup ref="childHelperAttributes"/>
 		<xs:attribute name="deferMatchesTo" type="xs:string">

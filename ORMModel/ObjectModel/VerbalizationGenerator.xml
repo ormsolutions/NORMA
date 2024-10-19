@@ -352,10 +352,10 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- Implied single-role internal uniqueness constraint on proxy role of implied binary fact -->
-			<Constraint type="ImpliedUniqueVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint">
-				<ConstrainedRoles constraintArity="1" factArity="2" sign="positive">
+			<Constraint type="ImpliedUniqueVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint" impliedConstraint="Always">
+				<ConstrainedRoles constraintArity="1" factArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireLeadReading">
+						<ReadingChoice match="RequireLeadReadingNoFrontText">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
@@ -388,35 +388,16 @@
 						<IterateRoles listStyle="null" match="excluded"/>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles constraintArity="1" factArity="2">
-					<!-- sign="negative" is implied by the previous element -->
-					<!-- The pattern is the same whether or not we have a lead reading, so don't use ConditionalReading here -->
-					<ReadingContext match="PreferLeadReading">
-						<Snippet ref="ForEachCompactQuantifier">
-							<IterateRoles match="included" listStyle="CompactSimpleList" hyphenBind="true"/>
-							<Snippet ref="ModalPossibilityOperator">
-								<Fact readingChoice="Context">
-									<PredicateReplacement match="included">
-										<Snippet ref="DefiniteArticle"/>
-									</PredicateReplacement>
-									<PredicateReplacement match="excluded">
-										<Snippet ref="OneQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</Snippet>
-						</Snippet>
-					</ReadingContext>
-				</ConstrainedRoles>
 			</Constraint>
 			<!-- Implied simple mandatory on constraint on proxy role of implied binary fact -->
-			<Constraint type="ImpliedMandatoryVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint">
+			<Constraint type="ImpliedMandatoryVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint" impliedConstraint="Always">
 				<!-- 3.1.2 binary predicate -->
 				<ConstrainedRoles factArity="2">
 					<ConditionalReading>
 
 						<!-- mandatory constraint starts reading relational style -->
 						<!-- Each A R some B -->
-						<ReadingChoice match="RequireLeadReading">
+						<ReadingChoice match="RequireLeadReadingNoFrontText">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
@@ -496,14 +477,15 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- FactType.CombinedMandatoryUniqueVerbalizer -->
-			<Constraint type="CombinedMandatoryUniqueVerbalizer" childHelperFor="FactType" childHelperErrorReport="true" patternGroup="InternalConstraint">
+			<Constraint type="CombinedMandatoryUniqueVerbalizer" childHelperFor="FactType" childHelperErrorReport="true" patternGroup="InternalConstraint" impliedConstraint="Check">
 				<!-- 3.1.2 binary predicate -->
+				<EnableSubscripts custom="defaultPlain"/>
 				<ConstrainedRoles factArity="2" sign="positive">
 					<ConditionalReading>
 
 						<!-- mandatory constraint starts reading relational style -->
 						<!-- Each A R some B -->
-						<ReadingChoice match="RequireLeadReading">
+						<ReadingChoice match="RequireLeadReadingNoFrontText">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
@@ -521,9 +503,9 @@
 						<ReadingChoice>
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="ForEachCompactQuantifier">
-									<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
+									<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true" subscript="true"/>
 										<Fact>
-											<PredicateReplacement match="included">
+											<PredicateReplacement match="included" subscript="true">
 												<Snippet ref="DefiniteArticle"/>
 											</PredicateReplacement>
 											<PredicateReplacement>
@@ -534,6 +516,13 @@
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
+						<IterateRoles listStyle="null" match="included"/>
+						<Snippet ref="ObjectType">
+							<PreferredIdentifierFor/>
+							<PreferredIdentifierForId/>
+						</Snippet>
+					</Snippet>
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- Break mandatory constraint verbalization into two parts, at least for now. The
