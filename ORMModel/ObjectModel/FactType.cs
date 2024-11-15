@@ -4725,7 +4725,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				if (!element.IsDeleted)
+				if (!element.IsDeleted && !(element is QueryBase || element is SubtypeFact))
 				{
 					element.RealizeUnaryPattern(notifyAdded);
 				}
