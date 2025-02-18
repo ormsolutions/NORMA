@@ -119,7 +119,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="QueryParameterContainer"><![CDATA[<span class="quantifier">given</span> {0} ]]></Snippet>
 			<Snippet type="QueryNamedParameter"><![CDATA[{1}<span class="logicalOperator">=</span>{0}]]></Snippet>
 			<Snippet type="QueryUnnamedParameter"><![CDATA[{0}]]></Snippet>
-			<Snippet type="QueryVerbalization"><![CDATA[{0}<span class="quantifier">select</span> {1} where<br/><span class="smallIndent">{2}</span>]]></Snippet>
+			<Snippet type="QueryVerbalization"><![CDATA[{0}<span class="quantifier">select</span> {1} <span class="quantifier">where</span><br/><span class="smallIndent">{2}</span>]]></Snippet>
 			<Snippet type="DynamicRuleVerbalization"><![CDATA[{0}{1}{2}{3}]]></Snippet>
 			<Snippet type="IdentityListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="IdentityListPairSeparator"><![CDATA[ <span class="quantifier">that is</span> ]]></Snippet>
@@ -204,6 +204,7 @@ You must not remove this notice, or any other, from this software.
 			<!-- Verbalization of elements derived from the current selection. -->
 			<Snippet type="DerivedFactTypeReference"><![CDATA[{0}]]></Snippet>
 			<Snippet type="DerivedSubtypeReference"><![CDATA[<span class="quantifier">subtype</span> {0}]]></Snippet>
+			<Snippet type="DynamicRuleReference"><![CDATA[<span class="quantifier">dynamic rule</span> {0}]]></Snippet>
 			<Snippet type="JoinedFrequencyConstraintReference"><![CDATA[<span class="quantifier">frequency constraint</span> {0}]]></Snippet>
 			<Snippet type="JoinedRingConstraintReference"><![CDATA[<span class="quantifier">ring constraint</span> {0}]]></Snippet>
 			<Snippet type="JoinedUniquenessConstraintReference"><![CDATA[<span class="quantifier">uniqueness constraint</span> {0}]]></Snippet>
@@ -211,7 +212,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="JoinedEqualityConstraintReference"><![CDATA[<span class="quantifier">equality constraint</span> {0}]]></Snippet>
 			<Snippet type="JoinedExclusionConstraintReference"><![CDATA[<span class="quantifier">exclusion constraint</span> {0}]]></Snippet>
 			<Snippet type="JoinedSubsetConstraintReference"><![CDATA[<span class="quantifier">subset constraint</span> {0}]]></Snippet>
-			<Snippet type="JoinedSetComparisonSequenceReference"><![CDATA[{0}, <span class="quantifier">sequence</span> <span class="instance">{1}</span>]]></Snippet>
+			<Snippet type="JoinedSetComparisonSequenceReference"><![CDATA[{0}<span class="listSeparator">, </span><span class="quantifier">sequence</span> <span class="instance">{1}</span>]]></Snippet>
 
 			<Snippet type="CompoundListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="CompoundListPairSeparator"><![CDATA[; ]]></Snippet>
@@ -297,19 +298,19 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="FactTypeListSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="FactTypeListFinalSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="FactTypeListClose"><![CDATA[</span></span>]]></Snippet>
-			<Snippet type="DerivedFromListOpen"><![CDATA[<br/><span class="quantifier">Used by derivations:</span><span class="smallIndent"><br/>]]></Snippet>
+			<Snippet type="DerivedFromListOpen"><![CDATA[<br/><span class="quantifier">Used By Derivations:</span><span class="smallIndent"><br/>]]></Snippet>
 			<Snippet type="DerivedFromListPairSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="DerivedFromListSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="DerivedFromListFinalSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="DerivedFromListClose"><![CDATA[</span>]]></Snippet>
-			<Snippet type="GroupEquality"><![CDATA[<span class="quantifier">all or none of the following hold:</span> {0}]]></Snippet>
+			<Snippet type="GroupEquality"><![CDATA[<span class="quantifier">all or none of the following hold:</span>{0}]]></Snippet>
 			<Snippet type="MultilineIndentedCompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="MultilineIndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
-			<Snippet type="MultilineIndentedCompoundListSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
-			<Snippet type="MultilineIndentedCompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
+			<Snippet type="MultilineIndentedCompoundListFinalSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="MultilineIndentedCompoundListClose"><![CDATA[</span>]]></Snippet>
-			<Snippet type="GroupExclusion"><![CDATA[<span class="quantifier">at most one of the following holds:</span> {0}]]></Snippet>
-			<Snippet type="GroupExclusiveOr"><![CDATA[<span class="quantifier">exactly one of the following holds:</span> {0}]]></Snippet>
+			<Snippet type="GroupExclusion"><![CDATA[<span class="quantifier">at most one of the following holds:</span>{0}]]></Snippet>
+			<Snippet type="GroupExclusiveOr"><![CDATA[<span class="quantifier">exactly one of the following holds:</span>{0}]]></Snippet>
 			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if </span>{0}<span class="quantifier"> then </span>{1}]]></Snippet>
 			<Snippet type="ConditionalMultiLine"><![CDATA[<span class="quantifier">if </span>{0}<br/><span class="quantifier">then </span>{1}]]></Snippet>
 			<Snippet type="ConditionalMultiLineIndented"><![CDATA[<span class="quantifier">if </span>{0}<br/><span class="smallIndent"><span class="quantifier">then </span>{1}</span>]]></Snippet>
@@ -320,7 +321,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="FrequencyTypedOccurrences"><![CDATA[{1} <span class="quantifier">instances of</span> {0}]]></Snippet>
 			<Snippet type="FrequencyTypedCombinationOccurrences"><![CDATA[{1} <span class="quantifier">combinations of</span> {0}]]></Snippet>
 			<Snippet type="FrequencyUntypedOccurrences"><![CDATA[{0} <span class="quantifier">times</span>]]></Snippet>
-			<Snippet type="FrequencyNotPopulatedOrRange"><![CDATA[<span class="quantifier">either</span> <span class="instance">0</span><span class="listSeparator">, </span><span class="logicalOperator"> or </span> {0}]]></Snippet>
+			<Snippet type="FrequencyNotPopulatedOrRange"><![CDATA[<span class="quantifier">either</span> <span class="instance">0</span><span class="listSeparator">, </span><span class="logicalOperator">or</span> {0}]]></Snippet>
 			<Snippet type="CountRangeExact"><![CDATA[<span class="quantifier">exactly</span> <span class="instance">{0}</span>]]></Snippet>
 			<Snippet type="CountRangeMinAndMax"><![CDATA[<span class="quantifier">at least</span> <span class="instance">{0}</span> <span class="quantifier">and at most</span> <span class="instance">{1}</span>]]></Snippet>
 			<Snippet type="CountRangeMaxUnbounded"><![CDATA[<span class="quantifier">at least</span> <span class="instance">{0}</span>]]></Snippet>
@@ -351,7 +352,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="RolePathHeaderListDirective"><![CDATA[!And !Or Xor !Xor]]></Snippet>
 			<Snippet type="RolePathCollapsibleLeadDirective"><![CDATA[And Or Chain]]></Snippet>
 			<Snippet type="RolePathCollapsibleListOpenForBackReferenceDirective"><![CDATA[And Or Chain]]></Snippet>
-			<Snippet type="RolePathBlockLeadCollapseForSnippetDirective"><![CDATA[AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator]]></Snippet>
+			<Snippet type="RolePathBlockLeadCollapseForSnippetDirective"><![CDATA[AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator]]></Snippet>
 			<Snippet type="ImpersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">that is</span> {1}]]></Snippet>
 			<Snippet type="ImpersonalLeadIdentityCorrelation"><![CDATA[{1} <span class="quantifier">is</span> {0} <span class="quantifier">that</span>]]></Snippet>
 			<Snippet type="PersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">who is</span> {1}]]></Snippet>
@@ -381,7 +382,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="FactTypeDeletedState" sign="positive"><![CDATA[<span class="listSeparator">(</span>{0}<span class="listSeparator">)</span> <span class="quantifier">is deleted</span>]]></Snippet>
 			<Snippet type="FactTypeInitialState" sign="positive"><![CDATA[<span class="listSeparator">(</span>{0}<span class="listSeparator">)</span> <span class="quantifier">is initial</span>]]></Snippet>
 
-			<!-- Role plath list management -->
+			<!-- Role path list management -->
 			<Snippet type="RolePathListCloseOutdentSnippets"><![CDATA[ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose]]></Snippet>
 			<Snippet type="RolePathOutdentAwareTrailingListSnippets"><![CDATA[NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator NegatedChainedListClose]]></Snippet>
 			<Snippet type="ChainedListOpen"><![CDATA[<span>]]></Snippet>

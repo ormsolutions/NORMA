@@ -1799,6 +1799,8 @@
 		<se:Link RelationshipName="DynamicRuleHasDynamicRuleDisjunctionRequiresPositiveEventError" RoleName="DisjunctionRequiresPositiveEventError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="LeadRolePath" Override="true" SortChildElements="true" Name="RolePath">
+		<se:Attribute ID="RenderAtPositionStorage" WriteStyle="NotWritten"/>
+		<se:Attribute ID="RenderAtPosition" Name="RenderAt" WriteCustomStorage="true"/>
 		<se:Container Name="ObjectUnifiers">
 			<se:Embed RelationshipName="LeadRolePathHasObjectUnifier" RoleName="ObjectUnifier"/>
 		</se:Container>

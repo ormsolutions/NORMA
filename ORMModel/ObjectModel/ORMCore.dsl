@@ -1196,6 +1196,16 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="RenderAtPositionStorage" DefaultValue="-1" DisplayName="StoredRenderAtPosition" Id="BFEE2004-A9ED-44AD-B250-4A3C38B1AE2E" Description="Backing property for deserialized RenderAtPosition property.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="RenderAtPosition" Kind="CustomStorage" DisplayName="RenderAtPosition" IsBrowsable="false" Id="A4964F95-ADD7-4CE7-8EA8-C6A7C9C9EC72" Description="The position this path is rendered at in relation other owned and shared paths.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 		<DomainClass Name="RoleSubPath" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AA7B4894-C286-45C3-A95F-09D04E286038" DisplayName="RoleSubPath" Description="A branched path split from the end of another path.">
@@ -6469,6 +6479,18 @@
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RolePathOwnerHasLeadRolePath"/>
 			</BaseRelationship>
+			<Properties>
+				<DomainProperty Name="RenderAtPositionStorage" DefaultValue="-1" DisplayName="StoredRenderAtPosition" Id="BCBB1851-CD3A-4032-9F38-7013AA404A69" Description="Backing property for deserialized RenderAtPosition property.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="RenderAtPosition" Kind="CustomStorage" DisplayName="RenderAtPosition" IsBrowsable="false" Id="A17503FD-E2FF-45BE-A544-AA49C0820058" Description="The position this path is rendered at in relation other owned and shared paths.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 			<Source>
 				<DomainRole Name="PathOwner" PropertyName="SharedLeadRolePathCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="96062904-DD62-4519-A8E0-DA4BD553E047">
 					<RolePlayer>

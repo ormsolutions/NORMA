@@ -317,6 +317,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Dynamic rule quantification section. Contains quantifiers for body variables used in additions and deletions, plus remaining conditions from the path.
 		/// Format: For each {0}{1}</remark>
 		DynamicRuleQuantifiers,
+		/// <summary>The 'DynamicRuleReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a dynamic rule in a list of derived elements.
+		/// Format: dynamic rule {0}</remark>
+		DynamicRuleReference,
 		/// <summary>The 'DynamicRuleStandaloneCondition' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Dynamic rule conditions attached to the end of the rule when there are now to the quanfiers section. Verbalize the path body (with additions and deletions filtered)
 		/// Format: When: {0}</remark>
@@ -348,8 +352,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		EqualsListSeparator,
 		/// <summary>The 'EqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
-		/// Format: {0} is equal to {1}
-		/// 						</remark>
+		/// Format: {0} is equal to {1}</remark>
 		EqualValueComparator,
 		/// <summary>The 'ErrorClosePrimaryReport' simple snippet value.</summary>
 		/// <remark>Description: Close a primary error report opened with ErrorOpenPrimaryReport</remark>
@@ -499,13 +502,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		FullSubtypeStoredDerivation,
 		/// <summary>The 'GreaterThanOrEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
-		/// Format: {0} is greater than or equal to {1}
-		/// 						</remark>
+		/// Format: {0} is greater than or equal to {1}</remark>
 		GreaterThanOrEqualValueComparator,
 		/// <summary>The 'GreaterThanValueComparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
-		/// Format: {0} is greater than {1}
-		/// 						</remark>
+		/// Format: {0} is greater than {1}</remark>
 		GreaterThanValueComparator,
 		/// <summary>The 'GroupEquality' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Assert group equality. Format: all or none of the following hold: {0}</remark>
@@ -896,8 +897,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		NonTextInstanceValue,
 		/// <summary>The 'NotEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
-		/// Format: {0} is not equal to {1}
-		/// 						</remark>
+		/// Format: {0} is not equal to {1}</remark>
 		NotEqualValueComparator,
 		/// <summary>The 'NotesVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the text specified for a model note. Format: Notes: {0}</remark>
@@ -1414,7 +1414,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"{0}",
 				"</span>",
 				"<br/>",
-				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				@"<br/><span class=""quantifier"">Used By Derivations:</span><span class=""smallIndent""><br/>",
 				"<br/>",
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
@@ -1423,6 +1423,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
 				@"<span class=""quantifier"">where</span> {0}<br/>",
 				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">dynamic rule</span> {0}",
 				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
 				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
@@ -1463,7 +1464,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> {0}",
 				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span> <span class=""quantifier"">occurs there</span> {2}",
 				@"{1} <span class=""quantifier"">combinations of</span> {0}",
 				@"{1} <span class=""quantifier"">instances of</span> {0}",
@@ -1476,9 +1477,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
-				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
-				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
-				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"<span class=""quantifier"">all or none of the following hold:</span>{0}",
+				@"<span class=""quantifier"">at most one of the following holds:</span>{0}",
+				@"<span class=""quantifier"">exactly one of the following holds:</span>{0}",
 				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
@@ -1523,7 +1524,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">exclusion constraint</span> {0}",
 				@"<span class=""quantifier"">frequency constraint</span> {0}",
 				@"<span class=""quantifier"">ring constraint</span> {0}",
-				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"{0}<span class=""listSeparator"">, </span><span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">subset constraint</span> {0}",
 				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
 				@"<span class=""quantifier"">value comparison constraint</span> {0}",
@@ -1545,10 +1546,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Object-Role Model:</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				"</span>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<br/><span class=""smallIndent"">",
-				@"<span class=""listSeparator"">; </span><br/>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				"</span>",
 				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
@@ -1635,7 +1636,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
 				"{0}",
-				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
+				@"{0}<span class=""quantifier"">select</span> {1} <span class=""quantifier"">where</span><br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -1643,7 +1644,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0} <span class=""quantifier"">itself</span>",
 				@"<span class=""quantifier"">role for</span> {0}",
 				@"<span class=""quantifier"">role for</span> {0}, <span class=""quantifier"">named</span> <span class=""predicateText"">{1}</span>",
-				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -1815,7 +1816,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"{0}",
 				"</span>",
 				"<br/>",
-				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				@"<br/><span class=""quantifier"">Used By Derivations:</span><span class=""smallIndent""><br/>",
 				"<br/>",
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
@@ -1824,6 +1825,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
 				@"<span class=""quantifier"">where</span> {0}<br/>",
 				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">dynamic rule</span> {0}",
 				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
 				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
@@ -1864,7 +1866,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> {0}",
 				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span> <span class=""quantifier"">occurs there</span> {2}",
 				@"{1} <span class=""quantifier"">combinations of</span> {0}",
 				@"{1} <span class=""quantifier"">instances of</span> {0}",
@@ -1877,9 +1879,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
-				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
-				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
-				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"<span class=""quantifier"">all or none of the following hold:</span>{0}",
+				@"<span class=""quantifier"">at most one of the following holds:</span>{0}",
+				@"<span class=""quantifier"">exactly one of the following holds:</span>{0}",
 				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
@@ -1924,7 +1926,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">exclusion constraint</span> {0}",
 				@"<span class=""quantifier"">frequency constraint</span> {0}",
 				@"<span class=""quantifier"">ring constraint</span> {0}",
-				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"{0}<span class=""listSeparator"">, </span><span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">subset constraint</span> {0}",
 				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
 				@"<span class=""quantifier"">value comparison constraint</span> {0}",
@@ -1946,10 +1948,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Object-Role Model:</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				"</span>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<br/><span class=""smallIndent"">",
-				@"<span class=""listSeparator"">; </span><br/>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">the values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				"</span>",
 				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
@@ -2036,7 +2038,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
 				"{0}",
-				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
+				@"{0}<span class=""quantifier"">select</span> {1} <span class=""quantifier"">where</span><br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -2044,7 +2046,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0} <span class=""quantifier"">itself</span>",
 				@"<span class=""quantifier"">role for</span> {0}",
 				@"<span class=""quantifier"">role for</span> {0}, <span class=""quantifier"">named</span> <span class=""predicateText"">{1}</span>",
-				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -2216,7 +2218,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"{0}",
 				"</span>",
 				"<br/>",
-				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				@"<br/><span class=""quantifier"">Used By Derivations:</span><span class=""smallIndent""><br/>",
 				"<br/>",
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
@@ -2225,6 +2227,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
 				@"<span class=""quantifier"">where</span> {0}<br/>",
 				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">dynamic rule</span> {0}",
 				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
 				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
@@ -2265,7 +2268,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for some</span> {0}, {1}",
 				@"<span class=""quantifier"">for some</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> {0}",
 				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span> <span class=""quantifier"">occurs there</span> {2}",
 				@"{1} <span class=""quantifier"">combinations of</span> {0}",
 				@"{1} <span class=""quantifier"">instances of</span> {0}",
@@ -2278,9 +2281,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
-				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
-				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
-				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"<span class=""quantifier"">all or none of the following hold:</span>{0}",
+				@"<span class=""quantifier"">at most one of the following holds:</span>{0}",
+				@"<span class=""quantifier"">exactly one of the following holds:</span>{0}",
 				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
@@ -2325,7 +2328,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">exclusion constraint</span> {0}",
 				@"<span class=""quantifier"">frequency constraint</span> {0}",
 				@"<span class=""quantifier"">ring constraint</span> {0}",
-				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"{0}<span class=""listSeparator"">, </span><span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">subset constraint</span> {0}",
 				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
 				@"<span class=""quantifier"">value comparison constraint</span> {0}",
@@ -2347,10 +2350,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Object-Role Model:</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				"</span>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<br/><span class=""smallIndent"">",
-				@"<span class=""listSeparator"">; </span><br/>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				"</span>",
 				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
@@ -2437,7 +2440,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
 				"{0}",
-				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
+				@"{0}<span class=""quantifier"">select</span> {1} <span class=""quantifier"">where</span><br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -2445,7 +2448,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0} <span class=""quantifier"">itself</span>",
 				@"<span class=""quantifier"">role for</span> {0}",
 				@"<span class=""quantifier"">role for</span> {0}, <span class=""quantifier"">named</span> <span class=""predicateText"">{1}</span>",
-				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -2617,7 +2620,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"{0}",
 				"</span>",
 				"<br/>",
-				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				@"<br/><span class=""quantifier"">Used By Derivations:</span><span class=""smallIndent""><br/>",
 				"<br/>",
 				"<br/>",
 				@"<span class=""quantifier"">subtype</span> {0}",
@@ -2626,6 +2629,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Delete</span><span class=""listSeparator"">:</span> {0}<br/>",
 				@"<span class=""quantifier"">where</span> {0}<br/>",
 				@"<span class=""quantifier"">For each </span> {0}<br/>{1}",
+				@"<span class=""quantifier"">dynamic rule</span> {0}",
 				@"<span class=""quantifier"">When</span><span class=""listSeparator"">:</span><br/><span class=""smallIndent"">{0}</span>",
 				"{0}{1}{2}{3}",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
@@ -2666,7 +2670,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for some</span> {0}, {1}",
 				@"<span class=""quantifier"">for some</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> {0}",
 				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span> <span class=""quantifier"">occurs there</span> {2}",
 				@"{1} <span class=""quantifier"">combinations of</span> {0}",
 				@"{1} <span class=""quantifier"">instances of</span> {0}",
@@ -2679,9 +2683,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
-				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
-				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
-				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"<span class=""quantifier"">all or none of the following hold:</span>{0}",
+				@"<span class=""quantifier"">at most one of the following holds:</span>{0}",
+				@"<span class=""quantifier"">exactly one of the following holds:</span>{0}",
 				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
@@ -2726,7 +2730,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">exclusion constraint</span> {0}",
 				@"<span class=""quantifier"">frequency constraint</span> {0}",
 				@"<span class=""quantifier"">ring constraint</span> {0}",
-				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"{0}<span class=""listSeparator"">, </span><span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">subset constraint</span> {0}",
 				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
 				@"<span class=""quantifier"">value comparison constraint</span> {0}",
@@ -2748,10 +2752,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Object-Role Model:</span> {0}",
 				@"<span class=""quantifier"">more than one</span> {0}",
 				"</span>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<br/><span class=""smallIndent"">",
-				@"<span class=""listSeparator"">; </span><br/>",
-				@"<span class=""listSeparator"">; </span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">the values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				"</span>",
 				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
@@ -2838,7 +2842,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
 				"{0}",
-				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
+				@"{0}<span class=""quantifier"">select</span> {1} <span class=""quantifier"">where</span><br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -2846,7 +2850,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0} <span class=""quantifier"">itself</span>",
 				@"<span class=""quantifier"">role for</span> {0}",
 				@"<span class=""quantifier"">role for</span> {0}, <span class=""quantifier"">named</span> <span class=""predicateText"">{1}</span>",
-				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -5249,6 +5253,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (reading == null)
 					{
 						missingReading1 = true;
+						break;
 					}
 					else
 					{
@@ -7578,6 +7583,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (reading == null)
 						{
 							missingReading1 = true;
+							break;
 						}
 						else
 						{
@@ -7734,7 +7740,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
 								string roleReplacement = null;
 								string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1], snippet1Replace2ReplaceFactRoleIter1);
-								if (currentRole == primaryRole)
+								if (allConstraintRoles.Contains(currentRole.Role))
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								}
@@ -7768,10 +7774,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.NotHyphenBound);
 						if (reading == null)
 						{
 							missingReading1 = true;
+							break;
 						}
 						else
 						{
@@ -7958,7 +7965,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							CoreVerbalizationSnippetType listSnippet;
 							listSnippet = CoreVerbalizationSnippetType.SimpleListOpen;
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead | RolePathRolePlayerRenderingOptions.ResolveSupertype));
+							sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead));
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleListClose, isDeontic, isNegative));
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
@@ -9125,10 +9132,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.InvertLeadRoles | MatchingReadingOptions.NoFrontText);
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, primaryRole, null, factRoles, MatchingReadingOptions.InvertLeadRoles | MatchingReadingOptions.NoFrontText | MatchingReadingOptions.NotHyphenBound);
 						if (reading == null)
 						{
 							missingReading1 = true;
+							break;
 						}
 						else
 						{
@@ -9447,6 +9455,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (reading == null)
 						{
 							missingReading1 = true;
+							break;
 						}
 						else
 						{
@@ -12379,7 +12388,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
 							string roleReplacement = null;
 							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(subscripter.GetSubscriptedName(snippet1Replace1ReplaceFactRoleIter1, allBasicRoleReplacements[0]), snippet1Replace1ReplaceFactRoleIter1);
-							if (currentRole == primaryRole)
+							if (allConstraintRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = basicReplacement;
 							}
@@ -19928,6 +19937,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region Pattern Matches
 				FactType derivedFactType;
 				ObjectType derivedSubtype;
+				DynamicRule dynamicRule;
 				SetConstraint joinedSetConstraint;
 				SetComparisonConstraintRoleSequence joinedSetComparisonSequence;
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -20007,6 +20017,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 						string snippet1Replace1Replace1Replace1Replace1 = null;
 						snippet1Replace1Replace1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(derivedSubtype.Name, verbalizationContext.VerbalizationOptions);
+						string snippet1Replace1Replace1Replace1Replace2 = null;
+						snippet1Replace1Replace1Replace1Replace2 = derivedElement.Id.ToString("D");
+						snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1, snippet1Replace1Replace1Replace1Replace2);
+						snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
+					}
+					else if (null != (dynamicRule = derivedElement as DynamicRule))
+					{
+						string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DynamicRuleReference, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1 = null;
+						string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1Replace1 = null;
+						snippet1Replace1Replace1Replace1Replace1 = dynamicRule.Name;
 						string snippet1Replace1Replace1Replace1Replace2 = null;
 						snippet1Replace1Replace1Replace1Replace2 = derivedElement.Id.ToString("D");
 						snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1, snippet1Replace1Replace1Replace1Replace2);

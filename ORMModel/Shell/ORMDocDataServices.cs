@@ -2625,7 +2625,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						return false;
 					}
 				}
-				if (treeControl.SelectObject(null, element ?? target, (int)ObjectStyle.TrackingObject, 0))
+				IResolveProvidedSurveyNode[] resolvers = (this as IFrameworkServices).GetTypedDomainModelProviders<IResolveProvidedSurveyNode>(true);
+				object toSelect = element ?? target;
+				if (resolvers != null)
+				{
+					for (int i = 0; i < resolvers.Length; ++i)
+					{
+						toSelect = resolvers[i].ResolveSurveyNode(toSelect);
+					}
+				}
+
+				if (treeControl.SelectObject(null, toSelect, (int)ObjectStyle.TrackingObject, 0))
 				{
 					if (modelError != null)
 					{

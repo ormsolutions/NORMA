@@ -701,6 +701,11 @@
 							<xs:documentation>True if the current derived from element (meaning element is derived using the current context item) is an object type.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="DynamicRule">
+						<xs:annotation>
+							<xs:documentation>True if the current derived from element (meaning element is derived using the current context item) is a dynamic rule.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 					<xs:enumeration value="DynamicRuleHasAddSection">
 						<xs:annotation>
 							<xs:documentation>True if the dynamic rule being verbalized has nodes in the 'add' section.</xs:documentation>
@@ -1097,6 +1102,7 @@
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 			<xs:element name="ContextName" type="ContextNameType"/>
+			<xs:element name="DynamicRuleName" type="ContextNameType"/>
 			<xs:element name="ObjectifyingInstanceIdentifierName" type="ObjectifyingInstanceIdentifierNameType"/>
 			<xs:element name="ContextId" type="ElementIdType"/>
 			<xs:element name="ContextSequenceNumber" type="ContextSequenceNumberType"/>
@@ -1425,11 +1431,9 @@
 	</xs:complexType>
 	<xs:complexType name="ConditionalSnippetType">
 		<xs:annotation>
-			<xs:documentation>
-				Provides a commonly matchable pattern.  The ConditionalSnippet holds multiple potential
-				Snippets with match conditions, plus a fallback snippet.  The SnippetReplacements section
-				contains the replacement fields that will be used for all snippets.
-			</xs:documentation>
+			<xs:documentation>Provides a commonly matchable pattern.  The ConditionalSnippet holds multiple potential
+Snippets with match conditions, plus a fallback snippet.  The SnippetReplacements section
+contains the replacement fields that will be used for all snippets.</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
 			<xs:element name="Snippet" type="SnippetLeafTypeWithConditionalMatch"/>
@@ -1446,28 +1450,22 @@
 	</xs:complexType>
 	<xs:complexType name="SnippetReplacementsType">
 		<xs:annotation>
-			<xs:documentation>
-				Holds potential replacement fields for the conditional snippets listed above.
-				There must be at least as many replacement fields here as there are in the conditional snippet
-				which requires the most replacement fields.
-			</xs:documentation>
+			<xs:documentation>Holds potential replacement fields for the conditional snippets listed above.
+There must be at least as many replacement fields here as there are in the conditional snippet
+which requires the most replacement fields.</xs:documentation>
 		</xs:annotation>
 		<xs:group ref="ReplacementElementsGroup" minOccurs="0" maxOccurs="unbounded"/>
 	</xs:complexType>
 	<xs:complexType name="ConditionalReplacementType">
 		<xs:annotation>
-			<xs:documentation>
-				Provides a commonly matchable pattern similar to ConditionalSnippet.  Allows a conditional
-				selection of replacement contents anywhere a snippet can be used.
-			</xs:documentation>
+			<xs:documentation>Provides a commonly matchable pattern similar to ConditionalSnippet.  Allows a conditional
+selection of replacement contents anywhere a snippet can be used.</xs:documentation>
 		</xs:annotation>
 		<xs:group ref="ReplacementElementsWithConditionalMatchGroup" minOccurs="1" maxOccurs="unbounded"/>
 	</xs:complexType>
 	<xs:complexType name="IterateValueRangesType">
 		<xs:annotation>
-			<xs:documentation>
-				Iterates a value range collection.
-			</xs:documentation>
+			<xs:documentation>Iterates a value range collection.</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
@@ -1476,9 +1474,7 @@
 	</xs:complexType>
 	<xs:complexType name="IterateRangesType">
 		<xs:annotation>
-			<xs:documentation>
-				Iterates a cardinality range collection.
-			</xs:documentation>
+			<xs:documentation>Iterates a cardinality range collection.</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
@@ -1487,9 +1483,7 @@
 	</xs:complexType>
 	<xs:complexType name="IterateDerivedFromType">
 		<xs:annotation>
-			<xs:documentation>
-				Iterates elementst that use the context instance as part of the derivation.
-			</xs:documentation>
+			<xs:documentation>Iterates elements that use the context instance as part of the derivation.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
 			<!-- This will be a SelfReference with conditional replacements -->
@@ -1499,37 +1493,27 @@
 	</xs:complexType>
 	<xs:complexType name="PortableDataTypeType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the portable data type of the object type.
-			</xs:documentation>
+			<xs:documentation>Returns the portable data type of the object type.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="PortableDataTypeLengthType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the length value of a data type.
-			</xs:documentation>
+			<xs:documentation>Returns the length value of a data type.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="PortableDataTypeScaleType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the scale value of a data type.
-			</xs:documentation>
+			<xs:documentation>Returns the scale value of a data type.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="NotesType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the notes of the object type.
-			</xs:documentation>
+			<xs:documentation>Returns the notes of the object type.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="ContextNameType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the name of the context (this) element.
-			</xs:documentation>
+			<xs:documentation>Returns the name of the context (this) element.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="normalize" use="optional" type="xs:boolean">
 			<xs:annotation>
@@ -1539,9 +1523,7 @@
 	</xs:complexType>
 	<xs:complexType name="ObjectifyingInstanceIdentifierNameType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the IdentifierName for an ObjectTypeInstance.
-			</xs:documentation>
+			<xs:documentation>Returns the IdentifierName for an ObjectTypeInstance.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="ParameterNameType">
@@ -1551,121 +1533,87 @@
 	</xs:complexType>
 	<xs:complexType name="ElementIdType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the hyphenated string form of the id for the object type.
-			</xs:documentation>
+			<xs:documentation>Returns the hyphenated string form of the id for the object type.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="PreferredIdentifierForType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the name of the identified ObjectType from the context of a UniquenessConstraint
-			</xs:documentation>
+			<xs:documentation>Returns the name of the identified ObjectType from the context of a UniquenessConstraint</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeInstanceValueType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the value of the Object Type Instance
-			</xs:documentation>
+			<xs:documentation>Returns the value of the Object Type Instance</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="SubscriptType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the value of the local subscript variable.
-			</xs:documentation>
+			<xs:documentation>Returns the value of the local subscript variable.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="SubtypeNameType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the name of the sub type role player.
-			</xs:documentation>
+			<xs:documentation>Returns the name of the sub type role player.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="SupertypeNameType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the name of the sub type role player.
-			</xs:documentation>
+			<xs:documentation>Returns the name of the sub type role player.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="ExpressionBodyType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the body of a derivation expression.
-			</xs:documentation>
+			<xs:documentation>Returns the body of a derivation expression.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="NoteTextType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the notes of the object type.
-			</xs:documentation>
+			<xs:documentation>Returns the notes of the object type.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="ReferenceModeType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the reference mode of the object type.
-			</xs:documentation>
+			<xs:documentation>Returns the reference mode of the object type.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="MinValueType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the minimum value of a value range constraint.
-			</xs:documentation>
+			<xs:documentation>Returns the minimum value of a value range constraint.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="MaxValueType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the maximum value of a value range constraint.
-			</xs:documentation>
+			<xs:documentation>Returns the maximum value of a value range constraint.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="MinFrequencyValueType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the minimum value of a frequency constraint.
-			</xs:documentation>
+			<xs:documentation>Returns the minimum value of a frequency constraint.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="MaxFrequencyValueType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the maximum value of a frequency constraint.
-			</xs:documentation>
+			<xs:documentation>Returns the maximum value of a frequency constraint.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="RangeLowerBoundType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the lower bound of a cardinality constraint.
-			</xs:documentation>
+			<xs:documentation>Returns the lower bound of a cardinality constraint.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="RangeUpperBoundType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the upper bound of a cardinality constraint.
-			</xs:documentation>
+			<xs:documentation>Returns the upper bound of a cardinality constraint.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="DefaultValueType">
 		<xs:annotation>
-			<xs:documentation>
-				The resolved default value of a value type or role.
-			</xs:documentation>
+			<xs:documentation>The resolved default value of a value type or role.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="RoleNameType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the name of a role.
-			</xs:documentation>
+			<xs:documentation>Returns the name of a role.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="RoleIndexType">
@@ -1675,16 +1623,12 @@
 	</xs:complexType>
 	<xs:complexType name="RolePlayerType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the name of the current role player role.
-			</xs:documentation>
+			<xs:documentation>Returns the name of the current role player role.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="RolePlayerNameType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the normalized name of the current role player variable.
-			</xs:documentation>
+			<xs:documentation>Returns the normalized name of the current role player variable.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="ProvidedRolePlayerType">
@@ -1746,9 +1690,7 @@
 	</xs:complexType>
 	<xs:complexType name="RolePlayerReferenceModeType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the reference mode scheme of the attached role player.
-			</xs:documentation>
+			<xs:documentation>Returns the reference mode scheme of the attached role player.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="PredicateReplacementType">
@@ -1857,9 +1799,7 @@
 	</xs:complexType>
 	<xs:complexType name="SubtypeConstructType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the full verbalization for a subtype fact, i.e, Man is a subtype of Person.
-			</xs:documentation>
+			<xs:documentation>Returns the full verbalization for a subtype fact, i.e, Man is a subtype of Person.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="SnippetContainerType"/>
@@ -1950,9 +1890,7 @@
 	</xs:complexType>
 	<xs:complexType name="FactType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the full verbalization for a fact type, i.e, Company provides Product to Company.
-			</xs:documentation>
+			<xs:documentation>Returns the full verbalization for a fact type, i.e, Company provides Product to Company.</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
@@ -1972,9 +1910,7 @@
 	</xs:complexType>
 	<xs:complexType name="ReferenceSchemeType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the reference scheme for an object, e.g. Country has CountryCode etc.
-			</xs:documentation>
+			<xs:documentation>Returns the reference scheme for an object, e.g. Country has CountryCode etc.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesNoListType">
@@ -2087,9 +2023,7 @@
 	</xs:complexType>
 	<xs:complexType name="IterateQueryParametersType">
 		<xs:annotation>
-			<xs:documentation>
-				Iterates query parameters.
-			</xs:documentation>
+			<xs:documentation>Iterates query parameters.</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
@@ -2143,9 +2077,7 @@
 	</xs:complexType>
 	<xs:complexType name="IterateFactsType">
 		<xs:annotation>
-			<xs:documentation>
-				Returns the full verbalization for a list of fact types with the specified list style.
-			</xs:documentation>
+			<xs:documentation>Returns the full verbalization for a list of fact types with the specified list style.</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
@@ -2185,9 +2117,7 @@
 	</xs:complexType>
 	<xs:complexType name="IteratePathNodeListsType">
 		<xs:annotation>
-			<xs:documentation>
-				Iterates lists of role path nodes.
-			</xs:documentation>
+			<xs:documentation>Iterates lists of role path nodes.</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
@@ -2208,9 +2138,7 @@
 	</xs:complexType>
 	<xs:complexType name="IteratePathNodesType">
 		<xs:annotation>
-			<xs:documentation>
-				Iterates role path nodes.
-			</xs:documentation>
+			<xs:documentation>Iterates role path nodes.</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
@@ -2496,9 +2424,7 @@
 	</xs:attributeGroup>
 	<xs:complexType name="SampleInstanceType">
 		<xs:annotation>
-			<xs:documentation>
-				Constructs IVerbalizer implementations for Sample Instance Data
-			</xs:documentation>
+			<xs:documentation>Constructs IVerbalizer implementations for Sample Instance Data</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="1" maxOccurs="1">
 			<xs:element name="IterateInstances" type="IterateInstancesType"/>
@@ -2514,9 +2440,7 @@
 	</xs:complexType>
 	<xs:complexType name="SingleSnippetType">
 		<xs:annotation>
-			<xs:documentation>
-				Constructs IVerbalizer implementation to verbalize a single snippet
-			</xs:documentation>
+			<xs:documentation>Constructs IVerbalizer implementation to verbalize a single snippet</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required"/>
 		<xs:attributeGroup ref="childHelperAttributes"/>

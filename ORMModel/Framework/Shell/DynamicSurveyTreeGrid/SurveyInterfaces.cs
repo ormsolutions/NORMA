@@ -775,6 +775,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		bool IsSurveyNodeExpandable(object context, object expansionKey);
 	}
 	#endregion //ISurveyNodeProvider interface
+	#region IResolveProvidedSurveyNode interface
+	/// <summary>
+	/// Interface for a <see cref="DomainModel"/> that provides a node that represents a different
+	/// instance. This allows a provider to redirect to a related element before the tool services
+	/// attempt to select the node in the survey tree.
+	/// </summary>
+	public interface IResolveProvidedSurveyNode
+	{
+		/// <summary>
+		/// Resolve a node as a different instance to select in a survey tree.
+		/// </summary>
+		/// <param name="toResolve">The object to resolve</param>
+		/// <returns>An alternate object, or the input element if an alternate is not available.</returns>
+		object ResolveSurveyNode(object toResolve);
+	}
+	#endregion // IResolveProvidedSurveyNode interface
 	#region ElementLocationChangedEventHandler delegate
 	/// <summary>
 	/// Event signature used by <see cref="ITrackSurveyElementLocation.ElementLocationChanged"/> event to signal

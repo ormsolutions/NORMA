@@ -500,6 +500,9 @@
                 <a href="#DynamicRuleQuantifiers">DynamicRuleQuantifiers</a>
               </li>
               <li>
+                <a href="#DynamicRuleReference">DynamicRuleReference</a>
+              </li>
+              <li>
                 <a href="#DynamicRuleStandaloneCondition">DynamicRuleStandaloneCondition</a>
               </li>
               <li>
@@ -2228,7 +2231,6 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUsedBy">
             <p>The <strong>CompactSimpleListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
-                <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
                 <li>UniquenessConstraintVerbalizer</li>
@@ -2256,7 +2258,6 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUsedBy">
             <p>The <strong>CompactSimpleListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
-                <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
                 <li>UniquenessConstraintVerbalizer</li>
@@ -2284,7 +2285,6 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUsedBy">
             <p>The <strong>CompactSimpleListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
-                <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
                 <li>UniquenessConstraintVerbalizer</li>
@@ -2312,7 +2312,6 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUsedBy">
             <p>The <strong>CompactSimpleListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
-                <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
                 <li>UniquenessConstraintVerbalizer</li>
@@ -2340,7 +2339,6 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUsedBy">
             <p>The <strong>CompactSimpleListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
-                <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
                 <li>UniquenessConstraintVerbalizer</li>
@@ -2847,6 +2845,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>ConstraintProvidesPreferredIdentifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>CombinedMandatoryUniqueVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>UniquenessPreferredVerbalizer</li>
               </ul>
@@ -3348,7 +3347,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">Used by derivations:</pre>
+              <pre class="unformattedSnippetDecorator">Used By Derivations:</pre>
             </div>
           </div>
         </div>
@@ -3567,6 +3566,39 @@ restriction. If the non-top-level separator includes an indentation, then this s
             <p>The <strong>DynamicRuleQuantifiers</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
                   <a href="#DynamicRuleVerbalization">DynamicRuleVerbalization</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="DynamicRuleReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="DynamicRuleReference" id="DynamicRuleReference">DynamicRuleReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a dynamic rule in a list of derived elements.
+<br />
+            <strong>Format: </strong> dynamic rule {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">dynamic rule {0}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>DynamicRuleReference</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#ObjectType">ObjectType</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>DynamicRuleReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
                 </li>
               </ul>
             </p>
@@ -3818,8 +3850,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetStatement">
             <strong>Description: </strong> Used to compare the two values in a value comparison constraint with a 'equal' operator.
 <br />
-            <strong>Format: </strong> {0} is equal to {1}
-						</div>
+            <strong>Format: </strong> {0} is equal to {1}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
@@ -4442,9 +4473,6 @@ Replacement: {0}=error text,{1}=error id
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
                 <li>
-                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
-                </li>
-                <li>
                   <a href="#OneQuantifier">OneQuantifier</a>
                 </li>
               </ul>
@@ -4725,7 +4753,7 @@ Replacement: {0}=error text,{1}=error id
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">either 0,  or  {0}</pre>
+              <pre class="unformattedSnippetDecorator">either 0, or {0}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
@@ -5048,8 +5076,7 @@ instances of this subtype are stored immediately after they are derived<br />
           <div class="snippetStatement">
             <strong>Description: </strong> Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
 <br />
-            <strong>Format: </strong> {0} is greater than or equal to {1}
-						</div>
+            <strong>Format: </strong> {0} is greater than or equal to {1}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
@@ -5086,8 +5113,7 @@ instances of this subtype are stored immediately after they are derived<br />
           <div class="snippetStatement">
             <strong>Description: </strong> Used to compare the two values in a value comparison constraint with a 'greater than' operator.
 <br />
-            <strong>Format: </strong> {0} is greater than {1}
-						</div>
+            <strong>Format: </strong> {0} is greater than {1}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
@@ -5129,7 +5155,7 @@ instances of this subtype are stored immediately after they are derived<br />
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">all or none of the following hold: {0}</pre>
+              <pre class="unformattedSnippetDecorator">all or none of the following hold:{0}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
@@ -5162,7 +5188,7 @@ instances of this subtype are stored immediately after they are derived<br />
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">at most one of the following holds: {0}</pre>
+              <pre class="unformattedSnippetDecorator">at most one of the following holds:{0}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
@@ -5195,7 +5221,7 @@ instances of this subtype are stored immediately after they are derived<br />
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">exactly one of the following holds: {0}</pre>
+              <pre class="unformattedSnippetDecorator">exactly one of the following holds:{0}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
@@ -6989,9 +7015,6 @@ types that represent the same instance where the first variable is an impersonal
                   <a href="#OccursInPopulation">OccursInPopulation</a>
                 </li>
                 <li>
-                  <a href="#OneQuantifier">OneQuantifier</a>
-                </li>
-                <li>
                   <a href="#SelfReference">SelfReference</a>
                 </li>
                 <li>
@@ -7005,9 +7028,6 @@ types that represent the same instance where the first variable is an impersonal
                 <li>
                   <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
-                <li>
-                  <a href="#ForEachCompactQuantifier">ForEachCompactQuantifier</a>
-                </li>
               </ul>
             </p>
           </div>
@@ -7017,7 +7037,6 @@ types that represent the same instance where the first variable is an impersonal
                 <li>AsymmetricRingVerbalizer</li>
                 <li>DefaultBinaryMissingUniquenessVerbalizer</li>
                 <li>DisjunctiveMandatoryVerbalizer</li>
-                <li>ImpliedUniqueVerbalizer</li>
                 <li>IntransitiveRingVerbalizer</li>
                 <li>UniquenessConstraintVerbalizer</li>
                 <li>UniquenessPossibilityVerbalizer</li>
@@ -7126,7 +7145,7 @@ types that represent the same instance where the first variable is an impersonal
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">; </pre>
+              <pre class="unformattedSnippetDecorator">;</pre>
             </div>
           </div>
           <div class="snippetUsedBy">
@@ -7172,7 +7191,7 @@ types that represent the same instance where the first variable is an impersonal
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">; </pre>
+              <pre class="unformattedSnippetDecorator">;</pre>
             </div>
           </div>
           <div class="snippetUsedBy">
@@ -7195,7 +7214,7 @@ types that represent the same instance where the first variable is an impersonal
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">; </pre>
+              <pre class="unformattedSnippetDecorator">;</pre>
             </div>
           </div>
           <div class="snippetUsedBy">
@@ -7975,8 +7994,7 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           <div class="snippetStatement">
             <strong>Description: </strong> Used to compare the two values in a value comparison constraint with a 'not equal' operator.
 <br />
-            <strong>Format: </strong> {0} is not equal to {1}
-						</div>
+            <strong>Format: </strong> {0} is not equal to {1}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
@@ -8070,6 +8088,9 @@ Note that VariableExistence can be used with a negated quantifier if the negated
                   <a href="#DerivedSubtypeReference">DerivedSubtypeReference</a>
                 </li>
                 <li>
+                  <a href="#DynamicRuleReference">DynamicRuleReference</a>
+                </li>
+                <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
                 <li>
@@ -8098,6 +8119,7 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>ObjectType</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>CombinedMandatoryUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>ObjectTypeCardinalityConstraint</li>
                 <li>UnaryRoleCardinalityConstraint</li>
@@ -8369,9 +8391,6 @@ Note that VariableExistence can be used with a negated quantifier if the negated
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
                 </li>
                 <li>
                   <a href="#SingularExistenceImplicationOperator">SingularExistenceImplicationOperator</a>
@@ -9193,7 +9212,7 @@ This allows a final override to block the collapsing behavior for specific snipp
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator</pre>
+              <pre class="unformattedSnippetDecorator">AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator</pre>
             </div>
           </div>
         </div>
@@ -9351,6 +9370,9 @@ active trailing outdent snippets.
                 </li>
                 <li>
                   <a href="#DerivedSubtypeReference">DerivedSubtypeReference</a>
+                </li>
+                <li>
+                  <a href="#DynamicRuleReference">DynamicRuleReference</a>
                 </li>
                 <li>
                   <a href="#JoinedEqualityConstraintReference">JoinedEqualityConstraintReference</a>

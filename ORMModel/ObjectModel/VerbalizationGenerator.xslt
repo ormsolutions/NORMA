@@ -5669,6 +5669,7 @@
 								<plx:trueKeyword/>
 							</plx:right>
 						</plx:assign>
+						<plx:break/>
 					</plx:branch>
 					<plx:fallbackBranch>
 						<plx:assign>
@@ -6920,7 +6921,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="cvg:ContextName|cvg:JoinedSetConstraintName|cvg:JoinedSetComparisonSequenceConstraintName" name="ContextName" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ContextName|cvg:JoinedSetConstraintName|cvg:JoinedSetComparisonSequenceConstraintName|cvg:DynamicRuleName" name="ContextName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="''"/>
 		<xsl:param name="PatternGroup" select="''"/>
@@ -6974,6 +6975,9 @@
 													<xsl:when test="self::cvg:JoinedSetComparisonSequenceConstraintName">
 														<plx:nameRef name="joinedSetComparisonConstraint"/>
 													</xsl:when>
+													<xsl:when test="self::cvg:DynamicRuleName">
+														<plx:nameRef name="dynamicRule"/>
+													</xsl:when>
 													<xsl:otherwise>
 														<plx:nameRef name="derivedSubtype"/>
 													</xsl:otherwise>
@@ -7012,6 +7016,9 @@
 											</xsl:when>
 											<xsl:when test="self::cvg:JoinedSetComparisonSequenceConstraintName">
 												<plx:nameRef name="joinedSetComparisonConstraint"/>
+											</xsl:when>
+											<xsl:when test="self::cvg:DynamicRuleName">
+												<plx:nameRef name="dynamicRule"/>
 											</xsl:when>
 											<xsl:otherwise>
 												<plx:nameRef name="derivedSubtype"/>
@@ -9048,7 +9055,7 @@
 		<xsl:param name="CurrentRole" select="'currentRole'"/>
 		<xsl:variable name="includedRolesFragment">
 			<xsl:choose>
-				<xsl:when test="$PatternGroup='InternalSetConstraint'">
+				<xsl:when test="$PatternGroup='InternalSetConstraint' or ($PatternGroup='SetConstraint' and $Match='included')">
 					<xsl:text>allConstraintRoles</xsl:text>
 				</xsl:when>
 				<xsl:when test="self::cvg:ProvidedPredicateReplacement">
@@ -9142,64 +9149,34 @@
 				<xsl:when test="not(self::cvg:ProvidedPredicateReplacement)">
 					<xsl:choose>
 						<xsl:when test="$Match='included'">
-							<xsl:choose>
-								<xsl:when test="$IteratorContext='constraintRoles' and not($PatternGroup='SetComparisonConstraint')">
-									<!-- For the single column case, the included role is always a set consisting of the primary role only -->
-									<plx:binaryOperator type="identityEquality">
-										<plx:left>
-											<plx:nameRef name="{$CurrentRole}"/>
-										</plx:left>
-										<plx:right>
-											<plx:nameRef name="{$PrimaryRole}"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:callInstance name="Contains">
+							<plx:callInstance name="Contains">
+								<plx:callObject>
+									<plx:nameRef name="{$includedRoles}"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name="Role" type="property">
 										<plx:callObject>
-											<plx:nameRef name="{$includedRoles}"/>
+											<plx:nameRef name="{$CurrentRole}"/>
 										</plx:callObject>
-										<plx:passParam>
-											<plx:callInstance name="Role" type="property">
-												<plx:callObject>
-													<plx:nameRef name="{$CurrentRole}"/>
-												</plx:callObject>
-											</plx:callInstance>
-										</plx:passParam>
 									</plx:callInstance>
-								</xsl:otherwise>
-							</xsl:choose>
+								</plx:passParam>
+							</plx:callInstance>
 						</xsl:when>
 						<xsl:when test="$Match='excluded'">
-							<xsl:choose>
-								<xsl:when test="($IteratorContext='constraintRoles' or $IteratorContext='providedConstraintRoles') and not($PatternGroup='SetComparisonConstraint')">
-									<!-- For the single column case, the included role is always a set consisting of the primary role only -->
-									<plx:binaryOperator type="identityInequality">
-										<plx:left>
-											<plx:nameRef name="{$CurrentRole}"/>
-										</plx:left>
-										<plx:right>
-											<plx:nameRef name="{$PrimaryRole}"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:unaryOperator type="booleanNot">
-										<plx:callInstance name="Contains">
+							<plx:unaryOperator type="booleanNot">
+								<plx:callInstance name="Contains">
+									<plx:callObject>
+										<plx:nameRef name="{$includedRoles}"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callInstance name="Role" type="property">
 											<plx:callObject>
-												<plx:nameRef name="{$includedRoles}"/>
+												<plx:nameRef name="{$CurrentRole}"/>
 											</plx:callObject>
-											<plx:passParam>
-												<plx:callInstance name="Role" type="property">
-													<plx:callObject>
-														<plx:nameRef name="{$CurrentRole}"/>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:passParam>
 										</plx:callInstance>
-									</plx:unaryOperator>
-								</xsl:otherwise>
-							</xsl:choose>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:unaryOperator>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
@@ -9646,6 +9623,27 @@
 									</plx:left>
 									<plx:right>
 										<plx:cast type="testCast" dataTypeName="ObjectType">
+											<plx:nameRef name="derivedElement"/>
+										</plx:cast>
+									</plx:right>
+								</plx:assign>
+							</plx:inlineStatement>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='DynamicRule'">
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:nullKeyword/>
+						</plx:left>
+						<plx:right>
+							<plx:inlineStatement dataTypeName="DynamicRule">
+								<plx:assign>
+									<plx:left>
+										<plx:nameRef name="dynamicRule"/>
+									</plx:left>
+									<plx:right>
+										<plx:cast type="testCast" dataTypeName="DynamicRule">
 											<plx:nameRef name="derivedElement"/>
 										</plx:cast>
 									</plx:right>
@@ -11193,6 +11191,7 @@
 				<xsl:when test="$blockContext='DerivedFromTypes'">
 					<plx:local name="derivedFactType" dataTypeName="FactType"/>
 					<plx:local name="derivedSubtype" dataTypeName="ObjectType"/>
+					<plx:local name="dynamicRule" dataTypeName="DynamicRule"/>
 					<plx:local name="joinedSetConstraint" dataTypeName="SetConstraint"/>
 					<plx:local name="joinedSetComparisonSequence" dataTypeName="SetComparisonConstraintRoleSequence"/>
 				</xsl:when>

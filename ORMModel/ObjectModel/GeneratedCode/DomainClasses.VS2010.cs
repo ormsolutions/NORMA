@@ -14092,6 +14092,185 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region RenderAtPositionStorage domain property code
+		
+		/// <summary>
+		/// RenderAtPositionStorage domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid RenderAtPositionStorageDomainPropertyId = new global::System.Guid(0xbfee2004, 0xa9ed, 0x44ad, 0xb2, 0x50, 0x4a, 0x3c, 0x38, 0xb1, 0xae, 0x2e);
+		
+		/// <summary>
+		/// Storage for RenderAtPositionStorage
+		/// </summary>
+		private global::System.Int32 renderAtPositionStoragePropertyStorage = -1;
+		
+		/// <summary>
+		/// Gets or sets the value of RenderAtPositionStorage domain property.
+		/// Backing property for deserialized RenderAtPosition property.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath/RenderAtPositionStorage.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath/RenderAtPositionStorage.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(-1)]
+		[DslModeling::DomainObjectId("bfee2004-a9ed-44ad-b250-4a3c38b1ae2e")]
+		public global::System.Int32 RenderAtPositionStorage
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return renderAtPositionStoragePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				RenderAtPositionStoragePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the LeadRolePath.RenderAtPositionStorage domain property.
+		/// </summary>
+		internal sealed partial class RenderAtPositionStoragePropertyHandler : DslModeling::DomainPropertyValueHandler<LeadRolePath, global::System.Int32>
+		{
+			private RenderAtPositionStoragePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the LeadRolePath.RenderAtPositionStorage domain property value handler.
+			/// </summary>
+			public static readonly RenderAtPositionStoragePropertyHandler Instance = new RenderAtPositionStoragePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the LeadRolePath.RenderAtPositionStorage domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return RenderAtPositionStorageDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(LeadRolePath element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.renderAtPositionStoragePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(LeadRolePath element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.renderAtPositionStoragePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region RenderAtPosition domain property code
+		
+		/// <summary>
+		/// RenderAtPosition domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid RenderAtPositionDomainPropertyId = new global::System.Guid(0xa4964f95, 0xadd7, 0x4ce7, 0x8e, 0xa8, 0xc6, 0xa7, 0xc9, 0xc9, 0xec, 0x72);
+		
+		/// <summary>
+		/// Gets or sets the value of RenderAtPosition domain property.
+		/// The position this path is rendered at in relation other owned and shared paths.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath/RenderAtPosition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePath/RenderAtPosition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("a4964f95-add7-4ce7-8ea8-c6a7c9c9ec72")]
+		public global::System.Int32 RenderAtPosition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return RenderAtPositionPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				RenderAtPositionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the LeadRolePath.RenderAtPosition domain property.
+		/// </summary>
+		internal sealed partial class RenderAtPositionPropertyHandler : DslModeling::DomainPropertyValueHandler<LeadRolePath, global::System.Int32>
+		{
+			private RenderAtPositionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the LeadRolePath.RenderAtPosition domain property value handler.
+			/// </summary>
+			public static readonly RenderAtPositionPropertyHandler Instance = new RenderAtPositionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the LeadRolePath.RenderAtPosition domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return RenderAtPositionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(LeadRolePath element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for RenderAtPosition because its Kind is
+				// set to CustomStorage. Please provide the GetRenderAtPositionValue()
+				// method on the domain class.
+				return element.GetRenderAtPositionValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(LeadRolePath element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for RenderAtPosition because its Kind is
+					// set to CustomStorage. Please provide the SetRenderAtPositionValue()
+					// method on the domain class.
+					element.SetRenderAtPositionValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Note opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Note.

@@ -1753,7 +1753,19 @@
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="RolePath" type="LeadRolePathType" minOccurs="0" maxOccurs="unbounded"/>
-							<xs:element name="SharedRolePath" type="LeadRolePathRef" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element name="SharedRolePath" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="LeadRolePathRef">
+											<xs:attribute name="RenderAt" type="xs:int" use="optional">
+												<xs:annotation>
+													<xs:documentation>The rendering location of this path in relation to other paths owned and shared by this path owner.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -1932,6 +1944,11 @@
 					</xs:element>
 					<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 				</xs:sequence>
+				<xs:attribute name="RenderAt" type="xs:int" use="optional">
+					<xs:annotation>
+						<xs:documentation>The rendering location of this path in relation to other paths owned and shared by this path owner.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

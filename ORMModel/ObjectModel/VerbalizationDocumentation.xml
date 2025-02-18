@@ -366,7 +366,6 @@ Format: \n where</statement>
     <containedIn />
     <usedBy>
       <constraint name="FrequencyConstraint" />
-      <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
@@ -381,7 +380,6 @@ Format: \n where</statement>
     <containedIn />
     <usedBy>
       <constraint name="FrequencyConstraint" />
-      <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
@@ -396,7 +394,6 @@ Format: \n where</statement>
     <containedIn />
     <usedBy>
       <constraint name="FrequencyConstraint" />
-      <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
@@ -411,7 +408,6 @@ Format: \n where</statement>
     <containedIn />
     <usedBy>
       <constraint name="FrequencyConstraint" />
-      <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
@@ -426,7 +422,6 @@ Format: \n where</statement>
     <containedIn />
     <usedBy>
       <constraint name="FrequencyConstraint" />
-      <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
@@ -642,6 +637,7 @@ Format: this association with {0}provides the preferred identification scheme fo
     </contains>
     <containedIn />
     <usedBy>
+      <constraint name="CombinedMandatoryUniqueVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="UniquenessPreferredVerbalizer" />
     </usedBy>
@@ -841,7 +837,7 @@ Format: {0}</statement>
   </snippet>
   <snippet name="DerivedFromListOpen" replacementCount="0">
     <statement>Description:  Text and formatting to begin a list of elements derived from the current selection.Format: Used by derivations: &lt;br/&gt;</statement>
-    <unformattedSnippet>Used by derivations:</unformattedSnippet>
+    <unformattedSnippet>Used By Derivations:</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -927,6 +923,18 @@ Format: For each {0}{1}</statement>
     </contains>
     <containedIn>
       <snippet name="DynamicRuleVerbalization" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="DynamicRuleReference" replacementCount="1">
+    <statement>Description: used to reference a dynamic rule in a list of derived elements.
+Format: dynamic rule {0}</statement>
+    <unformattedSnippet>dynamic rule {0}</unformattedSnippet>
+    <contains>
+      <snippet name="ObjectType" />
+    </contains>
+    <containedIn>
+      <snippet name="SelfReference" />
     </containedIn>
     <usedBy />
   </snippet>
@@ -1026,8 +1034,7 @@ Format: {0}{1}{2}{3}</statement>
   </snippet>
   <snippet name="EqualValueComparator" replacementCount="2">
     <statement>Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
-Format: {0} is equal to {1}
-						</statement>
+Format: {0} is equal to {1}</statement>
     <unformattedSnippet>{0} is equal to {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1290,7 +1297,6 @@ Format: No {0} the same {1}</statement>
       <snippet name="GroupExclusion" />
       <snippet name="GroupExclusiveOr" />
       <snippet name="ImpliedModalNecessityOperator" />
-      <snippet name="ModalPossibilityOperator" />
       <snippet name="OneQuantifier" />
     </contains>
     <containedIn>
@@ -1399,7 +1405,7 @@ Format negative: for some {0}, \n{1}</statement>
   <snippet name="FrequencyNotPopulatedOrRange" replacementCount="1">
     <statement>Description: Combined with a frequency range to indicate that a frequency constraint with a lower bound does not imply existence.
 Format: either no, or {0}</statement>
-    <unformattedSnippet>either 0,  or  {0}</unformattedSnippet>
+    <unformattedSnippet>either 0, or {0}</unformattedSnippet>
     <contains />
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
@@ -1528,8 +1534,7 @@ Format: **each {0} is by definition {1}</statement>
   </snippet>
   <snippet name="GreaterThanOrEqualValueComparator" replacementCount="2">
     <statement>Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
-Format: {0} is greater than or equal to {1}
-						</statement>
+Format: {0} is greater than or equal to {1}</statement>
     <unformattedSnippet>{0} is greater than or equal to {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1543,8 +1548,7 @@ Format: {0} is greater than or equal to {1}
   </snippet>
   <snippet name="GreaterThanValueComparator" replacementCount="2">
     <statement>Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
-Format: {0} is greater than {1}
-						</statement>
+Format: {0} is greater than {1}</statement>
     <unformattedSnippet>{0} is greater than {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1558,7 +1562,7 @@ Format: {0} is greater than {1}
   </snippet>
   <snippet name="GroupEquality" replacementCount="1">
     <statement>Description: Assert group equality. Format: all or none of the following hold: {0}</statement>
-    <unformattedSnippet>all or none of the following hold: {0}</unformattedSnippet>
+    <unformattedSnippet>all or none of the following hold:{0}</unformattedSnippet>
     <contains />
     <containedIn>
       <snippet name="ForEachCompactQuantifier" />
@@ -1570,7 +1574,7 @@ Format: {0} is greater than {1}
   </snippet>
   <snippet name="GroupExclusion" replacementCount="1">
     <statement>Description: Assert group exclusion. Format: at most one of the following holds: {0}</statement>
-    <unformattedSnippet>at most one of the following holds: {0}</unformattedSnippet>
+    <unformattedSnippet>at most one of the following holds:{0}</unformattedSnippet>
     <contains />
     <containedIn>
       <snippet name="ForEachCompactQuantifier" />
@@ -1582,7 +1586,7 @@ Format: {0} is greater than {1}
   </snippet>
   <snippet name="GroupExclusiveOr" replacementCount="1">
     <statement>Description: Assert group exclusive-or. Format: exactly one of the following holds: {0}</statement>
-    <unformattedSnippet>exactly one of the following holds: {0}</unformattedSnippet>
+    <unformattedSnippet>exactly one of the following holds:{0}</unformattedSnippet>
     <contains />
     <containedIn>
       <snippet name="ForEachCompactQuantifier" />
@@ -2315,20 +2319,17 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
       <snippet name="MoreThanOneQuantifier" />
       <snippet name="NegativeReadingForUnaryOnlyDisjunctiveMandatory" />
       <snippet name="OccursInPopulation" />
-      <snippet name="OneQuantifier" />
       <snippet name="SelfReference" />
       <snippet name="SingularExistenceImplicationOperator" />
     </contains>
     <containedIn>
       <snippet name="ConditionalMultiLineIndented" />
-      <snippet name="ForEachCompactQuantifier" />
     </containedIn>
     <usedBy>
       <constraint name="AntisymmetricRingVerbalizer" />
       <constraint name="AsymmetricRingVerbalizer" />
       <constraint name="DefaultBinaryMissingUniquenessVerbalizer" />
       <constraint name="DisjunctiveMandatoryVerbalizer" />
-      <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="IntransitiveRingVerbalizer" />
       <constraint name="UniquenessConstraintVerbalizer" />
       <constraint name="UniquenessPossibilityVerbalizer" />
@@ -2371,7 +2372,7 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
   </snippet>
   <snippet name="MultilineIndentedCompoundListFinalSeparator" replacementCount="0">
     <statement>Description: Used to separate the last two items in an indented compound list.  Format: ;</statement>
-    <unformattedSnippet>; </unformattedSnippet>
+    <unformattedSnippet>;</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy>
@@ -2391,7 +2392,7 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
   </snippet>
   <snippet name="MultilineIndentedCompoundListPairSeparator" replacementCount="0">
     <statement>Description: Used to separate items in an indented compound list.  Format: ;</statement>
-    <unformattedSnippet>; </unformattedSnippet>
+    <unformattedSnippet>;</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy>
@@ -2401,7 +2402,7 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
   </snippet>
   <snippet name="MultilineIndentedCompoundListSeparator" replacementCount="0">
     <statement>Description: Used to separate items in an indented compound list.  Format: ;</statement>
-    <unformattedSnippet>; </unformattedSnippet>
+    <unformattedSnippet>;</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy>
@@ -2728,8 +2729,7 @@ Format: {0} does not exist in initial state</statement>
   </snippet>
   <snippet name="NotEqualValueComparator" replacementCount="2">
     <statement>Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
-Format: {0} is not equal to {1}
-						</statement>
+Format: {0} is not equal to {1}</statement>
     <unformattedSnippet>{0} is not equal to {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -2764,6 +2764,7 @@ Format: {0} is not equal to {1}
     <containedIn>
       <snippet name="ConstraintProvidesPreferredIdentifier" />
       <snippet name="DerivedSubtypeReference" />
+      <snippet name="DynamicRuleReference" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="IndependentVerbalization" />
       <snippet name="JoinedSetComparisonSequenceReference" />
@@ -2774,6 +2775,7 @@ Format: {0} is not equal to {1}
       <snippet name="UnaryRoleCardinality" />
     </containedIn>
     <usedBy>
+      <constraint name="CombinedMandatoryUniqueVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="ObjectTypeCardinalityConstraint" />
       <constraint name="UnaryRoleCardinalityConstraint" />
@@ -2886,7 +2888,6 @@ Format negative: more than one {0}</statement>
       <snippet name="ForEachNegatableCompactQuantifier" />
       <snippet name="ForEachNegatableIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
-      <snippet name="ModalPossibilityOperator" />
       <snippet name="SingularExistenceImplicationOperator" />
     </containedIn>
     <usedBy>
@@ -3222,7 +3223,7 @@ would allow lead role collapsing based on the RolePathCollapsibleLeadDirective, 
 This allows a final override to block the collapsing behavior for specific snippets. This is checked for the
 (Negated)[Chained|And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] and the ChainedList*Restrction* snippets.
 Format: AndTailListOpen OrTailListOpen</statement>
-    <unformattedSnippet>AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator</unformattedSnippet>
+    <unformattedSnippet>AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -3299,6 +3300,7 @@ Format: {0} is not {1}</statement>
     <contains>
       <snippet name="DerivedFactTypeReference" />
       <snippet name="DerivedSubtypeReference" />
+      <snippet name="DynamicRuleReference" />
       <snippet name="JoinedEqualityConstraintReference" />
       <snippet name="JoinedExclusionConstraintReference" />
       <snippet name="JoinedFrequencyConstraintReference" />

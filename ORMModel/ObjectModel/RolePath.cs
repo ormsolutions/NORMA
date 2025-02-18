@@ -22,8 +22,9 @@ using System.Globalization;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework;
-using System.Runtime.CompilerServices;
-using Microsoft.VisualStudio.Modeling.Shell;
+using System.Xml.Serialization;
+using System.Xml.Schema;
+using System.Xml;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -947,7 +948,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region CustomStorage Handlers
+		#region Custom Storage Handlers
 		private string GetNoteTextValue()
 		{
 			Note currentNote = Note;
@@ -968,7 +969,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // CustomStorage Handlers
+		private int GetRenderAtPositionValue()
+		{
+			RolePathOwner pathOwner = this.PathOwner;
+			return pathOwner != null ? pathOwner.LeadRolePathCollection.IndexOf(this) : this.RenderAtPositionStorage;
+		}
+		private void SetRenderAtPositionValue(int value)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				this.RenderAtPositionStorage = value;
+			}
+		}
+		#endregion // Custom Storage Handlers
 		#region Helper Methods
 		/// <summary>
 		/// Helper method to find a single <see cref="RolePathNode"/> of a
@@ -2697,15 +2710,57 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!element.IsDeleted)
 				{
 					ReadOnlyCollection<RolePathOwnerHasLeadRolePath> rolePaths = RolePathOwnerHasLeadRolePath.GetLinksToLeadRolePathCollection(element);
-					if (rolePaths.Count == 1)
+					int pathCount = rolePaths.Count;
+					if (pathCount == 1)
 					{
 						RolePathOwnerHasLeadRolePath link = rolePaths[0];
 						LeadRolePath singlePath = link.RolePath;
+						singlePath.RenderAtPositionStorage = 0;
 						notifyAdded.ElementAdded(new RolePathOwnerHasSingleLeadRolePath(element, singlePath));
 						if (link is RolePathOwnerOwnsLeadRolePath)
 						{
 							notifyAdded.ElementAdded(new RolePathOwnerHasSingleOwnedLeadRolePath(element, singlePath));
 						}
+					}
+					else
+					{
+						// Reconcile deserialized collection positions
+						Func<RolePathOwnerHasLeadRolePath, int> savedPosition = (pathLink) =>
+						{
+							RolePathOwnerOwnsLeadRolePath owningLink;
+							
+							if (null != (owningLink = pathLink as RolePathOwnerOwnsLeadRolePath))
+							{
+								return owningLink.RolePath.RenderAtPositionStorage;
+							}
+							return ((RolePathOwnerUsesSharedLeadRolePath)pathLink).RolePath.RenderAtPositionStorage;
+						};
+						--pathCount;  // The last item (n) will fall into place automatically when prior n-1 items have been processed.
+						for (int i = 0; i < pathCount; ++i)
+						{
+							RolePathOwnerHasLeadRolePath pathLink = rolePaths[i];
+							int storedPosition = savedPosition(pathLink);
+							if (storedPosition == -1)
+							{
+								// RenderAt was not saved to the file, keep the load position (owned then shared)
+								// This will be an all/none scenario.
+								break;
+							}
+
+							if (storedPosition != i)
+							{
+								RolePathOwnerHasLeadRolePath[] orderedPaths = new RolePathOwnerHasLeadRolePath[pathCount + 1];
+								DomainRoleInfo sortedRole = pathLink.Store.DomainDataDirectory.FindDomainRole(RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId);
+								rolePaths.CopyTo(orderedPaths, 0);
+								Array.Sort<RolePathOwnerHasLeadRolePath>(orderedPaths, (left, right) => savedPosition(left) - savedPosition(right));
+								for (int j = 0; j < pathCount; ++j)
+								{
+									orderedPaths[j].MoveToIndex(sortedRole, j);
+								}
+								break;
+							}
+						}
+
 					}
 				}
 			}
@@ -9026,4 +9081,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Rule Methods
 	}
 	#endregion // DerivationNote class
+	#region RolePathOwnerUsesSharedLeadRolePath class (serialization)
+	partial class RolePathOwnerUsesSharedLeadRolePath : IXmlSerializable
+	{
+		// This is hack to write the RenderAt attribute to the link.
+		// There are two types of elements in the list of paths (owned and referenced).
+		// These write separately (owned embedded elements first, then shared paths),
+		// but the order of the full set needs to be preserved so that the owning element
+		// can be consistently rendered (such as with the verbalizer).
+		// Normally, link properties are only as attribute written when an id is added,
+		// but adding an id here is a breaking format change, so we use full custom serialization.
+
+		#region IXmlSerializable Implementation
+		XmlSchema IXmlSerializable.GetSchema()
+		{
+			return null;
+		}
+
+		void IXmlSerializable.ReadXml(XmlReader reader)
+		{
+			if (reader.Read())
+			{
+				string renderAtString = reader.GetAttribute("RenderAt", "");
+				int renderAt;
+				if (!string.IsNullOrEmpty(renderAtString) && int.TryParse(renderAtString, out renderAt))
+				{
+					this.RenderAtPosition = renderAt;
+				}
+			}
+		}
+
+		void IXmlSerializable.WriteXml(XmlWriter writer)
+		{
+			string namespaceUri = ORMCoreDomainModel.XmlNamespace;
+			writer.WriteStartElement("orm", "SharedRolePath", namespaceUri);
+			writer.WriteAttributeString("ref", '_' + XmlConvert.ToString(this.RolePath.Id).ToUpperInvariant());
+			writer.WriteAttributeString("RenderAt", this.RenderAtPosition.ToString());
+			writer.WriteEndElement();
+		}
+		#endregion // IXmlSerializable Implementation
+		#region Custom Storage Handlers
+		private int GetRenderAtPositionValue()
+		{
+			RolePathOwner pathOwner = this.PathOwner;
+			return pathOwner != null ? pathOwner.LeadRolePathCollection.IndexOf(this.RolePath) : this.RenderAtPositionStorage;
+		}
+		private void SetRenderAtPositionValue(int value)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				this.RenderAtPositionStorage = value;
+			}
+		}
+		#endregion // Custom Storage Handlers
+	}
+	#endregion // RolePathOwnerUsesSharedLeadRolePath class (serialization)
 }

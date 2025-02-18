@@ -1856,36 +1856,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 				LinkedElementCollection<RoleBase> roles = RoleCollection;
 				int roleCount = roles.Count;
-				if (roleCount != 0)
+				string readingText = null;
+				switch (roleCount)
 				{
-					string readingText = null;
-					switch (roleCount)
-					{
-						case 1:
-							readingText = "{0}";
-							break;
-						case 2:
-							readingText = "{0}{1}";
-							break;
-						case 3:
-							readingText = "{0}{1}{2}";
-							break;
-						case 4:
-							readingText = "{0}{1}{2}{3}";
-							break;
-						default:
-							StringBuilder sb = new StringBuilder();
-							for (int i = 0; i < roleCount; ++i)
-							{
-								sb.Append('{');
-								sb.Append(i.ToString(CultureInfo.InvariantCulture));
-								sb.Append('}');
-							}
-							readingText = sb.ToString();
-							break;
-					}
-					return new ImplicitReading(readingText, roles);
+					case 0:
+						readingText = ""; // Handle degenerate case for a newly created subquery
+						break;
+					case 1:
+						readingText = "{0}";
+						break;
+					case 2:
+						readingText = "{0}{1}";
+						break;
+					case 3:
+						readingText = "{0}{1}{2}";
+						break;
+					case 4:
+						readingText = "{0}{1}{2}{3}";
+						break;
+					default:
+						StringBuilder sb = new StringBuilder();
+						for (int i = 0; i < roleCount; ++i)
+						{
+							sb.Append('{');
+							sb.Append(i.ToString(CultureInfo.InvariantCulture));
+							sb.Append('}');
+						}
+						readingText = sb.ToString();
+						break;
 				}
+				return new ImplicitReading(readingText, roles);
 			}
 			return retVal;
 		}
@@ -3601,11 +3601,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							retVal[typeof(FactType)] = 1;
 							retVal[typeof(SubtypeFact)] = 1;
 							retVal[typeof(ObjectType)] = 2;
-							retVal[typeof(FrequencyConstraint)] = 3;
-							retVal[typeof(RingConstraint)] = 3;
-							retVal[typeof(UniquenessConstraint)] = 3;
-							retVal[typeof(ValueComparisonConstraint)] = 3;
-							retVal[typeof(SetComparisonConstraintRoleSequence)] = 4;
+							retVal[typeof(DynamicRule)] = 3;
+							retVal[typeof(FrequencyConstraint)] = 4;
+							retVal[typeof(RingConstraint)] = 4;
+							retVal[typeof(UniquenessConstraint)] = 4;
+							retVal[typeof(ValueComparisonConstraint)] = 4;
+							retVal[typeof(SetComparisonConstraintRoleSequence)] = 5;
 							if (null != System.Threading.Interlocked.CompareExchange<Dictionary<Type, int>>(ref myOwnerTypeSortIndex, retVal, null))
 							{
 								// Some other thread beat us, abandon our value
@@ -3626,11 +3627,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					int rightType;
 					if (!sortByType.TryGetValue(left.GetType(), out leftType))
 					{
-						leftType = 5; // Sanity, should be a dead code path
+						leftType = 6; // Sanity, should be a dead code path
 					}
 					if (!sortByType.TryGetValue(right.GetType(), out rightType))
 					{
-						rightType = 5; // Sanity, should be a dead code path
+						rightType = 6; // Sanity, should be a dead code path
 					}
 					if (leftType == rightType)
 					{
@@ -3649,11 +3650,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										StringComparison.CurrentCultureIgnoreCase);
 								}
 								break;
-							case 2: // Object type and set constraint, sort by name
-							case 3:
+							case 2: // Object type, set constraint and dynamic rule, sort by name
+							case 3: // Dynamic rule
+							case 4: // Set constraint
 								retVal = string.Compare(((ORMNamedElement)left).Name, ((ORMNamedElement)right).Name, StringComparison.CurrentCultureIgnoreCase);
 								break;
-							case 4: // Comparison constraint sequences.
+							case 5: // Comparison constraint sequences.
 								{
 									SetComparisonConstraintRoleSequence leftSequence = (SetComparisonConstraintRoleSequence)left;
 									SetComparisonConstraintRoleSequence rightSequence = (SetComparisonConstraintRoleSequence)right;
@@ -4139,6 +4141,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					case ConstraintType.Frequency: // UNDONE: Consider collapsing single-role frequency constraints with simple mandatories
 					case ConstraintType.Ring:
+					case ConstraintType.ValueComparison:
 						if (constraint.FactTypeCollection.Count == 1 &&
 							(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
 						{
@@ -4197,7 +4200,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DerivedElementsVerbalizer derivedElementsVerbalizer;
 			if ((bool)verbalizationOptions[CoreVerbalizationOption.DerivedFromWithFactType] &&
 				verbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName &&
-				null != (derivedElementsVerbalizer = DerivedElementsVerbalizer.GetNormalizedVerbalizer(this, RolePathOwnerKind.FactTypeDerivation | RolePathOwnerKind.SubtypeDerivation | RolePathOwnerKind.CustomJoinPath)))
+				null != (derivedElementsVerbalizer = DerivedElementsVerbalizer.GetNormalizedVerbalizer(this, RolePathOwnerKind.FactTypeDerivation | RolePathOwnerKind.SubtypeDerivation | RolePathOwnerKind.CustomJoinPath | RolePathOwnerKind.DynamicRule)))
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(derivedElementsVerbalizer, true);
 			}

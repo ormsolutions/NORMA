@@ -712,7 +712,7 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive" sameConstraintRolePlayers="true" blockHelpers="pathVerbalizer">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllPrimaryLeadReadingNoFrontText">
+						<ReadingChoice match="RequireAllPrimaryLeadReadingNoFrontTextLeadNotHyphenBound">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<CompositeList listStyle="TopLevelIndentedLogicalOrList">
 									<IterateRoles minFactArity="2" match="constraintRoles">
@@ -741,7 +741,7 @@
 						<ReadingChoice>
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="ForEachCompactQuantifier">
-									<IterateRoles match="providedConstraintRoles" pass="first" listStyle="SimpleList" markProvidedConstraintRolesAsHead="true" resolveProvidedConstraintRoleSupertype ="true" quantifyProvidedConstraintRoles="false"/>
+									<IterateRoles match="providedConstraintRoles" pass="first" listStyle="SimpleList" markProvidedConstraintRolesAsHead="true" quantifyProvidedConstraintRoles="false"/>
 									<CompositeList listStyle="IndentedLogicalOrList">
 										<IterateRoles match="providedConstraintRoles" minFactArity="2">
 											<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
@@ -918,7 +918,7 @@
 				<!-- Positive Reading -->
 				<ConstrainedRoles trivialOppositeRolePath="true" sign="positive" minFactArity="2" maxFactArity="2" blockHelpers="pathVerbalizer">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
+						<ReadingChoice match="RequireAllNonLeadReadingNoFrontTextNotHyphenBound">
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="ForEachCompactQuantifier">
 									<IterateRoles match="providedConstraintRoles" listStyle="SimpleList" hyphenBind="true">
@@ -2523,6 +2523,12 @@
 								<Snippet ref="DerivedSubtypeReference" conditionalMatch="DerivedSubtype">
 									<Snippet ref="ObjectType">
 										<ContextName normalize="true"/>
+										<ContextId/>
+									</Snippet>
+								</Snippet>
+								<Snippet ref="DynamicRuleReference" conditionalMatch="DynamicRule">
+									<Snippet ref="ObjectType">
+										<DynamicRuleName/>
 										<ContextId/>
 									</Snippet>
 								</Snippet>

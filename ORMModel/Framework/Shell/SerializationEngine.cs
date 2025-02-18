@@ -2210,7 +2210,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			CustomSerializedElementSupportedOperations supportedOperations = CustomSerializedElementSupportedOperations.None;
 			CustomSerializedElementInfo customInfo = CustomSerializedElementInfo.Default;
 			IList<DomainPropertyInfo> properties = null;
-			string defaultPrefix;
+			string defaultPrefix = null;
 			bool hasCustomAttributes = false;
 
 			ICustomSerializedElement rolePlayerCustomElement = rolePlayer as ICustomSerializedElement;
@@ -2234,11 +2234,23 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			if (standaloneLink)
 			{
 				roles = ((CustomSerializedStandaloneLinkElementInfo)oppositeRolePlayerElementInfo).StandaloneRelationship.GetRoles();
-				// UNDONE: This precludes using EmbeddingLinkElement inside a StandaloneLinkfs
+				// UNDONE: This precludes using EmbeddingLinkElement inside a StandaloneLink
 				link = (ElementLink)oppositeRolePlayer;
 			}
-			
-			if (writeContents)
+
+			// Support (almost) fully customized link serialization. The link has to be
+			// created before custom deserialization can occur, and role players are required
+			// to create links. So, the customization must write the standard ref and id
+			// patterns use here. However, they are able to read/write additional customized information.
+			IXmlSerializable fullCustom = link as IXmlSerializable;
+			if (fullCustom != null)
+			{
+				if (writeContents)
+				{
+					customElement = link as ICustomSerializedElement;
+				}
+			}
+			else if (writeContents)
 			{
 				customElement = link as ICustomSerializedElement;
 				properties = link.GetDomainClass().AllDomainProperties;
@@ -2254,16 +2266,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			if (customElement != null)
 			{
 				supportedOperations = customElement.SupportedCustomSerializedOperations;
-
-				if (0 != (supportedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes) && properties != null)
-				{
-					ClassifyProperties(customElement, rolePlayedInfo, properties, out attributeProperties, out elementProperties);
-				}
-				else
-				{
-					attributeProperties = properties;
-				}
-				hasCustomAttributes = (supportedOperations & CustomSerializedElementSupportedOperations.PropertyInfo) != 0;
 
 				if (writeContents)
 				{
@@ -2292,11 +2294,46 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					return;
 				}
 #endif // WRITE_ALL_DEFAULT_LINKS
+
+				if (fullCustom == null)
+				{
+					if (0 != (supportedOperations & CustomSerializedElementSupportedOperations.MixedTypedAttributes) && properties != null)
+					{
+						ClassifyProperties(customElement, rolePlayedInfo, properties, out attributeProperties, out elementProperties);
+					}
+					else
+					{
+						attributeProperties = properties;
+					}
+					hasCustomAttributes = (supportedOperations & CustomSerializedElementSupportedOperations.PropertyInfo) != 0;
+				}
 			}
 			else
 			{
 				attributeProperties = properties;
 			}
+
+			if (fullCustom != null)
+			{
+				if (customInfo.WriteStyle == CustomSerializedElementWriteStyle.NotWritten)
+				{
+					return;
+				}
+
+				if (deferWrite != null)
+				{
+					if (!deferWrite())
+					{
+						deferWrite = null;
+						return;
+					}
+					deferWrite = null;
+				}
+
+				fullCustom.WriteXml(file);
+				return;
+			}
+
 			// UNDONE: Write start element off roleplayer, not link, for standalone primary link element
 			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, standaloneLink ? link.GetDomainClass().Name : string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name), ref deferWrite))
 			{
@@ -3939,7 +3976,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 																								out isNewElementDummy),
 																							oppositeRoleInfo,
 																							relationshipInfo);
-																					if (relationship.Value.IsPrimaryLinkElement)
+																					if (relationship.Value.IsPrimaryLinkElement || newElementLink is IXmlSerializable)
 																					{
 																						processedLinkElement = true;
 																						int blockedAttributeCount = 0;
@@ -4519,7 +4556,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 													out isNewElementDummy),
 												oppositeRoleInfo,
 												standaloneRelationshipInfo);
-										if (relationship.IsPrimaryLinkElement)
+										if (relationship.IsPrimaryLinkElement || oppositeElement is IXmlSerializable)
 										{
 											int blockedAttributeCount = 0;
 											ProcessClassElement(
@@ -4597,7 +4634,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 								if (createLink)
 								{
 									ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
-									if (!aggregatedClass && idValue != null)
+									if ((!aggregatedClass && idValue != null) || newLink is IXmlSerializable)
 									{
 										ProcessClassElement(reader, customModel, newLink, null, null);
 									}

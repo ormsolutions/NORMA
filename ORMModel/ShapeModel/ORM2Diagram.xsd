@@ -178,23 +178,17 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Default">
 				<xs:annotation>
-					<xs:documentation>
-						<xs:documentation>Use the context setting, either the global state for a diagram or the diagram for a shape.</xs:documentation>
-					</xs:documentation>
+					<xs:documentation>Use the context setting, either the global state for a diagram or the diagram for a shape.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="ShowReverseReading">
 				<xs:annotation>
-					<xs:documentation>
-						<xs:documentation>The reverse reading (if available) is shown with the forward reading for a binary fact type.</xs:documentation>
-					</xs:documentation>
+					<xs:documentation>The reverse reading (if available) is shown with the forward reading for a binary fact type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="OnlyOneReading">
 				<xs:annotation>
-					<xs:documentation>
-						<xs:documentation>Only one reading is shown for a binary fact type.</xs:documentation>
-					</xs:documentation>
+					<xs:documentation>Only one reading is shown for a binary fact type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -206,30 +200,22 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Default">
 				<xs:annotation>
-					<xs:documentation>
-						<xs:documentation>Use the context setting, either the global state for a diagram or the diagram for a shape.</xs:documentation>
-					</xs:documentation>
+					<xs:documentation>Use the context setting, either the global state for a diagram or the diagram for a shape.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Reversed">
 				<xs:annotation>
-					<xs:documentation>
-						<xs:documentation>Display indicator for reverse readings only.</xs:documentation>
-					</xs:documentation>
+					<xs:documentation>Display indicator for reverse readings only.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Rotated">
 				<xs:annotation>
-					<xs:documentation>
-						<xs:documentation>Display indicator if the fact type is rotated, even if the reading order is top-down.</xs:documentation>
-					</xs:documentation>
+					<xs:documentation>Display indicator if the fact type is rotated, even if the reading order is top-down.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Always">
 				<xs:annotation>
-					<xs:documentation>
-						<xs:documentation>Always display a reading direction indicator.</xs:documentation>
-					</xs:documentation>
+					<xs:documentation>Always display a reading direction indicator.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -383,16 +369,12 @@
 						<xs:restriction base="xs:string">
 							<xs:enumeration value="ShowReverseReading">
 								<xs:annotation>
-									<xs:documentation>
-										<xs:documentation>The reverse reading (if available) is shown with the forward reading for a binary fact type.</xs:documentation>
-									</xs:documentation>
+									<xs:documentation>The reverse reading (if available) is shown with the forward reading for a binary fact type.</xs:documentation>
 								</xs:annotation>
 							</xs:enumeration>
 							<xs:enumeration value="OnlyOneReading">
 								<xs:annotation>
-									<xs:documentation>
-										<xs:documentation>Only one reading is shown for a binary fact type.</xs:documentation>
-									</xs:documentation>
+									<xs:documentation>Only one reading is shown for a binary fact type.</xs:documentation>
 								</xs:annotation>
 							</xs:enumeration>
 						</xs:restriction>
@@ -406,23 +388,17 @@
 						<xs:restriction base="xs:string">
 							<xs:enumeration value="Reversed">
 								<xs:annotation>
-									<xs:documentation>
-										<xs:documentation>Display indicator for reverse readings only.</xs:documentation>
-									</xs:documentation>
+									<xs:documentation>Display indicator for reverse readings only.</xs:documentation>
 								</xs:annotation>
 							</xs:enumeration>
 							<xs:enumeration value="Rotated">
 								<xs:annotation>
-									<xs:documentation>
-										<xs:documentation>Display indicator if the fact type is rotated, even if the reading order is top-down.</xs:documentation>
-									</xs:documentation>
+									<xs:documentation>Display indicator if the fact type is rotated, even if the reading order is top-down.</xs:documentation>
 								</xs:annotation>
 							</xs:enumeration>
 							<xs:enumeration value="Always">
 								<xs:annotation>
-									<xs:documentation>
-										<xs:documentation>Always display a reading direction indicator.</xs:documentation>
-									</xs:documentation>
+									<xs:documentation>Always display a reading direction indicator.</xs:documentation>
 								</xs:annotation>
 							</xs:enumeration>
 						</xs:restriction>
