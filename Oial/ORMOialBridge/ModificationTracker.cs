@@ -671,6 +671,17 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 									pairIsMandatory = true;
 									break;
 							}
+
+							if (!pairIsMandatory)
+							{
+								// The UnaryPattern controls all constraints the mandatory constraints on a unary pair--except for the implied mandatory.
+								// In the degenerate case where the entire table is the pair unary, there may still be an implied mandatory constraint on both roles.
+								// If the implied mandatory contains one paired unary role it will contain both because they both have the same mandatory state
+								Role role = factType.UnaryRole;
+								LinkedElementCollection<Role> constraintRoles = role?.RolePlayer?.ImpliedMandatoryConstraint?.RoleCollection;
+								pairIsMandatory = constraintRoles != null && constraintRoles.Count == 2 && constraintRoles.Contains(role);
+							}
+
 							link.PairIsMandatory = pairIsMandatory;
 						}
 					}

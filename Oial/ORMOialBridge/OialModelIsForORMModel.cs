@@ -760,6 +760,19 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						inverseMappingFlags = FactTypeMappingFlags.None;
 					}
 				}
+
+				if (0 == (inverseMappingFlags & FactTypeMappingFlags.InversePairIsMandatory) && inverseFactType != null)
+				{
+					// The UnaryPattern controls all constraints the mandatory constraints on a unary pair--except for the implied mandatory.
+					// In the degenerate case where the entire table is the pair unary, there may still be an implied mandatory constraint on both roles.
+					// If the implied mandatory contains one paired unary role it will contain both because they both have the same mandatory state
+					Role role = factType.UnaryRole;
+					LinkedElementCollection<Role> constraintRoles = role?.RolePlayer?.ImpliedMandatoryConstraint?.RoleCollection;
+					if (constraintRoles != null && constraintRoles.Count == 2 && constraintRoles.Contains(role))
+					{
+						inverseMappingFlags |= FactTypeMappingFlags.InversePairIsMandatory;
+					}
+				}
 			}
 		}
 		private static FactTypeMappingFlags GetFlags(bool deepMapping, bool fromValueType, bool fromMandatory, bool fromImpliedMandatory, bool towardsValueType, bool towardsMandatory, bool towardsImpliedMandatory, bool fromRoleSimplePreferred, bool towardsRoleSimplePreferred)
