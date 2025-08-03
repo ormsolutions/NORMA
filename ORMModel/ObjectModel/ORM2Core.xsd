@@ -1269,6 +1269,9 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="DefaultValueState">
+		<xs:annotation>
+			<xs:documentation>Provide additional default value directives for data that cannot be unambiguously stored in the DefaultValue element.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="UseValue">
 				<xs:annotation>
@@ -2010,6 +2013,12 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="SubqueryParameterInputRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a SubqueryParameterInput element.</xs:documentation>
+		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="CalculatedValueType">
@@ -3006,6 +3015,8 @@
 			<xs:element name="ObjectUnifierRequiresCompatibleObjectTypesError" type="ObjectUnifierRequiresCompatibleObjectTypesErrorType"/>
 			<xs:element name="PathSameFactTypeRoleFollowsJoinError" type="PathSameFactTypeRoleFollowsJoinErrorType"/>
 			<xs:element name="PathOuterJoinRequiresOptionalRoleError" type="PathOuterJoinRequiresOptionalRoleErrorType"/>
+			<xs:element name="PartialSubqueryParameterInputsError" type="PartialSubqueryParameterInputsErrorType"/>
+			<xs:element name="SubqueryParameterInputCompatibilityError" type="SubqueryParameterInputCompatibilityErrorType"/>
 			<xs:element name="CalculatedPathValueRequiresAggregationContextError" type="CalculatedPathValueRequiresAggregationContextErrorType"/>
 			<xs:element name="CalculatedPathValueRequiresFunctionError" type="CalculatedPathValueRequiresFunctionErrorType"/>
 			<xs:element name="CalculatedPathValueMustBeConsumedError" type="CalculatedPathValueMustBeConsumedErrorType"/>
@@ -3909,12 +3920,36 @@
 	</xs:complexType>
 	<xs:complexType name="PathOuterJoinRequiresOptionalRoleErrorType">
 		<xs:annotation>
-			<xs:documentation>An PathedRole with outer join semantics is joined to a mandatory role and can never be null.</xs:documentation>
+			<xs:documentation>A PathedRole with outer join semantics is joined to a mandatory role and can never be null.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PartialSubqueryParameterInputsErrorType">
+		<xs:annotation>
+			<xs:documentation>A PathedRole that joins to a subquery with parameters must provide an input for all parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="PathedRole" type="PathedRoleRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubqueryParameterInputCompatibilityErrorType">
+		<xs:annotation>
+			<xs:documentation>A subquery parameter input is not compatible with the parameter type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="SubqueryParameterInput" type="SubqueryParameterInputRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

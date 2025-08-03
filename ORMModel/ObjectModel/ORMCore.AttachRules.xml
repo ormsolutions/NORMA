@@ -1247,6 +1247,54 @@
 			<arg:RolePlayerChangeRule methodName="OwnedSubqueryRolePlayerChangedRule">
 				<arg:RuleOn targetType="RolePathOwnerOwnsSubquery"/>
 			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="QueryParameterChangedRule">
+				<arg:RuleOn targetType="QueryParameter"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="QueryParameterTypeAddedRule">
+				<arg:RuleOn targetType="QueryParameterHasParameterType"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="QueryParameterTypeDeletedRule">
+				<arg:RuleOn targetType="QueryParameterHasParameterType"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="QueryParameterTypeRolePlayerChangedRule">
+				<arg:RuleOn targetType="QueryParameterHasParameterType"/>
+			</arg:RolePlayerChangeRule>
+			<arg:DeleteRule methodName="SubqueryParameterInputsDeletedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputs"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="SubqueryParameterInputAddedRule">
+				<arg:RuleOn targetType="SubqueryParameterInput"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="SubqueryParameterInputDeletedRule">
+				<arg:RuleOn targetType="SubqueryParameterInput"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="SubqueryParameterInputFromCalculatedPathValueAddedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromCalculatedPathValue"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="SubqueryParameterInputFromCalculatedPathValueDeletedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromCalculatedPathValue"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromCalculatedPathValue"/>
+			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="SubqueryParameterInputFromPathConstantAddedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromPathConstant"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="SubqueryParameterInputFromPathConstantDeletedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromPathConstant"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="SubqueryParameterInputFromPathedRoleAddedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromPathedRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="SubqueryParameterInputFromPathedRoleDeletedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromPathedRole"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="SubqueryParameterInputFromPathRootAddedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromRolePathRoot"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="SubqueryParameterInputFromPathRootDeletedRule">
+				<arg:RuleOn targetType="SubqueryParameterInputFromRolePathRoot"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="RoleProjectedDerivationRule">
 			<arg:AddRule methodName="DerivedRoleProjectionOnCalculatedPathValueAddedRule">

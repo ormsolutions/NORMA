@@ -407,6 +407,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(RolePathOwner).GetNestedType("SharedSubqueryAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RolePathOwner).GetNestedType("OwnedSubqueryDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RolePathOwner).GetNestedType("OwnedSubqueryRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("QueryParameterChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("QueryParameterTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("QueryParameterTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("QueryParameterTypeRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputsDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromCalculatedPathValueAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromCalculatedPathValueDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromPathConstantAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromPathConstantDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromPathedRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromPathedRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromPathRootAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SubqueryParameterInputFromPathRootDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("DerivedRoleProjectionOnCalculatedPathValueAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("DerivedRoleProjectionOnCalculatedPathValueDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("DerivedRoleProjectionOnCalculatedPathValueRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -559,7 +575,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 491; ++i)
+			for (int i = 0; i < 507; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -10427,6 +10443,422 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.OwnedSubqueryRolePlayerChangedRule");
 				RolePathOwner.OwnedSubqueryRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.OwnedSubqueryRolePlayerChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(QueryParameter), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class QueryParameterChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public QueryParameterChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// ChangeRule: typeof(QueryParameter)
+			/// /// </summary>
+			/// private static void QueryParameterChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterChangedRule");
+				RolePathOwner.QueryParameterChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(QueryParameterHasParameterType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class QueryParameterTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public QueryParameterTypeAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// AddRule: typeof(QueryParameterHasParameterType)
+			/// /// </summary>
+			/// private static void QueryParameterTypeAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterTypeAddedRule");
+				RolePathOwner.QueryParameterTypeAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterTypeAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(QueryParameterHasParameterType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class QueryParameterTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public QueryParameterTypeDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(QueryParameterHasParameterType)
+			/// /// </summary>
+			/// private static void QueryParameterTypeDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterTypeDeletedRule");
+				RolePathOwner.QueryParameterTypeDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterTypeDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(QueryParameterHasParameterType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class QueryParameterTypeRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public QueryParameterTypeRolePlayerChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(QueryParameterHasParameterType)
+			/// /// </summary>
+			/// private static void QueryParameterTypeRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterTypeRolePlayerChangedRule");
+				RolePathOwner.QueryParameterTypeRolePlayerChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.QueryParameterTypeRolePlayerChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputs), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputsDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputsDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(SubqueryParameterInputs)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputsDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputsDeletedRule");
+				RolePathOwner.SubqueryParameterInputsDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputsDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInput), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// AddRule: typeof(SubqueryParameterInput)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputAddedRule");
+				RolePathOwner.SubqueryParameterInputAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInput), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(SubqueryParameterInput)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputDeletedRule");
+				RolePathOwner.SubqueryParameterInputDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromCalculatedPathValueAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromCalculatedPathValueAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// AddRule: typeof(SubqueryParameterInputFromCalculatedPathValue)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromCalculatedPathValueAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromCalculatedPathValueAddedRule");
+				RolePathOwner.SubqueryParameterInputFromCalculatedPathValueAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromCalculatedPathValueAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromCalculatedPathValueDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromCalculatedPathValueDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(SubqueryParameterInputFromCalculatedPathValue)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromCalculatedPathValueDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromCalculatedPathValueDeletedRule");
+				RolePathOwner.SubqueryParameterInputFromCalculatedPathValueDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromCalculatedPathValueDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromCalculatedPathValue), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(SubqueryParameterInputFromCalculatedPathValue)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRule");
+				RolePathOwner.SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromPathConstant), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromPathConstantAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromPathConstantAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// AddRule: typeof(SubqueryParameterInputFromPathConstant)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromPathConstantAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathConstantAddedRule");
+				RolePathOwner.SubqueryParameterInputFromPathConstantAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathConstantAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromPathConstant), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromPathConstantDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromPathConstantDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(SubqueryParameterInputFromPathConstant)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromPathConstantDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathConstantDeletedRule");
+				RolePathOwner.SubqueryParameterInputFromPathConstantDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathConstantDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromPathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromPathedRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromPathedRoleAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// AddRule: typeof(SubqueryParameterInputFromPathedRole)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromPathedRoleAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathedRoleAddedRule");
+				RolePathOwner.SubqueryParameterInputFromPathedRoleAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathedRoleAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromPathedRole), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromPathedRoleDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromPathedRoleDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(SubqueryParameterInputFromPathedRole)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromPathedRoleDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathedRoleDeletedRule");
+				RolePathOwner.SubqueryParameterInputFromPathedRoleDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathedRoleDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromRolePathRoot), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromPathRootAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromPathRootAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// AddRule: typeof(SubqueryParameterInputFromRolePathRoot)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromPathRootAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathRootAddedRule");
+				RolePathOwner.SubqueryParameterInputFromPathRootAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathRootAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubqueryParameterInputFromRolePathRoot), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SubqueryParameterInputFromPathRootDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SubqueryParameterInputFromPathRootDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(SubqueryParameterInputFromRolePathRoot)
+			/// /// </summary>
+			/// private static void SubqueryParameterInputFromPathRootDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathRootDeletedRule");
+				RolePathOwner.SubqueryParameterInputFromPathRootDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryParameterInputFromPathRootDeletedRule");
 			}
 		}
 	}

@@ -1870,5 +1870,49 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwnerPath Implementation
 	}
+	partial class SubqueryParameterInput : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return this.Inputs;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
+	partial class SubqueryParameterInputs : IModelErrorOwnerPath
+	{
+		#region IModelErrorOwnerPath Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwnerPath.ErrorOwnerRolePlayer"/>
+		/// </summary>
+		protected ModelElement ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return this.PathedEntryRole;
+			}
+		}
+		ModelElement IModelErrorOwnerPath.ErrorOwnerRolePlayer
+		{
+			get
+			{
+				return ErrorOwnerRolePlayer;
+			}
+		}
+		#endregion // IModelErrorOwnerPath Implementation
+	}
 	#endregion // IModelErrorOwner Implementations
 }

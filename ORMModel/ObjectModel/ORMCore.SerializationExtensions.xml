@@ -1324,6 +1324,7 @@
 		<se:Link RelationshipName="SubqueryParameterInputFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
 		<se:Link RelationshipName="SubqueryParameterInputFromPathedRole" RoleName="Source" Name="PathedRole"/>
 		<se:Link RelationshipName="SubqueryParameterInputFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
+		<se:Link RelationshipName="SubqueryParameterHasIncompatibleInputError" RoleName="IncompatibleInputError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SubtypeDerivationRule" Name="SubtypeDerivationPath" Override="true">
 		<se:ConditionalSerialization>
@@ -2126,6 +2127,7 @@
 		<se:Link RelationshipName="PathedRoleHasCompatibleJoinRolePlayerError" RoleName="JoinCompatibilityError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasSameFactTypeFollowsJoinError" RoleName="SameFactTypeRoleFollowsJoinError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasMandatoryOuterJoinError" RoleName="MandatoryOuterJoinError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="PathedRoleHasPartialSubqueryParameterInputsError" RoleName="PartialSubqueryParameterInputsError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathObjectUnifierUnifiesPathedRole" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SubqueryParameterInputs" RoleName="RolePath" WriteStyle="NotWritten"/>
@@ -2497,6 +2499,12 @@
 	</se:Element>
 	<se:Element Class="PathOuterJoinRequiresOptionalRoleError" Override="true">
 		<se:Link RelationshipName="PathedRoleHasMandatoryOuterJoinError" RoleName="PathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="PartialSubqueryParameterInputsError" Override="true">
+		<se:Link RelationshipName="PathedRoleHasPartialSubqueryParameterInputsError" RoleName="SubqueryEntryPathedRole" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="SubqueryParameterInputCompatibilityError" Override="true">
+		<se:Link RelationshipName="SubqueryParameterHasIncompatibleInputError" RoleName="SubqueryParameterInput" Name="SubqueryParameterInput"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValueRequiresFunctionError" Override="true">
 		<se:Link RelationshipName="CalculatedPathValueHasFunctionRequiredError" RoleName="CalculatedPathValue" Name="CalculatedValue"/>

@@ -1636,6 +1636,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SubtypeDerivationRule");
 			}
 		}
+		/// <summary>Dynamic text replacement for an error associated with a SubqueryParameterInput. Automatically capitalized on replacement. {0}=Parameter Name {1}=Context used with pathed role.</summary>
+		public static string ModelErrorDisplayContextSubqueryParameterInput
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SubqueryParameterInput");
+			}
+		}
 		/// <summary>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. {0}=constraint name {1}=model name</summary>
 		public static string ModelErrorFrequencyConstraintViolatedByUniquenessConstraint
 		{
@@ -1908,6 +1916,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.StartRoleFollowsRootObjectType.Text");
 			}
 		}
+		/// <summary>Model validation error text for subquery parameter inputs that do not have a compatible type. {0}=error display context</summary>
+		public static string ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.SubqueryInputCompatibleWithParameterType.Text");
+			}
+		}
+		/// <summary>Model validation error text for subquery parameter inputs that do not have a compatible type. Compact form.</summary>
+		public static string ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.SubqueryInputCompatibleWithParameterType.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for an outer join to a mandatory role. {0}=error display context</summary>
 		public static string ModelErrorRolePathMandatoryOuterJoin
 		{
@@ -1922,6 +1946,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.OuterJoinRequiresOptionalRole.CompactText");
+			}
+		}
+		/// <summary>Model validation error text for incomplete subquery parameter inputs. {0}=error display context</summary>
+		public static string ModelErrorRolePathPartialSubqueryParameterInputsText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.PartialSubqueryParameterInputs.Text");
+			}
+		}
+		/// <summary>Model validation error text for incomplete subquery parameter inputs. Compact form.</summary>
+		public static string ModelErrorRolePathPartialSubqueryParameterInputsCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.PartialSubqueryParameterInputs.CompactText");
 			}
 		}
 		/// <summary>Model validation error text for a role path with no root object type. {0}=error display context</summary>

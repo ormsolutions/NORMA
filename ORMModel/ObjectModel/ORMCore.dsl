@@ -1493,6 +1493,16 @@
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
+		<DomainClass Name="PartialSubqueryParameterInputsError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8216FC36-7481-4CCF-883C-232E7A55C669" DisplayName="Incomplete Subquery Input Parameters" Description="All subquery input parameters must be specified when a subquery is entered in a role path.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="SubqueryParameterInputCompatibilityError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1BC19F9A-B40B-40DF-86A6-6587FF81D8B7" DisplayName="Incompatible Subquery Parameter Input" Description="The input assigned to a subquery parameter must be consistent with the parameter type.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
 		<DomainClass Name="DynamicRuleRequiresEventAndActionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="EA6EF8C4-CFF9-4C49-95D1-DFF095997BBC" DisplayName="Event and Action Required" Description="A dynamic rule needs at least one triggering event and one action.">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -7687,6 +7697,44 @@
 				<DomainRole Name="IncompatibleProjectionError" PropertyName="Projection" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="IncompatibleProjectionError" Id="6CAD881F-EF56-4E84-976F-4D9DE818BF71">
 					<RolePlayer>
 						<DomainClassMoniker Name="ConstraintRoleRequiresCompatibleJoinPathProjectionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="PathedRoleHasPartialSubqueryParameterInputsError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CB302AF6-6ED7-41A1-ABBA-60AB3CC25C25">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="SubqueryEntryPathedRole" PropertyName="PartialSubqueryInputsError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SubqueryEntryRole" Id="435FA3D7-D822-49DC-BB1F-BF6933028174">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PartialSubqueryParameterInputsError" PropertyName="SubqueryEntryPathedRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PartialSubqueryParameterInputsError" Id="00B1AC9C-6868-41DE-9B66-857E11CAF04B">
+					<RolePlayer>
+						<DomainClassMoniker Name="PartialSubqueryParameterInputsError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubqueryParameterHasIncompatibleInputError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="322291A2-1EFE-486E-AE9C-413B86E86ECB">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="SubqueryParameterInput" PropertyName="IncompatibleInputError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SubqueryParameterInput" Id="CE3B980D-D5C7-4B1F-A7E0-D738E6CB83AD">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="SubqueryParameterInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="IncompatibleInputError" PropertyName="ParameterInput" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="IncompatibleInputError" Id="09D279BE-05E2-40A3-AC39-100A84E34152">
+					<RolePlayer>
+						<DomainClassMoniker Name="SubqueryParameterInputCompatibilityError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

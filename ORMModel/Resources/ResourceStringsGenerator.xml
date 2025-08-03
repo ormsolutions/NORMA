@@ -254,6 +254,7 @@
 	<ResourceString name="ModelErrorDisplayContextSetConstraintJoinPath" model="Model" resourceName="ModelError.DisplayContext.SetConstraintJoinPath"/>
 	<ResourceString name="ModelErrorDisplayContextSubquery" model="Model" resourceName="ModelError.DisplayContext.Subquery"/>
 	<ResourceString name="ModelErrorDisplayContextSubtypeDerivationRule" model="Model" resourceName="ModelError.DisplayContext.SubtypeDerivationRule"/>
+	<ResourceString name="ModelErrorDisplayContextSubqueryParameterInput" model="Model" resourceName="ModelError.DisplayContext.SubqueryParameterInput"/>
 	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraint" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text"/>
 	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraintCompact" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.CompactText"/>
 	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequences" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
@@ -288,8 +289,12 @@
 	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoin" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text"/>
 	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoinCompact" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.CompactText"/>
 	<ResourceString name="ModelErrorRolePathStartRoleFollowsRootObjectType" model="Model" resourceName="ModelError.RolePath.StartRoleFollowsRootObjectType.Text"/>
+	<ResourceString name="ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeText" model="Model" resourceName="ModelError.RolePath.SubqueryInputCompatibleWithParameterType.Text"/>
+	<ResourceString name="ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeCompact" model="Model" resourceName="ModelError.RolePath.SubqueryInputCompatibleWithParameterType.CompactText"/>
 	<ResourceString name="ModelErrorRolePathMandatoryOuterJoin" model="Model" resourceName="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text"/>
 	<ResourceString name="ModelErrorRolePathMandatoryOuterJoinCompact" model="Model" resourceName="ModelError.RolePath.OuterJoinRequiresOptionalRole.CompactText"/>
+	<ResourceString name="ModelErrorRolePathPartialSubqueryParameterInputsText" model="Model" resourceName="ModelError.RolePath.PartialSubqueryParameterInputs.Text"/>
+	<ResourceString name="ModelErrorRolePathPartialSubqueryParameterInputsCompact" model="Model" resourceName="ModelError.RolePath.PartialSubqueryParameterInputs.CompactText"/>
 	<ResourceString name="ModelErrorRolePathRequiresRootObjectType" model="Model" resourceName="ModelError.RolePath.RequiresRootObjectType.Text"/>
 	<ResourceString name="ModelErrorRolePathRequiresRootObjectTypeCompact" model="Model" resourceName="ModelError.RolePath.RequiresRootObjectType.CompactText"/>
 	<ResourceString name="ModelErrorRoleProjectedDerivationRuleProjectionRequired" model="Model" resourceName="ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.Text"/>

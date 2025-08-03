@@ -237,7 +237,7 @@
 										<xsl:message terminate="yes">
 											<xsl:text>The role '</xsl:text>
 											<xsl:value-of select="$role"/>
-											<xsl:text>' does not exist in relationship</xsl:text>
+											<xsl:text>' does not exist in relationship </xsl:text>
 											<xsl:value-of select="$relationship"/>
 											<xsl:text>.</xsl:text>
 										</xsl:message>

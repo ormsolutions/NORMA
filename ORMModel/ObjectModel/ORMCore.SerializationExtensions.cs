@@ -342,6 +342,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("ObjectUnifierRequiresCompatibleObjectTypesError", PathObjectUnifierRequiresCompatibleObjectTypesError.DomainClassId);
 				classNameMap.Add("PathSameFactTypeRoleFollowsJoinError", PathSameFactTypeRoleFollowsJoinError.DomainClassId);
 				classNameMap.Add("PathOuterJoinRequiresOptionalRoleError", PathOuterJoinRequiresOptionalRoleError.DomainClassId);
+				classNameMap.Add("PartialSubqueryParameterInputsError", PartialSubqueryParameterInputsError.DomainClassId);
+				classNameMap.Add("SubqueryParameterInputCompatibilityError", SubqueryParameterInputCompatibilityError.DomainClassId);
 				classNameMap.Add("CalculatedPathValueRequiresFunctionError", CalculatedPathValueRequiresFunctionError.DomainClassId);
 				classNameMap.Add("CalculatedPathValueRequiresAggregationContextError", CalculatedPathValueRequiresAggregationContextError.DomainClassId);
 				classNameMap.Add("CalculatedPathValueMustBeConsumedError", CalculatedPathValueMustBeConsumedError.DomainClassId);
@@ -5734,6 +5736,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (roleId == SubqueryParameterInputFromCalculatedPathValue.SourceDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, "CalculatedValue", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == SubqueryParameterHasIncompatibleInputError.IncompatibleInputErrorDomainRoleId)
+			{
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -11601,7 +11607,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, "CorrelatedWith", null, CustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == CalculatedPathValueInputBindsToPathedRole.InputDomainRoleId || roleId == DerivedRoleProjectedFromPathedRole.RoleProjectionDomainRoleId || roleId == ConstraintRoleProjectedFromPathedRole.ConstraintRoleProjectionDomainRoleId || roleId == SubqueryParameterInputFromPathedRole.ParameterInputDomainRoleId || roleId == PathedRoleHasCompatibleJoinRolePlayerError.JoinCompatibilityErrorDomainRoleId || roleId == PathedRoleHasSameFactTypeFollowsJoinError.SameFactTypeRoleFollowsJoinErrorDomainRoleId || roleId == PathedRoleHasMandatoryOuterJoinError.MandatoryOuterJoinErrorDomainRoleId || roleId == PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId || roleId == CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId || roleId == SubqueryParameterInputs.RolePathDomainRoleId || roleId == QueryParameterBoundToPathedRole.ParameterBindingDomainRoleId || roleId == PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId || roleId == PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId || roleId == PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId || roleId == PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId || roleId == PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId || roleId == PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId)
+			if (roleId == CalculatedPathValueInputBindsToPathedRole.InputDomainRoleId || roleId == DerivedRoleProjectedFromPathedRole.RoleProjectionDomainRoleId || roleId == ConstraintRoleProjectedFromPathedRole.ConstraintRoleProjectionDomainRoleId || roleId == SubqueryParameterInputFromPathedRole.ParameterInputDomainRoleId || roleId == PathedRoleHasCompatibleJoinRolePlayerError.JoinCompatibilityErrorDomainRoleId || roleId == PathedRoleHasSameFactTypeFollowsJoinError.SameFactTypeRoleFollowsJoinErrorDomainRoleId || roleId == PathedRoleHasMandatoryOuterJoinError.MandatoryOuterJoinErrorDomainRoleId || roleId == PathedRoleHasPartialSubqueryParameterInputsError.PartialSubqueryParameterInputsErrorDomainRoleId || roleId == PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId || roleId == CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId || roleId == SubqueryParameterInputs.RolePathDomainRoleId || roleId == QueryParameterBoundToPathedRole.ParameterBindingDomainRoleId || roleId == PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId || roleId == PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId || roleId == PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId || roleId == PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId || roleId == PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId || roleId == PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId)
 			{
 				return CustomSerializedElementInfo.NotWritten;
 			}
@@ -11638,26 +11644,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 7;
 				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasMandatoryOuterJoinError.MandatoryOuterJoinErrorDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 8;
-				domainRole = domainDataDirectory.FindDomainRole(PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasPartialSubqueryParameterInputsError.PartialSubqueryParameterInputsErrorDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 9;
-				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(PathObjectUnifierUnifiesPathedRole.ObjectUnifierDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 10;
-				domainRole = domainDataDirectory.FindDomainRole(SubqueryParameterInputs.RolePathDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(CalculatedPathValueAggregationContextIncludesPathedRole.CalculatedValueDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 11;
-				domainRole = domainDataDirectory.FindDomainRole(QueryParameterBoundToPathedRole.ParameterBindingDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(SubqueryParameterInputs.RolePathDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 12;
-				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(QueryParameterBoundToPathedRole.ParameterBindingDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 13;
-				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasMismatchedJoinDynamicStateError.MismatchedJoinDynamicStateErrorDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 14;
-				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasMismatchedRolePlayerDynamicStateError.MismatchedRolePlayerDynamicStateErrorDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 15;
-				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicAddFactTypeUnboundRolesError.DynamicAddFactTypeUnboundRolesErrorDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 16;
-				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicActionRoleUndeclaredObjectError.DynamicActionRoleUndeclaredObjectErrorDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 17;
-				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicObjectAddPartialIdentifierError.DynamicObjectAddPartialIdentifierErrorDomainRoleId).OppositeDomainRole;
 				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 18;
+				domainRole = domainDataDirectory.FindDomainRole(PathedRoleHasDynamicObjectificationAddRequiresLinkFactTypesError.DynamicObjectificationAddRequiresLinkFactTypesErrorDomainRoleId).OppositeDomainRole;
+				elementOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 19;
 				this.myElementOrderDictionary = elementOrderDictionary;
 			}
 			int IComparer<DomainObjectInfo>.Compare(DomainObjectInfo x, DomainObjectInfo y)
@@ -15903,6 +15911,130 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // PathOuterJoinRequiresOptionalRoleError serialization
+	#region PartialSubqueryParameterInputsError serialization
+	partial class PartialSubqueryParameterInputsError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == PathedRoleHasPartialSubqueryParameterInputsError.SubqueryEntryPathedRoleDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "PathedRole", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = PartialSubqueryParameterInputsError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(PathedRoleHasPartialSubqueryParameterInputsError.SubqueryEntryPathedRoleDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|PathedRole", match);
+				PartialSubqueryParameterInputsError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // PartialSubqueryParameterInputsError serialization
+	#region SubqueryParameterInputCompatibilityError serialization
+	partial class SubqueryParameterInputCompatibilityError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SubqueryParameterHasIncompatibleInputError.SubqueryParameterInputDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "SubqueryParameterInput", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = SubqueryParameterInputCompatibilityError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(SubqueryParameterHasIncompatibleInputError.SubqueryParameterInputDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|SubqueryParameterInput", match);
+				SubqueryParameterInputCompatibilityError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // SubqueryParameterInputCompatibilityError serialization
 	#region CalculatedPathValueRequiresFunctionError serialization
 	partial class CalculatedPathValueRequiresFunctionError : ICustomSerializedElement
 	{

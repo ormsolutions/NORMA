@@ -1222,12 +1222,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								(errors ?? (errors = new List<ModelErrorUsage>())).Add(error);
 							}
+							if (null != (error = pathedRole.PartialSubqueryInputsError))
+							{
+								(errors ?? (errors = new List<ModelErrorUsage>())).Add(error);
+							}
 							ValueConstraint valueConstraint = pathedRole.ValueConstraint;
 							if (valueConstraint != null)
 							{
 								foreach (ModelErrorUsage valueConstraintErrorUsage in ((IModelErrorOwner)valueConstraint).GetErrorCollection(startFilter))
 								{
 									(errors ?? (errors = new List<ModelErrorUsage>())).Add(valueConstraintErrorUsage);
+								}
+							}
+
+							Subquery subquery;
+							if (null != (subquery = pathedRole.Role.FactType as Subquery) && subquery.ParameterCollection.Count != 0)
+							{
+								foreach (SubqueryParameterInputs inputs in SubqueryParameterInputs.GetLinksToParameterInputsCollection(pathedRole))
+								{
+									foreach (SubqueryParameterInput input in SubqueryParameterInput.GetLinksToInputCollection(inputs))
+									{
+										if (null != (error = input.IncompatibleInputError))
+										{
+											(errors ?? (errors = new List<ModelErrorUsage>())).Add(error);
+										}
+									}
 								}
 							}
 						}
@@ -2800,7 +2819,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void PathedRoleAddedRule(ElementAddedEventArgs e)
 		{
-			AddDelayedPathValidation(((PathedRole)e.ModelElement).RolePath);
+			PathedRole pathedRole = (PathedRole)e.ModelElement;
+
+			// It is easier to track parameter inputs in parallel to the other path elements
+			if (pathedRole.Role.FactType is Subquery)
+			{
+				FrameworkDomainModel.DelayValidateElement(pathedRole, DelayValidateSubqueryInputCompleteness);
+			}
+			AddDelayedPathValidation(pathedRole.RolePath);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputs)
+		/// </summary>
+		private static void SubqueryParameterInputsDeletedRule(ElementDeletedEventArgs e)
+		{
+			PathedRole pathedRole = ((SubqueryParameterInputs)e.ModelElement).PathedEntryRole;
+			if (!pathedRole.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(pathedRole, DelayValidateSubqueryInputCompleteness);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInput)
+		/// </summary>
+		private static void SubqueryParameterInputAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((SubqueryParameterInput)e.ModelElement).Inputs.PathedEntryRole, DelayValidateSubqueryInputCompleteness);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInput)
+		/// </summary>
+		private static void SubqueryParameterInputDeletedRule(ElementDeletedEventArgs e)
+		{
+			SubqueryParameterInputs inputs = ((SubqueryParameterInput)e.ModelElement).Inputs;
+			if (!inputs.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(inputs.PathedEntryRole, DelayValidateSubqueryInputCompleteness);
+			}
 		}
 		/// <summary>
 		/// ChangeRule: typeof(PathedRole)
@@ -2831,7 +2886,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == PathedRole.RoleDomainRoleId)
 			{
-				AddDelayedPathValidation(((PathedRole)e.ElementLink).RolePath);
+				PathedRole pathedRole = (PathedRole)e.ElementLink;
+				bool wasSubquery = ((Role)e.OldRolePlayer).FactType is Subquery;
+				bool isSubquery = ((Role)e.NewRolePlayer).FactType is Subquery;
+				if (isSubquery)
+				{
+					FrameworkDomainModel.DelayValidateElement(pathedRole, DelayValidateSubqueryInputCompleteness);
+				}
+				else if (wasSubquery)
+				{
+					// This is an easy check and the only way this can stop being a subquery.
+					// Just blow the error away instead of having to look for it on a non-subquery pathed role.
+					PartialSubqueryParameterInputsError error = pathedRole.PartialSubqueryInputsError;
+					if (error != null)
+					{
+						error.Delete();
+					}
+				}
+				AddDelayedPathValidation(pathedRole.RolePath);
 			}
 			else
 			{
@@ -3223,6 +3295,103 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					new RolePathOwnerUsesSharedSubquery(oldOwner, query);
 				}
+			}
+		}
+
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromCalculatedPathValue)
+		/// </summary>
+		private static void SubqueryParameterInputFromCalculatedPathValueAddedRule(ElementAddedEventArgs e)
+		{
+			SubqueryParameterInputFromCalculatedPathValue link = (SubqueryParameterInputFromCalculatedPathValue)e.ModelElement;
+			FrameworkDomainModel.DelayValidateElement(link.ParameterInput, DelayValidateQueryParameterInput);
+			FrameworkDomainModel.DelayValidateElement(link.Source, DelayValidateCalculatedPathValue);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputFromCalculatedPathValue)
+		/// </summary>
+		private static void SubqueryParameterInputFromCalculatedPathValueDeletedRule(ElementDeletedEventArgs e)
+		{
+			SubqueryParameterInputFromCalculatedPathValue link = (SubqueryParameterInputFromCalculatedPathValue)e.ModelElement;
+			SubqueryParameterInput input;
+			CalculatedPathValue calculation;
+			if (!(input = link.ParameterInput).IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(input, DelayValidateQueryParameterInput);
+			}
+			if (!(calculation = link.Source).IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(calculation, DelayValidateCalculatedPathValue);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(SubqueryParameterInputFromCalculatedPathValue)
+		/// </summary>
+		private static void SubqueryParameterInputFromCalculatedPathValueRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == SubqueryParameterInputFromCalculatedPathValue.SourceDomainRoleId)
+			{
+				SubqueryParameterInput parameterInput = ((SubqueryParameterInputFromCalculatedPathValue)e.ElementLink).ParameterInput;
+				if (parameterInput != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(parameterInput, DelayValidateQueryParameterInput);
+				}
+				FrameworkDomainModel.DelayValidateElement((CalculatedPathValue)e.OldRolePlayer, DelayValidateCalculatedPathValue);
+				FrameworkDomainModel.DelayValidateElement((CalculatedPathValue)e.NewRolePlayer, DelayValidateCalculatedPathValue);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromPathConstant)
+		/// </summary>
+		private static void SubqueryParameterInputFromPathConstantAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((SubqueryParameterInputFromPathConstant)e.ModelElement).ParameterInput, DelayValidateQueryParameterInput);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputFromPathConstant)
+		/// </summary>
+		private static void SubqueryParameterInputFromPathConstantDeletedRule(ElementDeletedEventArgs e)
+		{
+			SubqueryParameterInput input = ((SubqueryParameterInputFromPathConstant)e.ModelElement).ParameterInput;
+			if (!input.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(input, DelayValidateQueryParameterInput);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromPathedRole)
+		/// </summary>
+		private static void SubqueryParameterInputFromPathedRoleAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((SubqueryParameterInputFromPathedRole)e.ModelElement).ParameterInput, DelayValidateQueryParameterInput);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputFromPathedRole)
+		/// </summary>
+		private static void SubqueryParameterInputFromPathedRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			SubqueryParameterInput input = ((SubqueryParameterInputFromPathedRole)e.ModelElement).ParameterInput;
+			if (!input.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(input, DelayValidateQueryParameterInput);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromRolePathRoot)
+		/// </summary>
+		private static void SubqueryParameterInputFromPathRootAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((SubqueryParameterInputFromRolePathRoot)e.ModelElement).ParameterInput, DelayValidateQueryParameterInput);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputFromRolePathRoot)
+		/// </summary>
+		private static void SubqueryParameterInputFromPathRootDeletedRule(ElementDeletedEventArgs e)
+		{
+			SubqueryParameterInput input = ((SubqueryParameterInputFromRolePathRoot)e.ModelElement).ParameterInput;
+			if (!input.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(input, DelayValidateQueryParameterInput);
 			}
 		}
 		/// <summary>
@@ -3890,6 +4059,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Make sure we have a complete set of subquery parameter inputs.
+		/// This is easier to do at the node level than with the subpath
+		/// in its entirety.
+		/// </summary>
+		private static void DelayValidateSubqueryInputCompleteness(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ValidateSubqueryInputCompleteness((PathedRole)element, null);
+			}
+		}
+		private static void ValidateSubqueryInputCompleteness(PathedRole pathedEntryRole, INotifyElementAdded notifyAdded)
+		{
+			Subquery subquery;
+			LeadRolePath leadRolePath;
+			if (null != (subquery = pathedEntryRole.Role.FactType as Subquery) &&
+				null != (leadRolePath = pathedEntryRole.RolePath.RootRolePath))
+			{
+				bool hasPartialInputs = false;
+				LinkedElementCollection<QueryParameter> parameters = subquery.ParameterCollection;
+				int parameterCount = parameters.Count;
+				if (parameterCount != 0)
+				{
+					SubqueryParameterInputs parameterInputs = SubqueryParameterInputs.GetLink(leadRolePath, pathedEntryRole);
+					if (parameterInputs != null)
+					{
+						ReadOnlyCollection<SubqueryParameterInput> inputLinks = SubqueryParameterInput.GetLinksToInputCollection(parameterInputs);
+						int inputCount = inputLinks.Count;
+						if (inputCount < parameterCount)
+						{
+							hasPartialInputs = true;
+						}
+					}
+				}
+
+				PartialSubqueryParameterInputsError error = pathedEntryRole.PartialSubqueryInputsError;
+				if (hasPartialInputs)
+				{
+					if (error == null)
+					{
+						error = new PartialSubqueryParameterInputsError(pathedEntryRole.Partition);
+						error.SubqueryEntryPathedRole = pathedEntryRole;
+						error.Model = leadRolePath.PathOwner.Model;
+						error.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(error, true);
+						}
+					}
+				}
+				else if (error != null)
+				{
+					error.Delete();
+				}
+			}
+		}
+		/// <summary>
 		/// Intermediate validator to allow rules to delay validate
 		/// the closest element in the path hierarchy.
 		/// </summary>
@@ -4282,6 +4508,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 								#endregion // Join Compatibility Verification
+								#region Subquery parameter verification
+								if (currentPathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+								{
+									Subquery subquery;
+									PartialSubqueryParameterInputsError partialInputsError;
+									if (null != (subquery = currentPathedRole.Role.FactType as Subquery))
+									{
+										if (notifyAdded != null)
+										{
+											// We check this through normal path validation on load, dynamically otherwise.
+											ValidateSubqueryInputCompleteness(currentPathedRole, notifyAdded);
+										}
+
+										SubqueryParameterInputs parameterInputs = SubqueryParameterInputs.GetLink(leadRolePath, currentPathedRole);
+										if (parameterInputs != null)
+										{
+											ReadOnlyCollection<SubqueryParameterInput> inputLinks = SubqueryParameterInput.GetLinksToInputCollection(parameterInputs);
+											if (inputLinks.Count != 0)
+											{
+												foreach (SubqueryParameterInput parameterInput in inputLinks)
+												{
+													ValidateQueryParameterInput(parameterInput, owner, notifyAdded, ref model);
+												}
+											}
+										}
+									}
+									else if (notifyAdded != null && null != (partialInputsError = currentPathedRole.PartialSubqueryInputsError))
+									{
+										partialInputsError.Delete();
+									}
+								}
+								#endregion // Subquery parameter verification
 								#region Attach or clear pathedRole errors
 								PathSameFactTypeRoleFollowsJoinError sameFactTypeWithoutJoinError = currentPathedRole.SameFactTypeRoleWithoutJoinError;
 								if (hasSameFactTypeWithoutJoinError)
@@ -4493,7 +4751,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected virtual bool IsCalculatedPathValueConsumed(CalculatedPathValue calculation)
 		{
-			return calculation.BoundInputCollection.Count != 0 || calculation.RequiredForLeadRolePath != null;
+			return calculation.BoundInputCollection.Count != 0 || calculation.RequiredForLeadRolePath != null || SubqueryParameterInputFromCalculatedPathValue.GetSubqueryParameterInputCollection(calculation).Count != 0;
 		}
 		bool IRolePathOwner.IsCalculatedPathValueConsumed(CalculatedPathValue calculation)
 		{
@@ -4713,6 +4971,145 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				consumptionError.Delete();
 			}
 		}
+		/// <summary>
+		/// Delayed validator for changes in a <see cref="SubqueryParameterInput"/>
+		/// </summary>
+		private static void DelayValidateQueryParameterInput(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ORMModel model = null;
+				ValidateQueryParameterInput((SubqueryParameterInput)element, null, null, ref model);
+			}
+		}
+		/// <summary>
+		/// Validate subquery input structural. The parameter input must be bound and the
+		/// parameter type must match the binding.
+		/// </summary>
+		/// <param name="parameterInput">The <see cref="CalculatedPathValue"/> to validate.</param>
+		/// <param name="rolePathOwner">The containing <see cref="RolePathOwner"/> for this calculation.</param>
+		/// <param name="notifyAdded">Callback notification used during deserialization.</param>
+		/// <param name="contextModel">The context <see cref="ORMModel"/>. Calculated automatically if <see langword="null"/></param>
+		private static void ValidateQueryParameterInput(SubqueryParameterInput parameterInput, IRolePathOwner rolePathOwner, INotifyElementAdded notifyAdded, ref ORMModel contextModel)
+		{
+			// SubqueryParameterInputs are deleted if they are completely unbound, leaving a PartialSubqueryParameterInputsError
+			// on the subquery entry PathedRole. The only test needed here is a compatibility check the parameter type.
+			PathedRole pathedRole;
+			RolePathObjectTypeRoot pathRoot;
+			bool hasError = false;
+			if (null != (pathedRole = parameterInput.InputFromPathedRole))
+			{
+				hasError = !new RolePathNode(pathedRole).CanProjectOn(parameterInput.Parameter.ParameterType);
+			}
+			else if (null != (pathRoot = parameterInput.InputFromPathRoot))
+			{
+				hasError = !new RolePathNode(pathRoot).CanProjectOn(parameterInput.Parameter.ParameterType);
+			}
+
+			SubqueryParameterInputCompatibilityError error = parameterInput.IncompatibleInputError;
+			if (hasError)
+			{
+				if (error == null &&
+					null != (contextModel ?? (contextModel = rolePathOwner != null ? rolePathOwner.Model : parameterInput.InputFromPathedRole.RolePath.RootRolePath.Model)))
+				{
+					error = new SubqueryParameterInputCompatibilityError(parameterInput.Partition);
+					error.ParameterInput = parameterInput;
+					error.Model = contextModel;
+					error.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(error, true);
+					}
+				}
+			}
+			else if (error != null)
+			{
+				error.Delete();
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(QueryParameterHasParameterType)
+		/// </summary>
+		private static void QueryParameterTypeAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((QueryParameterHasParameterType)e.ModelElement).Parameter, DelayValidateParameterTypeChanged);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(QueryParameterHasParameterType)
+		/// </summary>
+		private static void QueryParameterTypeDeletedRule(ElementDeletedEventArgs e)
+		{
+			QueryParameter parameter = ((QueryParameterHasParameterType)e.ModelElement).Parameter;
+			if (!parameter.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(((QueryParameterHasParameterType)e.ModelElement).Parameter, DelayValidateParameterTypeChanged);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(QueryParameterHasParameterType)
+		/// </summary>
+		private static void QueryParameterTypeRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == QueryParameterHasParameterType.ParameterTypeDomainRoleId)
+			{
+				QueryParameter parameter;
+				if (null != (parameter = ((QueryParameterHasParameterType)e.ElementLink).Parameter))
+				{
+					FrameworkDomainModel.DelayValidateElement(parameter, DelayValidateParameterTypeChanged);
+				}
+			}
+		}
+
+		/// <summary>
+		/// ChangeRule: typeof(QueryParameter)
+		/// </summary>
+		private static void QueryParameterChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == QueryParameter.NameDomainPropertyId)
+			{
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateParameterIdentityChange);
+			}
+		}
+		private static void DelayValidateParameterTypeChanged(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				// Validate items dependent on the parameter type
+				QueryParameter parameter = (QueryParameter)element;
+				foreach (SubqueryParameterInputs inputs in parameter.SubqueryParameterInputsCollection)
+				{
+					foreach (SubqueryParameterInput input in SubqueryParameterInput.GetLinksToInputCollection(inputs))
+					{
+						ORMModel model = null;
+						ValidateQueryParameterInput(input, null, null, ref model);
+					}
+				}
+
+				// UNDONE: This checks the parameter inputs. We haven't defined errors yet for the subquery and QueryParameterBinding itself.
+			}
+		}
+		/// <summary>
+		/// Update errors that reference the parameter name.
+		/// </summary>
+		private static void DelayValidateParameterIdentityChange(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				QueryParameter parameter = (QueryParameter)element;
+				foreach (SubqueryParameterInputs inputs in parameter.SubqueryParameterInputsCollection)
+				{
+					foreach (SubqueryParameterInput input in SubqueryParameterInput.GetLinksToInputCollection(inputs))
+					{
+						SubqueryParameterInputCompatibilityError error = input.IncompatibleInputError;
+						if (error != null)
+						{
+							error.GenerateErrorText();
+						}
+					}
+				}
+			}
+		}
+
 		/// <summary>
 		/// Given a <see cref="Role"/> and <see cref="FactType"/>, determine
 		/// the corresponding <see cref="RoleBase"/> that is either in the
@@ -6350,7 +6747,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // QueryParameterBinding class
 	#region SubqueryParameterInput class
-	partial class SubqueryParameterInput
+	partial class SubqueryParameterInput : IElementLinkRoleHasIndirectModelErrorOwner, IModelErrorDisplayContext
 	{
 		#region Parameter input validation rules
 		/// <summary>
@@ -6446,8 +6843,80 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DeleteIfEmpty(((SubqueryParameterInputFromRolePathRoot)e.ModelElement).ParameterInput);
 		}
 		#endregion // Parameter input validation rules
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { SubqueryParameterInput.InputsDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				QueryParameter parameter = Parameter;
+				PathedRole pathedRole = this.Inputs.PathedEntryRole;
+
+				string parameterName = parameter.Name;
+				// It is not worth using a positional fallback here. First, the base of the position is not clear.
+				// Second, that means we have to track the position for a rare case.
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSubqueryParameterInput, parameterName, ((IModelErrorDisplayContext)pathedRole).ErrorDisplayContext);
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
 	}
 	#endregion // SubqueryParameterInput class
+	#region SubqueryParameterInputs class
+	partial class SubqueryParameterInputs : IElementLinkRoleHasIndirectModelErrorOwner
+	{
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { SubqueryParameterInputs.PathedEntryRoleDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
+	}
+	#endregion // SubqueryParameterInputs class
 	#region SubtypeDerivationRule class
 	partial class SubtypeDerivationRule : IModelErrorDisplayContext, IHasIndirectModelErrorOwner
 	{
@@ -8848,6 +9317,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return ResourceStrings.ModelErrorConstraintRoleProjectionIncompatibleProjectionCompact;
+			}
+		}
+	}
+	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
+	partial class PartialSubqueryParameterInputsError
+	{
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		/// <summary>
+		/// Generate the error text
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = SubqueryEntryPathedRole;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePathPartialSubqueryParameterInputsText, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePathPartialSubqueryParameterInputsCompact;
+			}
+		}
+	}
+	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
+	partial class SubqueryParameterInputCompatibilityError
+	{
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		/// <summary>
+		/// Generate the error text
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = ParameterInput;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeText, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeCompact;
 			}
 		}
 	}

@@ -420,6 +420,18 @@
 			<cmc:ClosureRole relationship="PathObjectUnifierUnifiesRolePathRoot" role="PathRoot" closureBehavior="InternalReferencedPart" order="From"/>
 			<cmc:ClosureRole relationship="PathObjectUnifierUnifiesPathedRole" role="PathedRole" closureBehavior="InternalReferencedPart" order="From"/>
 
+			<!-- Subquery integration -->
+			<cmc:ClosureRole relationship="QueryParameterHasParameterType" role="ParameterType" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="QueryParameterBinding" role="QueryParameter" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="QueryParameterBoundToRolePathRoot" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="QueryParameterBoundToPathedRole" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="SubqueryParameterInputs" role="PathedEntryRole" closureBehavior="ContainedPart"/>
+			<cmc:ClosureRole relationship="SubqueryParameterInput" role="Parameter" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="SubqueryParameterInputFromRolePathRoot" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="SubqueryParameterInputFromPathedRole" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="SubqueryParameterInputFromCalculatedPathValue" role="Source" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="SubqueryParameterInputFromPathConstant" role="Source" closureBehavior="ContainedPart"/>
+
 			<!-- Role set derivation projection -->
 			<cmc:ClosureRole relationship="RoleSetDerivationProjection" role="RolePath" closureBehavior="Custom">
 				<cmc:CustomBehavior>

@@ -19001,6 +19001,154 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass PartialSubqueryParameterInputsError
+	/// All subquery input parameters must be specified when a subquery is entered in a
+	/// role path.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PartialSubqueryParameterInputsError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PartialSubqueryParameterInputsError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("8216fc36-7481-4ccf-883c-232e7a55c669")]
+	public partial class PartialSubqueryParameterInputsError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PartialSubqueryParameterInputsError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8216fc36, 0x7481, 0x4ccf, 0x88, 0x3c, 0x23, 0x2e, 0x7a, 0x55, 0xc6, 0x69);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PartialSubqueryParameterInputsError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PartialSubqueryParameterInputsError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SubqueryEntryPathedRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SubqueryEntryPathedRole.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasPartialSubqueryParameterInputsError.PartialSubqueryParameterInputsError
+		/// </summary>
+		public virtual PathedRole SubqueryEntryPathedRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasPartialSubqueryParameterInputsError.PartialSubqueryParameterInputsErrorDomainRoleId) as PathedRole;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasPartialSubqueryParameterInputsError.SubqueryEntryPathedRoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasPartialSubqueryParameterInputsError.SubqueryEntryPathedRoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleHasPartialSubqueryParameterInputsError.PartialSubqueryParameterInputsErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass SubqueryParameterInputCompatibilityError
+	/// The input assigned to a subquery parameter must be consistent with the parameter
+	/// type.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputCompatibilityError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputCompatibilityError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("1bc19f9a-b40b-40df-86a6-6587ff81d8b7")]
+	public partial class SubqueryParameterInputCompatibilityError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// SubqueryParameterInputCompatibilityError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x1bc19f9a, 0xb40b, 0x40df, 0x86, 0xa6, 0x65, 0x87, 0xff, 0x81, 0xd8, 0xb7);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SubqueryParameterInputCompatibilityError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public SubqueryParameterInputCompatibilityError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ParameterInput opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ParameterInput.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterHasIncompatibleInputError.IncompatibleInputError
+		/// </summary>
+		public virtual SubqueryParameterInput ParameterInput
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterHasIncompatibleInputError.IncompatibleInputErrorDomainRoleId) as SubqueryParameterInput;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterHasIncompatibleInputError.SubqueryParameterInputDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterHasIncompatibleInputError.SubqueryParameterInputDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterHasIncompatibleInputError.IncompatibleInputErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass DynamicRuleRequiresEventAndActionError
 	/// A dynamic rule needs at least one triggering event and one action.
 	/// </summary>

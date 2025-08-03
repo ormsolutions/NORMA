@@ -329,11 +329,11 @@
 		<comment>Model validation error text for a path calculation with no binding for some parameter. {0}=error display context,{1}=parameter name</comment>
 	</data>
 	<data name="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.CompactText" xml:space="preserve">
-		<value>A calculation result must be used as a path condition, calculation input, or projection source.</value>
+		<value>A calculation result must be used by the role path.</value>
 		<comment>Model validation error text for a path calculation with a result that is not being used. Compact form.</comment>
 	</data>
 	<data name="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text" xml:space="preserve">
-		<value>{0} must use a calculation result as a path condition, calculation input, or projection source.</value>
+		<value>{0} must use a calculation result as a path condition, calculation input, subquery parameter input, or projection source.</value>
 		<comment>Model validation error text for a path calculation with a result that is not being used. {0}=error display context</comment>
 	</data>
 	<data name="ModelError.CardinalityConstraint.CardinalityRangeOverlapError.CompactMessage" xml:space="preserve">
@@ -1009,6 +1009,14 @@
 		<value>{0} has outer join semantics to a mandatory role.</value>
 		<comment>Model validation error text for an outer join to a mandatory role. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.RolePath.PartialSubqueryParameterInputs.CompactText" xml:space="preserve">
+		<value>Use of a subquery requires an input for each query parameter.</value>
+		<comment>Model validation error text for incomplete subquery parameter inputs. Compact form.</comment>
+	</data>
+	<data name="ModelError.RolePath.PartialSubqueryParameterInputs.Text" xml:space="preserve">
+		<value>{0} uses a subquery. Inputs for all query parameters must be provided.</value>
+		<comment>Model validation error text for incomplete subquery parameter inputs. {0}=error display context</comment>
+	</data>
 	<data name="ModelError.RolePath.RequiresRootObjectType.CompactText" xml:space="preserve">
 		<value>A role path requires a root object type.</value>
 		<comment>Model validation error text for a role path with no root object type. Compact form.</comment>
@@ -1044,6 +1052,14 @@
 	<data name="ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.Text" xml:space="preserve">
 		<value>{0} must project all derived roles from each projected source path.</value>
 		<comment>Model validation error text for a fact type or query derivation projection that does not project all roles. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.SubqueryInputCompatibleWithParameterType.Text" xml:space="preserve">
+		<value>{0} is not sourced with a type that is compatible with the parameter type.</value>
+		<comment>Model validation error text for subquery parameter inputs that do not have a compatible type. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.SubqueryInputCompatibleWithParameterType.CompactText" xml:space="preserve">
+		<value>Input to a subquery parameter is not compatible with the parameter type.</value>
+		<comment>Model validation error text for subquery parameter inputs that do not have a compatible type. Compact form.</comment>
 	</data>
 	<data name="ModelError.UncategorizedModelError.CategoryDisplayName" xml:space="preserve">
 		<value>Uncategorized Model Validation Errors</value>
@@ -1092,6 +1108,10 @@
 	<data name="ModelError.DisplayContext.SubtypeDerivationRule" xml:space="preserve">
 		<value>subtype derivation rule for '{0}' in model '{1}'</value>
 		<comment>Dynamic text replacement for an error associated with the derivation rule of a subtype. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</comment>
+	</data>
+	<data name="ModelError.DisplayContext.SubqueryParameterInput" xml:space="preserve">
+		<value>parameter input '{0}' in the path for '{1}'</value>
+		<comment>Dynamic text replacement for an error associated with a SubqueryParameterInput. Automatically capitalized on replacement. {0}=Parameter Name {1}=Context used with pathed role.</comment>
 	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.CompactMessage" xml:space="preserve">
 		<value>Value constraint ranges have overlapping values.</value>
