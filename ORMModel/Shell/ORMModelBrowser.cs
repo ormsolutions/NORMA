@@ -897,8 +897,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						((IORMDesignerView)currentDoc).CommandManager.SetCommandStatus(selectedParts, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommands);
 						// Add in label editing command
-						ISurveyNode surveyNode = selectedElement as ISurveyNode;
-						if ((surveyNode != null && surveyNode.IsSurveyNameEditable) || selectedElement is ISurveyNodeCustomEditor)
+						ISurveyNode surveyNode = selectedElement as ISurveyNode ?? selectedParts.ReferenceElement as ISurveyNode;
+						ISurveyNodeCustomEditor customEditor = null;
+						if ((surveyNode != null && surveyNode.IsSurveyNameEditable) || (null != (customEditor = surveyNode as ISurveyNodeCustomEditor) && 0 != (customEditor.SupportedEditActivationStyles & VirtualTreeLabelEditActivationStyles.Explicit)))
 						{
 							visibleCommands |= ORMDesignerCommands.EditLabel;
 							enabledCommands |= ORMDesignerCommands.EditLabel;
