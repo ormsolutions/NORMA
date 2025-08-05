@@ -140,6 +140,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeAddedEvent), action);
 				classInfo = directory.FindDomainClass(FactType.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
+				classInfo = directory.FindDomainRelationship(MandatoryConstraintClosesUnaryFactType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(UnaryPairMandatoryAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(UnaryPairMandatoryDeletedEvent), action);
 
 				//Set Constraint
 				classInfo = directory.FindDomainRelationship(ModelHasSetConstraint.DomainClassId);
@@ -273,7 +276,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//ExclusiveOr added deleted 
 				classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ExclusiveOrAddedEvent), action);
-				classInfo = directory.FindDomainClass(ExclusiveOrConstraintCoupler.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ExclusiveOrDeletedEvent), action);
 				propertyInfo = directory.FindDomainProperty(ExclusionConstraint.NameDomainPropertyId);
 				classInfo = directory.FindDomainClass(ExclusionConstraint.DomainClassId);
@@ -672,7 +674,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
 				SetConstraint constraint = ((ModelHasSetConstraint)element).SetConstraint;
-				FactType contextFactType = null;
 				switch (((IConstraint)constraint).ConstraintType)
 				{
 					case ConstraintType.SimpleMandatory:
@@ -685,13 +686,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						return;
 					case ConstraintType.DisjunctiveMandatory:
-						contextFactType = ((MandatoryConstraint)constraint).ClosesUnaryFactType;
+						if (((MandatoryConstraint)constraint).ClosesUnaryFactType != null)
+						{
+							// Handle this through its link with the fact type so that we can
+							// assimilate an external constraint into the fact type display.
+							return;
+						}
 						break;
 					case ConstraintType.ImpliedMandatory:
 						// Do not add implied constraints
 						return;
 				}
-				eventNotify.ElementAdded(constraint, contextFactType);
+				eventNotify.ElementAdded(constraint, null);
+			}
+		}
+		/// <summary>
+		/// Survey event handler for addition of <see cref="MandatoryConstraintClosesUnaryFactType"/>
+		/// </summary>
+		private static void UnaryPairMandatoryAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			// This is needed as a special handler for the case where the constraint editor assimilates
+			// an existing internal constraint into a unary negation pair. Nothing in the tool produces
+			// a role player change in this case or removes a constraint from the pattern without deleting
+			// it outright, so we don't try to handle that case.
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementContextChanged(((MandatoryConstraintClosesUnaryFactType)element).MandatoryConstraint, null); // This will turn into an ElementAdded if it isn't there yet
+			}
+		}
+		/// <summary>
+		/// Survey event handler for deletion of <see cref="MandatoryConstraintClosesUnaryFactType"/>
+		/// </summary>
+		private static void UnaryPairMandatoryDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			// This is needed as a special handler for the case where the constraint editor assimilates
+			// an existing internal constraint into a unary negation pair. Nothing in the tool produces
+			// a role player change in this case or removes a constraint from the pattern without deleting
+			// it outright, so we don't try to handle that case.
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				MandatoryConstraintClosesUnaryFactType link = (MandatoryConstraintClosesUnaryFactType)element;
+				MandatoryConstraint constraint = link.MandatoryConstraint;
+				if (!constraint.IsDeleted)
+				{
+					eventNotify.ElementContextChanged(constraint, link.UnaryFactType);
+				}
 			}
 		}
 		/// <summary>

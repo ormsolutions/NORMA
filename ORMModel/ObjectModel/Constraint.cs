@@ -9335,6 +9335,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DeleteRule: typeof(ExclusiveOrConstraintCoupler), FireTime=LocalCommit, Priority=ORMCoreDomainModel.BeforeDelayValidateRulePriority;
 		/// Give the ExclusiveOrConstraintCoupler bidirection propagate delete
 		/// behavior, but only if one end is already deleted and the other is not
+		/// and the other end has not been recoupled with another constraint.
 		/// </summary>
 		private static void CouplerDeleteRule(ElementDeletedEventArgs e)
 		{
@@ -9343,12 +9344,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ExclusionConstraint exclusion = link.ExclusionConstraint;
 			if (mandatory.IsDeleted)
 			{
-				if (!exclusion.IsDeleted && exclusion.ControlledByUnaryFactType == null)
+				if (!exclusion.IsDeleted && exclusion.ControlledByUnaryFactType == null && exclusion.ExclusiveOrMandatoryConstraint == null)
 				{
 					exclusion.Delete();
 				}
 			}
-			else if (exclusion.IsDeleted)
+			else if (exclusion.IsDeleted && mandatory.ExclusiveOrExclusionConstraint == null)
 			{
 				mandatory.Delete();
 			}

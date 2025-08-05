@@ -642,6 +642,10 @@ If a subtype is constrained use single-click to add and double-click to commit.<
     <value xml:space="preserve">The final shape corresponding to this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
   </data>
+  <data name="MessageBox.ConstraintControlledByUnaryPattern.Message">
+    <value xml:space="preserve">This constraint is part of a declared pattern and cannot be edited directly.&#xd;&#xa;&#xd;&#xa;The constraint state is controlled by the UnaryPattern property available on either of the constrained fact types.&#xd;&#xa;&#xd;&#xa;If you do not see the UnaryPattern property, verify that you have selected the fact type by clicking the edge of the shape. Clicking the center of the shape selects the role, not the fact type.</value>
+    <comment xml:space="preserve">The message shown when an attempt is made to edit a constraint that is controlled by a unary negation pair.</comment>
+  </data>
   <data name="MessageBox.UnrecognizedExtensionsStripped.Message">
     <value xml:space="preserve">The file format of '{0}' contains unsupported extensions.&#xd;&#xa;Data associated with extension(s) '{1}' has been removed.&#xd;&#xa;Should the 'Save' command be disabled to preserve the original file contents? The 'Save As' command will remain enabled.</value>
     <comment xml:space="preserve">The message shown when extensions are automatically removed from a file. Replacements: {0}=file name, {1}=list of unrecognized extensions.</comment>

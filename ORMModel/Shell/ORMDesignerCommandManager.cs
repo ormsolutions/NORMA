@@ -694,11 +694,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				visibleCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditRoleSequenceConstraint;
 				LinkedElementCollection<FactType> factTypes = setConstraint.FactTypeCollection;
-				if (factTypes.Count != 1 || (factType = factTypes[0]).ImpliedByObjectification == null)
+				int factCount = factTypes.Count;
+				if (factCount != 1 || (factType = factTypes[0]).ImpliedByObjectification == null)
 				{
 					Objectification objectification;
-					bool isLinkFactType = false;
-					if (null != (objectification = factType.Objectification))
+					bool isLinkOrUnaryFactType = false;
+					if (factCount == 1 && factType.UnaryPattern != UnaryValuePattern.NotUnary)
+					{
+						// All internal constraints on a unary fact type are managed by the pattern
+						isLinkOrUnaryFactType = true;
+					}
+					else if (null != (objectification = factType.Objectification))
 					{
 						foreach (DiagramItem selectedItem in myDesignerView.CurrentDesigner.Selection)
 						{
@@ -708,14 +714,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								null != (testLinkFactType = factTypeShape.AssociatedFactType) &&
 								testLinkFactType.ImpliedByObjectification == objectification)
 							{
-								isLinkFactType = true;
+								isLinkOrUnaryFactType = true;
 								break;
 							}
 						}
 					}
 					// Don't edit or delete internal uniqueness constraints on the objectifying
 					// role of an implied fact type or a proxy role.
-					if (!isLinkFactType)
+					if (!isLinkOrUnaryFactType)
 					{
 						enabledCommands = visibleCommands;
 					}

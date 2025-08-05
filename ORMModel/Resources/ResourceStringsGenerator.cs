@@ -4707,6 +4707,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.UnrecognizedExtensionsStripped.Message");
 			}
 		}
+		/// <summary>The message shown when an attempt is made to edit a constraint that is controlled by a unary negation pair.</summary>
+		public static string ConstraintControlledByUnaryPatternMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.ConstraintControlledByUnaryPattern.Message");
+			}
+		}
 		/// <summary>The header for the message displayed if a set of extensions fails to correctly reload.</summary>
 		public static string RevertExtensionsMessage
 		{

@@ -25,6 +25,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Shell;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
@@ -230,6 +233,81 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					if (modifyRoleSequence != null)
 					{
+						// Adding a matching mandatory constraint across a unary pattern that has
+						// an implied mandatory constraint automatically produces an implication error.
+						// However, if the UnaryPattern does not currently imply a mandatory constraint,
+						// then adding one externally causes all sorts of problems. For example, we only
+						// collapse unary roles into a single column if they are paired and other multi-role
+						// mandatory constraints do not affect the mapping so are ignored. Therefore, a
+						// constraint that mirrors a pattern-controlled constraint but is not part of
+						// the pattern causes all sorts of problems.
+						FactType assimilateIntoUnaryFactType = null;
+						if (rolesCount == 2 && constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+						{
+							Role firstSelectedRole = selectedRoles[0];
+							FactType firstFactType = firstSelectedRole.FactType;
+							switch (firstFactType.UnaryPattern)
+							{
+								case UnaryValuePattern.Negation:
+									FactType positiveUnary = firstFactType.PositiveUnaryFactType;
+									{
+										switch (positiveUnary.UnaryPattern)
+										{
+											case UnaryValuePattern.DeonticRequiredWithNegation:
+											case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+											case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+												if (constraint.Modality == ConstraintModality.Alethic && selectedRoles[1] == positiveUnary.UnaryRole)
+												{
+													assimilateIntoUnaryFactType = positiveUnary;
+												}
+												break;
+											case UnaryValuePattern.OptionalWithNegation:
+											case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+											case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+												if (selectedRoles[1] == positiveUnary.UnaryRole)
+												{
+													assimilateIntoUnaryFactType = positiveUnary;
+												}
+												break;
+										}
+
+										if (assimilateIntoUnaryFactType != null)
+										{
+											// Switch the roles now so we match the pattern order on the exclusion constraint.
+											selectedRoles[0] = selectedRoles[1];
+											selectedRoles[1] = firstSelectedRole;
+										}
+									}
+									break;
+								case UnaryValuePattern.DeonticRequiredWithNegation:
+								case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+								case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+									if (constraint.Modality == ConstraintModality.Alethic)
+									{
+										// Upgrade to the alethic. Note that this could eat existing
+										// exclusion and deontic mandatory constraint shapes.
+										assimilateIntoUnaryFactType = firstFactType;
+									}
+									break;
+								case UnaryValuePattern.OptionalWithNegation:
+								case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+								case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+									if (selectedRoles[1] == firstFactType.NegationUnaryFactType.UnaryRole)
+									{
+										assimilateIntoUnaryFactType = firstFactType;
+									}
+									break;
+							}
+
+							ExclusionConstraint xorExclusion;
+							if (assimilateIntoUnaryFactType != null && null != (xorExclusion = ((MandatoryConstraint)constraint).ExclusiveOrExclusionConstraint))
+							{
+								// This now before rearrange roles and triggering
+								// corresponding changes on the exclusion.
+								xorExclusion.Delete();
+							}
+						}
+
 						// Note that we don't just blow away the collection here, there are too
 						// many side effects (such as removing the preferred identifier when a compatible
 						// link is added)
@@ -263,6 +341,60 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							else if (existingIndex != i)
 							{
 								roles.Move(existingIndex, i);
+							}
+						}
+
+						if (assimilateIntoUnaryFactType != null)
+						{
+							bool isDeontic = constraint.Modality == ConstraintModality.Deontic;
+
+							// Determine the new pattern
+							UnaryValuePattern newPattern = UnaryValuePattern.NotUnary;
+							bool deleteOldMandatory = false;
+							switch (assimilateIntoUnaryFactType.UnaryPattern)
+							{
+								case UnaryValuePattern.DeonticRequiredWithNegation:
+									newPattern = UnaryValuePattern.RequiredWithNegation;
+									deleteOldMandatory = true;
+									break;
+								case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+									newPattern = UnaryValuePattern.RequiredWithNegationDefaultTrue;
+									deleteOldMandatory = true;
+									break;
+								case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+									newPattern = UnaryValuePattern.RequiredWithNegationDefaultFalse;
+									deleteOldMandatory = true;
+									break;
+								case UnaryValuePattern.OptionalWithNegation:
+									newPattern = isDeontic ? UnaryValuePattern.DeonticRequiredWithNegation : UnaryValuePattern.RequiredWithNegation;
+									break;
+								case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+									newPattern = isDeontic ? UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue : UnaryValuePattern.RequiredWithNegationDefaultTrue;
+									break;
+								case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+									newPattern = isDeontic ? UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse : UnaryValuePattern.RequiredWithNegationDefaultFalse;
+									break;
+							}
+
+							if (newPattern != UnaryValuePattern.NotUnary) // Sanity check, should always be true
+							{
+								// Update the internals
+								MandatoryConstraint negationMandatory = (MandatoryConstraint)constraint;
+								if (!isDeontic)
+								{
+									assimilateIntoUnaryFactType.NegationExclusionConstraint.ExclusiveOrMandatoryConstraint = negationMandatory;
+								}
+
+								if (deleteOldMandatory)
+								{
+									// This isn't propagation deletion on a role player change, and the model events aren't looking for the role player change.
+									assimilateIntoUnaryFactType.NegationMandatoryConstraint.Delete();
+								}
+
+								assimilateIntoUnaryFactType.NegationMandatoryConstraint = negationMandatory;
+
+								// Now change the pattern to match after changing the internals (change afterwards so we don't create new, conflicting internals)
+								assimilateIntoUnaryFactType.UnaryPattern = newPattern;
 							}
 						}
 					}
@@ -901,9 +1033,71 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="clientView">The active DiagramClientView</param>
 		public void ChainMouseAction(ExternalConstraintShape attachToShape, DiagramClientView clientView)
 		{
-			DiagramView activeView = Diagram.ActiveDiagramView;
+			Diagram diagram = Diagram;
+			DiagramView activeView = diagram.ActiveDiagramView;
 			if (activeView != null)
 			{
+				// If the user tries to edit one of the two pattern-controlled external constraints with this
+				// action then we need to give them some feedback on why we won't do it. Note that there are
+				// multiple gestures (Edit Constraint menu, double click external constraint, double click
+				// any sticky role, etc.) The all eventually come here, which is why this is here.
+				IConstraint constraint = attachToShape.Subject as IConstraint;
+				if (constraint != null)
+				{
+					bool managedUnaryPart = false;
+					switch (constraint.ConstraintType)
+					{
+						case ConstraintType.DisjunctiveMandatory:
+							if (((MandatoryConstraint)constraint).ClosesUnaryFactType != null)
+							{
+								managedUnaryPart = true;
+							}
+							break;
+						case ConstraintType.Exclusion:
+							if (((ExclusionConstraint)constraint).ControlledByUnaryFactType != null)
+							{
+								managedUnaryPart = true;
+							}
+							break;
+					}
+
+					if (managedUnaryPart)
+					{
+#if VISUALSTUDIO_10_0
+						var currentAction = clientView.ActiveMouseAction;
+						if (currentAction != null && currentAction.IsActive)
+						{
+							currentAction.Cancel(clientView);
+						}
+
+						ORMDiagram ormDiagram = diagram as ORMDiagram;
+						if (ormDiagram != null)
+						{
+							ormDiagram.StickyObject = null;
+						}
+
+						this.Reset();
+#endif // VISUALSTUDIO_10_0
+
+						VSDiagramView vsDiagramView;
+						IORMToolServices services;
+						IServiceProvider serviceProvider;
+						if (null != (vsDiagramView = activeView as VSDiagramView) &&
+							null != (services = vsDiagramView.DocData as IORMToolServices) &&
+							null != (serviceProvider = services.ServiceProvider))
+						{
+							VsShellUtilities.ShowMessageBox(
+								serviceProvider,
+								ResourceStrings.ConstraintControlledByUnaryPatternMessage,
+								ResourceStrings.PackageOfficialName,
+								OLEMSGICON.OLEMSGICON_INFO,
+								OLEMSGBUTTON.OLEMSGBUTTON_OK,
+								OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+						}
+						return;
+					}
+				}
+
 				// Move on to the selection action
 				clientView.ActiveMouseAction = this;
 
