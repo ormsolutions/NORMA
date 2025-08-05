@@ -596,6 +596,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			SetConstraint setConstraint;
 			SetComparisonConstraint setComparisonConstraint = null;
 			bool otherShape = false;
+			ORMDiagram ormDiagram = null;
+			Func<FactType, ORMDesignerCommands> negatedUnaryConstraintsCommand = (FactType unaryFactType) =>
+				(null != (ormDiagram ?? (ormDiagram = myDesignerView.CurrentDiagram as ORMDiagram)) &&
+				null != ormDiagram.FindShapeForElement<FactTypeShape>(unaryFactType, factTypeShape => !factTypeShape.DisplayAsObjectType) &&
+				null != ormDiagram.FindShapeForElement<FactTypeShape>(unaryFactType.InverseUnaryFactType, factTypeShape => !factTypeShape.DisplayAsObjectType)) ?
+					ORMDesignerCommands.DragNegatedUnaryConstraints :
+					ORMDesignerCommands.None;
+
 			if (null != (factType = element as FactType) ||
 				(null != (readingOrder = element as ReadingOrder) && null != (factType = readingOrder.FactType)))
 			{
@@ -611,13 +619,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							break;
 						case UnaryValuePattern.Negation:
 							// Disable deletion on the negation fact type
-							enabledCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
-							visibleCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							ORMDesignerCommands unaryDragCommands = ORMDesignerCommands.DragInverseUnaryFactType | negatedUnaryConstraintsCommand(factType);
+							enabledCommands |= unaryDragCommands;
+							visibleCommands |= unaryDragCommands;
 							toleratedCommands |= ORMDesignerCommands.DeleteAny;
 							break;
 						default:
-							enabledCommands = visibleCommands | ORMDesignerCommands.DragInverseUnaryFactType;
-							visibleCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							visibleCommands |= ORMDesignerCommands.DragInverseUnaryFactType | negatedUnaryConstraintsCommand(factType);
+							enabledCommands = visibleCommands;
 							break;
 					}
 
@@ -917,8 +926,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
 							break;
 						default:
-							visibleCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
-							enabledCommands |= ORMDesignerCommands.DragInverseUnaryFactType;
+							ORMDesignerCommands unaryDragCommands = ORMDesignerCommands.DragInverseUnaryFactType | negatedUnaryConstraintsCommand(factType);
+							visibleCommands |= unaryDragCommands;
+							enabledCommands |= unaryDragCommands;
 							break;
 					}
 				}
@@ -926,9 +936,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				// Extra menu commands may be visible if there is a StickyObject active on the diagram.
 				ExternalConstraintShape constraintShape;
 				IConstraint constraint;
-				ORMDiagram ormDiagram;
 
-				if (null != (ormDiagram = myDesignerView.CurrentDiagram as ORMDiagram))
+				if (null != (ormDiagram ?? (ormDiagram = myDesignerView.CurrentDiagram as ORMDiagram)))
 				{
 					FactTypeShape factShape;
 					if (null != (factShape = ormDiagram.FindShapeForElement<FactTypeShape>(factType)))
@@ -4279,6 +4288,58 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						null != (inverseFactType = factType.InverseUnaryFactType))
 					{
 						diagramView.DiagramClientView.ActiveMouseAction = new ModelElementDragAction(diagram, inverseFactType);
+						break;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Place the constraint(s) for a negated unary in drag mode
+		/// </summary>
+		public virtual void OnMenuDragNegatedUnaryConstraints()
+		{
+			IORMDesignerView view = myDesignerView;
+			ORMDiagram diagram;
+			DiagramView diagramView;
+			if (null != (diagram = view.CurrentDiagram as ORMDiagram) &&
+				null != (diagramView = view.CurrentDesigner))
+			{
+				IList selectedElements = view.SelectedElements;
+				int selectedElementsCount = selectedElements.Count;
+				for (int i = 0; i < selectedElementsCount; ++i)
+				{
+					// We do not want to pick up a DisplayAsObjectType
+					// ResolveContextFactType will resolve an ObjectType to the FactType that it nests,
+					// so we don't need to worry about doing that ourselves.
+					FactType factType;
+					FactType inverseFactType;
+					if (null != (factType = ORMEditorUtility.ResolveContextFactType(selectedElements[i])) &&
+						null != (inverseFactType = factType.InverseUnaryFactType))
+					{
+						if (factType.UnaryPattern == UnaryValuePattern.Negation)
+						{
+							factType = inverseFactType;
+						}
+						ExclusionConstraint exclusion = factType.NegationExclusionConstraint;
+						MandatoryConstraint mandatory = factType.NegationMandatoryConstraint;
+						ModelElementDragAction dragAction;
+						if (mandatory != null)
+						{
+							if (mandatory.Modality == ConstraintModality.Deontic)
+							{
+								dragAction = new ModelElementDragAction(diagram, new ORMModelElement[] { exclusion, mandatory });
+							}
+							else
+							{
+								// XOr shape attaches to the mandatory
+								dragAction = new ModelElementDragAction(diagram, mandatory);
+							}
+						}
+						else
+						{
+							dragAction = new ModelElementDragAction(diagram, exclusion);
+						}
+						diagramView.DiagramClientView.ActiveMouseAction = dragAction;
 						break;
 					}
 				}

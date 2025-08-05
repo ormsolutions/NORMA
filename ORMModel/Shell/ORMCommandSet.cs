@@ -255,6 +255,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnStatusDragLinkFactType),
 						new EventHandler(OnMenuDragLinkFactType),
 						ORMDesignerCommandIds.DragLinkFactType)
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusDragNegatedUnaryConstraints),
+						new EventHandler(OnMenuDragNegatedUnaryConstraints),
+						ORMDesignerCommandIds.DragNegatedUnaryConstraints)
 						// Alignment Commands
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusAlignShapes),
@@ -1046,6 +1050,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					// Defer to the doc view
 					designerView.CommandManager.OnMenuDragLinkFactType();
+				}
+			}
+			private void OnStatusDragNegatedUnaryConstraints(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DragNegatedUnaryConstraints);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDragNegatedUnaryConstraints(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuDragNegatedUnaryConstraints();
 				}
 			}
 			/// <summary>
@@ -2038,6 +2058,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Place the link fact type in drag mode
 			/// </summary>
 			public static readonly CommandID DragLinkFactType = new CommandID(guidORMDesignerCommandSet, cmdIdDragLinkFactType);
+			/// <summary>
+			/// Place the constraint(s) for a negated unary in drag mode
+			/// </summary>
+			public static readonly CommandID DragNegatedUnaryConstraints = new CommandID(guidORMDesignerCommandSet, cmdIdDragNegatedUnaryConstraints);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -2585,6 +2609,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Show the 'All Diagrams' page in the diagram spy window (enabled in diagram spy)
 			/// </summary>
 			private const int cmdIdDiagramSpyAllDiagrams = 0x2947;
+			/// <summary>
+			/// Place the constraint(s) for a negated unary in drag mode
+			/// </summary>
+			private const int cmdIdDragNegatedUnaryConstraints = 0x2948;
 			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>

@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
@@ -191,8 +192,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						myNextElement = nextIndex;
 						if (!element.IsDeleted)
 						{
-							DataObject dataObject = new DataObject();
-							dataObject.SetData(element.GetType(), element);
+							IDataObject dataObject;
+							ISurveyNode surveyNode;
+							if (null == (surveyNode = element as ISurveyNode) ||
+								null == (dataObject = surveyNode.SurveyNodeDataObject as IDataObject))
+							{
+								dataObject = new DataObject();
+								dataObject.SetData(element.GetType(), element);
+							}
 							Point p = clientView.PointToScreen(clientView.WorldToDevice(e.CurrentMousePosition));
 							clientView.OnDragDropCommon(new DragEventArgs(dataObject, 0, p.X, p.Y, DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Scroll, DragDropEffects.None), true, base.MouseDownHitShape);
 							break;

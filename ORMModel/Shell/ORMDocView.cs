@@ -297,6 +297,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		DiagramSpyAllDiagrams = 1L << 59,
 		/// <summary>
+		/// Place the constraint(s) for a negated unary in drag mode
+		/// </summary>
+		DragNegatedUnaryConstraints = 1L << 60,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference | DeleteGroup | RemoveFromGroup,

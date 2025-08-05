@@ -388,6 +388,15 @@
 				</Strings>
 			</Button>
 
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDragNegatedUnaryConstraints" priority="0x0050" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactCommands"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Drag Unary &amp;Negation Constraint(s)</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdExtensionManager" priority="0x0500" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
@@ -1332,6 +1341,7 @@
 			<IDSymbol value="0x2945" name="cmdIdDragLinkFactType"/>
 			<IDSymbol value="0x2946" name="cmdIdFactEditorCommitLineDragShapes"/>
 			<IDSymbol value="0x2947" name="cmdIdDiagramSpyAllDiagrams"/>
+			<IDSymbol value="0x2948" name="cmdIdDragNegatedUnaryConstraints"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
