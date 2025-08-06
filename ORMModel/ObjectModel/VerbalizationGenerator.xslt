@@ -1043,11 +1043,99 @@
 						<plx:value data="0" type="i4"/>
 					</plx:initialize>
 				</plx:local>
-				<plx:local name="defaultValue" dataTypeName=".string">
+				<plx:local name="orderedRoles" dataTypeName="IList">
+					<plx:passTypeParam dataTypeName="RoleBase"/>
 					<plx:initialize>
-						<plx:callThis name="ResolvedDefaultValue" type="property"/>
+						<plx:callInstance name="RoleCollection" type="property">
+							<plx:callObject>
+								<plx:callInstance name="GetDefaultReading">
+									<plx:callObject>
+										<plx:callThis name="FactType" type="property"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
+				<plx:local name="roleCount" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:nameRef name="orderedRoles"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="defaultValue" dataTypeName=".string">
+					<plx:initialize>
+						<plx:inlineStatement dataTypeName=".string">
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:binaryOperator type="equality">
+										<plx:left>
+											<plx:nameRef name="roleCount"/>
+										</plx:left>
+										<plx:right>
+											<plx:value data="1" type="i4"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:callThis name="DefaultValue" type="property"/>
+								</plx:left>
+								<plx:right>
+									<plx:callThis name="ResolvedDefaultValue" type="property"/>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="unaryPopulatedByDefault" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callStatic dataTypeName=".string" name="IsNullOrEmpty">
+										<plx:passParam>
+											<plx:nameRef name="defaultValue"/>
+										</plx:passParam>
+									</plx:callStatic>
+								</plx:unaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="equality">
+									<plx:left>
+										<plx:nameRef name="roleCount"/>
+									</plx:left>
+									<plx:right>
+										<plx:value data="1" type="i4"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="unaryPopulatedByDefault"/>
+						</plx:left>
+						<plx:right>
+							<plx:trueKeyword/>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="defaultValue"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
 				<plx:local name="isText" dataTypeName=".boolean">
 					<plx:initialize>
 						<plx:binaryOperator type="booleanAnd">
@@ -1090,29 +1178,6 @@
 								</plx:binaryOperator>
 							</plx:right>
 						</plx:binaryOperator>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="orderedRoles" dataTypeName="IList">
-					<plx:passTypeParam dataTypeName="RoleBase"/>
-					<plx:initialize>
-						<plx:callInstance name="RoleCollection" type="property">
-							<plx:callObject>
-								<plx:callInstance name="GetDefaultReading">
-									<plx:callObject>
-										<plx:callThis name="FactType" type="property"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="roleCount" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="Count" type="property">
-							<plx:callObject>
-								<plx:nameRef name="orderedRoles"/>
-							</plx:callObject>
-						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
 				<plx:local name="pastMatch" dataTypeName=".boolean">
@@ -10038,6 +10103,9 @@
 							<plx:nullKeyword/>
 						</plx:right>
 					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='UnaryPopulatedByDefault'">
+					<plx:nameRef name="unaryPopulatedByDefault" type="local"/>
 				</xsl:when>
 				<xsl:when test="$ConditionalMatch='IsEntityType'">
 					<plx:binaryOperator type="identityEquality">

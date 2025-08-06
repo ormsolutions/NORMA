@@ -760,6 +760,18 @@ Format: at most {1}</statement>
       <constraint name="UnaryRoleCardinalityConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="DefaultUnaryPopulation" replacementCount="1">
+    <statement>Description: Used to verbalize the default population of a unary role.
+Format: Each new instance of {0} plays this role by default.</statement>
+    <unformattedSnippet>Each new instance of  {0} plays this role by default</unformattedSnippet>
+    <contains>
+      <snippet name="ObjectType" />
+      <snippet name="ObjectTypeMissingWithIdentifier" />
+      <snippet name="ObjectTypeWithSubscript" />
+    </contains>
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="DefaultValuePrefix" replacementCount="1">
     <statement>Description: Used to verbalize a default value.
 Format: default value: {0}</statement>
@@ -2763,6 +2775,7 @@ Format: {0} is not equal to {1}</statement>
     <contains />
     <containedIn>
       <snippet name="ConstraintProvidesPreferredIdentifier" />
+      <snippet name="DefaultUnaryPopulation" />
       <snippet name="DerivedSubtypeReference" />
       <snippet name="DynamicRuleReference" />
       <snippet name="ImpliedModalNecessityOperator" />
@@ -2849,14 +2862,18 @@ Format: each population of {0} contains {1}</statement>
     <statement>Description: Verbalizes an object type as being missing with an identifier. Used for items that reference an object type but have their own id. {0} is the subscript, {1} is the identifier.</statement>
     <unformattedSnippet>Missing{0}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="DefaultUnaryPopulation" />
+    </containedIn>
     <usedBy />
   </snippet>
   <snippet name="ObjectTypeWithSubscript" replacementCount="3">
     <statement>Description: Verbalizes an object type with a subscript. {0} is the name, {1} is the guid id for the element, {2} is the subscript</statement>
     <unformattedSnippet>{0}{2}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="DefaultUnaryPopulation" />
+    </containedIn>
     <usedBy />
   </snippet>
   <snippet name="OccursInPopulation" replacementCount="2">

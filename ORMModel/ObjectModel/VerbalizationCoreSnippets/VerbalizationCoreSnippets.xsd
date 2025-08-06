@@ -741,6 +741,12 @@ Format: the possible values of {0} are {1}</xs:documentation>
 Format: default value: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="DefaultUnaryPopulation">
+					<xs:annotation>
+						<xs:documentation>Description: Used to verbalize the default population of a unary role.
+Format: Each new instance of {0} plays this role by default.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="SelfReference">
 					<xs:annotation>
 						<xs:documentation>Description: Allows the snippet replacement to verbalize itself. Format: {0}</xs:documentation>

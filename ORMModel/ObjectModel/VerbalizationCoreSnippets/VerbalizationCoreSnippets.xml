@@ -136,6 +136,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="PeriodSeparator"><![CDATA[{0}<span class="listSeparator">.</span>{1}]]></Snippet>
 			<Snippet type="SelfReference"><![CDATA[{0}]]></Snippet>
 			<Snippet type="DefaultValuePrefix"><![CDATA[<span class="smallIndent"><span class="quantifier">Default Value:</span> {0}</span>]]></Snippet>
+			<Snippet type="DefaultUnaryPopulation"><![CDATA[<span class="smallIndent"><span class="quantifier">Each new instance of </span> {0} <span class="quantifier">plays this role by default</span><span class="listSeparator".</span></span>]]></Snippet>
 			<Snippet type="SingleValueValueConstraint" modality="alethic"><![CDATA[<span class="quantifier">the possible value of</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
 			<Snippet type="SingleValueValueConstraint" modality="deontic"><![CDATA[<span class="quantifier">the value of</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
 			<Snippet type="MultiValueValueConstraint" modality="alethic"><![CDATA[<span class="quantifier">the possible values of</span> {0} <span class="quantifier">are</span> {1}]]></Snippet>

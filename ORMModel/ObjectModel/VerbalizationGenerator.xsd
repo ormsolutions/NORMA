@@ -1081,6 +1081,11 @@
 							<xs:documentation>The object type or role has a default value.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="UnaryPopulatedByDefault">
+						<xs:annotation>
+							<xs:documentation>The unary role is populated by default.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:list>

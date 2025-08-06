@@ -36,6 +36,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	{
 		private static object DefaultInstance = new object();
 		private static object NoInstance = new object();
+		private static object PopulatedUnaryInstance = new object();
+		private static object UnpopulatedUnaryInstance = new object();
 		#region DefaultValueConverter class
 		[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 		private sealed class DefaultValueConverter : TypeConverter
@@ -60,7 +62,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return sourceType == typeof(string);
 			}
 			/// <summary>
-			/// Standard override. Map non-positive values to 0, meaning unbounded.
+			/// Standard override. Translate from special text associated with special values.
 			/// </summary>
 			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 			{
@@ -75,7 +77,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return value;
 			}
 			/// <summary>
-			/// Standard override. Convert the NoInstance value to text.
+			/// Standard override. Convert the NoInstance, PoulatedUnaryInstance and UnpopulatedUnaryInstance values to text.
 			/// </summary>
 			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 			{
@@ -84,6 +86,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					if (object.ReferenceEquals(value, NoInstance))
 					{
 						return ResourceStrings.DefaultValuePickerNoDefaultText;
+					}
+					else if (object.ReferenceEquals(value, PopulatedUnaryInstance))
+					{
+						return ResourceStrings.DefaultValuePickerPopulatedUnaryText;
+					}
+					else if (object.ReferenceEquals(value, UnpopulatedUnaryInstance))
+					{
+						return ResourceStrings.DefaultValuePickerUnpopulatedUnaryText;
 					}
 					else if (object.ReferenceEquals(value, DefaultInstance))
 					{
@@ -224,6 +234,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		private Role myRole;
 		/// <summary>
+		/// Flag this in the construtor beginning so we don't have to keep looking it up.
+		/// </summary>
+		private bool myRoleIsUnary;
+		/// <summary>
 		/// Create a new property descriptor. Parameters are forwarded to the base.
 		/// </summary>
 		public DefaultValuePropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes, bool resolveValueType)
@@ -244,7 +258,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			}
 			else
 			{
-				myRole = (Role)modelElement;
+				Role role = (Role)modelElement;
+				myRole = role;
+				myRoleIsUnary = role.FactType?.UnaryPattern != UnaryValuePattern.NotUnary;
 			}
 		}
 		/// <summary>
@@ -284,7 +300,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							string currentDefault = role.DefaultValue;
 							if (!string.IsNullOrEmpty(currentDefault))
 							{
-								return currentDefault;
+								return myRoleIsUnary ? PopulatedUnaryInstance : currentDefault;
+							}
+							else if (myRoleIsUnary)
+							{
+								return UnpopulatedUnaryInstance;
 							}
 
 							ObjectType rolePlayer;
@@ -303,6 +323,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		public override void SetValue(object component, object value)
 		{
+			if (myRoleIsUnary)
+			{
+				return; // We shouldn't be here, we're read only
+			}
+
 			ModelElement element = this.ModelElement;
 			Store store;
 			if (null != (element = ModelElement) && null != (store = Utility.ValidateStore(element.Store)))
@@ -384,6 +409,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		public override void ResetValue(object component)
 		{
+			if (myRoleIsUnary)
+			{
+				return; // We shouldn't be here, we're read only
+			}
+
 			ModelElement element;
 			Store store;
 			if (null != (element = ModelElement) && null != (store = Utility.ValidateStore(element.Store)))
@@ -418,7 +448,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			Role role = myRole;
 			if (role != null)
 			{
-				return role.DefaultState != DefaultValueState.UseValue || (role.DefaultValue ?? string.Empty).Length != 0;
+				return myRoleIsUnary ?
+					!string.IsNullOrEmpty(role.DefaultValue) :
+					role.DefaultState != DefaultValueState.UseValue || (role.DefaultValue ?? string.Empty).Length != 0;
 			}
 			else
 			{
@@ -431,13 +463,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		public override object GetEditor(Type editorBaseType)
 		{
-			if (editorBaseType == typeof(System.Drawing.Design.UITypeEditor))
+			if (editorBaseType == typeof(System.Drawing.Design.UITypeEditor) && !myRoleIsUnary)
 			{
 				Role role = myRole;
 				return role != null ? new DefaultValueEditor(role) : new DefaultValueEditor((ObjectType)ModelElement);
 			}
 			return base.GetEditor(editorBaseType);
 		}
+
+		/// <summary>
+		/// Unary roles are read only
+		/// </summary>
+		public override bool IsReadOnly
+		{
+			get
+			{
+				return myRoleIsUnary || base.IsReadOnly;
+			}
+		}
+
 		/// <summary>
 		/// Get a type converter to manager property text.
 		/// </summary>

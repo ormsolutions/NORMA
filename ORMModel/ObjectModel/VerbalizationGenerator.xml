@@ -104,6 +104,23 @@
 					</SnippetReplacements>
 				</ConditionalSnippet>
 			</Snippet>
+			<Snippet ref="DefaultUnaryPopulation" conditionalMatch="UnaryPopulatedByDefault">
+				<ConditionalReplacement>
+					<ConditionalSnippet conditionalMatch="HasRolePlayer">
+						<Snippet ref="ObjectTypeWithSubscript" conditionalMatch="HasSubscript"/>
+						<Snippet ref="ObjectType"/>
+						<SnippetReplacements>
+							<RolePlayerName/>
+							<ContextId/>
+							<Subscript/>
+						</SnippetReplacements>
+					</ConditionalSnippet>
+					<Snippet ref="ObjectTypeMissingWithIdentifier">
+						<Subscript/>
+						<ContextId/>
+					</Snippet>
+				</ConditionalReplacement>
+			</Snippet>
 		</Role>
 		<!-- Generate ObjectType verbalization along with constraints -->
 		<ObjectType>

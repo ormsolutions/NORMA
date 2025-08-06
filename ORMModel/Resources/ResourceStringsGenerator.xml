@@ -88,8 +88,10 @@
 	<ResourceString name="NestedFactTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestedFactTypePicker.NullItemText"/>
 	<ResourceString name="NestingTypePickerNullItemText" model="Model" resourceName="ObjectModel.Editors.NestingTypePicker.NullItemText"/>
 	<ResourceString name="EntityTypeDefaultNamePattern" model="Model" resourceName="ObjectModel.EntityType.DefaultNamePattern"/>
-	<ResourceString name="DefaultValuePickerNoDefaultText" model="Model" resourceName="ObjectModel.Editors.DefaultValuePicker.NoDefaultValueText"/>
 	<ResourceString name="DefaultValuePickerContextDefaultFormat" model="Model" resourceName="ObjectModel.Editors.DefaultValuePicker.ContextDefaultValueFormat"/>
+	<ResourceString name="DefaultValuePickerNoDefaultText" model="Model" resourceName="ObjectModel.Editors.DefaultValuePicker.NoDefaultValueText"/>
+	<ResourceString name="DefaultValuePickerPopulatedUnaryText" model="Model" resourceName="ObjectModel.Editors.DefaultValuePicker.PopulatedUnaryText"/>
+	<ResourceString name="DefaultValuePickerUnpopulatedUnaryText" model="Model" resourceName="ObjectModel.Editors.DefaultValuePicker.UnpopulatedUnaryText"/>
 	<ResourceString name="DataTypeExactLengthDescription" model="Model" resourceName="ObjectModel.DataType.Length.ExactLengthDescription"/>
 	<ResourceString name="DataTypePrecision" model="Model" resourceName="ObjectModel.DataType.Precision"/>
 	<ResourceString name="DataTypePrecisionDescription" model="Model" resourceName="ObjectModel.DataType.Precision.Description"/>

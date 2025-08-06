@@ -309,6 +309,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.EntityType.DefaultNamePattern");
 			}
 		}
+		/// <summary>The name displayed to use the context default value. Replacement fields: 0=context default</summary>
+		public static string DefaultValuePickerContextDefaultFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.DefaultValuePicker.ContextDefaultValueFormat");
+			}
+		}
 		/// <summary>The name displayed to represent the lack of a default value for a role or value type.</summary>
 		public static string DefaultValuePickerNoDefaultText
 		{
@@ -317,12 +325,20 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.DefaultValuePicker.NoDefaultValueText");
 			}
 		}
-		/// <summary>The name displayed to use the context default value. Replacement fields: 0=context default</summary>
-		public static string DefaultValuePickerContextDefaultFormat
+		/// <summary>The name displayed to indicate a unary default value is set.</summary>
+		public static string DefaultValuePickerPopulatedUnaryText
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.DefaultValuePicker.ContextDefaultValueFormat");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.DefaultValuePicker.PopulatedUnaryText");
+			}
+		}
+		/// <summary>The name displayed to indicate a unary default value is not.</summary>
+		public static string DefaultValuePickerUnpopulatedUnaryText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Editors.DefaultValuePicker.UnpopulatedUnaryText");
 			}
 		}
 		/// <summary>An alternate description for the DataType.Length property. The default description describes a variable length.</summary>

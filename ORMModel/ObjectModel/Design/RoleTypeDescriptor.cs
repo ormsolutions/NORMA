@@ -167,15 +167,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					return true;
 				}
 			}
-			else if (propertyId == Role.DefaultValueDomainPropertyId)
-			{
-				Role role = ModelElement;
-				FactType factType = role.FactType;
-				if (factType != null && factType.UnaryPattern != UnaryValuePattern.NotUnary)
-				{
-					return true;
-				}
-			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
 
@@ -188,13 +179,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			if (propertyId == Role.DefaultValueDomainPropertyId)
 			{
 				// Use the DefaultValuePropertyDescriptor to manage both the DefaultValue and DefaultState settings unless this is a unary role,
-				// where it is displayed normally (and read only).
-				Role role = ModelElement;
-				FactType factType = role.FactType;
-				if (factType != null && factType.UnaryPattern == UnaryValuePattern.NotUnary)
-				{
-					return new DefaultValuePropertyDescriptor(this, requestor, domainPropertyInfo, attributes, false);
-				}
+				// where it is displayed and read only with a resource string.
+				return new DefaultValuePropertyDescriptor(this, requestor, domainPropertyInfo, attributes, false);
 			}
 			return base.CreatePropertyDescriptor(requestor, domainPropertyInfo, attributes);
 		}

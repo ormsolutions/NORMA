@@ -2039,6 +2039,14 @@
 		<value>&lt;Context Default Value&gt;&#xa0;= {0}</value>
 		<comment>The name displayed to use the context default value. Replacement fields: 0=context default</comment>
 	</data>
+	<data name="ObjectModel.Editors.DefaultValuePicker.PopulatedUnaryText" xml:space="preserve">
+		<value>&lt;Populated&#xa0;by&#xa0;Default&gt;</value>
+		<comment>The name displayed to indicate a unary default value is set.</comment>
+	</data>
+	<data name="ObjectModel.Editors.DefaultValuePicker.UnpopulatedUnaryText" xml:space="preserve">
+		<value>&lt;Not Populated&#xa0;by&#xa0;Default&gt;</value>
+		<comment>The name displayed to indicate a unary default value is not.</comment>
+	</data>
 	<data name="ObjectModel.Editors.NestedFactTypePicker.NullItemText" xml:space="preserve">
 		<value>&lt;Not Objectified&gt;</value>
 		<comment>The name displayed to represent null in the nested fact type picker</comment>
