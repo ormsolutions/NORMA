@@ -3,6 +3,14 @@ SETLOCAL
 SET RootDir=%~dp0.
 IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
+IF "%NORMADir%"=="" (
+	ECHO *************************************************************************
+	ECHO NORMA VSIX must be installed before updating files.
+	ECHO Rebuild after installation to use the latest assemblies and symbol files.
+	ECHO *************************************************************************
+	GOTO:EOF
+)
+
 SET XMLDir=%TrunkDir%\XML
 SET NetTiersDir=%TrunkDir%\CodeSmith\NetTiersPort
 SET NORMAGenerators=HKLM\SOFTWARE%WOWRegistryAdjust%\ORM Solutions\Natural ORM Architect for %TargetVisualStudioLongProductName%\Generators

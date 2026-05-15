@@ -26,6 +26,10 @@ IF "%UseToolsVersion%"=="" (
 )
 
 SET HackToolsVersion=12.34
+IF "%TargetVisualStudioVersionedInstallDir%"=="" (
+	CALL:SETVAR "TargetVisualStudioVersionedInstallDir" "%TargetVisualStudioLongProductYear%"
+)
+
 
 if "%NotRegistryBased%"=="1" (
 	if NOT EXIST "%~dp0%TargetVisualStudioShortProductName%Installation.bat" (
@@ -37,7 +41,7 @@ if "%NotRegistryBased%"=="1" (
 		ECHO and TargetVisualStudioInstallSuffix environment variables.
 		ECHO(
 		ECHO The installed editions are:
-		dir /b "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%"
+		dir /b "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioVersionedInstallDir%"
 		ECHO(
 		ECHO The installed suffixes are the 8 characters after '%TargetVisualStudioMajorMinorVersion%_' and
 		ECHO before any recognizable suffix like 'Exp' in:
@@ -50,7 +54,7 @@ if "%NotRegistryBased%"=="1" (
 		ECHO The 'TargetVisualStudioEdition' environment variable must be defined.
 		GOTO:EOF
 	)
-	CALL:SETVAR "MSBuildDir" "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%\%TargetVisualStudioEdition%\MSBuild"
+	CALL:SETVAR "MSBuildDir" "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioVersionedInstallDir%\%TargetVisualStudioEdition%\MSBuild"
 ) ELSE (
 	REG DELETE "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /f 1>NUL 2>&1
 	::Ignore error state, delete fails if the key is not there.
@@ -153,6 +157,14 @@ CALL:SETVAR "TargetVisualStudioVersion" "v17.0"
 CALL:SETVAR "VS64bit" "1"
 GOTO:EOF
 
+:_VER_2026
+:_VER_18.0
+:_VER_v18.0
+:_VER_18
+CALL:SETVAR "TargetVisualStudioVersion" "v18.0"
+CALL:SETVAR "VS64bit" "1"
+GOTO:EOF
+
 :_TOOLS_v8.0
 CALL:SETVAR "UseToolsVersion" "2.0"
 GOTO:EOF
@@ -198,5 +210,15 @@ CALL:SETVAR "TargetVisualStudioLongProductYear" "2022"
 CALL:SETVAR "TargetVisualStudioLongProductName" "Visual Studio 2022"
 CALL:SETVAR "TargetVisualStudioShortProductName" "VS2022"
 CALL:SETVAR "TargetVisualStudioMajorMinorVersion" "17.0"
+CALL:SETVAR "NotRegistryBased" "1"
+GOTO:EOF
+
+:_TOOLS_v18.0
+CALL:SETVAR "UseToolsVersion" "15.0"
+CALL:SETVAR "TargetVisualStudioVersionedInstallDir" "18"
+CALL:SETVAR "TargetVisualStudioLongProductYear" "2026"
+CALL:SETVAR "TargetVisualStudioLongProductName" "Visual Studio 2026"
+CALL:SETVAR "TargetVisualStudioShortProductName" "VS2026"
+CALL:SETVAR "TargetVisualStudioMajorMinorVersion" "18.0"
 CALL:SETVAR "NotRegistryBased" "1"
 GOTO:EOF

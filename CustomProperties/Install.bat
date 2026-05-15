@@ -3,6 +3,13 @@ SETLOCAL
 SET RootDir=%~dp0.
 IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
 CALL "%RootDir%\..\SetupEnvironment.bat" %*
+IF "%NORMADir%"=="" (
+	ECHO *************************************************************************
+	ECHO NORMA VSIX must be installed before updating files.
+	ECHO Rebuild after installation to use the latest assemblies and symbol files.
+	ECHO *************************************************************************
+	GOTO:EOF
+)
 
 IF NOT EXIST "%NORMAExtensionsDir%" (MKDIR "%NORMAExtensionsDir%")
 IF NOT EXIST "%NORMADir%\Xml\Verbalization\CustomProperties" (MKDIR "%NORMADir%\Xml\Verbalization\CustomProperties")

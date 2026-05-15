@@ -110,9 +110,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	// settings for this attribute are maintained by hand in the pkgdef file.
 	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName = "Natural ORM Architect")]
 #endif
+#if !VISUALSTUDIO_18_0
 	[ProvideLoadKey("Standard", "1.0", "Natural Object-Role Modeling Architect for Visual Studio", "ORM Solutions, LLC", PackageResources.Id.PackageLoadKey)]
+#endif
 	#endregion // Attributes
-	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct, IVsToolWindowFactory
+	public sealed class ORMDesignerPackage :
+		ModelingPackage,
+#if !VISUALSTUDIO_18_0
+		IVsInstalledProduct,
+#endif // !VISUALSTUDIO_18_0
+		IVsToolWindowFactory
 	{
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE_USER = @"ORM Solutions\Natural ORM Architect";
@@ -166,8 +173,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private bool myFirstUserLoad;
 		private bool myUpgradeCheckPending;
 		private static ORMDesignerPackage mySingleton;
-#endregion
-#region Construction/destruction
+		#endregion
+		#region Construction/destruction
 		/// <summary>
 		/// Class constructor.
 		/// </summary>
@@ -176,8 +183,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Debug.Assert(mySingleton == null); // Should only be loaded once per IDE session
 			mySingleton = this;
 		}
-#endregion
-#region Properties
+		#endregion
+		#region Properties
 		/// <summary>
 		/// Gets the singleton command set create for this package.
 		/// </summary>
@@ -431,7 +438,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 #endif
 #endregion // Properties
-#region Base overrides
+		#region Base overrides
 		/// <summary>
 		/// This is called by the package base class when our package is loaded. When devenv is run
 		/// with the "/setup" command line switch it is not able to do a lot of the normal things,
@@ -734,9 +741,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return items;
 		}
-#endregion // Base overrides
-#region IVsInstalledProduct Members
-
+		#endregion // Base overrides
+		#region IVsInstalledProduct Members
+#if !VISUALSTUDIO_18_0
 		[Obsolete("Visual Studio 2005 no longer calls this method.", true)]
 		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
 		{
@@ -777,9 +784,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return VSConstants.S_OK;
 		}
-
-#endregion
-#region Tool Window properties
+#endif // !VISUALSTUDIO_18_0
+		#endregion
+		#region Tool Window properties
 		/// <summary>
 		/// ORMModelBrowserToolWindow singleton
 		/// </summary>
@@ -923,8 +930,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-#endregion
-#region IVsToolWindowFactory Implementation
+		#endregion
+		#region IVsToolWindowFactory Implementation
 		private delegate int ForwardCreateToolWindowDelegate(ModelingPackage @this, ref Guid rguidPersistenceSlot, uint dwToolWindowId);
 		private static ForwardCreateToolWindowDelegate myForwardCreateToolWindow;
 		private static ForwardCreateToolWindowDelegate ForwardCreateToolWindow
@@ -956,8 +963,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return ForwardCreateToolWindow(this, ref rguidPersistenceSlot, dwToolWindowId);
 		}
-#endregion // IVsToolWindowFactory Implementation
-#region Extension DomainModels
+		#endregion // IVsToolWindowFactory Implementation
+		#region Extension DomainModels
 		/// <summary>
 		/// Get the <see cref="ExtensionLoader"/> for this package
 		/// </summary>
@@ -1231,6 +1238,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-#endregion // Extension DomainModels
+		#endregion // Extension DomainModels
 	}
 }

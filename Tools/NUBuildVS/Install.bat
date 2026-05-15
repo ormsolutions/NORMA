@@ -2,7 +2,6 @@
 SETLOCAL
 SET RootDir=%~dp0.
 CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
-@ECHO ON
 
 CALL:SETVAR "ResolvedMSBuildExtensionsPath" "%MSBuildExtensionsPath%\Neumont\VisualStudio"
 

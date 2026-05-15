@@ -259,7 +259,7 @@ the VSIX installation following the directions from the readme in the
 required only after the first build, or in situations indicated in the
 readme.
 
-### Notes on building and debugging with VS2017 and VS2019:
+### Notes on building and debugging with VS2017, VS2019, VS2022 and VS2026 (see updates for 2026 in the next section):
 
 The build and installation process for VS2015 (and earlier) and VS2017 (and later) is radically different because of the side-by-side installation support introduced with VS2017. When NORMA is installed through the Visual Studio Marketplace installer it will be installed for all users, which means it will appear in all Visual Studio instances. However, as a developer you will be developing NORMA in a Visual Studio instance, so you don't can't have NORMA running in that instance while you develop it. If you already have NORMA installed as an extension please uninstall it.
 
@@ -270,17 +270,17 @@ You need to run this once before trying to build NORMA. There are two ways to do
 for _experimental_ in your start menu, you'll see an option to _Start Experimental Instance of Visual Studio 201x_.
 Alternately, open the _Developer Command Prompt for Visual Studio 201x_ command prompt and run _devenv /rootsuffix Exp_.
 Once the Experimental instance is open shut it down again.
-3. Make sure the PLiX extension is installed and available for the NORMA build. To get PLiX.vsix, you need to download
-the NORMA installer _but not actually install it_.
+3. Make sure the PLiX extension is installed and available for the NORMA build. To get PLiX installed, you need to download
+the NORMA installer _but not actually install it_. I recommend using the Per-User version of PLiX so that there is no chance of interference with your Experimental builds.
     * Open Visual Studio and go to the extension dialog (Tools/Updates and Extension in VS2017, Extensions/Manage Extension in VS2019)
     * Click _Online_ and search for NORMA
-    * Select the item to install.
+    * Select the item to install, choosing the Per User option. Note that plix is the same in VS2017 and VS2019 (32-bit environments), but the VS2022 and VS2026 64-bit environments have a different version.
     * Close Visual Studio and let the installer launch and download the .vsix file. _DO NOT CLICK MODIFY._
     * The extension will be the latest item in your %temp% directory. (From a command prompt, cd %temp% then dir /od will list it last. The file name will be random, but it will have a .vsix extension). Copy this file, but rename it to have a .zip extension.
     * Close the installer.
     * Open the Windows Explorer and find the renamed .vsix. Open the context menu to view the file properties, then locate the Security warning at the bottom of the dialog and click the Unblock button (if you can't find that you're fine).
-    * Open the renamed .vsix file and extract the PLiX.vsix file. You're doing two things with this file.
-    * First, install the PLiX.vsix. Just double click on it an let it install. This will add it to all of the Visual Studio instances.
+    * Open the renamed .vsix file and extract the PLiX.PerUser.vsix file. You're doing two things with this file.
+    * First, install the PLiX.PerUser.vsix. Just double click on it an let it install. This will add it to all of the Visual Studio instances.
     * Second, copy the file into your NORMA git repository in the VSIXInstall/VSIXOnly directory.
 4. Open the _Developer Command Prompt for Visual Studio 201x_ as an administrator and navigate to the NORMA git root. (As in other Visual Studio version, this will be your launch environment when working with NORMA, so you might want to add a shortcut to the start menu.)
 5. Unlike earlier versions, the VS installation is no longer in a fixed location discoverable from the registry, so the NORMA build needs you to provide some data. Depending on your version, run either `VS2017.bat` or `VS2019.bat`, which will fail with instructions on how to create a VS20xxInstallation.bat file. Following the instructions, then run `VS20xx.bat` again. In earlier VS versions built NORMA files will be under the `C:\Program Files (x86)\ORM Solutions` directory. With the side-by-side installs, the location will be based on the VS version and (15.0 for VS2017, 16.0 for VS2019) and the VisualStudioInstallSuffix you just set. For example, my install suffix for VS2019 is f5148b42, so the build NORMA files install under the `%localappdata%\Microsoft\VisualStudio\16.0_f5148b42Exp\ORM Solutions\Natural ORM Architect` directory. The exact install directory is based on the git version--you can run `NORMAGitVer.bat` to see it. Note that the schema files will be copied to the Visual Studio installation, which is why you need to be running as an administrator.
@@ -297,6 +297,26 @@ At this point, the basic protocol is much simpler:
 3. `devenv WHATEVER.VS20xx.sln` where xx again matches your version. If you get the wrong solution file you'll get a solution upgrade warning message. Just cancel and try with the solution file that matches your Visual Studio version. Just remember that you need to launch the VS version to open these projects from inside an environment where you've run the correspond `VS20xx` batch file--you can't just double click them in your file explorer. 
 4. F5 to launch VS and you'll get an instance where you can open or create a .orm file and hit your breakpoints.
 5. If you pull or commit, make sure you run `Buildvs20xx /t:Rebuild` to reset the registry with the right version, and rerun `BuildDevToolsVS20xx /t:Rebuild` if you see any build issues.
+
+### Installer changes with VS2026
+
+Visual Studio 2022 had the same build process as the two prior versions. However, Visual Studio 2026 has made significant modifications to the in-development installation process.
+
+VS2022 always installed the created .vsix file to the per-user directory under USER\AppData\Local. The directory structure also followed the Extensions\ORM Solutions\Natural ORM Architect\1.0.30XX.Y pattern. However, with
+VS2026 this automatic deployment does not trigger unless the project also builds the .pkgdef file (which checked in and maintained in the NORMA codebase, so not dynamically built). This means installation is always done by running the generated .vsix
+file using the VSIXInstaller utility. This heavyweight (or full) installation has led to a number of changes.
+
+1. The build now produces an installVSIX.bat file in the output directory (VSIXInstall\VSIXOnly\bin\Debug) and prints the name of the this file for you to copy and run. It is actually not possible for MSBuild to run this because it is one of the executables
+that VSIXInstaller.exe checks is NOT running before installing, so VSIXInstaller will fail every time during the build. It is easy enough to copy/paste this file name from the build output and run it manually from a command prompt.
+2. VSIXInstaller always installs into a generated directory name. There is no way to know this directory name before installation (unlike the provided installer for the prior versions), so there is quite literally no where to
+copy files to until after the installer has run. After you have run the installer a rebuild will automatically place new binaries and symbol files in the correct locations, but before an install you will see a message indicating that deployment is not possible.
+Once you have installed you should only have to reinstall when you commit a change, which changes the package version numbers to match the git history. Otherwise, unless you are changing cached items like menus or item templates, there is no need to rerun the installer
+because all of the individual build files can trace the install location and update it. However, you must match the VSIXPerUser setting that was present when the installer was built.
+3. VSIXInstaller always respects the settings for global (administrative rights) installation versus per-user installation. Previously, the development process always placed files in the Exp visual studio instance in the per-user location,
+regardless of the actual settings. This is no longer the case. If you want a per-user install (faster, and admin rights are generally not needed to build) then you must set the VSIXPerUser=1 environment variable before building. This is highly
+recommended. Note that the generated installVSIX.bat file does not uninstall the opposite sku, so you should pull the uninstall line from that file and run it before switching versions. However, the best approach is simply to always set
+VSIXPerUser=1. To facilitate this as the standard approach I have added this to the VS2026.bat file.
+4. The correct PLiX.vsix file must still be in the VSIXInstall\VSIX only directory to build. This file is different for per-user settings and called PLiX.PerUser.vsix. You must place the matching file in VSIXInstall\VSIXOnly or installation will fail.
 
 ## DSL-generated Files
 Note that if you need to regenerate .dsl files you will need to make some modifications to the Microsoft-installed .tt generators for the DSL library. Please contact mcurland@live.com for instructions on how to do this. You will not need this unless you modify a .dsl file.

@@ -42,6 +42,7 @@ FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0GetPublicKeyToken.bat" "%
 ::  v15.0 = Visual Studio 2017
 ::  v16.0 = Visual Studio 2019
 ::  v17.0 = Visual Studio 2022
+::  v18.0 = Visual Studio 2026
 IF NOT DEFINED TargetVisualStudioVersion (SET TargetVisualStudioVersion=v8.0)
 
 :: Remove the value "Exp" on the next line if you want installations to be performed
@@ -75,6 +76,9 @@ IF NOT "%VSSideBySide%"=="true" (
 	CALL "%TrunkDir%\SetFromRegistry.bat" "VSDir" "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\Setup\VS" "ProductDir" "f"
 	CALL "%TrunkDir%\SetFromRegistry.bat" "VSItemTemplatesDir" "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\VSTemplate\Item" "UserFolder" "f"
 ) ELSE (
+	IF "%TargetVisualStudioVersionedInstallDir%"=="" (
+		CALL:SETVAR "TargetVisualStudioVersionedInstallDir" "%TargetVisualStudioLongProductYear%"
+	)
 	if NOT EXIST "%~dp0%TargetVisualStudioShortProductName%Installation.bat" (
 		ECHO %TargetVisualStudioLongProductName% supports side-by-side installations of the
 		ECHO Visual Studio product. The NORMA build systems needs to know which of these
@@ -84,7 +88,7 @@ IF NOT "%VSSideBySide%"=="true" (
 		ECHO and TargetVisualStudioInstallSuffix environment variables.
 		ECHO(
 		ECHO The installed editions of %TargetVisualStudioLongProductName% are:
-		dir /b "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%"
+		dir /b "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioVersionedInstallDir%"
 		ECHO(
 		ECHO The installed suffixes are the 8 characters after '%TargetVisualStudioMajorMinorVersion%_' and
 		ECHO before any recognizable suffix like 'Exp' in:
@@ -104,7 +108,7 @@ IF NOT "%VSSideBySide%"=="true" (
 	)
 )
 IF "%VSSideBySide%"=="true" (
-	CALL:SETVAR "VSDir" "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%\%TargetVisualStudioEdition%\"
+	CALL:SETVAR "VSDir" "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioVersionedInstallDir%\%TargetVisualStudioEdition%\"
 )
 IF "%VSSideBySide%"=="true" (
 	CALL:SETVAR "VSEnvironmentDir" "%VSDir%Common7\IDE\"
@@ -121,6 +125,7 @@ IF "%VSSideBySide%"=="true" (
 IF NOT DEFINED LocalAppData SET LocalAppData=%UserProfile%\Local Settings\Application Data
 IF NOT "%VSIXExtensionDir%"=="" (
 	IF "%VSSideBySide%"=="true" (
+		CALL:SETVAR "VSIXExtensionsRootDir" "%LocalAppData%\Microsoft\VisualStudio\%TargetVisualStudioMajorMinorVersion%_%TargetVisualStudioInstallSuffix%%VSRegistryRootSuffix%\Extensions"
 		CALL:SETVAR "VSIXInstallDir" "%LocalAppData%\Microsoft\VisualStudio\%TargetVisualStudioMajorMinorVersion%_%TargetVisualStudioInstallSuffix%%VSRegistryRootSuffix%\%VSIXExtensionDir%"
 	) ELSE (
 		IF "%VSRegistryRootSuffix%"=="" (
@@ -173,15 +178,52 @@ IF NOT DEFINED ORMTransformsDir SET ORMTransformsDir=%ORMDir%\Transforms
 IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%DILDir%\Transforms
 GOTO:EOF
 
+:_NORMAInstallDir
+::Input is the extensions directory (either global or per user). Find the directory that contains the correct pkgdef.
+pushd "%~1"
+for /f "delims=" %%i in ('dir /s /b /a:-d "ORMDesigner.pkgdef" 2^>nul') do (
+	CALL:_ExtractDir "NORMADir" "%%i"
+	goto :_HaveDir
+)
+:_HaveDir
+popd
+GOTO:EOF
+
+:_ExtractDir
+::First arg is variable name to set, second arg is full path. Set the directory into the variable (no trailing backslash)
+CALL:SETVAR "%~1" "%~dp2"
+setlocal enabledelayedexpansion
+SET "__DUMMY__=!%~1!"
+endlocal & set "%~1=%__DUMMY__:~0,-1%"
+GOTO:EOF
+
 :_SideBySideVars
-IF NOT DEFINED NORMADir SET NORMADir=%VSIXInstallDir%
-IF NOT DEFINED NORMABinDir SET NORMABinDir=%NORMADir%
+IF "%VSIXFullInstall%"=="true" (
+	IF "%VSIXPerUser%"=="1" (
+		CALL:_NORMAInstallDir "%VSIXExtensionsRootDir%"
+	) ELSE (
+		CALL:_NORMAInstallDir "%VSDir%Common7\IDE\Extensions"
+	)
+) ELSE (
+	IF NOT DEFINED NORMADir SET NORMADir="%VSIXInstallDir%"
+)
+:: Do this after the previous if block, which sets NORMADir
+IF "%VSIXFullInstall%"=="true" CALL:SETVAR "VSIXInstallDir" "%NORMADir%"
+IF NOT "%NORMADir%"=="" (
+	IF NOT DEFINED NORMABinDir CALL:SETVAR "NORMABinDir" "%NORMADir%"
+	IF NOT DEFINED NORMAExtensionsDir CALL:SETVAR "NORMAExtensionsDir" "%NORMADir%\Extensions"
+	IF NOT DEFINED ORMTransformsDir CALL:SETVAR "ORMTransformsDir" "%VSIXInstallDir%\Xml\Generators\ORM\Transforms"
+	IF NOT DEFINED DILTransformsDir CALL:SETVAR "DILTransformsDir" "%VSIXInstallDir%\Xml\Generators\DIL\Transforms"
+	IF "%VSIXPerUser%"=="1" (
+		IF NOT DEFINED NORMADesignerSchemasDir CALL:SETVAR "NORMADesignerSchemasDir" "%VSIXInstallDir%\$Schemas\ORM Solutions\NORMA\Designer"
+		IF NOT DEFINED NORMAGeneratorSchemasDir CALL:SETVAR "NORMAGeneratorSchemasDir" "%VSIXInstallDir%\$Schemas\ORM Solutions\NORMA\Generators"
+	)
+)
+IF NOT "%VSIXPerUser%"=="1" (
+	IF NOT DEFINED NORMADesignerSchemasDir CALL:SETVAR "NORMADesignerSchemasDir" "%VSXmlSchemas%ORM Solutions\NORMA\Designer"
+	IF NOT DEFINED NORMAGeneratorSchemasDir CALL:SETVAR "NORMAGeneratorSchemasDir" "%VSXmlSchemas%ORM Solutions\NORMA\Generators"
+)
 IF NOT DEFINED OldNORMADir SET OldNORMADir=%ResolvedProgramFiles%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%
-IF NOT DEFINED NORMAExtensionsDir SET NORMAExtensionsDir=%NORMADir%\Extensions
-IF NOT DEFINED NORMADesignerSchemasDir SET NORMADesignerSchemasDir=%VSXmlSchemas%ORM Solutions\NORMA\Designer
-IF NOT DEFINED NORMAGeneratorSchemasDir SET NORMAGeneratorSchemasDir=%VSXmlSchemas%ORM Solutions\NORMA\Generators
-IF NOT DEFINED ORMTransformsDir SET ORMTransformsDir=%VSIXInstallDir%\Xml\Generators\ORM\Transforms
-IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%VSIXInstallDir%\Xml\Generators\DIL\Transforms
 ::PLiXDir not used in SideBySide
 GOTO:EOF
 
@@ -305,8 +347,10 @@ IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF "%VSIXPerUser%"=="1" (
 IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=9dc46549-1254-4318-bdd2-92cff904aff4)
 ) ELSE (
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=f5423ec6-560b-419f-a682-e24355a81a4a)
 )
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
 GOTO:EOF
@@ -328,8 +372,10 @@ IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF "%VSIXPerUser%"=="1" (
 IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=a8fc859f-180a-4333-b027-221ce5647964)
 ) ELSE (
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=c5aebec2-5d8e-467f-ae59-cf8c37ad6dda)
 )
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
 GOTO:EOF
@@ -351,10 +397,39 @@ IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF "%VSIXPerUser%"=="1" (
 IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=3c58bedd-dfd4-4910-80f8-5bc564257f05)
 ) ELSE (
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=3c59a93e-bacf-4c46-b0a3-9063a8f66bfc)
 )
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
+GOTO:EOF
+
+:_SetupVersionVars_v18.0
+IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v4.8)
+IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=18.0)
+IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=18.0.0.0)
+IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=4.8.0.0)
+IF NOT DEFINED TargetVisualStudioLongProductYear (SET TargetVisualStudioLongProductYear=2026)
+IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortProductYear=26)
+IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2026)
+IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2026)
+IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=18.0.0.0)
+IF NOT DEFINED TargetVisualStudioVersionedInstallDir (SET TargetVisualStudioVersionedInstallDir=18)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=15.0)
+IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)
+IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
+IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
+IF "%VSIXPerUser%"=="1" (
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=5ceab0dd-099a-4d5b-bb0f-1a05055d3700)
+) ELSE (
+IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=660a4eea-00dc-4888-bc12-ccc0c3655eca)
+)
+IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
+IF NOT DEFINED VSIXFullInstall (SET VSIXFullInstall=true)
 GOTO:EOF
 
 :SET6432

@@ -32,7 +32,9 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 	{
 		#region Visual Studio Version
 		private const string VisualStudioVersion =
-#if VISUALSTUDIO_17_0
+#if VISUALSTUDIO_18_0
+			"18.0"
+#elif VISUALSTUDIO_17_0
 			"17.0"
 #elif VISUALSTUDIO_16_0
 			"16.0"

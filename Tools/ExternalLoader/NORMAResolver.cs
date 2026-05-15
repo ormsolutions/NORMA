@@ -60,7 +60,9 @@ namespace ORMSolutions.ORMArchitect.Utility
 		/// Directory prefix for VS data, appended to the local application directory.
 		/// </summary>
 		private const string VSDataDirPattern =
-#if VISUALSTUDIO_17_0
+#if VISUALSTUDIO_18_0
+			@"18.0_*";
+#elif VISUALSTUDIO_17_0
 			@"17.0_*";
 #elif VISUALSTUDIO_16_0
 			@"16.0_*";
@@ -72,7 +74,9 @@ namespace ORMSolutions.ORMArchitect.Utility
 		/// Directory prefix for VS data, appended to the local application directory.
 		/// </summary>
 		private const string NORMAVSVersionSuffix =
-#if VISUALSTUDIO_17_0
+#if VISUALSTUDIO_18_0
+			@"VS2026";
+#elif VISUALSTUDIO_17_0
 			@"VS2022";
 #elif VISUALSTUDIO_16_0
 			@"VS2019";

@@ -10,7 +10,7 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="EmpiricalVSVersion">
 	
 	<!--
 		This .targets file provides common properties used for targeting multiple versions of Microsoft® Visual Studio®.
@@ -228,6 +228,30 @@
 				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
 			</PropertyGroup>
 		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v18.0' ">
+			<PropertyGroup>
+				<TargetVisualStudioNumericVersion Condition=" '$(TargetVisualStudioNumericVersion)' == '' ">18.0</TargetVisualStudioNumericVersion>
+				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.8</TargetFrameworkVersion>
+				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">18.0.0.0</TargetVisualStudioAssemblyVersion>
+				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.18.0</TargetVisualStudioAssemblySuffix>
+				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">18.0.0.0</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' ">.15.0</TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductYear Condition=" '$(TargetVisualStudioLongProductYear)' == '' ">2026</TargetVisualStudioLongProductYear>
+				<TargetVisualStudioShortProductYear Condition=" '$(TargetVisualStudioShortProductYear)' == '' ">26</TargetVisualStudioShortProductYear>
+				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2026</TargetVisualStudioLongProductName>
+				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2026</TargetVisualStudioShortProductName>
+				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">18.0.0.0</TargetDslToolsAssemblyVersion>
+				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' "></TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x64</TargetSpecificArchitecture>
+				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">15.0</ProjectToolsVersion>
+				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.Core</ProjectToolsAssemblySuffix>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">15.1.0.0</ProjectToolsAssemblyVersion>
+				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
+				<VSToolsPath Condition="'$(VSToolsPath)'==''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\$(TargetVisualStudioVersion)</VSToolsPath>
+				<VSSideBySide Condition="'$(VSSideBySide)'==''">true</VSSideBySide>
+				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
+			</PropertyGroup>
+		</When>
 		<Otherwise>
 			<PropertyGroup>
 				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">*Undefined*</TargetVisualStudioAssemblyVersion>
@@ -280,6 +304,11 @@
 				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0;VISUALSTUDIO_11_0;VISUALSTUDIO_12_0;VISUALSTUDIO_14_0;VISUALSTUDIO_15_0;VISUALSTUDIO_16_0;VISUALSTUDIO_17_0</DefineConstants>
 			</PropertyGroup>
 		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v18.0' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0;VISUALSTUDIO_11_0;VISUALSTUDIO_12_0;VISUALSTUDIO_14_0;VISUALSTUDIO_15_0;VISUALSTUDIO_16_0;VISUALSTUDIO_17_0;VISUALSTUDIO_18_0</DefineConstants>
+			</PropertyGroup>
+		</When>
 	</Choose>
 
 	<!-- Set up conditional compilation constants for the .NET Framework. -->
@@ -324,6 +353,11 @@
 				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0;NET_3_5;NET_4_0;NET_4_5;NET_4_6;NET_4_6_1;NET_4_6_2;NET_4_7_1;NET_4_7_2</DefineConstants>
 			</PropertyGroup>
 		</When>
+		<When Condition=" '$(TargetFrameworkVersion)' == 'v4.8' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0;NET_3_5;NET_4_0;NET_4_5;NET_4_6;NET_4_6_1;NET_4_6_2;NET_4_7_1;NET_4_7_2;NET_4_8</DefineConstants>
+			</PropertyGroup>
+		</When>
 	</Choose>
 
   <!-- Set up conditional compilation constants for tools version. -->
@@ -361,7 +395,33 @@
   </Choose>
 
 
-  <!-- This is here because the MSBuild schema requires at least one Target or Import to be present. -->
-  <Target Name="_Neumont_Build_VisualStudio_Multitargeting_DummyTarget" Condition="'false'"/>
+  <!-- Even with all of the above, we still don't know the minor version of the currently running Visual Studio SKU. Do this so we can share it later, and to get us a required target for import. -->
+  <UsingTask TaskName="GetVSMajorMinorVersion" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <BinPath ParameterType="System.String" Required="true" />
+      <MajorMinorVersion ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Diagnostics" />
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          string path = Path.Combine(BinPath, "Microsoft.Build.dll");
+          if (File.Exists(path)) {
+              string version = FileVersionInfo.GetVersionInfo(path).FileVersion;
+              string[] parts = version.Split('.');
+              this.MajorMinorVersion = parts[0] + "." + (parts.Length > 1 ? parts[1] : "0");
+          } else {
+              this.MajorMinorVersion = "0.0";
+          }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
 
+  <Target Name="EmpiricalVSVersion">
+    <GetVSMajorMinorVersion BinPath="$(MSBuildBinPath)">
+      <Output TaskParameter="MajorMinorVersion" PropertyName="VSMajorMinorVersion" />
+    </GetVSMajorMinorVersion>
+  </Target>
 </Project>
