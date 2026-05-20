@@ -205,7 +205,7 @@ IF "%VSIXFullInstall%"=="true" (
 		CALL:_NORMAInstallDir "%VSDir%Common7\IDE\Extensions"
 	)
 ) ELSE (
-	IF NOT DEFINED NORMADir SET NORMADir="%VSIXInstallDir%"
+	IF NOT DEFINED NORMADir SET "NORMADir=%VSIXInstallDir%"
 )
 :: Do this after the previous if block, which sets NORMADir
 IF "%VSIXFullInstall%"=="true" CALL:SETVAR "VSIXInstallDir" "%NORMADir%"
@@ -349,7 +349,7 @@ IF "%VSIXPerUser%"=="1" (
 IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=9dc46549-1254-4318-bdd2-92cff904aff4)
 ) ELSE (
-IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=f5423ec6-560b-419f-a682-e24355a81a4a)
 )
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
@@ -374,7 +374,7 @@ IF "%VSIXPerUser%"=="1" (
 IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=a8fc859f-180a-4333-b027-221ce5647964)
 ) ELSE (
-IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=c5aebec2-5d8e-467f-ae59-cf8c37ad6dda)
 )
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
@@ -399,7 +399,7 @@ IF "%VSIXPerUser%"=="1" (
 IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=3c58bedd-dfd4-4910-80f8-5bc564257f05)
 ) ELSE (
-IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=3c59a93e-bacf-4c46-b0a3-9063a8f66bfc)
 )
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
@@ -425,7 +425,7 @@ IF "%VSIXPerUser%"=="1" (
 IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=5ceab0dd-099a-4d5b-bb0f-1a05055d3700)
 ) ELSE (
-IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%")
 IF NOT DEFINED NORMAVsixIdentity (SET NORMAVsixIdentity=660a4eea-00dc-4888-bc12-ccc0c3655eca)
 )
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)

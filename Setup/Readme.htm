@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA August 2024 Readme</title>
+<title>NORMA May 2026 Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	.toggle{font-size:larger;cursor:pointer;font-family: monospace; color:rgb(97, 133, 160); display:inline; padding-right:.15em;}
@@ -35,9 +35,9 @@ function toggleDisp(sign,bodyId) {
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA August 2024 Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2026 Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The August 2024 release adds support unary negation, adds <em>isSUBTYPE</em> columns to absorbed object types in the relational mapping, and allows entry of default values in the model. See detailed change notes below for general details.<br/><br/>
+The May 2026 release adds support for Visual Studio 2026 and strengthens support for unary patterns added in the August 2024 release.<br/><br/>
 </p>
 <h2><span class="toggle" onclick="toggleDisp(this,'contents')">-</span>Contents</h2>
 <div id="contents">
@@ -70,9 +70,34 @@ The August 2024 release adds support unary negation, adds <em>isSUBTYPE</em> col
 </div>-->
 
 <hr/>
-<h2><span class="toggle" onclick="toggleDisp(this,'aug2024')">-</span>August 2024 Changes</h2>
-<div id="aug2024">
-<div>The August 2024 release includes all modifications through git tag v1.0.55. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>. Given the complexity and implications of these changes,
+<h2><span class="toggle" onclick="toggleDisp(this,'may2026')">-</span>May 2026 Changes</h2>
+<div id="may2026">
+<div>The May 2026 release includes all modifications through git tag v1.0.51. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>. The primary feature in this release is support for Visual Studio 2026.</div>
+<ul>
+<li>Features:
+<ol>
+<li><a href="#Derived True False Columns 2026-05">Reduce True/False Columns with Derivation</a>&nbsp;</li>
+<li><a href="#Mandatory Fully Derived Unary 2026-05">Allow Simple Mandatory Constraint on Fully Derived Simple Unary</a>&nbsp;</li>
+</ol>
+</li>
+<li>Unary Negation Enhancements/Fixes:
+<ol>
+<li>Do not produce isSUBTYPE columns for fully derived subtypes or absorbed objectifications of fully derived fact types.</li>
+<li>A table was not created for an object type with only unary roles.</li>
+<li>A there may be an implied mandatory constraint on (TrueFalseUnspecified) fact type. This is created as part of the implied mandatory tracking, not the unary pattern. Make sure these map correctly and produce a mandatory column if the paired unaries are the only fact types on the mapped object type.</li>
+<li>Tighten control over editor gestures that modify the implied constraints on the unary pattern. If a pairwise mandatory constraint is explicitly added it will be subsumed into the unary pattern, and attempted edits of implied constraints now give instructions that they are managed by the pattern.</li>
+<li>Add a command to drag constraint(s) implied by the unary pattern when a shape exists for both fact types. If the constraints are not linked as an xor (which occurs if the mandatory is deontic) then two clicks are needed to add both shapes.</li>
+<li>Changed the DefaultValue display on a unary role. This now says &lt;Populated by Default&gt; or &lt;Not Populated by Default&gt; instead of True (or empty) to better reflect the unary role state, which is populated but does not have a value associated with it.</li>
+</ol>
+</li>
+</ul>
+<hr/>
+</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
+<div style="display:none;" id="oldChanges">
+<h3><span class="toggle" onclick="toggleDisp(this,'aug2024')">+</span>August 2024 Changes</h3>
+<div style="display:none;" id="aug2024">
+<div>The August 2024 release includes all modifications through git tag v1.0.50 (+5). Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>. Given the complexity and implications of these changes,
 we recommend you take the time to view the overview video in the @ORMSolutions YouTube channel at <a href="https://youtu.be/5HZUjjDlFwg">Unary Negation Overview</a> and/or read the whitepaper at <a href="https://ormsolutions.com/whitepapers/NORMAAugust2024Release_UnaryNegationEtc">NORMA August 2024 Release, Unary Negation, etc.</a></div>
 <ul>
 <li>Features:
@@ -100,8 +125,6 @@ we recommend you take the time to view the overview video in the @ORMSolutions Y
 </ul>
 <hr/>
 </div>
-<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
-<div style="display:none;" id="oldChanges">
 <h3><span class="toggle" onclick="toggleDisp(this,'mar2023')">+</span>March 2023 Changes</h3>
 <div style="display:none;" id="mar2023">
 <div>The March 2023 release includes all modifications through git tag v1.0.48. This release adds the UUID data type along with additional related features. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>.</div>
@@ -728,7 +751,7 @@ The October 2008 release includes two major functionality additions plus a numbe
 <h3><a id="Setup">Installing NORMA</a></h3>
 <ol>
 <li><a id="VSIXInstallation 2019-03" class="new" title="March 2019: Visual Studio Marketplace support for Visual Studio 2017 and Visual Studio 2019">2019-03</a>&nbsp;
-The Visual Studio 2017, Visual Studio 2019 and Visual Studio 2022 versions of NORMA no longer have an .msi-based installation process. They are now part of the Visual Studio Marketplace and install as a normal extension. <em>All installation directions below this item apply to Visual Studio 2015 and earlier versions only.</em>
+The Visual Studio 2017, Visual Studio 2019, Visual Studio 2022 and Visual Studio 2026 versions of NORMA no longer have an .msi-based installation process. They are now part of the Visual Studio Marketplace and install as a normal extension. <em>All installation directions below this item apply to Visual Studio 2015 and earlier versions only.</em>
 <ul>
 <li>To install using the Marketplace, start Visual Studio, open the <em>Tools and Extensions</em> dialog from the <em>Tools</em> menu in Visual Studio 2017. For later release, this dialog has moved to <em>Extensions/Manage Extensions</em>.</li>
 <li>Choose <em>Online/Visual Studio Marketplace</em>. You will now be able to search for NORMA.</li>
@@ -824,6 +847,12 @@ Old-style unary fact types will transform on load. This is transition is unidire
 Any role with a role player ultimately identified by a single value now supports a <em>DefaultValue</em> property. This maps to a column default value in the relational mapping. However, default values cannot be generated for absorbed object types (subtypes, etc.) because this would make every new row of the supertype to automatically have data for a subtype with declared defaults. If the defaults are important on the subtype then place it in a separate table.
 <br/><br/>
 A default value must be parsable by the context data type and satisfy all context value constraints. A default can be specified on the value type itself, but this serves only as a contextual default for the attached roles (there is no affect on generated artifacts). A role with a contextual default value gets that default if another is not specified. The role can also be modified to hide a context default by choosing the <em>&lt;No Default Value&gt;</em> entry in the dropdown for the DefaultValue property.
+</li>
+<li><a id="Mandatory Fully Derived Unary 2026-05" class="new" title="May 2026: Allow Simple Mandatory Constraint on Fully Derived Simple Unary">2026-08</a>&nbsp;
+A unary fact type that is unpaired (one of the two named OptionalWithoutNegation unary patterns) does not generally allow a simple mandatory constraint as this would mean that the fact type is always populated with a true value, making it meaningless data.
+However, if the unary has a fully-derived derivation rule, a simple mandatory constraint becomes very valuable as it no means that the derived state must always be true. Something that must be true is a constraint, so allowing a simple mandatory on a derived unpaired unary is a natural pattern for added custom constraints to ORM without explicitly adding <em>CustomConstraint</em> metadata.
+<br/><br/>
+Normally, the IsMandatory property on a unary is disabled (fixed False) and the <em>Is Mandatory</em> dropdown many applies to the pair-wise mandatory. This is relaxed for a fully derived unpaired unary. If any of the prerequisite states (correct unary pattern, derivation rule with DerivationCompleteness=FullyDerived) are not satisfied then the mandatory constraint is automatically removed. Note that there is a small contradiction with the unary pattern name (OptionalWithoutNegation) when the mandatory is applied, but this constraint is managed separately from the UnaryPattern and updating the pattern names would add more confusion.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>
@@ -1211,7 +1240,10 @@ Oracle added support for native IDENTITY columns in version 12c. All prior versi
 <li><a id="Is Subtype Columns 2024-08" class="new" title="August 2024: Automatic isSUBTYPE Columns for Absorbed Types">2024-08</a>&nbsp;
 If a subtype is absorbed into a relational table (instead of separated into its own table) and the subtype has no mandatory roles (including no played roles), then we will now generate a column with the name <em>isSUBTYPE</em>, where SUBTYPE is based on the name of the absorbed object type (possibly adjusted to satisfy name generation settings). This allows all subtypes to be definitively asserted if the subtype state cannot be inferred from other data.
 <br/><br/>
-This pattern is also applied to other absorbed objects. For example, an objectified unary fact type will absorbed just like a subtype, except that the column naming will be based on the unary fact type readings instead of the object type name. This means that if the unary objectification itself plays roles with an explicit or implied mandatory constraint, then the data column for the unary itself will not be mapped. This makes the mapping for objectified unary fact types and subtypes highly consistent. As noted in the whitepaper and video linked for this change, the main different here is that the objectified unary fact type can be independent. In this case, the extra column will be produced if <em>IsIndependent</em> is false (or if there are no roles). This differs from the subtype, which cannot be independent. Therefore, all subtypes that do not play any explicit mandatory roles will have an isSUBTYPE column.</li>
+This pattern is also applied to other absorbed objects. For example, an objectified unary fact type will be absorbed just like a subtype, except that the column naming will be based on the unary fact type readings instead of the object type name. This means that if the unary objectification itself plays roles with an explicit or implied mandatory constraint, then the data column for the unary itself will not be mapped. This makes the mapping for objectified unary fact types and subtypes highly consistent. As noted in the whitepaper and video linked for this change, the main different here is that the objectified unary fact type can be independent. In this case, the extra column will be produced if <em>IsIndependent</em> is false (or if there are no roles). This differs from the subtype, which cannot be independent. Therefore, all subtypes that do not play any explicit mandatory roles will have an isSUBTYPE column.</li>
+<li><a id="Derived True False Columns 2026-05" class="new" title="May 2026: Reduce True/False Columns with Derivation">2026-05</a>&nbsp;
+A unary fact type with a True/False pattern maps to a single column. However, if one of these states was fully derived (usually the True state), then that half of the unary was not in the relational mapping, resulting in a column for the non-derived false state instead.
+However, in a True/False pattern with a derivation for True, we can also infer the False state, so the False can also be assumed to be derived. Note that this is not the case with a True/False/Unspecified pattern. In this case, if the derivation for True does not hold then we cannot assume the false state, so a separate derivation is needed on the negation unary to remove it from the relational mapping.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>
@@ -1312,7 +1344,7 @@ NORMA is a good-sized code base, with well over half a million lines of active c
 </ul>
 <p>So, build 6281 represents the fifteenth day of the third month in the second quarter of 2011 (June 15, 2011).</p>
 <p>Although the version information does not directly contain any source code version control information, the build date can generally be cross-referenced against the revision history to find the corresponding changeset.</p>
-<p>For Visual Studio 2017 and later versions, the downloaded NORMA extension version will be based on the GIT tagging system. NORMA is now under source control on <a href="https://github.com/ormsolutions/NORMA">https://github.com/ormsolutions/NORMA</a> instead of in Sourceforge. The final SVN change number is 1564. The extension version numbers will generally look like 1.0.3xxx.0, with the 3 artificially injected so that the GIT version numbers are always greater than the date-based system. This will allow us to seamlessly change file versions to match the extension version in the future. The final number is a revision count of changes after the last tag and will generally be 0 on official releases.</p>
-<p>As of September 2020 the quarter-based versioning system described above moved to 100, which pushed the quarter-based versioning to five numbers. Setup (for VS2015 and earlier) identifiers assume a 4-digit revision and setup cannot be built with five revision digits, so all future builds will now be based on the git build numbers. Git build numbers are determined by explicit tags added to the source repository and revision numbers are now the number of revisions past the last tag. This also means the file version numbers will match the installer version number in VS2017, VS2019 and VS2022.</p>
+<p>For Visual Studio 2017 and later versions, the downloaded NORMA extension version will be based on the GIT tagging system. NORMA is now under source control on <a href="https://github.com/ormsolutions/NORMA">https://github.com/ormsolutions/NORMA</a> instead of in Sourceforge. The final SVN change number is 1564. The extension version numbers will generally look like 1.0.3xxx.0, with the 3 artificially injected so that the GIT version numbers are always greater than the date-based system. This will allow us to seamlessly change file versions to match the extension version in the future. The final number is a revision count of changes after the last tag and will generally be close to 0 for releases that warrant readme updates.</p>
+<p>As of September 2020 the quarter-based versioning system described above moved to 100, which pushed the quarter-based versioning to five numbers. Setup (for VS2015 and earlier) identifiers assume a 4-digit revision and setup cannot be built with five revision digits, so all future builds will now be based on the git build numbers. Git build numbers are determined by explicit tags added to the source repository and revision numbers are now the number of revisions past the last tag. This also means the file version numbers will match the installer version number in VS2017, VS2019, VS2022 and VS2022.</p>
 <a href="#The Top">Return to top</a></body>
 </html>
