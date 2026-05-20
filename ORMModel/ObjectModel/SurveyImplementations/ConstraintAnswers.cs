@@ -106,17 +106,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				if (Constraint.ConstraintIsInternal)
-				{
-					LinkedElementCollection<FactType> facts = FactTypeCollection;
-					return (facts.Count == 1) ? ((ISurveyNode)facts[0]).SurveyNodeDataObject : null;
-				}
-				else
-				{
-					DataObject retVal = new DataObject();
-					retVal.SetData(typeof(SetConstraint), this);
-					return retVal;
-				}
+				// Note that previously dragged the corresponding fact type for an internal constraint.
+				// This worked for dropping on the diagram surface, but meant that internal constraints could
+				// not be dragged to other targets, such as a group node.
+				DataObject retVal = new DataObject();
+				retVal.SetData(typeof(SetConstraint), this);
+				return retVal;
 			}
 		}
 		object ISurveyNode.SurveyNodeDataObject

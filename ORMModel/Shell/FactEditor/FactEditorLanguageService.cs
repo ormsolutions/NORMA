@@ -507,9 +507,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		public override void Dispose()
 		{
-			if (m_ToolWindow != null)
+			if (m_ToolWindow != null) // Check something benign to see if we're still alive
 			{
-				m_ToolWindow.CloseFrame(0);
+				try
+				{
+					m_ToolWindow.CloseFrame(0);
+				}
+				catch
+				{
+					// Swallow a failure. Teardown sequence can cause the window to close before the service.
+				}
 			}
 			base.Dispose();
 		}

@@ -473,35 +473,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					(null != (factType = role.FactType)))
 				{
 					UnaryValuePattern unaryPattern = factType.UnaryPattern;
-					if (unaryPattern == UnaryValuePattern.NotUnary)
+					if (unaryPattern == UnaryValuePattern.Negation)
 					{
-						if (role.IsMandatory && role.MandatoryConstraintModality == ConstraintModality.Deontic)
-						{
-							return DeonticStyleSet;
-						}
+						unaryPattern = factType.PositiveUnaryFactType.UnaryPattern;
 					}
-					else
-					{
-						if (unaryPattern == UnaryValuePattern.Negation)
-						{
-							unaryPattern = factType.PositiveUnaryFactType.UnaryPattern;
-						}
 
-						switch (unaryPattern)
-						{
-							case UnaryValuePattern.OptionalWithNegation:
-							case UnaryValuePattern.OptionalWithNegationDefaultTrue:
-							case UnaryValuePattern.OptionalWithNegationDefaultFalse:
-								return OptionalUnaryStyleSet;
-							case UnaryValuePattern.RequiredWithNegation:
-							case UnaryValuePattern.RequiredWithNegationDefaultTrue:
-							case UnaryValuePattern.RequiredWithNegationDefaultFalse:
-								return MandatoryUnaryStyleSet;
-							case UnaryValuePattern.DeonticRequiredWithNegation:
-							case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
-							case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
-								return DeonticUnaryStyleSet;
-						}
+					switch (unaryPattern)
+					{
+						case UnaryValuePattern.NotUnary:
+						case UnaryValuePattern.OptionalWithoutNegation:
+						case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+							if (role.SimpleMandatoryConstraint?.Modality == ConstraintModality.Deontic)
+							{
+								return DeonticStyleSet;
+							}
+							break;
+						case UnaryValuePattern.OptionalWithNegation:
+						case UnaryValuePattern.OptionalWithNegationDefaultTrue:
+						case UnaryValuePattern.OptionalWithNegationDefaultFalse:
+							return OptionalUnaryStyleSet;
+						case UnaryValuePattern.RequiredWithNegation:
+						case UnaryValuePattern.RequiredWithNegationDefaultTrue:
+						case UnaryValuePattern.RequiredWithNegationDefaultFalse:
+							return MandatoryUnaryStyleSet;
+						case UnaryValuePattern.DeonticRequiredWithNegation:
+						case UnaryValuePattern.DeonticRequiredWithNegationDefaultTrue:
+						case UnaryValuePattern.DeonticRequiredWithNegationDefaultFalse:
+							return DeonticUnaryStyleSet;
 					}
 				}
 				return base.StyleSet;
@@ -687,35 +685,32 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						null != (playedRole = link.PlayedRole))
 					{
 						MandatoryConstraint mandatory =  null;
-						UnaryValuePattern unaryPattern;
 						FactType factType;
 						ORMDiagramDynamicColor requestColor = ORMDiagramDynamicColor.Constraint;
-						if (UnaryValuePattern.NotUnary == (unaryPattern = (factType = playedRole.FactType).UnaryPattern))
-						{
-							mandatory = playedRole.SimpleMandatoryConstraint;
-							if (mandatory.Modality == ConstraintModality.Deontic)
-							{
-								requestColor = ORMDiagramDynamicColor.DeonticConstraint;
-							}
-						}
-						else
-						{
-							if (unaryPattern == UnaryValuePattern.Negation)
-							{
-								factType = factType.PositiveUnaryFactType;
-								unaryPattern = factType.UnaryPattern;
-							}
+						UnaryValuePattern unaryPattern = (factType = playedRole.FactType).UnaryPattern;
 
-							switch (ReduceUnaryPattern(unaryPattern))
-							{
-								case UnaryValuePattern.RequiredWithNegation:
-									mandatory = factType.NegationMandatoryConstraint;
-									break;
-								case UnaryValuePattern.DeonticRequiredWithNegation:
-									mandatory = factType.NegationMandatoryConstraint;
+						if (unaryPattern == UnaryValuePattern.Negation)
+						{
+							factType = factType.PositiveUnaryFactType;
+							unaryPattern = factType.UnaryPattern;
+						}
+
+						switch (ReduceUnaryPattern(unaryPattern))
+						{
+							case UnaryValuePattern.NotUnary:
+							case UnaryValuePattern.OptionalWithoutNegation:
+								if ((mandatory = playedRole.SimpleMandatoryConstraint)?.Modality == ConstraintModality.Deontic)
+								{
 									requestColor = ORMDiagramDynamicColor.DeonticConstraint;
-									break;
-							}
+								}
+								break;
+							case UnaryValuePattern.RequiredWithNegation:
+								mandatory = factType.NegationMandatoryConstraint;
+								break;
+							case UnaryValuePattern.DeonticRequiredWithNegation:
+								mandatory = factType.NegationMandatoryConstraint;
+								requestColor = ORMDiagramDynamicColor.DeonticConstraint;
+								break;
 						}
 
 						if (mandatory != null)
@@ -755,6 +750,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								{
 									for (int i = 0; i < providers.Length; ++i)
 									{
+										// ForegroundGraphics is used for the pen color to draw the +/- sign in the unary dot.
+										// This is not used by a simple mandatory constraint on an unpaired derived unary.
 										Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.ForegroundGraphics, fromShape, factType);
 										if (alternateColor != Color.Empty)
 										{
@@ -794,38 +791,35 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				null != (playedRole = link.PlayedRole))
 			{
 				MandatoryConstraint mandatory = null;
-				UnaryValuePattern unaryPattern;
 				FactType factType;
 				ORMDiagramDynamicColor dynamicColor = ORMDiagramDynamicColor.Constraint;
-				if (UnaryValuePattern.NotUnary == (unaryPattern = (factType = playedRole.FactType).UnaryPattern))
+				UnaryValuePattern unaryPattern = (factType = playedRole.FactType).UnaryPattern;
+				if (unaryPattern == UnaryValuePattern.Negation)
 				{
-					if (null != (mandatory = playedRole.SimpleMandatoryConstraint) && mandatory.Modality == ConstraintModality.Deontic) // The brush draws the middle without the background color, which we don't change
-					{
-						mandatory = null;
-					}
-					else if (mandatory.Modality == ConstraintModality.Deontic)
-					{
-						dynamicColor = ORMDiagramDynamicColor.DeonticConstraint;
-					}
+					factType = factType.PositiveUnaryFactType;
+					unaryPattern = factType.UnaryPattern;
 				}
-				else
-				{
-					if (unaryPattern == UnaryValuePattern.Negation)
-					{
-						factType = factType.PositiveUnaryFactType;
-						unaryPattern = factType.UnaryPattern;
-					}
 
-					switch (ReduceUnaryPattern(unaryPattern))
-					{
-						case UnaryValuePattern.RequiredWithNegation:
-							mandatory = factType.NegationMandatoryConstraint;
-							break;
-						case UnaryValuePattern.DeonticRequiredWithNegation:
-							mandatory = factType.NegationMandatoryConstraint;
-							dynamicColor = ORMDiagramDynamicColor.DeonticConstraint;
-							break;
-					}
+				switch (ReduceUnaryPattern(unaryPattern))
+				{
+					case UnaryValuePattern.NotUnary:
+					case UnaryValuePattern.OptionalWithoutNegation:
+						// A simple mandatory constraint is allowed here if
+						// there is a fully derived formal derivation rule.
+						mandatory = playedRole.SimpleMandatoryConstraint;
+						if (mandatory != null && mandatory.Modality == ConstraintModality.Deontic)
+						{
+							// The brush draws the middle with the background color, which we don't change
+							mandatory = null;
+						}
+						break;
+					case UnaryValuePattern.RequiredWithNegation:
+						mandatory = factType.NegationMandatoryConstraint;
+						break;
+					case UnaryValuePattern.DeonticRequiredWithNegation:
+						mandatory = factType.NegationMandatoryConstraint;
+						dynamicColor = ORMDiagramDynamicColor.DeonticConstraint;
+						break;
 				}
 
 				if (mandatory != null)

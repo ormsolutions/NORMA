@@ -70,6 +70,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
 		private static readonly Type[] SurveyGlyphQuestionTypes = new Type[] { typeof(SurveyQuestionGlyph) };
 		private static readonly Type[] SurveyDerivationQuestionTypes = new Type[] { typeof(SurveyDerivationType) };
+		private static readonly Type[] SurveyFactTypeDetailTypes = new Type[] { typeof(SurveyFactTypeDetailType) };
 		/// <summary>
 		/// The unique name the VerbalizationBrowser target. Used in the Xml files and in code to identify the core target provider.
 		/// </summary>
@@ -143,6 +144,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classInfo = directory.FindDomainRelationship(MandatoryConstraintClosesUnaryFactType.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(UnaryPairMandatoryAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(UnaryPairMandatoryDeletedEvent), action);
+				propertyInfo = directory.FindDomainProperty(FactType.UnaryPatternDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(UnaryPatternChangedEvent), action);
 
 				//Set Constraint
 				classInfo = directory.FindDomainRelationship(ModelHasSetConstraint.DomainClassId);
@@ -734,6 +737,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!constraint.IsDeleted)
 				{
 					eventNotify.ElementContextChanged(constraint, link.UnaryFactType);
+				}
+			}
+		}
+		/// <summary>
+		/// Handler to update uniqueness constraint classification when an <see cref="FactType"/> unary pattern
+		/// </summary>
+		private static void UnaryPatternChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				// In most cases, and internal uniqueness is added when the unary pattern is set.
+				// However, if the fact type arity is changed to arity 1 and already had a single-role
+				// internal uniqueness on the remaining (now unary) role, then the uniqueness is not
+				// deleted. Note that moving the opposite direction (changing from arity 1 to 2) deletes
+				// the implied uniqueness, but this also handles the undo of the role deletion, which
+				// will maintain the uniqueness.
+				if ((UnaryValuePattern)e.OldValue == UnaryValuePattern.NotUnary || (UnaryValuePattern)e.NewValue == UnaryValuePattern.NotUnary)
+				{
+					foreach (Role role in ((FactType)element).RoleCollection)
+					{
+						UniquenessConstraint impliedUniqueness = role.SingleRoleAlethicUniquenessConstraint;
+						if (impliedUniqueness != null)
+						{
+							eventNotify.ElementChanged(impliedUniqueness, SurveyFactTypeDetailTypes);
+						}
+					}
 				}
 			}
 		}

@@ -148,11 +148,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				Role role = ModelElement;
 				FactType factType;
 				if (role is SubtypeMetaRole ||
-					role is SupertypeMetaRole ||
-					(null != (factType = role.FactType) &&
-					(null != factType.ImpliedByObjectification || null != factType.UnaryRole)))
+					role is SupertypeMetaRole)
 				{
 					return true;
+				}
+				else if (null != (factType = role.FactType))
+				{
+					UnaryValuePattern unaryPattern;
+					if (null != factType.ImpliedByObjectification)
+					{
+						return true;
+					}
+					else if (UnaryValuePattern.NotUnary != (unaryPattern = factType.UnaryPattern))
+					{
+						switch (unaryPattern)
+						{
+							case UnaryValuePattern.OptionalWithoutNegation:
+							case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+								if ((factType.DerivationRule as FactTypeDerivationRule)?.DerivationCompleteness == DerivationCompleteness.FullyDerived) {
+									// Allow a mandatory constraint on an unpaired unary with a derivation rule.
+									// This allows any derived predicate on a single object to be declared true
+									return false;
+								}
+								break;
+						}
+						return true;
+					}
 				}
 			}
 			else if (propertyId == Role.MultiplicityDomainPropertyId)

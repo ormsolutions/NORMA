@@ -2799,7 +2799,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									{
 										case UnaryValuePattern.OptionalWithoutNegation:
 										case UnaryValuePattern.OptionalWithNegation:
-											newUnaryPattern = UnaryValuePattern.RequiredWithNegation;
+											if ((factType.DerivationRule as FactTypeDerivationRule)?.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+											{
+												if (!hasNewIsMandatoryValue)
+												{
+													newIsMandatoryValue = !role.IsMandatory;
+													hasNewIsMandatoryValue = true;
+												}
+												role.IsMandatory = newIsMandatoryValue;
+											}
+											else
+											{
+												newUnaryPattern = UnaryValuePattern.RequiredWithNegation;
+											}
 											break;
 										case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
 										case UnaryValuePattern.OptionalWithNegationDefaultTrue:

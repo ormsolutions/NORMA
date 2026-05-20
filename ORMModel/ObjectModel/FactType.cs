@@ -823,6 +823,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else
 					{
+						switch ((UnaryValuePattern)e.OldValue)
+						{
+							case UnaryValuePattern.OptionalWithoutNegation:
+							case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+								switch ((UnaryValuePattern)e.NewValue)
+								{
+									case UnaryValuePattern.NotUnary:
+									case UnaryValuePattern.OptionalWithoutNegation:
+									case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+										break;
+									default:
+										FactType factType = (FactType)element;
+										if ((factType.DerivationRule as FactTypeDerivationRule)?.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+										{
+											MandatoryConstraint simpleMandatory = factType.UnaryRole.SimpleMandatoryConstraint;
+											if (simpleMandatory != null)
+											{
+												simpleMandatory.Delete();
+											}
+										}
+										break;
+								}
+								break;
+						}
 						((FactType)element).RealizeUnaryPattern(null);
 					}
 				}
@@ -2682,6 +2706,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactTypeDerivationRule derivationRule;
 			FactType factType;
 			string generatedName;
+			bool completenessChange;
 			if (attributeId == FactTypeDerivationRule.NameDomainPropertyId)
 			{
 				derivationRule = (FactTypeDerivationRule)e.ModelElement;
@@ -2708,12 +2733,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					factType.OnFactTypeNameChanged();
 				}
 			}
-			else if (attributeId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId ||
+			else if ((completenessChange = (attributeId == FactTypeDerivationRule.DerivationCompletenessDomainPropertyId)) ||
 				attributeId == FactTypeDerivationRule.ExternalDerivationDomainPropertyId)
 			{
 				derivationRule = (FactTypeDerivationRule)e.ModelElement;
 				if (null != (factType = derivationRule.FactType))
 				{
+					if (completenessChange && derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived)
+					{
+						switch (factType.UnaryPattern)
+						{
+							case UnaryValuePattern.OptionalWithoutNegation:
+							case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+								MandatoryConstraint simpleMandatory = factType.UnaryRole.SimpleMandatoryConstraint;
+								if (simpleMandatory != null)
+								{
+									simpleMandatory.Delete();
+								}
+								break;
+						}
+					}
 					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ObjectType objectifyingType = factType.NestingType;
 					if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
@@ -2843,17 +2882,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			string explicitName;
 			if (!(factType = link.FactType).IsDeleted &&
 				null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
-				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-				!derivationRule.ExternalDerivation)
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived)
 			{
-				if (factType.NestingType == null &&
-					!string.IsNullOrEmpty(explicitName = derivationRule.Name) &&
-					(object)explicitName != (object)factType.myGeneratedName)
+				switch (factType.UnaryPattern)
 				{
-					factType.RegenerateErrorText();
-					factType.OnFactTypeNameChanged();
+					case UnaryValuePattern.OptionalWithoutNegation:
+					case UnaryValuePattern.OptionalWithoutNegationDefaultTrue:
+						MandatoryConstraint simpleMandatory = factType.UnaryRole.SimpleMandatoryConstraint;
+						if (simpleMandatory != null)
+						{
+							simpleMandatory.Delete();
+						}
+						break;
 				}
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+
+				if (!derivationRule.ExternalDerivation)
+				{
+					if (factType.NestingType == null &&
+						!string.IsNullOrEmpty(explicitName = derivationRule.Name) &&
+						(object)explicitName != (object)factType.myGeneratedName)
+					{
+						factType.RegenerateErrorText();
+						factType.OnFactTypeNameChanged();
+					}
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+				}
 			}
 		}
 		/// <summary>
@@ -4062,15 +4115,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (1 == factRoleCount)
 				{
+					Role unaryRole = factRoles[0].Role;
+					UnaryValuePattern unaryPattern = this.UnaryPattern;
+
+					// Verbalize a simple mandatory constraint on a fully derived unpaired mandatory.
+					if ((unaryPattern == UnaryValuePattern.OptionalWithoutNegation || unaryPattern == UnaryValuePattern.OptionalWithoutNegationDefaultTrue) &&
+						(this.DerivationRule as FactTypeDerivationRule)?.DerivationCompleteness == DerivationCompleteness.FullyDerived)
+					{
+						MandatoryConstraint simpleMandatory;
+						if (null != (simpleMandatory = unaryRole.SimpleMandatoryConstraint) &&
+							(filter == null || !filter.FilterChildVerbalizer(simpleMandatory, sign).IsBlocked))
+						{
+							yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)simpleMandatory);
+						}
+					}
+
 					// Verbalize the uniqueness constraint on the unary role
 					UniquenessConstraint constraint;
-					if (null != (constraint = factRoles[0].Role.SingleRoleAlethicUniquenessConstraint) &&
+					if (null != (constraint = unaryRole.SingleRoleAlethicUniquenessConstraint) &&
 						(filter == null || !filter.FilterChildVerbalizer(constraint, sign).IsBlocked))
 					{
 						yield return CustomChildVerbalizer.VerbalizeInstance((IVerbalize)constraint);
 					}
 					FactType positiveUnary = this;
-					switch (UnaryPattern)
+					switch (unaryPattern)
 					{
 						case UnaryValuePattern.NotUnary: // Sanity, obviously should not be set
 						case UnaryValuePattern.OptionalWithoutNegation:
@@ -4808,13 +4876,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						ensureInit(); // There is way too much happening here to do finer grained initialization
 
+
+
+						Role unaryRole = roles[0] as Role;
+
 						// Synchronize the positive side with the requested pattern
 						if (pattern == UnaryValuePattern.NotUnary)
 						{
 							// Default to the basic pattern. Note that deprecating the old pattern
 							// of a binarized unary form will already set this to the most general case (OptionalWithNegation),
-							// so this is just a sanity check.
+							// so this is just a sanity check. It also occurs naturally when a role is deleted to turn a
+							// binary fact type into a unary.
 							this.UnaryPattern = pattern = UnaryValuePattern.OptionalWithoutNegation;
+
+							// Simple mandatory constraints are only allowed on unary roles if the fact types is fully derived.
+							if (!((this.DerivationRule as FactTypeDerivationRule)?.DerivationCompleteness == DerivationCompleteness.FullyDerived))
+							{
+								MandatoryConstraint simpleMandatory = unaryRole.SimpleMandatoryConstraint;
+								if (simpleMandatory != null)
+								{
+									simpleMandatory.Delete();
+								}
+							}
 						}
 
 						bool requireNegation = true; // exclusion is required with negation. true is the most common value.
@@ -4861,7 +4944,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								break;
 						}
 
-						Role unaryRole = roles[0] as Role;
 						UniquenessConstraint unaryUniqueness = unaryRole.SingleRoleAlethicUniquenessConstraint;
 						if (unaryUniqueness == null)
 						{

@@ -391,7 +391,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			else if (null != (setConstraint = (dataObject == null) ? elementToPlace as SetConstraint : dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
 			{
 				verifyFactTypeList = setConstraint.FactTypeCollection;
-				element = setConstraint;
+				if (verifyFactTypeList.Count == 1 && ((IConstraint)setConstraint).ConstraintIsInternal)
+				{
+					// See if we have an internal constraint. Note that this was originally done in the survey node data object,
+					// but that means that internal constraints cannot be dropped on any target (including groups).
+					factType = verifyFactTypeList[0];
+					if (!(factType is SubtypeFact))
+					{
+						element = factType;
+					}
+					verifyFactTypeList = null;
+				}
+				else
+				{
+					element = setConstraint;
+				}
 			}
 			else if (null != (modelNote = (dataObject == null) ? elementToPlace as ModelNote : dataObject.GetData(typeof(ModelNote)) as ModelNote))
 			{
