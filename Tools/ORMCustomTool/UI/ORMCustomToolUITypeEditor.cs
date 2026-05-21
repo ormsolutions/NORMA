@@ -69,7 +69,9 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 #if VISUALSTUDIO_18_0
 								"VisualStudio.DTE.18.0:" +
 #elif VISUALSTUDIO_17_0
-								"VisualStudio.DTE.17.0:" +
+								// This actually cares about VS2022 (17) vs VS2026 (18). Dynamically determine the moniker so that we can
+								// use the same install package for both products.
+								"VisualStudio.DTE." + typeof(Microsoft.VisualStudio.Shell.Package).Assembly.GetName().Version.Major.ToString() + ".0:" +
 #elif VISUALSTUDIO_16_0
 								"VisualStudio.DTE.16.0:" +
 #elif VISUALSTUDIO_15_0

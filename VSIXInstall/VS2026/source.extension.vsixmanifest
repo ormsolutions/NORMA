@@ -11,17 +11,17 @@
 		<Tags>NORMA;code generation;ORM;Object Role Modeling;Object-Role Modeling;ORM Solutions;Neumont University</Tags>
 	</Metadata>
 	<Installation InstalledByMsi="false" AllUsers="true">
-		<InstallationTarget Version="[18.0,19.0)" Id="Microsoft.VisualStudio.Community">
+		<InstallationTarget Version="[17.0,)" Id="Microsoft.VisualStudio.Community">
 			<ProductArchitecture>amd64</ProductArchitecture>
 		</InstallationTarget>
 	</Installation>
 	<Dependencies>
-		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.8,)" />
-		<Dependency d:Source="File" DisplayName="PLiX Code Generator" Id="251928d1-61d1-4970-be0e-758788d0fd10" Version="[1.0.3017.11,2.0.0.0)" d:InstallSource="Embed" Location="PLiX.vsix" />
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.5,)" />
+		<Dependency d:Source="File" DisplayName="PLiX Code Generator" Id="251928d1-61d1-4970-be0e-758788d0fd10" Version="[1.0.3017.12,2.0.0.0)" d:InstallSource="Embed" Location="PLiX.vsix" />
 	</Dependencies>
 	<Prerequisites>
-		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[18.0,19.0)" DisplayName="Visual Studio core editor" />
-		<Prerequisite Id="Microsoft.VisualStudio.Workload.ManagedDesktop" Version="[18.0,19.0)" DisplayName=".NET desktop development" />
+		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
+		<Prerequisite Id="Microsoft.VisualStudio.Workload.ManagedDesktop" Version="[17.0,)" DisplayName=".NET desktop development" />
 	</Prerequisites>
 	<Assets>
 		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="ORMDesigner.pkgdef" />
