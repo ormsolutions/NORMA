@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"
+	targetNamespace="http://schemas.neumont.edu/ORM/2026-07/ORMDiagram"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" 
-	xmlns="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore" 
+	xmlns="http://schemas.neumont.edu/ORM/2026-07/ORMDiagram"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
@@ -18,7 +18,7 @@
 		</xs:appinfo>
 	</xs:annotation>
 
-	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2026-07/ORMCore"/>
 	<xs:element name="ORMDiagram" type="ORMDiagramType"/>
 	<xs:complexType name="ShapeExtensionsType">
 		<xs:annotation>

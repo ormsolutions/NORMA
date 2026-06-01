@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="ORMAbstractionToConceptualDatabaseBridgeDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="oialtocdb" URI="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" SchemaFile="ORMAbstractionToConceptualDatabase.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="oialtocdb" URI="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase" SchemaFile="ORMAbstractionToConceptualDatabase.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="MappingCustomizationModel" Name="MappingCustomization"/>

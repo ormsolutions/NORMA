@@ -2,10 +2,10 @@
 <xs:schema
 	attributeFormDefault="unqualified"
 	elementFormDefault="qualified"
-	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
-	targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2026-07/ORMDiagram"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2026-07/ORMRoot"
+	targetNamespace="http://schemas.neumont.edu/ORM/2026-07/ORMRoot"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
@@ -18,17 +18,11 @@
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
 	</xs:annotation>
-	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore" />
-	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" />
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2026-07/ORMCore" />
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2026-07/ORMDiagram" />
 	<xs:element name="ORM2">
 		<xs:complexType>
 			<xs:sequence>
-				<!-- What we really want is the following block, but xs:any does
-					 not support excluding namespaces other than targetNamespace -->
-				<!-- <xs:element ref="orm:ORMModel" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" />
-				<xs:element ref="ormDiagram:ORMDiagram" maxOccurs="unbounded" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" />
-				<xs:any namespace="##other - http://schemas.neumont.edu/ORM/2006-04/ORMCore - http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" processContents="strict" maxOccurs="unbounded"/>
-				-->
 				<xs:any namespace="##other" processContents="strict" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>

@@ -1924,14 +1924,6 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.SameFactTypeRoleFollowsJoin.CompactText");
 			}
 		}
-		/// <summary>Model validation error text for a pathed role that is not marked as a start role or is marked as a start role and should not be. {0}=error display context</summary>
-		public static string ModelErrorRolePathStartRoleFollowsRootObjectType
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.StartRoleFollowsRootObjectType.Text");
-			}
-		}
 		/// <summary>Model validation error text for subquery parameter inputs that do not have a compatible type. {0}=error display context</summary>
 		public static string ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeText
 		{

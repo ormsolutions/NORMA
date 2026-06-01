@@ -24,14 +24,6 @@
 			<cmc:RootElement class="DisplayState"/>
 		</cmc:RootElements>
 		<cmc:EmbeddingDirectives>
-			<!-- Ignored embeddings. These are deprecated on load and do not appear in a live model. -->
-			<cmc:EmbeddingDirective relationship="ConstraintRoleProjectedFromPathConstant_Deprecated" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="FactTypeHasDerivationExpression" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="RoleDerivesFromPathConstant_Deprecated" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="RolePathOwnerHasPathComponent_Deprecated" ignore="true"/>
-			<cmc:EmbeddingDirective relationship="SubtypeHasDerivationExpression" ignore="true"/>
-
 			<!-- Extension point handled outside the model. -->
 			<cmc:EmbeddingDirective relationship="ORMModelElementHasExtensionElement" ignore="true"/>
 			<cmc:EmbeddingDirective relationship="ModelHasError" ignore="true"/>

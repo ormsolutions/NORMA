@@ -20,7 +20,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="ORMCoreDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2006-04/ORMCore" SchemaFile="ORM2Core.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2026-07/ORMCore" SchemaFile="ORM2Core.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>
@@ -182,10 +182,10 @@
 		<se:Container Name="Notes">
 			<se:Embed RelationshipName="ModelHasPrimaryNote" RoleName="Note"/>
 		</se:Container>
-		<se:Container Name="Objects">
+		<se:Container Name="DomainObjectTypes">
 			<se:Embed RelationshipName="ModelHasObjectType" RoleName="ObjectType"/>
 		</se:Container>
-		<se:Container Name="Facts">
+		<se:Container Name="DomainFactTypes">
 			<se:Embed RelationshipName="ModelHasFactType" RoleName="FactType"/>
 		</se:Container>
 		<se:Container Name="Constraints" SortChildElements="true">
@@ -726,9 +726,7 @@
 		<se:Container Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
 		</se:Container>
-		<se:Container Name="SubtypeDerivationRule" SortChildElements="true">
-			<!-- UNDONE: File format change, remove derivation expression before deserialization. -->
-			<se:Embed RelationshipName="SubtypeHasDerivationExpression" RoleName="DerivationRule"/>
+		<se:Container Name="SubtypeDerivationRule">
 			<se:Embed RelationshipName="SubtypeHasDerivationRule" RoleName="DerivationRule"/>
 		</se:Container>
 		<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement"/>
@@ -790,7 +788,7 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</se:ConditionalName>
-			<se:ConditionalName Name="SubtypeMetaRole">
+			<se:ConditionalName Name="SubtypeRole">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
 						<plx:callStatic name="GetRolePlayer" dataTypeName="DomainRoleInfo">
@@ -807,7 +805,7 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</se:ConditionalName>
-			<se:ConditionalName Name="SupertypeMetaRole">
+			<se:ConditionalName Name="SupertypeRole">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
 						<plx:callStatic name="GetRolePlayer" dataTypeName="DomainRoleInfo">
@@ -1058,8 +1056,8 @@
 		</se:Attribute>
 	</se:Element>
 	<!--Facts-->
-	<se:Element Class="FactType" Name="Fact" SortChildElements="true" Override="true">
-		<se:ConditionalName Name="ImpliedFact">
+	<se:Element Class="FactType" Name="FactType" SortChildElements="true" Override="true">
+		<se:ConditionalName Name="ImpliedFactType">
 			<plx:binaryOperator type="identityInequality">
 				<plx:left>
 					<plx:callThis name="ImpliedByObjectification" type="property"/>
@@ -1095,17 +1093,7 @@
 		<se:Container Name="Notes">
 			<se:Embed RelationshipName="FactTypeHasNote" RoleName="Note"/>
 		</se:Container>
-		<se:Container Name="FactRoles">
-			<se:ConditionalName Name="QueryRoles">
-				<plx:binaryOperator type="typeEquality">
-					<plx:left>
-						<plx:thisKeyword/>
-					</plx:left>
-					<plx:right>
-						<plx:directTypeReference dataTypeName="Subquery"/>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:ConditionalName>
+		<se:Container Name="Roles">
 			<se:Embed RelationshipName="FactTypeHasRole" RoleName="Role"/>
 		</se:Container>
 		<se:Container Name="ReadingOrders">
@@ -1118,8 +1106,6 @@
 		<se:Link Name="UnaryNegationExclusionConstraint" RelationshipName="ExclusionConstraintAllowsUnaryFactTypeNegation" RoleName="ExclusionConstraint"/>
 		<se:Link Name="UnaryNegationMandatoryConstraint" RelationshipName="MandatoryConstraintClosesUnaryFactType" RoleName="MandatoryConstraint"/>
 		<se:Container Name="DerivationRule" SortChildElements="true">
-			<!-- UNDONE: File format change, remove derivation expression. -->
-			<se:Embed RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
 			<se:Embed RelationshipName="FactTypeHasDerivationRule" RoleName="DerivationRule"/>
 		</se:Container>
 		<se:Container Name="Instances">
@@ -1201,8 +1187,6 @@
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 		<se:Attribute ID="Body" WriteStyle="Element"/>
 	</se:Element>
-	<!-- UNDONE: File format change, remove derivation expression. -->
-	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true"/>
 	<se:Element Class="FactTypeDerivationRule" Name="FactTypeDerivationPath" Override="true" SortChildElements="true">
 		<se:Attribute ID="DerivationCompleteness">
 			<se:Condition WriteStyle="NotWritten">
@@ -1390,9 +1374,7 @@
 			<se:Embed RelationshipName="SubtypeDerivationRuleHasDerivationNote" RoleName="DerivationNote"/>
 		</se:Container>
 	</se:Element>
-	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true">
-		<!-- UNDONE: Remove IsPrimary on next file format change -->
-		<se:Attribute ID="IsPrimary" ReadOnly="true"/>
+	<se:Element Class="SubtypeFact" Name="SubtypingFactType" Override="true">
 		<se:Attribute ID="ProvidesPreferredIdentifier" Name="PreferredIdentificationPath">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
@@ -1496,18 +1478,10 @@
 		<se:Container Name="CardinalityRestriction">
 			<se:Embed RelationshipName="UnaryRoleHasCardinalityConstraint" RoleName="CardinalityConstraint"/>
 		</se:Container>
-		<!-- UNDONE: File format change, remove old role path constructs -->
-		<se:Container Name="DerivationSource">
-			<se:Link RelationshipName="RoleDerivesFromPathedRole_Deprecated" RoleName="Source"/>
-			<se:Link RelationshipName="RoleDerivesFromCalculatedPathValue_Deprecated" RoleName="Source"/>
-			<se:Embed RelationshipName="RoleDerivesFromPathConstant_Deprecated" RoleName="Source"/>
-		</se:Container>
 		<se:Container Name="RoleInstances">
 			<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance"/>
 			<se:Link RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance"/>
 		</se:Container>
-		<se:Link RelationshipName="RoleDerivesFromPathedRole_Deprecated" RoleName="Source" Name="PathedRole"/>
-		<se:Link RelationshipName="RoleDerivesFromCalculatedPathValue_Deprecated" RoleName="Source" Name="CalculatedValue"/>
 		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
@@ -1522,6 +1496,10 @@
 		<se:Link RelationshipName="RoleHasDefaultValueValueTypeDetachedError" RoleName="DefaultValueValueTypeDetachedError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="EntityTypeInstancePopulatesUnaryRole" RoleName="EntityTypeInstance" WriteStyle="NotWritten"/>
 	</se:Element>
+	<!--SubtypeMetaRole-->
+	<se:Element Class="SubtypeMetaRole" Name="SubtypeRole" Override="true"/>
+	<!--SupertypeMetaRole-->
+	<se:Element Class="SupertypeMetaRole" Name="SupertypeRole" Override="true"/>
 	<!--RoleProxy-->
 	<se:Element Class="RoleProxy" Override="true">
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="TargetRole" Name="Role"/>
@@ -1609,13 +1587,6 @@
 		<se:Link RelationshipName="ModelNoteReferencesSetConstraint" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceHasRole" Name="Role" LinkOnly="true">
-		<se:Container Name="ProjectedFrom">
-			<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole_Deprecated" RoleName="Source"/>
-			<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue_Deprecated" RoleName="Source"/>
-			<se:Embed RelationshipName="ConstraintRoleProjectedFromPathConstant_Deprecated" RoleName="Source"/>
-		</se:Container>
-		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole_Deprecated" RoleName="Source" Name="PathedRole"/>
-		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue_Deprecated" RoleName="Source" Name="CalculatedValue"/>
 		<se:Link RelationshipName="ConstraintRoleProjection" RoleName="JoinPathProjection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceJoinPath" Name="JoinPath" Override="true">
@@ -1773,16 +1744,9 @@
 		<se:Link RelationshipName="CalculatedPathValueParameterBindingErrorTargetsFunctionParameter" RoleName="ParameterBindingError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RolePathOwner" Override="true" SortChildElements="true">
-		<!-- UNDONE: File format change, remove old role path constructs (PathComponent, CalculatedValues) -->
-		<se:Container Name="PathComponent">
-			<se:Embed RelationshipName="RolePathOwnerHasPathComponent_Deprecated" RoleName="RolePath"/>
-		</se:Container>
 		<se:Container Name="PathComponents" SortChildElements="true">
 			<se:Embed RelationshipName="RolePathOwnerOwnsLeadRolePath" RoleName="RolePath"/>
 			<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="RolePath"/>
-		</se:Container>
-		<se:Container Name="CalculatedValues">
-			<se:Embed RelationshipName="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" RoleName="CalculatedValue"/>
 		</se:Container>
 		<se:Container Name="Subqueries" SortChildElements="true">
 			<se:Embed RelationshipName="RolePathOwnerOwnsSubquery" RoleName="Subquery"/>
@@ -1870,8 +1834,6 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Link RelationshipName="CalculatedPathValueIsCalculatedWithFunction" RoleName="Function" Name="Function"/>
-		<!-- UNDONE: File format change, remove old role path constructs -->
-		<se:Link RelationshipName="CalculatedPathValueScopedWithPathedRole_Deprecated" RoleName="Scope" Name="Scope"/>
 		<se:Container Name="AggregationContext" SortChildElements="true">
 			<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesRolePathRoot" RoleName="PathRoot"/>
 			<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesPathedRole" RoleName="PathedRole"/>
@@ -2119,7 +2081,6 @@
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="PathedRoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
-		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated" RoleName="CorrelatingParent" Name="CorrelatedWith"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="DerivedRoleProjectedFromPathedRole" RoleName="RoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
@@ -2197,13 +2158,13 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="Constraint" Name="Constraint"/>
 	</se:Element>
 	<se:Element Class="ImpliedInternalUniquenessConstraintError" Override="true">
-		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
+		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="FactType" Name="FactType"/>
 	</se:Element>
 	<se:Element Class="FactTypeRequiresInternalUniquenessConstraintError" Override="true">
-		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
+		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="FactType" Name="FactType"/>
 	</se:Element>
 	<se:Element Class="FactTypeRequiresReadingError" Override="true">
-		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="FactType" Name="Fact"/>
+		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="FactType" Name="FactType"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraintExactlyOneError" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintExactlyOneError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>

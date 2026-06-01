@@ -24,11 +24,11 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	#region ORMToORMAbstractionBridgeDomainModel model serialization
-	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction", "ORMToORMAbstraction.xsd")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction", "ORMToORMAbstraction.xsd")]
 	partial class ORMToORMAbstractionBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMToORMAbstractionBridgeDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction";
 		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
@@ -49,7 +49,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "ormtooial";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction";
 			ret[0, 2] = "ORMToORMAbstraction.xsd";
 			return ret;
 		}
@@ -108,7 +108,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			if (retVal == null)
 			{
 				retVal = new CustomSerializedRootRelationshipContainer[]{
-					new CustomSerializedRootRelationshipContainer("ormtooial", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction", new CustomSerializedStandaloneRelationship[]{
+					new CustomSerializedRootRelationshipContainer("ormtooial", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction", new CustomSerializedStandaloneRelationship[]{
 						new CustomSerializedStandaloneRelationship(AbstractionModelIsForORMModel.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
 							new CustomSerializedStandaloneRelationshipRole("AbstractionModel", AbstractionModelIsForORMModel.AbstractionModelDomainRoleId),
 							new CustomSerializedStandaloneRelationshipRole("ORMModel", AbstractionModelIsForORMModel.ORMModelDomainRoleId)}, null, null, null),
@@ -152,7 +152,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction");
 				ORMToORMAbstractionBridgeDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
@@ -400,7 +400,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(GenerationSettingTargetsAbstractionModel.GeneratedAbstractionModelDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction|AbstractionModel", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction|AbstractionModel", match);
 				AbstractionModelGenerationSetting.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;

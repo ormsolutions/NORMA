@@ -24,11 +24,11 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	#region ORMAbstractionToBarkerERBridgeDomainModel model serialization
-	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER", "ORMAbstractionToBarkerERBridge.xsd")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER", "ORMAbstractionToBarkerERBridge.xsd")]
 	partial class ORMAbstractionToBarkerERBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMAbstractionToBarkerERBridgeDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER";
 		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
@@ -49,7 +49,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "oialtober";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER";
 			ret[0, 2] = "ORMAbstractionToBarkerERBridge.xsd";
 			return ret;
 		}
@@ -95,7 +95,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 			if (retVal == null)
 			{
 				retVal = new CustomSerializedRootRelationshipContainer[]{
-					new CustomSerializedRootRelationshipContainer("oialtober", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER", new CustomSerializedStandaloneRelationship[]{
+					new CustomSerializedRootRelationshipContainer("oialtober", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER", new CustomSerializedStandaloneRelationship[]{
 						new CustomSerializedStandaloneRelationship(BarkerErModelIsForAbstractionModel.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
 							new CustomSerializedStandaloneRelationshipRole("BarkerErModel", BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId),
 							new CustomSerializedStandaloneRelationshipRole("AbstractionModel", BarkerErModelIsForAbstractionModel.AbstractionModelDomainRoleId)}, null, null, null),
@@ -122,7 +122,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if (elementName == "MappingBarker" && xmlNamespace == "http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER")
+			if (elementName == "MappingBarker" && xmlNamespace == "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER")
 			{
 				return MappingBarkerModel.DomainClassId;
 			}
@@ -140,7 +140,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER");
 				ORMAbstractionToBarkerERBridgeDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
@@ -251,7 +251,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER|BarkerErModel", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER|BarkerErModel", match);
 				BarkerERModelGenerationSetting.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;

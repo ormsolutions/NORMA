@@ -181,18 +181,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			private static bool IsFactTypeIgnoredForDerivationState(FactType factType)
 			{
 				FactTypeDerivationRule rule;
-				FactTypeDerivationExpression expression;
 				if (null != (rule = factType.DerivationRule as FactTypeDerivationRule))
 				{
 					if (rule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 						(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored))
-					{
-						return true;
-					}
-				}
-				else if (null != (expression = factType.DerivationExpression))
-				{
-					if (expression.DerivationStorage == DerivationExpressionStorageType.Derived)
 					{
 						return true;
 					}
@@ -925,51 +917,6 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			}
 			#endregion // RolePlayer tracking rules
 			#region FactType derivation tracking rules
-			/// <summary>
-			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression)
-			/// Derived FactTypes should not be absorbed
-			/// </summary>
-			private static void FactTypeDerivationExpressionChangedRule(ElementPropertyChangedEventArgs e)
-			{
-				Guid propertyId = e.DomainProperty.Id;
-				if (propertyId == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
-				{
-					FactType factType = ((FactTypeDerivationExpression)e.ModelElement).FactType;
-					if (!(factType is SubtypeFact))
-					{
-						FilterModifiedFactType(factType, true, false);
-					}
-				}
-			}
-			/// <summary>
-			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression)
-			/// Derived FactTypes should not be absorbed
-			/// </summary>
-			private static void FactTypeDerivationExpressionAddedRule(ElementAddedEventArgs e)
-			{
-				FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
-				FactType factType = link.FactType;
-				if (!(factType is SubtypeFact) &&
-					link.DerivationRule.DerivationStorage == DerivationExpressionStorageType.Derived)
-				{
-					FilterModifiedFactType(factType, true, false);
-				}
-			}
-			/// <summary>
-			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression)
-			/// Derived FactTypes should not be absorbed
-			/// </summary>
-			private static void FactTypeDerivationExpressionDeletedRule(ElementDeletedEventArgs e)
-			{
-				FactTypeHasDerivationExpression link = (FactTypeHasDerivationExpression)e.ModelElement;
-				FactType factType = link.FactType;
-				if (!factType.IsDeleted &&
-					!(factType is SubtypeFact) &&
-					link.DerivationRule.DerivationStorage == DerivationExpressionStorageType.Derived)
-				{
-					FilterModifiedFactType(factType, true, false);
-				}
-			}
 			/// <summary>
 			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule)
 			/// Fully derived FactTypes that are not stored should not be absorbed

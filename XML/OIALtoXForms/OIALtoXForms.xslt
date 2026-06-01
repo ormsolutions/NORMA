@@ -2,8 +2,6 @@
 <xsl:stylesheet version="1.0"
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 				xmlns:exsl="http://exslt.org/common"
-				xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
-				xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
 				xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
 				xmlns:oil="http://schemas.orm.net/OIAL"
 				xmlns:xhtml="http://www.w3.org/1999/xhtml"
