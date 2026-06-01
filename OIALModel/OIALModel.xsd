@@ -2,7 +2,7 @@
 <xs:schema
 	targetNamespace="http://schemas.neumont.edu/ORM/2006-01/OIALModel"
 	xmlns="http://schemas.neumont.edu/ORM/2006-01/OIALModel"
-	xmlns:ORM2="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -22,7 +22,7 @@
 		<xs:documentation>WARNING: This schema is temporary, and will eventually be replaced with the http://schemas.orm.net/OIAL schema.</xs:documentation>
 	</xs:annotation>
 
-	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore" />
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2026-07/ORMCore" />
 
 	<xs:element name="Model" type="ModelType" />
 
@@ -54,7 +54,7 @@
 			<xs:element name="ChildSequence" type="ChildSequenceType" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Modality" type="orm:ConstraintModalityValues" />
 	</xs:complexType>
 	
 	<xs:complexType name="ChildSequenceUniquenessConstraintType">
@@ -72,7 +72,7 @@
 			<xs:element name="SuperChildSequence" type="TwoOrMoreChildSequenceType" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Modality" type="orm:ConstraintModalityValues" />
 	</xs:complexType>
 
 	<xs:complexType name="ExclusionConstraintType">
@@ -80,7 +80,7 @@
 			<xs:element name ="ChildSequence" type="TwoOrMoreChildSequenceType" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Modality" type="orm:ConstraintModalityValues" />
 	</xs:complexType>
 
 	<xs:complexType name="EqualityConstraintType">
@@ -88,7 +88,7 @@
 			<xs:element name ="ChildSequence" type="TwoOrMoreChildSequenceType" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Modality" type="orm:ConstraintModalityValues" />
 	</xs:complexType>
 
 	<xs:complexType name="TwoOrMoreChildSequenceType">
@@ -160,11 +160,11 @@
 	<xs:complexType name="ConceptTypeChildType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="SingleChildConstraints" type="SingleChildConstraintsType" />
-			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
+			<xs:element name="PathRoles" type="orm:PlayedRolesType" />
 		</xs:choice>
 		<xs:attribute name="id" type="xs:ID" />
 		<xs:attribute name="ref" type="xs:IDREF" />
-		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Mandatory" type="orm:ConstraintModalityValues" />
 		<xs:attribute name="Name" type="xs:string" />
 	</xs:complexType>
 
@@ -178,10 +178,10 @@
 
 	<xs:complexType name="ConceptTypeLinkType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
+			<xs:element name="PathRoles" type="orm:PlayedRolesType" />
 		</xs:choice>
 		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Mandatory" type="orm:ConstraintModalityValues" />
 	</xs:complexType>
 
 	<!--<xs:complexType name="InformationTypeType">
@@ -195,11 +195,11 @@
 	<xs:complexType name="InformationTypeLinkType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="SingleChildConstraints" type="SingleChildConstraintsType" />
-			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
+			<xs:element name="PathRoles" type="orm:PlayedRolesType" />
 		</xs:choice>
 		<xs:attribute name="id" type="xs:ID" />
 		<xs:attribute name="ref" type="xs:IDREF" />
-		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Mandatory" type="orm:ConstraintModalityValues" />
 	</xs:complexType>
 
 	<xs:complexType name="SingleChildConstraintsType">
@@ -212,7 +212,7 @@
 
 	<xs:complexType name="SingleChildConstraintType">
 		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+		<xs:attribute name="Modality" type="orm:ConstraintModalityValues" />
 	</xs:complexType>
 	
 	<xs:complexType name="SingleChildUniquenessConstraintType">

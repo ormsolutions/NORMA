@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER"
-	xmlns="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" 
-	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER"
+	targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER"
+	xmlns="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="1.0">
-	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2026-07/ORMCore"/>
 
 	<xs:annotation>
 		<xs:appinfo>
@@ -16,8 +15,8 @@
 				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 				xmlns:dc="http://purl.org/dc/elements/1.1/"
 				xmlns:dcterms="http://purl.org/dc/terms/">
-				<rdf:Description rdf:about="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
-					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
+				<rdf:Description rdf:about="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction">
+					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/2026-07/ORMCore"/>
 					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
 					<dc:title>ORM Intermediate Abstraction Language To Barker ER</dc:title>
 					<dc:rights>Copyright © Neumont University. All rights reserved.</dc:rights>

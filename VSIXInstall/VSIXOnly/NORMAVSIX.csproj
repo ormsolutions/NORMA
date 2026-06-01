@@ -505,6 +505,36 @@
       <TargetPath>RootUpgradeTo2006-04.xslt</TargetPath>
       <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
     </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\CoreUpgradeTo2026-07.xslt">
+      <Link>CoreUpgradeTo2026-07.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>CoreUpgradeTo2026-07.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\RootUpgradeTo2026-07.xslt">
+      <Link>RootUpgradeTo2026-07.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>RootUpgradeTo2026-07.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\OrmOialBridgeTo2026-07.xslt">
+      <Link>OrmOialBridgeTo2026-07.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>OrmOialBridgeTo2026-07.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\OialCdbBridgeTo2026-07.xslt">
+      <Link>OialCdbBridgeTo2026-07.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>OialCdbBridgeTo2026-07.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\OialBerBridgeTo2026-07.xslt">
+      <Link>OialBerBridgeTo2026-07.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>OialBerBridgeTo2026-07.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
     <Content Include="..\..\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt">
       <Link>VisioToCoreModelImport.xslt</Link>
       <IncludeInVSIX>true</IncludeInVSIX>

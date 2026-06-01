@@ -16,8 +16,8 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
-	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
+	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction"
 	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
@@ -50,7 +50,7 @@
 
 	<xsl:variable name="ORMModel" select="*/orm:ORMModel"/>
 	<xsl:variable name="ORMDataTypes" select="$ORMModel/orm:DataTypes/orm:*"/>
-	<xsl:variable name="ORMObjectTypes" select="$ORMModel/orm:Objects/orm:*"/>
+	<xsl:variable name="ORMObjectTypes" select="$ORMModel/orm:DomainObjectTypes/orm:*"/>
 	<xsl:variable name="ORMValueTypes" select="$ORMObjectTypes[self::orm:ValueType]"/>
 	<xsl:variable name="OialBridgeMappings" select="*/ormtooial:Bridge/ormtooial:*"/>
 	<xsl:variable name="OialModel" select="*/oial:model"/>

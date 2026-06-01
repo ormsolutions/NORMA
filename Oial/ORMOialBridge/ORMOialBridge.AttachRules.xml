@@ -27,15 +27,6 @@
 			<arg:ChangeRule methodName="FactTypeChangedRule">
 				<arg:RuleOn targetType="FactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
-			<arg:AddRule methodName="FactTypeDerivationExpressionAddedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
-			</arg:AddRule>
-			<arg:ChangeRule methodName="FactTypeDerivationExpressionChangedRule">
-				<arg:RuleOn targetType="FactTypeDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
-			</arg:ChangeRule>
-			<arg:DeleteRule methodName="FactTypeDerivationExpressionDeletedRule">
-				<arg:RuleOn targetType="FactTypeHasDerivationExpression" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
-			</arg:DeleteRule>
 			<arg:AddRule methodName="FactTypeDerivationRuleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:AddRule>

@@ -742,6 +742,10 @@
     <None Include="Resources\VerbalizationToolbarImages.png" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleReorderAllowed.cur" />
     <None Include="Resources\Toolbox.ValueComparisonConstraint.Bitmap.Id.bmp" />
+    <None Include="Shell\Converters\CoreUpgradeTo2026-07.xslt">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Shell\Converters\RootUpgradeTo2026-07.xslt" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="Transforms\ResourceStringsGenerator.xslt" />
     <None Include="Transforms\SurveyQuestionProvider.xslt" />

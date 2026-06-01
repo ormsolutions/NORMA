@@ -11,7 +11,7 @@
 <!-- Contributors: Rexford Morgan, Joshua Arnold -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
 	xmlns:oil="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
@@ -64,13 +64,13 @@
 				<orm:ObjectIdOtherDataType id="ObjectIdOtherDataType"/>
 				<orm:UUIDNumericDataType id="UUIDNumericDataType"/>
 			</orm:DataTypes>
-			<orm:Objects>
+			<orm:DomainObjectTypes>
 				<xsl:apply-templates select="$allConceptTypes" mode="GenerateObjectTypes">
 					<xsl:with-param name="allConceptTypes" select="$allConceptTypes"/>
 					<xsl:with-param name="allInformationTypeFormats" select="oil:informationTypeFormats/child::*"/>
 					<xsl:with-param name="allInformationTypes" select="$allConceptTypes/oil:children/oil:informationType"/>
 				</xsl:apply-templates>
-			</orm:Objects>
+			</orm:DomainObjectTypes>
 			<xsl:variable name="allFactTypesFragment">
 				<xsl:apply-templates mode="GenerateAssociationFactTypes" select="$allConceptTypes[oil:association]">
 					<xsl:with-param name="allConceptTypes" select="$allConceptTypes"/>
@@ -81,9 +81,9 @@
 				</xsl:apply-templates>
 			</xsl:variable>
 			<xsl:variable name="allFactTypes" select="exsl:node-set($allFactTypesFragment)/child::*"/>
-			<orm:Facts>
+			<orm:DomainFactTypes>
 				<xsl:copy-of select="$allFactTypes"/>
-			</orm:Facts>
+			</orm:DomainFactTypes>
 			<orm:Constraints>
 				<xsl:apply-templates mode="GenerateConstraints" select="$allConceptTypes/oil:children/oil:* | $allConceptTypes/oil:uniquenessConstraints/oil:uniquenessConstraint"/>
 			</orm:Constraints>
@@ -118,13 +118,13 @@
 		<xsl:variable name="elementName">
 			<xsl:choose>
 				<xsl:when test="$isSubtypingRelationship">
-					<xsl:value-of select="'SubtypeFact'"/>
+					<xsl:value-of select="'SubtypingFactType'"/>
 				</xsl:when>
 				<xsl:when test="$isPartOfAssociation">
-					<xsl:value-of select="'ImpliedFact'"/>
+					<xsl:value-of select="'ImpliedFactType'"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="'Fact'"/>
+					<xsl:value-of select="'FactType'"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -137,9 +137,9 @@
 				<!-- Handle the parent -->
 				<xsl:choose>
 					<xsl:when test="$isSubtypingRelationship">
-						<orm:SupertypeMetaRole id="Role.Parent.{$id}" Name="">
+						<orm:SupertypeRole id="Role.Parent.{$id}" Name="">
 							<xsl:apply-templates select="$conceptType" mode="GenerateRolePlayer"/>
-						</orm:SupertypeMetaRole>
+						</orm:SupertypeRole>
 					</xsl:when>
 					<xsl:when test="$isPartOfAssociationForTarget">
 						<!-- Make the proxy for the parent -->
@@ -165,9 +165,9 @@
 				<!-- Handle the target -->
 				<xsl:choose>
 					<xsl:when test="$isSubtypingRelationship">
-						<orm:SubtypeMetaRole id="Role.Target.{$id}" Name="">
+						<orm:SubtypeRole id="Role.Target.{$id}" Name="">
 							<xsl:apply-templates select="." mode="GenerateRolePlayer"/>
-						</orm:SubtypeMetaRole>
+						</orm:SubtypeRole>
 					</xsl:when>
 					<xsl:when test="$isPartOfAssociationForParent">
 						<!-- Make the proxy for the target -->
@@ -191,9 +191,9 @@
 				</xsl:choose>
 			</xsl:variable>
 			<xsl:variable name="roles" select="exsl:node-set($rolesFragment)/child::*"/>
-			<orm:FactRoles>
+			<orm:Roles>
 				<xsl:copy-of select="$roles"/>
-			</orm:FactRoles>
+			</orm:Roles>
 			<xsl:if test="not($isSubtypingRelationship)">
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="ReadingOrder.ParentTarget.{$id}">
@@ -234,7 +234,7 @@
 		<xsl:param name="allConceptTypeChildren"/>
 		<xsl:variable name="conceptType" select="."/>
 		<xsl:variable name="conceptTypeId" select="fn:EncodeName(@id)"/>
-		<orm:Fact id="FactType.Association.{$conceptTypeId}">
+		<orm:FactType id="FactType.Association.{$conceptTypeId}">
 			<xsl:variable name="rolesFragment">
 				<xsl:for-each select="oil:association/oil:associationChild">
 					<xsl:variable name="conceptTypeChild" select="$allConceptTypeChildren[@id = current()/@ref]"/>
@@ -256,9 +256,9 @@
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="roles" select="exsl:node-set($rolesFragment)/child::*"/>
-			<orm:FactRoles>
+			<orm:Roles>
 				<xsl:copy-of select="$roles"/>
-			</orm:FactRoles>
+			</orm:Roles>
 			<!-- UNDONE: Readings with only spaces don't help, just leave them empty for associations
 			until we can figure out how to do something real. -->
 			<!-- <orm:ReadingOrders>
@@ -284,7 +284,7 @@
 					</orm:RoleSequence>
 				</orm:ReadingOrder>
 			</orm:ReadingOrders> -->
-		</orm:Fact>
+		</orm:FactType>
 	</xsl:template>
 	
 	<!-- Match each conceptType to generate EntityTypes and cascade down to each child informationType -->

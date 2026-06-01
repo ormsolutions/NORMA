@@ -1702,9 +1702,6 @@
 	<data name="PathedRolePurpose.SameFactType" xml:space="preserve">
 		<value>SameFactType</value>
 	</data>
-	<data name="PathedRolePurpose.StartRole" xml:space="preserve">
-		<value>StartRole</value>
-	</data>
 	<data name="ReferenceMode.PredicateInverseReading" xml:space="preserve">
 		<value>{0} is of {1}</value>
 		<comment>The inverse reading for the predicate created by setting the ref mode.</comment>

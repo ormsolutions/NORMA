@@ -4496,7 +4496,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public static IDeserializationFixupListener DebinarizeUnaryFixupListener
 		{
-			// UNDONE: File format update. Handle this in the import transform, not here.
+			// The original plan said to do this in a file format change. Unfortunately, this is far from trivial
+			// because this involves role deletion and similar changes that affect extensions outside the core. These
+			// changes can be reacted to here, but the level of processing (and potential instability) of attempting
+			// this in a static transform is not worth the risk. The two removed notions (ObjectType.IsImplicitBooleanValue
+			// and ObjectifiedUnaryRole) will remain in the file format as legacy code with no plans to remove them via
+			// the file format upgrade process.
 			get { return new UnaryDebinarizationFixupListener(); }
 
 		}

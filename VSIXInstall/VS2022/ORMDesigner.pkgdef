@@ -175,7 +175,7 @@ Windows Registry Editor Version 5.00
 "Editor"="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"
 "Extension"="orm"
 "LogicalView"="7651A702-06E5-11D1-8EBD-00A0C90F26EA"
-"Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+"Namespace"="http://schemas.neumont.edu/ORM/2026-07/ORMRoot"
 [$RootKey$\ShellFileAssociations\.orm]
 "DefaultIconMoniker"="47b7db2f-a4a5-4ee8-92a3-74ab45abb40d:0"
 [$RootKey$\FontAndColors\Orm Designer]
@@ -189,7 +189,7 @@ Windows Registry Editor Version 5.00
 "Editor"="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"
 "Extension"="orm"
 "LogicalView"="7651A702-06E5-11D1-8EBD-00A0C90F26EA"
-"Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+"Namespace"="http://schemas.neumont.edu/ORM/2026-07/ORMRoot"
 
 ;ORMCustomTool Registration
 [$RootKey$\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}]
@@ -268,13 +268,13 @@ Windows Registry Editor Version 5.00
 "Class"="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel"
 "CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMAbstraction.VS2022.dll"
 "SecondaryNamespace"=dword:00000001
-[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase]
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase]
 "Class"="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"
 "CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.VS2022.dll"
-[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction]
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction]
 "Class"="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"
 "CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.VS2022.dll"
-[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER]
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER]
 "Class"="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel"
 "CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.VS2022.dll"
 [$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker]
@@ -321,7 +321,7 @@ $NORMASchemaCatalog$
 "DisplayName"="ConceptualDB to DCIL"
 "DisplayDescription"="Transforms an ORM file with the ConceptualDB extension to DCIL."
 "FileExtension"=".DCIL.xml"
-"SourceInputFormat"="ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
+"SourceInputFormat"="ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction"
 "ProvidesOutputFormat"="DCIL"
 "TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\ConceptualDBtoDCIL.xslt"
 "GeneratesSupportFile"=dword:00000001
@@ -447,7 +447,7 @@ $NORMASchemaCatalog$
 "DisplayName"="OIAL to CLI Properties"
 "DisplayDescription"="Transforms an OIAL file to CLI (Common Language Infrastructure) Properties"
 "FileExtension"=".CLIProperties.xml"
-"SourceInputFormat"="ORM http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
+"SourceInputFormat"="ORM http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction"
 "ProvidesOutputFormat"="CLIProperties"
 "TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\OIALtoCLIProperties.xslt"
 "GeneratesSupportFile"=dword:00000001

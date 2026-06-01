@@ -19,7 +19,7 @@
 	</se:Copyright>
 	<se:DomainModel Class="ORMAbstractionToBarkerERBridgeDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="oialtober" URI="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" SchemaFile="ORMAbstractionToBarkerERBridge.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="oialtober" URI="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToBarkerER" SchemaFile="ORMAbstractionToBarkerERBridge.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="MappingBarkerModel" Name="MappingBarker"/>

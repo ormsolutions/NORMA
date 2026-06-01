@@ -821,16 +821,8 @@
     <comment>Description for DomainClass &apos;SubtypeFact&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.DisplayName" xml:space="preserve">
-    <value>SubtypeRelationship</value>
+    <value>SubtypingFactType</value>
     <comment>DisplayName for DomainClass &apos;SubtypeFact&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact/IsPrimary.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.IsPrimary</value>
-    <comment>Description for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;SubtypeFact&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact/IsPrimary.DisplayName" xml:space="preserve">
-    <value>IsPrimary</value>
-    <comment>DisplayName for DomainProperty &apos;IsPrimary&apos; on DomainClass &apos;SubtypeFact&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact/ProvidesPreferredIdentifier.Description" xml:space="preserve">
     <value>The preferred identification scheme for the subtype is provided by a supertype reached through this path.</value>
@@ -2844,7 +2836,7 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <comment>Description for DomainClass &apos;SubtypeMetaRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeMetaRole.DisplayName" xml:space="preserve">
-    <value>SubtypeMetaRole</value>
+    <value>SubtypeRole</value>
     <comment>DisplayName for DomainClass &apos;SubtypeMetaRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SupertypeMetaRole.Description" xml:space="preserve">
@@ -2852,7 +2844,7 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <comment>Description for DomainClass &apos;SupertypeMetaRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SupertypeMetaRole.DisplayName" xml:space="preserve">
-    <value>SupertypeMetaRole</value>
+    <value>SupertypeRole</value>
     <comment>DisplayName for DomainClass &apos;SupertypeMetaRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Definition.Description" xml:space="preserve">
@@ -2968,30 +2960,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.DisplayName" xml:space="preserve">
     <value>DerivationNote</value>
     <comment>DisplayName for DomainClass &apos;DerivationNote&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;FactTypeDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DisplayName" xml:space="preserve">
-    <value>FactTypeDerivationExpression</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression/DerivationStorage.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DerivationStorage</value>
-    <comment>Description for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression/DerivationStorage.DisplayName" xml:space="preserve">
-    <value>DerivationStorage</value>
-    <comment>DisplayName for DomainProperty &apos;DerivationStorage&apos; on DomainClass &apos;FactTypeDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationExpression.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;SubtypeDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationExpression.DisplayName" xml:space="preserve">
-    <value>SubtypeDerivationExpression</value>
-    <comment>DisplayName for DomainClass &apos;SubtypeDerivationExpression&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.Description" xml:space="preserve">
     <value></value>
@@ -7769,70 +7737,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Objectified Unary Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression</value>
-    <comment>Description for DomainClass &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression.DisplayName" xml:space="preserve">
-    <value>Fact Type Has Derivation Expression</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression/FactType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression.FactType</value>
-    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression/FactType.DisplayName" xml:space="preserve">
-    <value>FactType</value>
-    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression/FactType.PropertyDisplayName" xml:space="preserve">
-    <value>Derivation Expression</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression/DerivationRule.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression.DerivationRule</value>
-    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression/DerivationRule.DisplayName" xml:space="preserve">
-    <value>DerivationRule</value>
-    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationExpression/DerivationRule.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression</value>
-    <comment>Description for DomainClass &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression.DisplayName" xml:space="preserve">
-    <value>Subtype Has Derivation Expression</value>
-    <comment>DisplayName for DomainClass &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression/Subtype.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression.Subtype</value>
-    <comment>Description for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression/Subtype.DisplayName" xml:space="preserve">
-    <value>Subtype</value>
-    <comment>DisplayName for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression/Subtype.PropertyDisplayName" xml:space="preserve">
-    <value>Derivation Expression</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Subtype&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression.DerivationRule</value>
-    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.DisplayName" xml:space="preserve">
-    <value>DerivationRule</value>
-    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationExpression/DerivationRule.PropertyDisplayName" xml:space="preserve">
-    <value>Subtype</value>
-    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;SubtypeHasDerivationExpression&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance</value>
     <comment>Description for DomainClass &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
@@ -8641,102 +8545,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Constraint Role Projection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated</value>
-    <comment>Description for DomainClass &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated.DisplayName" xml:space="preserve">
-    <value>Constraint Role Projected From Pathed Role_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated/ConstraintRole.Description" xml:space="preserve">
-    <value>The pathed role in the join path associated with this constraint sequence.</value>
-    <comment>Description for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated/ConstraintRole.DisplayName" xml:space="preserve">
-    <value>ConstraintRole</value>
-    <comment>DisplayName for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated/ConstraintRole.PropertyDisplayName" xml:space="preserve">
-    <value>Projected From Pathed Role</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated/Source.Description" xml:space="preserve">
-    <value>The projected constraint role associated with this pathed role.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated/Source.DisplayName" xml:space="preserve">
-    <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathedRole_Deprecated/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Constraint Role Projections</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated</value>
-    <comment>Description for DomainClass &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated.DisplayName" xml:space="preserve">
-    <value>Constraint Role Projected From Calculated Path Value_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated/ConstraintRole.Description" xml:space="preserve">
-    <value>The calculated value in the join path associated with this constraint sequence.</value>
-    <comment>Description for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated/ConstraintRole.DisplayName" xml:space="preserve">
-    <value>ConstraintRole</value>
-    <comment>DisplayName for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated/ConstraintRole.PropertyDisplayName" xml:space="preserve">
-    <value>Projected From Calculated Value</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated/Source.Description" xml:space="preserve">
-    <value>The projected constraint role associated with this calculated value.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated/Source.DisplayName" xml:space="preserve">
-    <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromCalculatedPathValue_Deprecated/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Constraint Role Projections</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated</value>
-    <comment>Description for DomainClass &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated.DisplayName" xml:space="preserve">
-    <value>Constraint Role Projected From Path Constant_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated/ConstraintRole.Description" xml:space="preserve">
-    <value>The constant value associated with this constraint role.</value>
-    <comment>Description for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated/ConstraintRole.DisplayName" xml:space="preserve">
-    <value>ConstraintRole</value>
-    <comment>DisplayName for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated/ConstraintRole.PropertyDisplayName" xml:space="preserve">
-    <value>Projected From Constant</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ConstraintRole&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated/Source.Description" xml:space="preserve">
-    <value>The constraint role that uses this path constant.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated/Source.DisplayName" xml:space="preserve">
-    <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectedFromPathConstant_Deprecated/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Constraint Role Projection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;ConstraintRoleProjectedFromPathConstant_Deprecated&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelErrorDisplayFilter.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelErrorDisplayFilter</value>
     <comment>Description for DomainClass &apos;ModelHasModelErrorDisplayFilter&apos;</comment>
@@ -9153,38 +8961,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Membership Contradiction Error Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;GroupingMembershipContradictionErrorIsForElement&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated</value>
-    <comment>Description for DomainClass &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.DisplayName" xml:space="preserve">
-    <value>Role Path Owner Has Path Component_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/PathOwner.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.PathOwner</value>
-    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/PathOwner.DisplayName" xml:space="preserve">
-    <value>PathOwner</value>
-    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/PathOwner.PropertyDisplayName" xml:space="preserve">
-    <value>Path Component</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/RolePath.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated.RolePath</value>
-    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/RolePath.DisplayName" xml:space="preserve">
-    <value>RolePath</value>
-    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasPathComponent_Deprecated/RolePath.PropertyDisplayName" xml:space="preserve">
-    <value>Parent Owner</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasPathComponent_Deprecated&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasLeadRolePath</value>
     <comment>Description for DomainClass &apos;RolePathOwnerHasLeadRolePath&apos;</comment>
@@ -9593,38 +9369,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Role Path Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;PathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated</value>
-    <comment>Description for DomainClass &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated.DisplayName" xml:space="preserve">
-    <value>Pathed Role Is Remotely Correlated With Pathed Role_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatedChild.Description" xml:space="preserve">
-    <value>The parent node this pathed role is correlated with.</value>
-    <comment>Description for DomainRole &apos;CorrelatedChild&apos; on DomainRelationship &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatedChild.DisplayName" xml:space="preserve">
-    <value>CorrelatedChild</value>
-    <comment>DisplayName for DomainRole &apos;CorrelatedChild&apos; on DomainRelationship &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatedChild.PropertyDisplayName" xml:space="preserve">
-    <value>Correlating Parent</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CorrelatedChild&apos; on DomainRelationship &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatingParent.Description" xml:space="preserve">
-    <value>All pathed roles that are directly correlated with this pathed role.</value>
-    <comment>Description for DomainRole &apos;CorrelatingParent&apos; on DomainRelationship &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatingParent.DisplayName" xml:space="preserve">
-    <value>CorrelatingParent</value>
-    <comment>DisplayName for DomainRole &apos;CorrelatingParent&apos; on DomainRelationship &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated/CorrelatingParent.PropertyDisplayName" xml:space="preserve">
-    <value>Correlated Child Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CorrelatingParent&apos; on DomainRelationship &apos;PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathHasObjectUnifier</value>
     <comment>Description for DomainClass &apos;LeadRolePathHasObjectUnifier&apos;</comment>
@@ -9817,38 +9561,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Function</value>
     <comment>PropertyDisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;FunctionOperatesOnParameter&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated</value>
-    <comment>Description for DomainClass &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated.DisplayName" xml:space="preserve">
-    <value>Role Path Owner Calculates Calculated Path Value_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated/PathOwner.Description" xml:space="preserve">
-    <value>The values calculated for all paths in this owner.</value>
-    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated/PathOwner.DisplayName" xml:space="preserve">
-    <value>PathOwner</value>
-    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated/PathOwner.PropertyDisplayName" xml:space="preserve">
-    <value>Calculated Value Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated/CalculatedValue.Description" xml:space="preserve">
-    <value>The primary role path this value is calculated for.</value>
-    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated/CalculatedValue.DisplayName" xml:space="preserve">
-    <value>CalculatedValue</value>
-    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerCalculatesCalculatedPathValue_Deprecated/CalculatedValue.PropertyDisplayName" xml:space="preserve">
-    <value>Path Owner</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;RolePathOwnerCalculatesCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.LeadRolePathCalculatesCalculatedPathValue</value>
     <comment>Description for DomainClass &apos;LeadRolePathCalculatesCalculatedPathValue&apos;</comment>
@@ -9944,38 +9656,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueHasInput/Input.PropertyDisplayName" xml:space="preserve">
     <value>Calculated Value</value>
     <comment>PropertyDisplayName for DomainRole &apos;Input&apos; on DomainRelationship &apos;CalculatedPathValueHasInput&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated</value>
-    <comment>Description for DomainClass &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated.DisplayName" xml:space="preserve">
-    <value>Calculated Path Value Scoped With Pathed Role_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.Description" xml:space="preserve">
-    <value>The PathedRole that provides context for this function. The scope must be related in the role path to any path inputs.</value>
-    <comment>Description for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.DisplayName" xml:space="preserve">
-    <value>CalculatedValue</value>
-    <comment>DisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/CalculatedValue.PropertyDisplayName" xml:space="preserve">
-    <value>Scope</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CalculatedValue&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.Description" xml:space="preserve">
-    <value>Calculated values that are scoped using this PathedRole.</value>
-    <comment>Description for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.DisplayName" xml:space="preserve">
-    <value>Input</value>
-    <comment>DisplayName for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueScopedWithPathedRole_Deprecated/Scope.PropertyDisplayName" xml:space="preserve">
-    <value>Scoped Calculated Value Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Scope&apos; on DomainRelationship &apos;CalculatedPathValueScopedWithPathedRole_Deprecated&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValueAggregationContextIncludesPathedRole</value>
@@ -10848,102 +10528,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant/Source.PropertyDisplayName" xml:space="preserve">
     <value>Derived Role Projection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated</value>
-    <comment>Description for DomainClass &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated.DisplayName" xml:space="preserve">
-    <value>Role Derives From Pathed Role_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated/Role.Description" xml:space="preserve">
-    <value>The pathed role used to populate the derived fact type for this role.</value>
-    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated/Role.DisplayName" xml:space="preserve">
-    <value>Role</value>
-    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated/Role.PropertyDisplayName" xml:space="preserve">
-    <value>Derived From Pathed Role</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated/Source.Description" xml:space="preserve">
-    <value>The derived role associated with this pathed role.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated/Source.DisplayName" xml:space="preserve">
-    <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Derived Roles</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromPathedRole_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated</value>
-    <comment>Description for DomainClass &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated.DisplayName" xml:space="preserve">
-    <value>Role Derives From Calculated Path Value_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated/Role.Description" xml:space="preserve">
-    <value>The calculated value used to populate the derived fact type for this role.</value>
-    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated/Role.DisplayName" xml:space="preserve">
-    <value>Role</value>
-    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated/Role.PropertyDisplayName" xml:space="preserve">
-    <value>Derived From Calculated Value</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated/Source.Description" xml:space="preserve">
-    <value>The derived role associated with this calculated value.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated/Source.DisplayName" xml:space="preserve">
-    <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromCalculatedPathValue_Deprecated/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Derived Roles</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromCalculatedPathValue_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated</value>
-    <comment>Description for DomainClass &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated.DisplayName" xml:space="preserve">
-    <value>Role Derives From Path Constant_ Deprecated</value>
-    <comment>DisplayName for DomainClass &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated/Role.Description" xml:space="preserve">
-    <value>The constant value used to populate this role in the derived fact type.</value>
-    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated/Role.DisplayName" xml:space="preserve">
-    <value>Role</value>
-    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated/Role.PropertyDisplayName" xml:space="preserve">
-    <value>Derived From Constant</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated/Source.Description" xml:space="preserve">
-    <value>The derived role that uses this path constant.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated/Source.DisplayName" xml:space="preserve">
-    <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathConstant_Deprecated/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Derived Role</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;RoleDerivesFromPathConstant_Deprecated&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeHasDerivationRule</value>
@@ -12464,14 +12048,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/PostOuterJoin.Description" xml:space="preserve">
     <value>The role represents an outer join over a role player shared with the previous role in the path.</value>
     <comment>Description for EnumerationLiteral &apos;PostOuterJoin&apos; on DomainEnumeration &apos;PathedRolePurpose&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/StartRole.DisplayName" xml:space="preserve">
-    <value>StartRole</value>
-    <comment>Display name for EnumerationLiteral &apos;StartRole&apos; on DomainEnumeration &apos;PathedRolePurpose&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRolePurpose/StartRole.Description" xml:space="preserve">
-    <value>The role is the beginning of a path and directly attached to the root object type.</value>
-    <comment>Description for EnumerationLiteral &apos;StartRole&apos; on DomainEnumeration &apos;PathedRolePurpose&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption/Uninitialized.DisplayName" xml:space="preserve">
     <value>Uninitialized</value>

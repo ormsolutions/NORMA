@@ -24,11 +24,11 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel model serialization
-	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase", "ORMAbstractionToConceptualDatabase.xsd")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase", "ORMAbstractionToConceptualDatabase.xsd")]
 	partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMAbstractionToConceptualDatabaseBridgeDomainModel' extension model</summary>
-		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase";
 		/// <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
 		protected static string DefaultElementPrefix
 		{
@@ -49,7 +49,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "oialtocdb";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase";
 			ret[0, 2] = "ORMAbstractionToConceptualDatabase.xsd";
 			return ret;
 		}
@@ -95,7 +95,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			if (retVal == null)
 			{
 				retVal = new CustomSerializedRootRelationshipContainer[]{
-					new CustomSerializedRootRelationshipContainer("oialtocdb", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase", new CustomSerializedStandaloneRelationship[]{
+					new CustomSerializedRootRelationshipContainer("oialtocdb", "Bridge", "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase", new CustomSerializedStandaloneRelationship[]{
 						new CustomSerializedStandaloneRelationship(SchemaIsForAbstractionModel.DomainClassId, new CustomSerializedStandaloneRelationshipRole[]{
 							new CustomSerializedStandaloneRelationshipRole("Schema", SchemaIsForAbstractionModel.SchemaDomainRoleId),
 							new CustomSerializedStandaloneRelationshipRole("AbstractionModel", SchemaIsForAbstractionModel.AbstractionModelDomainRoleId)}, null, null, null),
@@ -125,7 +125,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if (elementName == "MappingCustomization" && xmlNamespace == "http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase")
+			if (elementName == "MappingCustomization" && xmlNamespace == "http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase")
 			{
 				return MappingCustomizationModel.DomainClassId;
 			}
@@ -143,7 +143,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase");
 				ORMAbstractionToConceptualDatabaseBridgeDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
@@ -268,7 +268,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(ColumnHasInverseConceptTypeChild.InverseConceptTypeChildDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|InverseConceptTypeChild", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|InverseConceptTypeChild", match);
 				ColumnHasConceptTypeChild.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -412,7 +412,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(TableIsAlsoForConceptTypeHasAssimilationPath.AssimilationDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|AssimilationPath||AssimilatedConceptType", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|AssimilationPath||AssimilatedConceptType", match);
 				TableIsAlsoForConceptType.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -577,9 +577,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(MappingCustomizationModelHasAssimilationMapping.AssimilationMappingDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|AssimilationMappings||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|AssimilationMappings||", match);
 				match.InitializeRoles(MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|ReferenceModeNamings||", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|ReferenceModeNamings||", match);
 				MappingCustomizationModel.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -718,7 +718,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(AssimilationMappingCustomizesFactType.FactTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|FactType", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|FactType", match);
 				AssimilationMapping.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -793,7 +793,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|ObjectType", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|ObjectType", match);
 				RelationalReferenceModeNaming.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -848,7 +848,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|ORMModel", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|ORMModel", match);
 				RelationalDefaultReferenceModeNaming.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -950,7 +950,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(GenerationSettingTargetsSchema.GeneratedSchemaDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase|Schema", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase|Schema", match);
 				SchemaGenerationSetting.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
