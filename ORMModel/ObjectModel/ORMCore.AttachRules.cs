@@ -195,7 +195,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(FactType).GetNestedType("ObjectTypePlaysRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ObjectTypePlaysRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactType).GetNestedType("ObjectTypePlaysRoleRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(FactTypeDerivationExpression).GetNestedType("DeprecateFactTypeDerivationExpressionClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeDerivationRule).GetNestedType("DerivationNoteDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeDerivationRule).GetNestedType("FactTypeDerivationRuleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeDerivationRule).GetNestedType("LeadRolePathAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -486,7 +485,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(SubqueryParameterInput).GetNestedType("InputFromPathedRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubqueryParameterInput).GetNestedType("InputFromPathRootAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubqueryParameterInput).GetNestedType("InputFromPathRootDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(SubtypeDerivationExpression).GetNestedType("DeprecateSubtypeDerivationExpressionClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeDerivationRule).GetNestedType("DerivationNoteDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeDerivationRule).GetNestedType("LeadRolePathAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeDerivationRule).GetNestedType("LeadRolePathRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -575,7 +573,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 507; ++i)
+			for (int i = 0; i < 505; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -4828,37 +4826,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for FactType
-	#region Rule classes for FactTypeDerivationExpression
-	partial class FactTypeDerivationExpression
-	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeDerivationExpression), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class DeprecateFactTypeDerivationExpressionClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public DeprecateFactTypeDerivationExpressionClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression
-			/// /// <summary>
-			/// /// AddRule: typeof(FactTypeDerivationExpression)
-			/// /// </summary>
-			/// private static void DeprecateFactTypeDerivationExpression(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DeprecateFactTypeDerivationExpression");
-				FactTypeDerivationExpression.DeprecateFactTypeDerivationExpression(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DeprecateFactTypeDerivationExpression");
-			}
-		}
-	}
-	#endregion // Rule classes for FactTypeDerivationExpression
 	#region Rule classes for FactTypeDerivationRule
 	partial class FactTypeDerivationRule
 	{
@@ -12550,37 +12517,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for SubqueryParameterInput
-	#region Rule classes for SubtypeDerivationExpression
-	partial class SubtypeDerivationExpression
-	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubtypeDerivationExpression), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class DeprecateSubtypeDerivationExpressionClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public DeprecateSubtypeDerivationExpressionClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationExpression
-			/// /// <summary>
-			/// /// AddRule: typeof(SubtypeDerivationExpression)
-			/// /// </summary>
-			/// private static void DeprecateSubtypeDerivationExpression(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationExpression.DeprecateSubtypeDerivationExpression");
-				SubtypeDerivationExpression.DeprecateSubtypeDerivationExpression(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationExpression.DeprecateSubtypeDerivationExpression");
-			}
-		}
-	}
-	#endregion // Rule classes for SubtypeDerivationExpression
 	#region Rule classes for SubtypeDerivationRule
 	partial class SubtypeDerivationRule
 	{

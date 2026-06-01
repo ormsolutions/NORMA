@@ -529,12 +529,6 @@
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="FactTypeDerivationExpression">
-			<!-- All derivation expression settings are mapped to the derivation path on load, stop new ones from being created -->
-			<arg:AddRule methodName="DeprecateFactTypeDerivationExpression">
-				<arg:RuleOn targetType="FactTypeDerivationExpression"/>
-			</arg:AddRule>
-		</arg:RuleContainer>
 		<arg:RuleContainer class="FactTypeDerivationRule">
 			<arg:DeleteRule methodName="DerivationNoteDeletedRule">
 				<arg:RuleOn targetType="FactTypeDerivationRuleHasDerivationNote" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
@@ -1499,12 +1493,6 @@
 			<arg:DeleteRule methodName="InputFromPathRootDeletedRule">
 				<arg:RuleOn targetType="SubqueryParameterInputFromRolePathRoot" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
-		</arg:RuleContainer>
-		<arg:RuleContainer class="SubtypeDerivationExpression">
-			<!-- All derivation expression settings are mapped to the derivation path on load, stop new ones from being created -->
-			<arg:AddRule methodName="DeprecateSubtypeDerivationExpression">
-				<arg:RuleOn targetType="SubtypeDerivationExpression"/>
-			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SubtypeDerivationRule">
 			<arg:DeleteRule methodName="DerivationNoteDeletedRule">

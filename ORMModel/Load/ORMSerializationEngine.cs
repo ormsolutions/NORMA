@@ -41,7 +41,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// The namespace for the root node of the ORM document
 		/// </summary>
-		public static readonly string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMRoot";
+		public static readonly string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2026-07/ORMRoot";
 		#endregion // Constants
 		#region Constructor
 		/// <summary>

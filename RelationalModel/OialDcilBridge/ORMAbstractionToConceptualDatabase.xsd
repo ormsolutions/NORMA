@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"
-	xmlns="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" 
-	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"
+	targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase"
+	xmlns="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase" 
+	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="1.0">
-	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2026-07/ORMCore"/>
 
 	<xs:annotation>
 		<xs:appinfo>
@@ -16,8 +16,8 @@
 				xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 				xmlns:dc="http://purl.org/dc/elements/1.1/"
 				xmlns:dcterms="http://purl.org/dc/terms/">
-				<rdf:Description rdf:about="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
-					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
+				<rdf:Description rdf:about="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction">
+					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/2026-07/ORMCore"/>
 					<dcterms:requires rdf:resource="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"/>
 					<dc:title>ORM Intermediate Abstraction Language To Conceptual Database Language</dc:title>
 					<dc:creator>Kevin M. Owen</dc:creator>

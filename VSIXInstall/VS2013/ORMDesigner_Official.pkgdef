@@ -175,7 +175,7 @@ Windows Registry Editor Version 5.00
 "Editor"="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"
 "Extension"="orm"
 "LogicalView"="7651A702-06E5-11D1-8EBD-00A0C90F26EA"
-"Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+"Namespace"="http://schemas.neumont.edu/ORM/2026-07/ORMRoot"
 [$RootKey$\ShellFileAssociations\.orm]
 @="ormfile"
 [$RootKey$\FontAndColors\Orm Designer]
@@ -189,6 +189,6 @@ Windows Registry Editor Version 5.00
 "Editor"="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"
 "Extension"="orm"
 "LogicalView"="7651A702-06E5-11D1-8EBD-00A0C90F26EA"
-"Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+"Namespace"="http://schemas.neumont.edu/ORM/2026-07/ORMRoot"
 [$RootKey$\ShellFileAssociations\.orm]
 @="ormfile"

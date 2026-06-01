@@ -1001,7 +1001,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			nodes.Add(CreateTreeNode("Entity Type", "EntityType"));
 			nodes.Add(CreateTreeNode("Value Type", "ValueType"));
 			nodes.Add(CreateTreeNode("Fact Type", "FactType"));
-			nodes.Add(CreateTreeNode("Subtype Fact", "SubtypeFact"));
+			nodes.Add(CreateTreeNode("Subtyping Fact Type", "SubtypeFact"));
 			nodes.Add(CreateTreeNode("Role", "Role"));
 			nodes.Add(CreateTreeNode("ORM Model", "Model"));
 			nodes.Add(CreateTreeNode("ORM Diagram", "ORMDiagram"));

@@ -812,72 +812,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						EnsureSingleColumnUniqueAndMandatory(element, superTypeMetaRole, false, notifyAdded);
 					}
 					
-					// Switch to using the new ProvidesPreferredIdentifier path property instead of the deprecated
-					// IsPrimary. Other equivalent paths for preferred identification are marked later in the load process.
-					if (element.IsPrimary)
-					{
-						// UNDONE: Remove IsPrimary after file format change, make this
-						// check in the format upgrade transform
-						element.ProvidesPreferredIdentifier = true;
-						element.IsPrimary = false;
-					}
-
 					if (valueTypeSubtype)
 					{
 						element.ProvidesPreferredIdentifier = true;
-					}
-					
-					// Move any derivation expressions to the subtype.
-					// Note that derivation paths have never been written to the .orm file
-					// on a subtype, so we just look for the older expression form.
-					// UNDONE: Do this during file format upgrade transformation
-					FactTypeDerivationExpression factTypeDerivationExpression;
-					if (null != (factTypeDerivationExpression = element.DerivationExpression))
-					{
-						string ruleBody = factTypeDerivationExpression.Body;
-						if (!string.IsNullOrEmpty(ruleBody))
-						{
-							ObjectType subtype = element.Subtype;
-							SubtypeDerivationExpression derivationExpression = subtype.DerivationExpression;
-							SubtypeDerivationRule derivationRule = subtype.DerivationRule;
-							DerivationNote derivationNote;
-							string existingBody;
-							// Check both the old and deprecated expression forms. Note that the derivation
-							// expression will be merged into a note on the derivation path in another fixup
-							// listener, so we do not need to handle merging here.
-							if (derivationExpression == null && derivationRule == null)
-							{
-								notifyAdded.ElementAdded(derivationRule = new SubtypeDerivationRule(
-									partition,
-									new PropertyAssignment(SubtypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
-								notifyAdded.ElementAdded(new SubtypeHasDerivationRule(subtype, derivationRule));
-								notifyAdded.ElementAdded(derivationNote = new DerivationNote(
-									partition,
-									new PropertyAssignment(DerivationNote.BodyDomainPropertyId, ruleBody)));
-								notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
-							}
-							else if (derivationRule != null)
-							{
-								if (null != (derivationNote = derivationRule.DerivationNote))
-								{
-									existingBody = derivationExpression.Body;
-									derivationNote.Body = string.IsNullOrEmpty(existingBody) ? ruleBody : existingBody + "\r\n" + ruleBody;
-								}
-								else
-								{
-									notifyAdded.ElementAdded(derivationNote = new DerivationNote(
-										partition,
-										new PropertyAssignment(DerivationNote.BodyDomainPropertyId, ruleBody)));
-									notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
-								}
-							}
-							else
-							{
-								existingBody = derivationExpression.Body;
-								derivationExpression.Body = string.IsNullOrEmpty(existingBody) ? ruleBody : existingBody + "\r\n" + ruleBody;
-							}
-						}
-						factTypeDerivationExpression.Delete();
 					}
 				}
 			}

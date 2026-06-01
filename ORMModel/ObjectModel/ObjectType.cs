@@ -4890,10 +4890,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // EntityTypeRequiresReferenceSchemeError Rules
-		#region ObjectTypeRequiresPrimarySupertypeError Rules
+		#region SubtypeFact Preferred Identifaction Rules
 		/// <summary>
-		/// If a subtypefact is set as primary then clear the primary
-		/// subtype from other facts.
+		/// Verify subtype identification paths
 		/// </summary>
 		partial class SubtypeFactChangeRuleClass
 		{
@@ -5063,16 +5062,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
-				else if (attributeId == SubtypeFact.IsPrimaryDomainPropertyId)
-				{
-					if ((bool)e.NewValue)
-					{
-						throw new InvalidOperationException("SubtypeFact.IsPrimary is deprecated. Use the ProvidesPreferredIdentifier property instead.");
-					}
-				}
 			}
 		}
-		#endregion //ObjectTypeRequiresPrimarySupertypeError Rules
+		#endregion // SubtypeFact Preferred Identifaction Rules
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.

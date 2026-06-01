@@ -46,8 +46,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return FactType.DebinarizeUnaryFixupListener;
 				yield return FactType.UnaryFixupListener;
 				yield return Reading.SignatureFixupListener;
-				yield return FactTypeDerivationExpression.FixupListener;
-				yield return SubtypeDerivationExpression.FixupListener;
 				yield return ExclusiveOrConstraintCoupler.FixupListener;
 				yield return Objectification.FixupListener;
 				yield return Objectification.ImpliedFixupListener;

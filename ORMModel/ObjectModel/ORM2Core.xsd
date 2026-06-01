@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Todo: Is external on object type?  What am I supposed to do with object shapes and data types? -->
-<xs:schema targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore" 
+<xs:schema targetNamespace="http://schemas.neumont.edu/ORM/2026-07/ORMCore" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified" 
-	xmlns="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
@@ -32,8 +32,8 @@
 		<xs:all>
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="Objects" type="ObjectTypesType" minOccurs="0"/>
-			<xs:element name="Facts" type="FactTypesType" minOccurs="0"/>
+			<xs:element name="DomainObjectTypes" type="DomainObjectTypesType" minOccurs="0"/>
+			<xs:element name="DomainFactTypes" type="DomainFactTypesType" minOccurs="0"/>
 			<xs:element name="Constraints" type="ConstraintsType" minOccurs="0"/>
 			<xs:element name="GeneralRules" type="GeneralRulesType" minOccurs="0"/>
 			<xs:element name="DataTypes" type="DataTypesType" minOccurs="0"/>
@@ -210,7 +210,7 @@
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ObjectTypesType">
+	<xs:complexType name="DomainObjectTypesType">
 		<xs:annotation>
 			<xs:documentation>Container for all object types in the model.</xs:documentation>
 		</xs:annotation>
@@ -335,7 +335,7 @@
 				</xs:sequence>
 				<xs:attribute name="IsImplicitBooleanValue" type="xs:boolean" default="false">
 					<xs:annotation>
-						<xs:documentation>(Deprecated) Use explicit unary negation instead. True if this is an implied boolean value type. The implied boolean values are automatically created to provide a binarized form of a unary fact type.</xs:documentation>
+						<xs:documentation>(Deprecated legacy structure, loaded but not saved) Use explicit unary negation instead. True if this is an implied boolean value type. The implied boolean values are automatically created to provide a binarized form of a unary fact type.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
 				<xs:attribute name="DefaultState" type="DefaultValueState" use="optional" default="UseValue"/>
@@ -347,11 +347,6 @@
 			<xs:documentation>The formal derivation rule defining a subtype.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="SubtypeDerivationExpression" type="DerivationExpressionType" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>(Deprecated) A derivation expression. Use SubtypeDerivationPath/InformalRule/DerivationNote instead.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
 			<xs:element name="SubtypeDerivationPath" type="SubtypeDerivationPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -857,8 +852,8 @@
 		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Role" type="RoleRef"/>
-			<xs:element name="SubtypeMetaRole" type="RoleRef"/>
-			<xs:element name="SupertypeMetaRole" type="RoleRef"/>
+			<xs:element name="SubtypeRole" type="RoleRef"/>
+			<xs:element name="SupertypeRole" type="RoleRef"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ReadingRoleSequenceType">
@@ -882,7 +877,7 @@
 			<xs:documentation>A sequence of constraint roles and possible join path.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Role" type="RoleSequenceWithProjectionRoleRef" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Role" type="RoleSequenceRoleRef" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="JoinRule" type="JoinRuleType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -903,26 +898,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RoleSequenceWithProjectionRoleRef">
-		<xs:complexContent>
-			<xs:extension base="RoleSequenceRoleRef">
-				<xs:sequence>
-					<xs:element name="ProjectedFrom" minOccurs="0">
-						<xs:annotation>
-							<xs:documentation>(Deprecated, use JoinPath/JoinPathProjections) The node in the join path used to populate this role in a derived fact type.</xs:documentation>
-						</xs:annotation>
-						<xs:complexType>
-							<xs:choice minOccurs="0">
-								<xs:element name="PathedRole" type="PathedRoleRef"/>
-								<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
-								<xs:element name="Constant" type="PathConstantType"/>
-							</xs:choice>
-						</xs:complexType>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="RoleRef">
 		<xs:annotation>
 			<xs:documentation>A reference to a role.</xs:documentation>
@@ -938,7 +913,7 @@
 			<xs:element name="JoinPath" type="ConstraintRoleSequenceJoinPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="FactRolesType">
+	<xs:complexType name="FactTypeRolesType">
 		<xs:annotation>
 			<xs:documentation>Container for roles in a fact type.</xs:documentation>
 		</xs:annotation>
@@ -946,7 +921,7 @@
 			<xs:element name="Role" type="RoleType"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="ImpliedFactRolesType">
+	<xs:complexType name="ImpliedFactTypeRolesType">
 		<xs:annotation>
 			<xs:documentation>Container for roles in a fact type.</xs:documentation>
 		</xs:annotation>
@@ -967,17 +942,17 @@
 			</xs:sequence>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="SubtypeRolesType">
+	<xs:complexType name="SubtypingRolesType">
 		<xs:annotation>
 			<xs:documentation>Container for the meta roles associated with a subtype fact.</xs:documentation>
 		</xs:annotation>
 		<xs:all>
-			<xs:element name="SupertypeMetaRole" type="RoleType">
+			<xs:element name="SupertypeRole" type="RoleType">
 				<xs:annotation>
 					<xs:documentation>The meta role associated with the supertype role player.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubtypeMetaRole" type="RoleType">
+			<xs:element name="SubtypeRole" type="RoleType">
 				<xs:annotation>
 					<xs:documentation>The meta role associated with the subtype role player.</xs:documentation>
 				</xs:annotation>
@@ -1003,19 +978,6 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="CardinalityRestriction" type="UnaryRoleCardinalityRestrictionType" minOccurs="0"/>
-			<!-- UNDONE: Remove direct DerivationSource support when the format is upgraded -->
-			<xs:element name="DerivationSource" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>(Deprecated, replaced with FactTypeDerivationPath/DerivationProjections) The node in the derivation path used to populate this role in a derived fact type.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:choice minOccurs="0">
-						<xs:element name="PathedRole" type="PathedRoleRef"/>
-						<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
-						<xs:element name="Constant" type="PathConstantType"/>
-					</xs:choice>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="RoleInstances" type="RoleInstancesType"  minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string">
@@ -1058,7 +1020,7 @@
 	</xs:complexType>
 	<xs:complexType name="ObjectifiedUnaryRoleType">
 		<xs:annotation>
-			<xs:documentation>(Deprecated) With unary negation, objectification uses a RoleProxy instead. A role representing the identifying role in the fact type implied between the object type that objectifies a unary role and the unary role player. There is an implied equality constraint between this role and the referenced unary role.</xs:documentation>
+			<xs:documentation>(Deprecated legacy structure, loaded but not saved) With unary negation replacing binarized unaries, objectification uses a RoleProxy instead. A role representing the identifying role in the fact type implied between the object type that objectifies a unary role and the unary role player. There is an implied equality constraint between this role and the referenced unary role.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="RoleBaseType">
@@ -1139,25 +1101,25 @@
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<!--end Fact Ref-->
-	<xs:complexType name="FactTypesType">
+	<xs:complexType name="DomainFactTypesType">
 		<xs:annotation>
 			<xs:documentation>Container for all fact types in the model.</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Fact" type="FactTypeType"/>
-			<xs:element name="SubtypeFact" type="SubtypeFactTypeType"/>
-			<xs:element name="ImpliedFact" type="ImpliedFactTypeType"/>
+			<xs:element name="FactType" type="FactTypeType"/>
+			<xs:element name="SubtypingFactType" type="SubtypingFactTypeType"/>
+			<xs:element name="ImpliedFactType" type="ImpliedFactTypeType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="FactTypeType">
 		<xs:annotation>
 			<xs:documentation>A fact type directly specified by the modeler.</xs:documentation>
 		</xs:annotation>
-		<!-- These are duplicated in ImpliedFactTypeType, SubtypeFactTypeType, and QueryType without type extension -->
+		<!-- These are duplicated in ImpliedFactTypeType, SubtypingFactTypeType, and QueryType without type extension -->
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="FactRoles" type="FactRolesType" minOccurs="0"/>
+			<xs:element name="Roles" type="FactTypeRolesType" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
 			<xs:element name="NegatedByUnaryFactType" type="FactTypeRef" minOccurs="0">
@@ -1298,10 +1260,9 @@
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="FactRoles" type="ImpliedFactRolesType" minOccurs="0"/>
+			<xs:element name="Roles" type="ImpliedFactTypeRolesType" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
-			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0"/>
 			<xs:element name="ImpliedByObjectification" type="ObjectificationRef">
 				<xs:annotation>
 					<xs:documentation>A reference to the objectification relationship that implies this fact type.</xs:documentation>
@@ -1321,7 +1282,7 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="SubtypeFactTypeType">
+	<xs:complexType name="SubtypingFactTypeType">
 		<xs:annotation>
 			<xs:documentation>A fact type representing the subtype meta relationship between a subtype and a supertype.</xs:documentation>
 		</xs:annotation>
@@ -1329,15 +1290,9 @@
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="FactRoles" type="SubtypeRolesType"/>
+			<xs:element name="Roles" type="SubtypingRolesType"/>
 			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
-			<!-- UNDONE: Remove SubtypeFactTypeType.DerivationRule when file format is officially updated -->
-			<xs:element name="DerivationRule" type="FactTypeDerivationRuleType" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>(Deprecated) Subtype derivation rules are expressed directly on the subtype, not the subtype fact relationship.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
 			<xs:element name="Instances" type="FactTypeInstancesType" minOccurs="0"/>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
@@ -1350,12 +1305,6 @@
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>This fact type is externally defined (not used).</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="IsPrimary" type="xs:boolean" default="false">
-			<xs:annotation>
-				<!-- UNDONE: Remove IsPrimary when file format is officially updated -->
-				<xs:documentation>Deprecated property, use PreferredIdentificationPath instead.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="PreferredIdentificationPath" type="xs:boolean" default="false">
@@ -1372,7 +1321,7 @@
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="QueryRoles" type="FactRolesType" minOccurs="0"/>
+			<xs:element name="Roles" type="FactTypeRolesType" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="QueryDerivationRuleType" minOccurs="0"/>
 			<xs:element name="QueryParameters" type="QueryParametersType" minOccurs="0"/>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
@@ -1459,7 +1408,6 @@
 			<xs:documentation>The formal derivation rule defining a fact type.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="DerivationExpression" type="FactTypeDerivationExpressionType" minOccurs="0"/>
 			<xs:element name="FactTypeDerivationPath" type="FactTypeDerivationPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -1484,43 +1432,6 @@
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeDerivationExpressionType">
-		<xs:annotation>
-			<xs:documentation>(Deprecated) A derivation expression. Use FactTypeDerivationPath/InformalRule/DerivationNote instead.</xs:documentation>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="DerivationExpressionType">
-				<xs:attribute name="DerivationStorage" type="DerivationExpressionStorageValues" use="required"/>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:simpleType name="DerivationExpressionStorageValues">
-		<xs:annotation>
-			<xs:documentation>Specify how instances of derived fact type are stored.</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Derived">
-				<xs:annotation>
-					<xs:documentation>The fact instance population is calculated on demand.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="DerivedAndStored">
-				<xs:annotation>
-					<xs:documentation>The fact instance population is calculated immediately and stored.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="PartiallyDerived">
-				<xs:annotation>
-					<xs:documentation>The fact instance population can be asserted as well as derived.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="PartiallyDerivedAndStored">
-				<xs:annotation>
-					<xs:documentation>The fact instance population can be asserted as well as calculated immediately and stored.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-		</xs:restriction>
-	</xs:simpleType>
 	<!--End Derived FactType-->
 	<!-- End Facts -->
 	<!-- Role Paths -->
@@ -1640,8 +1551,7 @@
 		<xs:sequence>
 			<xs:element name="ValueRestriction" type="PathConditionRootValueRestrictionType" minOccurs="0"/>
 		</xs:sequence>
-		<!-- UNDONE: File format change, the id attribute should be required. -->
-		<xs:attributeGroup ref="idAttributeOptional"/>
+		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
 		<xs:attribute name="IsNegated" type="xs:boolean" default="false">
 			<xs:annotation>
@@ -1674,8 +1584,6 @@
 		</xs:annotation>
 		<xs:all>
 			<xs:element name="ValueRestriction" type="PathConditionRoleValueRestrictionType" minOccurs="0"/>
-			<!-- UNDONE: File format change, CorrelatedWith is deprecated. Use ObjectUnifiers. -->
-			<xs:element name="CorrelatedWith" type="PathedRoleRef" minOccurs="0"/>
 		</xs:all>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
@@ -1702,11 +1610,6 @@
 			<xs:documentation>Specify how a role in a path is used to step within and between fact types.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:token">
-			<xs:enumeration value="StartRole">
-				<xs:annotation>
-					<xs:documentation>The role is the beginning of a path and directly attached to the root object type.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
 			<xs:enumeration value="SameFactType">
 				<xs:annotation>
 					<xs:documentation>The role is the same fact type as the previous join or start role.</xs:documentation>
@@ -1772,27 +1675,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="PathComponent" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>(Deprecated, use PathComponents) A container for the role path defined by this owner.</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0">
-							<xs:element name="RolePath" type="LeadRolePathType"/>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
 			</xs:choice>
-			<xs:element name="CalculatedValues" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>(Deprecated, move to individual path components) A container for calculated values applied to elements in contained role paths.</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="CalculatedValue" type="CalculatedValueType" minOccurs="0" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="Subqueries" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>A container for subquery elements used by paths in this container.</xs:documentation>
@@ -2042,11 +1925,6 @@
 							<xs:element name="PathedRole" type="PathedRoleRef"/>
 						</xs:choice>
 					</xs:complexType>
-				</xs:element>
-				<xs:element name="Scope" type="PathedRoleRef" minOccurs="0">
-					<xs:annotation>
-						<xs:documentation>(deprecated, use AggregationContext) The pathed role that provides the context for this calculation. Generally used to defined the extent of elements based to a bag parameter.</xs:documentation>
-					</xs:annotation>
 				</xs:element>
 			</xs:choice>
 			<xs:element name="Inputs" minOccurs="0">
@@ -2971,14 +2849,10 @@
 			<xs:element name="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" type="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorType"/>
 			<xs:element name="JoinPathRequiredError" type="JoinPathRequiredErrorType"/>
 			<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredErrorType"/>
-			<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
-			<xs:element name="EqualityImpliedByMandatoryError" type="EqualityImpliedByMandatoryErrorType"/>
 			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeErrorType"/>
 			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxErrorType"/>
 			<xs:element name="FrequencyConstraintExactlyOneError" type="FrequencyConstraintExactlyOneErrorType"/>
 			<xs:element name="FrequencyConstraintNonRestrictiveRangeError" type="FrequencyConstraintNonRestrictiveRangeErrorType"/>
-			<!-- UNDONE: Remove FrequencyConstraintContradictsInternalUniquenessConstraintError when file format is officially updated -->
-			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintErrorType"/>
 			<xs:element name="FrequencyConstraintViolatedByUniquenessConstraintError" type="FrequencyConstraintViolatedByUniquenessConstraintErrorType"/>
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchErrorType"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchErrorType"/>
@@ -2995,8 +2869,6 @@
 			<xs:element name="ExclusionContradictsMandatoryError" type="ExclusionContradictsMandatoryErrorType"/>
 			<xs:element name="NotWellModeledSubsetAndMandatoryError" type="NotWellModeledSubsetAndMandatoryErrorType"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintErrorType"/>
-			<!-- UNDONE: Remove ObjectTypeRequiresPrimarySupertypeError when file format is officially updated -->
-			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeErrorType"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryErrorType"/>
 			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesErrorType"/>
 			<xs:element name="ObjectifyingInstanceRequiredError" type="ObjectifyingInstanceRequiredErrorType"/>
@@ -3007,11 +2879,7 @@
 			<xs:element name="ExclusionContradictsEqualityError" type="ExclusionContradictsEqualityErrorType"/>
 			<xs:element name="ExclusionContradictsSubsetError" type="ExclusionContradictsSubsetErrorType"/>
 			<xs:element name="PathRequiresRootObjectTypeError" type="PathRequiresRootObjectTypeErrorType"/>
-			<!-- UNDONE: Remove PathStartRoleFollowsRootObjectTypeError when file format is officially updated -->
-			<xs:element name="PathStartRoleFollowsRootObjectTypeError" type="PathStartRoleFollowsRootObjectTypeErrorType"/>
 			<xs:element name="JoinedPathRoleRequiresCompatibleRolePlayerError" type="JoinedPathRoleRequiresCompatibleRolePlayerErrorType"/>
-			<!-- UNDONE: Remove CorrelatedPathRoleRequiresCompatibleRolePlayerError when file format is officially updated -->
-			<xs:element name="CorrelatedPathRoleRequiresCompatibleRolePlayerError" type="CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType"/>
 			<xs:element name="ObjectUnifierRequiresCompatibleObjectTypesError" type="ObjectUnifierRequiresCompatibleObjectTypesErrorType"/>
 			<xs:element name="PathSameFactTypeRoleFollowsJoinError" type="PathSameFactTypeRoleFollowsJoinErrorType"/>
 			<xs:element name="PathOuterJoinRequiresOptionalRoleError" type="PathOuterJoinRequiresOptionalRoleErrorType"/>
@@ -3218,7 +3086,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="Fact" type="FactTypeRef"/>
+					<xs:element name="FactType" type="FactTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -3230,7 +3098,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="Fact" type="FactTypeRef"/>
+					<xs:element name="FactType" type="FactTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -3360,20 +3228,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<!-- UNDONE: Remove FrequencyConstraintContradictsInternalUniquenessConstraintErrorType when file format is officially updated -->
-	<xs:complexType name="FrequencyConstraintContradictsInternalUniquenessConstraintErrorType">
-		<xs:annotation>
-			<xs:documentation>(Deprecated by FrequencyConstraintViolatedByUniquenessConstraintErrorType) A frequency constraint requires more role players than are allowed by an internal uniqueness constraint.</xs:documentation>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ModelError">
-				<xs:all>
-					<xs:element name="FrequencyConstraint" type="FrequencyConstraintRef"/>
-					<xs:element name="Fact" type="FactTypeRef"/>
-				</xs:all>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="FrequencyConstraintViolatedByUniquenessConstraintErrorType">
 		<xs:annotation>
 			<xs:documentation>A frequency constraint covers the same roles as a uniqueness constraint.</xs:documentation>
@@ -3465,20 +3319,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="Fact" type="FactTypeRef"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<!-- UNDONE: Remove ObjectTypeRequiresPrimarySupertypeError when file format is officially updated -->
-	<xs:complexType name="ObjectTypeRequiresPrimarySupertypeErrorType">
-		<xs:annotation>
-			<xs:documentation>Deprecated along with SubtypeFact.IsPrimary property</xs:documentation>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ModelError">
-				<xs:sequence>
-					<xs:element name="ObjectType" type="ObjectTypeRef"/>
+					<xs:element name="FactType" type="FactTypeRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -3746,19 +3587,6 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<!-- UNDONE: Remove EqualityImpliedByMandatoryError when file format is officially updated -->
-	<xs:complexType name="EqualityImpliedByMandatoryErrorType">
-		<xs:annotation>
-			<xs:documentation>An equality constraint is implied by a mandatory constraint (Deprecated, replaced by EqualityConstraintImpliedByMandatoryConstraintsError).</xs:documentation>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ModelError">
-				<xs:choice>
-					<xs:element name="EqualityConstraint" type="EqualityConstraintRef"/>
-				</xs:choice>
-			</xs:extension >
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="NMinusOneErrorType">
 		<xs:annotation>
 			<xs:documentation>An internal uniqueness constraint must span at least n minus one roles, where n is the number of roles in the fact type.</xs:documentation>
@@ -3856,35 +3684,9 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<!-- UNDONE: Remove PathStartRoleFollowsRootObjectTypeErrorType when file format is officially updated -->
-	<xs:complexType name="PathStartRoleFollowsRootObjectTypeErrorType">
-		<xs:annotation>
-			<xs:documentation>(Deprecated, StartRole is no longer used) A PathedRole with a purpose of StartRole must be the first PathedRole after the path root.</xs:documentation>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ModelError">
-				<xs:sequence>
-					<xs:element name="PathedRole" type="PathedRoleRef"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="JoinedPathRoleRequiresCompatibleRolePlayerErrorType">
 		<xs:annotation>
 			<xs:documentation>A PathedRole is joined to a preceding PathedRole with an incompatible role player or is a start role attached to an incompatible RootObjectType.</xs:documentation>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ModelError">
-				<xs:sequence>
-					<xs:element name="PathedRole" type="PathedRoleRef"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<!-- UNDONE: Remove CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType when file format is officially updated -->
-	<xs:complexType name="CorrelatedPathRoleRequiresCompatibleRolePlayerErrorType">
-		<xs:annotation>
-			<xs:documentation>(Deprecated, use ObjectUnifierRequiresCompatibleRolePlayersError) A PathedRole has an explicit correlation with a PathedRole that has an incompatible role player.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">

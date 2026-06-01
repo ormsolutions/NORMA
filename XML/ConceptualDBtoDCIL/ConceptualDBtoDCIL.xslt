@@ -12,13 +12,13 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
-	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2026-07/ORMRoot"
+	xmlns:ormtooial="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMToORMAbstraction"
 	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
 	xmlns:rcd="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase"
-	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase"
+	xmlns:oialtocdb="http://schemas.neumont.edu/ORM/Bridge/2026-07/ORMAbstractionToConceptualDatabase"
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
@@ -45,10 +45,10 @@
 	<xsl:variable name="Document" select="."/>
 	<xsl:key name="KeyedConceptTypes" match="ormRoot:ORM2/oial:model/oial:conceptTypes/oial:conceptType" use="@id"/>
 	<xsl:key name="KeyedConceptTypeChildren" match="ormRoot:ORM2/oial:model/oial:conceptTypes/oial:conceptType/oial:children/oial:*" use="@id"/>
-	<xsl:key name="KeyedFactTypes" match="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:*" use="@id"/>
-	<xsl:key name="KeyedFactTypeNegationLink" match="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:NegatedByUnaryFactType" use="@ref"/>
-	<xsl:key name="KeyedRoles" match="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:*/orm:FactRoles/orm:*" use="@id"/>
-	<xsl:key name="KeyedObjectTypes" match="ormRoot:ORM2/orm:ORMModel/orm:Objects/orm:*" use="@id"/>
+	<xsl:key name="KeyedFactTypes" match="ormRoot:ORM2/orm:ORMModel/orm:DomainFactTypes/orm:*" use="@id"/>
+	<xsl:key name="KeyedFactTypeNegationLink" match="ormRoot:ORM2/orm:ORMModel/orm:DomainFactTypes/orm:NegatedByUnaryFactType" use="@ref"/>
+	<xsl:key name="KeyedRoles" match="ormRoot:ORM2/orm:ORMModel/orm:DomainFactTypes/orm:*/orm:Roles/orm:*" use="@id"/>
+	<xsl:key name="KeyedObjectTypes" match="ormRoot:ORM2/orm:ORMModel/orm:DomainObjectTypes/orm:*" use="@id"/>
 	<xsl:key name="KeyedObjectTypeByConceptType" match="ormRoot:ORM2/ormtooial:Bridge/ormtooial:ConceptTypeIsForObjectType" use="@ConceptType"/>
 	<xsl:key name="KeyedPathFactTypes" match="ormRoot:ORM2/ormtooial:Bridge/ormtooial:ConceptTypeChildHasPathFactType" use="@ConceptTypeChild"/>
 	<xsl:key name="KeyedTowardsRole" match="ormRoot:ORM2/ormtooial:Bridge/ormtooial:FactTypeMapsTowardsRole" use="@FactType"/>
@@ -61,7 +61,7 @@
 		<xsl:variable name="ormOialBridge" select="$root/ormtooial:Bridge"/>
 		<xsl:variable name="oialModel" select="$root/oial:model[@id = $oialDcilBridge/oialtocdb:SchemaIsForAbstractionModel[@Schema = current()/@id]/@AbstractionModel]"/>
 		<xsl:variable name="ormModel" select="$root/orm:ORMModel[@id = $ormOialBridge/ormtooial:AbstractionModelIsForORMModel[@AbstractionModel = $oialModel/@id]/@ORMModel]"/>
-		<xsl:variable name="mappedValueTypes" select="$ormModel/orm:Objects/orm:ValueType[@id = $ormOialBridge/ormtooial:InformationTypeFormatIsForValueType[@InformationTypeFormat = $oialModel/oial:informationTypeFormats/child::*/@id]/@ValueType]"/>
+		<xsl:variable name="mappedValueTypes" select="$ormModel/orm:DomainObjectTypes/orm:ValueType[@id = $ormOialBridge/ormtooial:InformationTypeFormatIsForValueType[@InformationTypeFormat = $oialModel/oial:informationTypeFormats/child::*/@id]/@ValueType]"/>
 		<xsl:variable name="booleanFormats" select="$oialModel/oial:informationTypeFormats/odt:*[self::odt:booleanTrue | self::odt:booleanFalse]"/>
 		<xsl:variable name="unaryInformationTypeIds" select="$oialModel/oial:conceptTypes/oial:conceptType/oial:children/oial:informationType[@ref=$booleanFormats/@id]/@id"/>
 		<xsl:variable name="initialDataTypeMappingsFragment">
@@ -223,7 +223,7 @@
 											<!-- Look for objectified unary -->
 											<xsl:variable name="objectifiedFactType" select="key('KeyedFactTypes', key('KeyedObjectTypes',key('KeyedObjectTypeByConceptType',$conceptTypeChild/@ref)/@ObjectType)[self::orm:ObjectifiedType]/orm:NestedPredicate/@ref)"/>
 											<xsl:choose>
-												<xsl:when test="count($objectifiedFactType/orm:FactRoles/orm:*)=1">
+												<xsl:when test="count($objectifiedFactType/orm:Roles/orm:*)=1">
 													<xsl:call-template name="ColumnDefaultFromUnaryFactType">
 														<xsl:with-param name="columnPathNode" select="$childPathNode"/>
 														<xsl:with-param name="factType" select="$objectifiedFactType"/>
@@ -276,7 +276,7 @@
 								<xsl:variable name="trailingFactType" select="position()=last()"/>
 								<xsl:for-each select="key('KeyedFactTypes',@PathFactType)">
 									<xsl:variable name="factTypeMapping" select="key('KeyedTowardsRole',@id)"/>
-									<xsl:variable name="fromRoleOrProxy" select="orm:FactRoles/orm:*[not(@id=$factTypeMapping/@TowardsRole)]"/>
+									<xsl:variable name="fromRoleOrProxy" select="orm:Roles/orm:*[not(@id=$factTypeMapping/@TowardsRole)]"/>
 									<xsl:choose>
 										<xsl:when test="$fromRoleOrProxy[self::orm:RoleProxy]">
 											<xsl:call-template name="ValueDataFromRole">
@@ -325,7 +325,7 @@
 						<xsl:when test="$factTypeId">
 							<xsl:variable name="factTypeMapping" select="key('KeyedTowardsRole',$factTypeId)"/>
 							<xsl:variable name="factType" select="key('KeyedFactTypes',$factTypeId)"/>
-							<xsl:variable name="roleOrProxy" select="$factType/orm:FactRoles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
+							<xsl:variable name="roleOrProxy" select="$factType/orm:Roles/orm:*[not(@id = $factTypeMapping/@TowardsRole)]"/>
 							<xsl:if test="count($roleOrProxy) != 1">
 								<xsl:message terminate="yes">
 									<xsl:text>SANITY CHECK: Found no or multiple roles for column "</xsl:text>

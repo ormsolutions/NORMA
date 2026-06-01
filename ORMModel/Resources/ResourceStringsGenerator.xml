@@ -290,7 +290,6 @@
 	<ResourceString name="ModelErrorRolePathIncompatibleJoinCompact" model="Model" resourceName="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.CompactText"/>
 	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoin" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text"/>
 	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoinCompact" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.CompactText"/>
-	<ResourceString name="ModelErrorRolePathStartRoleFollowsRootObjectType" model="Model" resourceName="ModelError.RolePath.StartRoleFollowsRootObjectType.Text"/>
 	<ResourceString name="ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeText" model="Model" resourceName="ModelError.RolePath.SubqueryInputCompatibleWithParameterType.Text"/>
 	<ResourceString name="ModelErrorRolePathSubqueryInputCompatibleWithParameterTypeCompact" model="Model" resourceName="ModelError.RolePath.SubqueryInputCompatibleWithParameterType.CompactText"/>
 	<ResourceString name="ModelErrorRolePathMandatoryOuterJoin" model="Model" resourceName="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text"/>

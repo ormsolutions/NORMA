@@ -15,7 +15,7 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2026-07/ORMCore"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:loc="urn:local-temps"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -75,9 +75,9 @@
 	<xsl:param name="CoRefUnaryValueRangeDecorator" select="'_unary_value_range'"/>
 	<xsl:param name="CoRefValueDataTypeIdDecorator" select="'_logical_data_type'"/>
 
-	<xsl:key name="KeyedObjectTypes" match="*/orm:ORMModel/orm:Objects/orm:*" use="@id"/>
-	<xsl:key name="KeyedFactTypes" match="*/orm:ORMModel/orm:Facts/orm:*" use="@id"/>
-	<xsl:key name="KeyedObjectifiedTypesByPredicateId" match="*/orm:ORMModel/orm:Objects/orm:ObjectifiedType" use="orm:NestedPredicate/@ref"/>
+	<xsl:key name="KeyedObjectTypes" match="*/orm:ORMModel/orm:DomainObjectTypes/orm:*" use="@id"/>
+	<xsl:key name="KeyedFactTypes" match="*/orm:ORMModel/orm:DomainFactTypes/orm:*" use="@id"/>
+	<xsl:key name="KeyedObjectifiedTypesByPredicateId" match="*/orm:ORMModel/orm:DomainObjectTypes/orm:ObjectifiedType" use="orm:NestedPredicate/@ref"/>
 	<xsl:key name="KeyedRoleMap" match="loc:roleMaps/loc:map" use="@fromRole"/>
 	<xsl:key name="KeyedConstraintMap" match="loc:constraintMaps/loc:map" use="@constraint"/>
 
@@ -99,7 +99,7 @@
 	eliminated, with the objectified roles injected in the link fact types. Unary fact types
 	are expanded to binaries with boolean values, with negations folded into the positive unary
 	fact types (unless either unary is objectified) -->
-	<xsl:variable name="UnobjectifiedUnaryFactTypes" select="$ORMModel/orm:Facts/orm:Fact[not(key('KeyedObjectifiedTypesByPredicateId',@id)) and count(orm:FactRoles/orm:Role)=1]"/>
+	<xsl:variable name="UnobjectifiedUnaryFactTypes" select="$ORMModel/orm:DomainFactTypes/orm:FactType[not(key('KeyedObjectifiedTypesByPredicateId',@id)) and count(orm:Roles/orm:Role)=1]"/>
 	<xsl:variable name="UnaryNegations" select="$UnobjectifiedUnaryFactTypes[@UnaryPattern='Negation']"/>
 	<xsl:variable name="PairedUnaryNegations" select="$UnaryNegations[@id=$UnobjectifiedUnaryFactTypes/orm:NegatedByUnaryFactType/@ref]"/>
 	<!-- Note that negation ids is not expected to be a large set, so they are not currently indexed. -->
@@ -108,14 +108,14 @@
 	<xsl:variable name="MapFragment">
 		<xsl:variable name="PairedPositiveUnaries" select="$ExpandedUnaries[not(@UnaryPattern='Negation') and not(starts-with(@UnaryPattern,'OptionalWithoutNegation')) and orm:NegatedByUnaryFactType/@ref=$PairedUnaryNegationIds]"/>
 		<loc:roleMaps>
-			<xsl:for-each select="$ORMModel/orm:Facts/orm:ImpliedFact/orm:FactRoles/orm:RoleProxy">
+			<xsl:for-each select="$ORMModel/orm:DomainFactTypes/orm:ImpliedFactType/orm:Roles/orm:RoleProxy">
 				<loc:map fromRole="{@id}" toRole="{orm:Role/@ref}"/>
 			</xsl:for-each>
 			<xsl:for-each select="$ExpandedUnaries">
-				<loc:map fromRole="{orm:FactRoles/orm:Role/@id}" unaryValueRole="{@id}{$CoRefUnaryValueRoleDecorator}"/>
+				<loc:map fromRole="{orm:Roles/orm:Role/@id}" unaryValueRole="{@id}{$CoRefUnaryValueRoleDecorator}"/>
 			</xsl:for-each>
 			<xsl:for-each select="$PairedPositiveUnaries">
-				<loc:map fromRole="{key('KeyedFactTypes',orm:NegatedByUnaryFactType/@ref)/orm:FactRoles/orm:Role/@id}" toRole="{orm:FactRoles/orm:Role/@id}" paired="1" unaryValueRole="{@id}{$CoRefUnaryValueRoleDecorator}"/>
+				<loc:map fromRole="{key('KeyedFactTypes',orm:NegatedByUnaryFactType/@ref)/orm:Roles/orm:Role/@id}" toRole="{orm:Roles/orm:Role/@id}" paired="1" unaryValueRole="{@id}{$CoRefUnaryValueRoleDecorator}"/>
 			</xsl:for-each>
 		</loc:roleMaps>
 		<loc:constraintMaps>
@@ -139,7 +139,7 @@
 	<xsl:template match="orm:ORMModel" mode="CoRefORM">
 		<xsl:call-template name="DefaultCoRefORMTemplate"/>
 	</xsl:template>
-	<xsl:template match="orm:ImpliedFact" mode="CoRefORM">
+	<xsl:template match="orm:ImpliedFactType" mode="CoRefORM">
 		<orm:Fact>
 			<xsl:apply-templates select="node()|@*" mode="CoRefORM"/>
 		</orm:Fact>
@@ -167,12 +167,12 @@
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template match="orm:RoleProxy" mode="CoRefORM">
-		<xsl:variable name="proxiedRole" select="../../../orm:Fact/child::orm:FactRoles/child::orm:Role[@id=current()/orm:Role/@ref]"/>
+		<xsl:variable name="proxiedRole" select="../../../orm:Fact/child::orm:Roles/child::orm:Role[@id=current()/orm:Role/@ref]"/>
 		<orm:Role _Multiplicity="ExactlyOne">
 			<xsl:copy-of select="$proxiedRole/@*[not(local-name()='_Multiplicity')]|$proxiedRole/orm:*[not(self::orm:RoleInstances)]"/>
 		</orm:Role>
 	</xsl:template>
-	<xsl:template match="orm:Role/@ref | orm:ImpliedFact/orm:FactRoles/orm:Role/@id" mode="CoRefORM">
+	<xsl:template match="orm:Role/@ref | orm:ImpliedFactType/orm:Roles/orm:Role/@id" mode="CoRefORM">
 		<xsl:variable name="self" select="."/>
 		<xsl:for-each select="$MapDoc">
 			<xsl:variable name="map" select="key('KeyedRoleMap',$self)[@toRole]"/>
@@ -190,7 +190,7 @@
 	</xsl:template>
 	<xsl:template name="GetUnaryFactTypeRoleName">
 		<xsl:param name="UnaryFactType"/>
-		<xsl:variable name="roleName" select="string($UnaryFactType/orm:FactRoles/orm:*/@Name)"/>
+		<xsl:variable name="roleName" select="string($UnaryFactType/orm:Roles/orm:*/@Name)"/>
 		<xsl:choose>
 			<xsl:when test="$roleName">
 				<xsl:value-of select="$roleName"/>
@@ -201,7 +201,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="orm:Facts/orm:Fact" mode="CoRefORM">
+	<xsl:template match="orm:DomainFactTypes/orm:FactType" mode="CoRefORM">
 		<xsl:variable name="factTypeId" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="key('KeyedObjectifiedTypesByPredicateId',$factTypeId) or $PairedUnaryNegationIds=$factTypeId"/>
@@ -215,8 +215,8 @@
 					<xsl:copy-of select="@*[not(local-name()='UnaryPattern')]"/>
 					<!-- Note that notes are not included -->
 					<xsl:copy-of select="orm:Definitions"/>
-					<orm:FactRoles>
-						<xsl:for-each select="orm:FactRoles/*">
+					<orm:Roles>
+						<xsl:for-each select="orm:Roles/*">
 							<xsl:copy>
 								<xsl:copy-of select="@*[not(local-name()='_Multiplicity')]"/>
 								<xsl:attribute name="_Multiplicity">
@@ -248,7 +248,7 @@
 							<orm:RolePlayer ref="{$factTypeId}{$CoRefUnaryValueTypeDecorator}"/>
 						</orm:Role>
 						<!-- We don't try to rebuild the readings. The default reading is incorporated into the far role name.  -->
-					</orm:FactRoles>
+					</orm:Roles>
 					<orm:InternalConstraints>
 						<xsl:copy-of select="orm:InternalConstraints/*"/>
 						<xsl:if test="$isMandatory">
@@ -274,7 +274,7 @@
 				<!-- The implied unary value type plays one role, which makes it implicitly mandatory.
 				Allow downstream algorithms to see this as an implied instead of normal mandatory -->
 				<xsl:variable name="valueTypeNameFragment">
-					<xsl:value-of select="key('KeyedObjectTypes',orm:FactRoles/orm:Role/orm:RolePlayer/@ref)/@Name"/>
+					<xsl:value-of select="key('KeyedObjectTypes',orm:Roles/orm:Role/orm:RolePlayer/@ref)/@Name"/>
 					<xsl:text>_</xsl:text>
 					<xsl:call-template name="GetUnaryFactTypeRoleName">
 						<xsl:with-param name="UnaryFactType" select="."/>
@@ -397,13 +397,13 @@
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
-	<xsl:template match="orm:Objects" mode="CoRefORM">
+	<xsl:template match="orm:DomainObjectTypes" mode="CoRefORM">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*" mode="CoRefORM"/>
 			<xsl:for-each select="$ExpandedUnaries">
 				<xsl:variable name="factTypeId" select="string(@id)"/>
 				<xsl:variable name="valueTypeNameFragment">
-					<xsl:value-of select="key('KeyedObjectTypes',orm:FactRoles/orm:Role/orm:RolePlayer/@ref)/@Name"/>
+					<xsl:value-of select="key('KeyedObjectTypes',orm:Roles/orm:Role/orm:RolePlayer/@ref)/@Name"/>
 					<xsl:text>_</xsl:text>
 					<xsl:call-template name="GetUnaryFactTypeRoleName">
 						<xsl:with-param name="UnaryFactType" select="."/>
