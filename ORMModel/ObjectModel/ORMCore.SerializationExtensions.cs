@@ -1988,7 +1988,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (roleId == Objectification.NestedFactTypeDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, "NestedPredicate", null, CustomSerializedElementWriteStyle.PrimaryLinkElement, null);
+				return new CustomSerializedElementInfo(null, "Objectification", null, CustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
 			if (roleId == ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId || roleId == MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId || roleId == ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorDomainRoleId || roleId == ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId || roleId == ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorDomainRoleId || roleId == ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorDomainRoleId || roleId == ModelNoteReferencesObjectType.NoteDomainRoleId || roleId == RolePathObjectTypeRoot.RolePathDomainRoleId || roleId == QueryParameterHasParameterType.ParameterDomainRoleId || roleId == ValueTypeHasDefaultValueMismatchError.DefaultValueMismatchErrorDomainRoleId || roleId == ValueTypeHasDefaultValueOutOfRangeError.DefaultValueOutOfRangeErrorDomainRoleId)
 			{
@@ -2137,7 +2137,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				match.InitializeRoles(EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2026-07/ORMCore|PreferredIdentifier", match);
 				match.InitializeRoles(Objectification.NestedFactTypeDomainRoleId);
-				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2026-07/ORMCore|NestedPredicate", match);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2026-07/ORMCore|Objectification", match);
 				match.InitializeRoles(ObjectTypePlaysRole.PlayedRoleDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2026-07/ORMCore|PlayedRoles||Role", match);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2026-07/ORMCore|PlayedRoles||SubtypeRole", match);

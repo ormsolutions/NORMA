@@ -221,7 +221,7 @@
 									<xsl:choose>
 										<xsl:when test="not($conceptTypeChild/@refersToSubtype)">
 											<!-- Look for objectified unary -->
-											<xsl:variable name="objectifiedFactType" select="key('KeyedFactTypes', key('KeyedObjectTypes',key('KeyedObjectTypeByConceptType',$conceptTypeChild/@ref)/@ObjectType)[self::orm:ObjectifiedType]/orm:NestedPredicate/@ref)"/>
+											<xsl:variable name="objectifiedFactType" select="key('KeyedFactTypes', key('KeyedObjectTypes',key('KeyedObjectTypeByConceptType',$conceptTypeChild/@ref)/@ObjectType)[self::orm:ObjectifiedType]/orm:Objectification/@ref)"/>
 											<xsl:choose>
 												<xsl:when test="count($objectifiedFactType/orm:Roles/orm:*)=1">
 													<xsl:call-template name="ColumnDefaultFromUnaryFactType">
@@ -614,7 +614,7 @@
 											</xsl:when>
 											<xsl:otherwise>
 												<!-- Fall back on pulling the path fact type via objectification -->
-												<xsl:if test="key('KeyedFactTypes', key('KeyedObjectTypes',key('KeyedObjectTypeByConceptType',$inverseChild/@ref)/@ObjectType)[self::orm:ObjectifiedType]/orm:NestedPredicate/@ref)/@UnaryPattern[.!='Negation']">
+												<xsl:if test="key('KeyedFactTypes', key('KeyedObjectTypes',key('KeyedObjectTypeByConceptType',$inverseChild/@ref)/@ObjectType)[self::orm:ObjectifiedType]/orm:Objectification/@ref)/@UnaryPattern[.!='Negation']">
 													<xsl:text>f</xsl:text>
 												</xsl:if>
 											</xsl:otherwise>
