@@ -824,7 +824,7 @@
 			</se:ConditionalName>
 		</se:Link>
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
-		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
+		<se:Link Name="Objectification" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:Container Name="Instances">
 			<se:Embed RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstance"/>
 			<se:Embed RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstance"/>

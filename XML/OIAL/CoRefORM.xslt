@@ -77,7 +77,7 @@
 
 	<xsl:key name="KeyedObjectTypes" match="*/orm:ORMModel/orm:DomainObjectTypes/orm:*" use="@id"/>
 	<xsl:key name="KeyedFactTypes" match="*/orm:ORMModel/orm:DomainFactTypes/orm:*" use="@id"/>
-	<xsl:key name="KeyedObjectifiedTypesByPredicateId" match="*/orm:ORMModel/orm:DomainObjectTypes/orm:ObjectifiedType" use="orm:NestedPredicate/@ref"/>
+	<xsl:key name="KeyedObjectifiedTypesByPredicateId" match="*/orm:ORMModel/orm:DomainObjectTypes/orm:ObjectifiedType" use="orm:Objectification/@ref"/>
 	<xsl:key name="KeyedRoleMap" match="loc:roleMaps/loc:map" use="@fromRole"/>
 	<xsl:key name="KeyedConstraintMap" match="loc:constraintMaps/loc:map" use="@constraint"/>
 
@@ -144,7 +144,7 @@
 			<xsl:apply-templates select="node()|@*" mode="CoRefORM"/>
 		</orm:Fact>
 	</xsl:template>
-	<xsl:template match="orm:ImpliedByObjectification | orm:NestedPredicate" mode="CoRefORM"/>
+	<xsl:template match="orm:ImpliedByObjectification | orm:Objectification" mode="CoRefORM"/>
 	<xsl:template match="orm:ObjectifiedType" mode="CoRefORM">
 		<orm:EntityType>
 			<xsl:apply-templates select="node()|@*" mode="CoRefORM"/>

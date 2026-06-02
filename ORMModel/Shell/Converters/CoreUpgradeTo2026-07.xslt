@@ -84,6 +84,11 @@
 			<xsl:apply-templates select="@*|*|text()|comment()"/>
 		</orm:SupertypeRole>
 	</xsl:template>
+	<xsl:template match="oldOrm:NestedPredicate">
+		<orm:Objectification>
+			<xsl:apply-templates select="@*|*|text()|comment()"/>
+		</orm:Objectification>
+	</xsl:template>
 
 	<!-- Move SubtypeDerivationRules/SubtypeDerivationExpression data to SubtypeDervationPath in the next -->
 	<xsl:template match="oldOrm:Objects/oldOrm:*/oldOrm:SubtypeDerivationRule/oldOrm:SubtypeDerivationPath">

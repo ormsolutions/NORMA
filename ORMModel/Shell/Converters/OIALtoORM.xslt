@@ -212,10 +212,10 @@
 				</orm:ReadingOrders>
 			</xsl:if>
 			<xsl:if test="$isPartOfAssociationForParent">
-				<orm:ImpliedByObjectification ref="NestedPredicate.{fn:EncodeName($conceptType/@id)}"/>
+				<orm:ImpliedByObjectification ref="Objectification.{fn:EncodeName($conceptType/@id)}"/>
 			</xsl:if>
 			<xsl:if test="$isPartOfAssociationForTarget">
-				<orm:ImpliedByObjectification ref="NestedPredicate.{fn:EncodeName(@ref)}"/>
+				<orm:ImpliedByObjectification ref="Objectification.{fn:EncodeName(@ref)}"/>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
@@ -298,7 +298,7 @@
 				<orm:ObjectifiedType id="ObjectType.{$id}" Name="{@name}" IsIndependent="true">
 					<!-- We need to be explicitly objectified if any of our children are not part of the association, or if there are any references to us elsewhere. -->
 					<xsl:variable name="needsExplicitObjectification" select="oil:children/oil:*[not(@id = current()/oil:association/oil:associationChild/@ref)] or $allConceptTypes/oil:children[oil:relatedConceptType[@ref = current()/@id] or oil:assimilatedConceptType[@ref = current()/@id]]"/>
-					<orm:NestedPredicate id="NestedPredicate.{$id}" ref="FactType.Association.{$id}" IsImplied="{not($needsExplicitObjectification)}"/>
+					<orm:Objectification id="Objectification.{$id}" ref="FactType.Association.{$id}" IsImplied="{not($needsExplicitObjectification)}"/>
 				</orm:ObjectifiedType>
 			</xsl:when>
 			<xsl:otherwise>
