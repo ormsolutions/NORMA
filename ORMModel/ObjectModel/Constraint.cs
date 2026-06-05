@@ -8645,13 +8645,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						LinkedElementCollection<RoleBase> factRoles = role.FactType.RoleCollection;
 						int roleCount = factRoles.Count;
-						for (int i = 0; i < roleCount; ++i)
+						if (roleCount == 1)
 						{
-							RoleBase testRole = factRoles[i];
-							if (role != testRole)
+							targetRolePlayer = role.Role.RolePlayer;
+						}
+						else
+						{
+							for (int i = 0; i < roleCount; ++i)
 							{
-								targetRolePlayer = testRole.Role.RolePlayer;
-								break;
+								RoleBase testRole = factRoles[i];
+								if (role != testRole)
+								{
+									targetRolePlayer = testRole.Role.RolePlayer;
+									break;
+								}
 							}
 						}
 					}
