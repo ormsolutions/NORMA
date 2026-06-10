@@ -19,6 +19,219 @@
 	<!-- Shell specified groups/guids -->
 	<Extern href="vsshlids.h"/>
 
+	<Symbols>
+		<!-- Keep in sync with ORMPackage.cs -->
+		<GuidSymbol name="guidORMDesignerPackage" value="{EFDDC549-1646-4451-8A51-E5A5E94D647C}"/>
+		<!-- Keep in sync with ORMEditorFactory.cs -->
+		<GuidSymbol name="guidORMDesignerEditor" value="{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}"/>
+		<!-- Keep in sync with ORMCommandSet.cs -->
+		<GuidSymbol name="guidORMDesignerCommandSet" value="{7C51C000-1EAD-4B39-89B5-42BC9F49EA24}">
+			<!-- Keep in sync with ORMCommandSet.cs -->
+
+			<!-- Menus (0x01__) -->
+			<IDSymbol value="0x0100" name="menuIdContextMenu"/>
+			<IDSymbol value="0x0101" name="menuIdVerbalizationToolbar"/>
+			<IDSymbol value="0x0102" name="menuIdErrorList"/>
+			<IDSymbol value="0x0103" name="menuIdReadingEditorContextMenu"/>
+			<IDSymbol value="0x0104" name="menuIdDisplayOrientation"/>
+			<IDSymbol value="0x0105" name="menuIdToolWindows"/>
+			<IDSymbol value="0x0106" name="menuIdDiagramList"/>
+			<IDSymbol value="0x0107" name="menuIdReportGeneratorList"/>
+			<IDSymbol value="0x0108" name="menuIdFactEditorToolbar"/>
+			<IDSymbol value="0x0109" name="menuIdDiagramSpyDiagramList"/>
+			<IDSymbol value="0x010A" name="menuIdGroupCommands"/>
+			<IDSymbol value="0x010B" name="menuIdIncludeInGroup"/>
+			<IDSymbol value="0x010C" name="menuIdDeleteFromGroup"/>
+			<IDSymbol value="0x010D" name="menuIdZoomCommands"/>
+			<IDSymbol value="0x010E" name="menuIdDisableErrorList"/>
+			<IDSymbol value="0x010F" name="menuIdEnableErrorList"/>
+			<IDSymbol value="0x0110" name="menuIdSelectInGroup"/>
+			<IDSymbol value="0x0111" name="menuIdHiddenCommandContainer"/>
+
+			<!-- Groups (0x10__) -->
+			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
+			<IDSymbol value="0x1000" name="groupIdDeleteContext"/>
+			<IDSymbol value="0x1001" name="groupIdFactCommands"/>
+			<IDSymbol value="0x1002" name="groupIdRoleCommands"/>
+			<IDSymbol value="0x1003" name="groupIdModelCommands"/>
+			<IDSymbol value="0x1004" name="groupIdConstraintEditContext"/>
+			<IDSymbol value="0x1005" name="groupIdVerbalizationCommands"/>
+			<IDSymbol value="0x1006" name="groupIdORMToolWindows"/>
+			<IDSymbol value="0x1007" name="groupIdErrorList"/>
+			<IDSymbol value="0x1008" name="groupIdErrorListTest"/>
+			<IDSymbol value="0x1009" name="groupIdReadingEditorContextAddDelete"/>
+			<IDSymbol value="0x100A" name="groupIdReadingEditorContextReadingPromoteDemote"/>
+			<IDSymbol value="0x100B" name="groupIdReadingEditorContextOrderPromoteDemote"/>
+			<IDSymbol value="0x100C" name="groupIdProperties"/>
+			<IDSymbol value="0x100D" name="groupIdFactShapeCommands"/>
+			<IDSymbol value="0x100E" name="groupIdDisplayOrientation"/>
+			<IDSymbol value="0x100F" name="groupIdDisplayConstraintPosition"/>
+			<IDSymbol value="0x1010" name="groupIdDisplayReverseRoleOrder"/>
+			<IDSymbol value="0x1011" name="groupIdToolWindows"/>
+			<IDSymbol value="0x1012" name="groupIdDiagramListTest"/>
+			<IDSymbol value="0x1013" name="groupIdReportGeneratorListTest"/>
+			<IDSymbol value="0x1014" name="groupIdFactEditorCommitCommands"/>
+			<IDSymbol value="0x1015" name="groupIdVerbalizationOptions"/>
+			<IDSymbol value="0x1016" name="groupIdSelectCommands"/>
+			<IDSymbol value="0x1017" name="groupIdDiagramSpyDiagramListTest"/>
+			<IDSymbol value="0x1018" name="groupIdFreeFormCommands"/>
+			<IDSymbol value="0x1019" name="groupIdGroupCommands"/>
+			<IDSymbol value="0x101A" name="groupIdIncludeInGroupListTest"/>
+			<IDSymbol value="0x101B" name="groupIdIncludeInNewGroup"/>
+			<IDSymbol value="0x101C" name="groupIdDeleteFromGroupListTest"/>
+			<IDSymbol value="0x101D" name="groupIdNumberedZoomCommands"/>
+			<IDSymbol value="0x101E" name="groupIdInOutZoomCommands"/>
+			<IDSymbol value="0x101F" name="groupIdErrorEnabling"/>
+			<IDSymbol value="0x1020" name="groupIdDisableErrorListTest"/>
+			<IDSymbol value="0x1021" name="groupIdEnableErrorListTest"/>
+			<IDSymbol value="0x1022" name="groupIdSelectInGroupListTest"/>
+			<IDSymbol value="0x1023" name="groupIdXmlSchemaCatalogs"/>
+
+			<!-- Commands (0x2___) -->
+			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
+			<IDSymbol value="0x28FF" name="cmdIdDebugViewStore"/>
+			<IDSymbol value="0x2900" name="cmdIdViewModelBrowser"/>
+			<IDSymbol value="0x2901" name="cmdIdViewReadingEditor"/>
+			<IDSymbol value="0x2902" name="cmdIdViewReferenceModeEditor"/>
+			<IDSymbol value="0x2903" name="cmdIdInsertRoleAfter"/>
+			<IDSymbol value="0x2904" name="cmdIdInsertRoleBefore"/>
+			<IDSymbol value="0x2905" name="cmdIdViewFactEditor"/>
+			<IDSymbol value="0x2906" name="cmdIdActivateRoleSequence"/>
+			<IDSymbol value="0x2907" name="cmdIdDeleteRoleSequence"/>
+			<IDSymbol value="0x2908" name="cmdIdEditRoleSequenceConstraint"/>
+			<IDSymbol value="0x2909" name="cmdIdMoveRoleSequenceUp"/>
+			<IDSymbol value="0x290A" name="cmdIdMoveRoleSequenceDown"/>
+			<IDSymbol value="0x290B" name="cmdIdCopyImage"/>
+			<IDSymbol value="0x290C" name="cmdIdViewVerbalizationBrowser"/>
+			<IDSymbol value="0x290D" name="cmdIdShowPositiveVerbalization"/>
+			<IDSymbol value="0x290E" name="cmdIdShowNegativeVerbalization"/>
+			<IDSymbol value="0x290F" name="cmdIdAutoLayout"/>
+			<IDSymbol value="0x2910" name="cmdIdToggleSimpleMandatory"/>
+			<IDSymbol value="0x2911" name="cmdIdAddInternalUniqueness"/>
+			<IDSymbol value="0x2912" name="cmdIdExtensionManager"/>
+			<IDSymbol value="0x2913" name="cmdIdViewNotesWindow"/>
+			<IDSymbol value="0x2914" name="cmdIdDeleteAlternate"/>
+			<IDSymbol value="0x2915" name="cmdIdMoveRoleLeft"/>
+			<IDSymbol value="0x2916" name="cmdIdMoveRoleRight"/>
+			<IDSymbol value="0x2917" name="cmdIdViewContextWindow"/>
+			<IDSymbol value="0x2918" name="cmdIdReadingEditorAddReading"/>
+			<IDSymbol value="0x2919" name="cmdIdReadingEditorAddReadingOrder"/>
+			<IDSymbol value="0x291A" name="cmdIdReadingEditorDeleteReading"/>
+			<IDSymbol value="0x291B" name="cmdIdReadingEditorPromoteReading"/>
+			<IDSymbol value="0x291C" name="cmdIdReadingEditorDemoteReading"/>
+			<IDSymbol value="0x291D" name="cmdIdReadingEditorPromoteReadingOrder"/>
+			<IDSymbol value="0x291E" name="cmdIdReadingEditorDemoteReadingOrder"/>
+			<IDSymbol value="0x291F" name="cmdIdObjectifyFactType"/>
+			<IDSymbol value="0x2920" name="cmdIdViewSamplePopulationEditor"/>
+			<IDSymbol value="0x2921" name="cmdIdDisplayOrientationHorizontal"/>
+			<IDSymbol value="0x2922" name="cmdIdDisplayOrientationRotatedLeft"/>
+			<IDSymbol value="0x2923" name="cmdIdDisplayOrientationRotatedRight"/>
+			<IDSymbol value="0x2924" name="cmdIdDisplayConstraintsOnTop"/>
+			<IDSymbol value="0x2925" name="cmdIdDisplayConstraintsOnBottom"/>
+			<IDSymbol value="0x2926" name="cmdIdDisplayReverseRoleOrder"/>
+			<IDSymbol value="0x2927" name="cmdIdExclusiveOrCoupler"/>
+			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
+			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
+			<IDSymbol value="0x292A" name="cmdIdViewInformalDescriptionWindow"/>
+			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLineAutoShapes"/>
+			<IDSymbol value="0x292C" name="cmdIdViewDiagramSpyWindow"/>
+			<IDSymbol value="0x292D" name="cmdIdVerbalizationHyperlinkToDiagramSpy"/>
+			<IDSymbol value="0x292E" name="cmdIdSelectInDiagramSpy"/>
+			<IDSymbol value="0x292F" name="cmdIdSelectInDocumentWindow"/>
+			<IDSymbol value="0x2930" name="cmdIdIncludeInGroup"/>
+			<IDSymbol value="0x2931" name="cmdIdIncludeInNewGroup"/>
+			<IDSymbol value="0x2932" name="cmdIdSelectInModelBrowser"/>
+			<IDSymbol value="0x2933" name="cmdIdSelectNextInCurrentDiagram"/>
+			<IDSymbol value="0x2934" name="cmdIdZoom10"/>
+			<IDSymbol value="0x2935" name="cmdIdZoom25"/>
+			<IDSymbol value="0x2936" name="cmdIdZoom33"/>
+			<IDSymbol value="0x2937" name="cmdIdZoom50"/>
+			<IDSymbol value="0x2938" name="cmdIdZoom66"/>
+			<IDSymbol value="0x2939" name="cmdIdZoom75"/>
+			<IDSymbol value="0x293a" name="cmdIdZoom100"/>
+			<IDSymbol value="0x293b" name="cmdIdZoom125"/>
+			<IDSymbol value="0x293c" name="cmdIdZoom150"/>
+			<IDSymbol value="0x293d" name="cmdIdZoom200"/>
+			<IDSymbol value="0x293e" name="cmdIdZoom300"/>
+			<IDSymbol value="0x293f" name="cmdIdZoom400"/>
+			<IDSymbol value="0x2940" name="cmdIdZoomIn"/>
+			<IDSymbol value="0x2941" name="cmdIdZoomOut"/>
+			<IDSymbol value="0x2942" name="cmdIdLoadNORMASchemas"/>
+			<IDSymbol value="0x2943" name="cmdIdORMDesignerOptions"/>
+			<IDSymbol value="0x2944" name="cmdIdDragInverseUnaryFactType"/>
+			<IDSymbol value="0x2945" name="cmdIdDragLinkFactType"/>
+			<IDSymbol value="0x2946" name="cmdIdFactEditorCommitLineDragShapes"/>
+			<IDSymbol value="0x2947" name="cmdIdDiagramSpyAllDiagrams"/>
+			<IDSymbol value="0x2948" name="cmdIdDragNegatedUnaryConstraints"/>
+
+			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
+			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
+			<!-- Reserve 2A__ range for errors. -->
+			<IDSymbol value="0x2B00" name="cmdIdDiagramList"/>
+			<!-- Reserve 2B__ range for diagram lists. -->
+			<IDSymbol value="0x2C00" name="cmdIdReportGeneratorList"/>
+			<!-- Reserve 2C__ range for reports. -->
+			<IDSymbol value="0x2D00" name="cmdIdDiagramSpyDiagramList"/>
+			<!-- Reserve 2D__ range for diagram spy diagram lists. -->
+			<IDSymbol value="0x2E00" name="cmdIdFreeFormCommandList"/>
+			<!-- Reserve 2E__ range for diagram spy diagram lists. -->
+			<IDSymbol value="0x2F00" name="cmdIdIncludeInGroupList"/>
+			<!-- Reserve 2F__ range for include in group list. -->
+			<IDSymbol value="0x3000" name="cmdIdDeleteFromGroupList"/>
+			<!-- Reserve 30__ range for delete from group list. -->
+			<IDSymbol value="0x3100" name="cmdIdDisableErrorList"/>
+			<!-- Reserve 31__ range for disable error list. -->
+			<IDSymbol value="0x3200" name="cmdIdEnableErrorList"/>
+			<!-- Reserve 32__ range for enable error list. -->
+			<IDSymbol value="0x3300" name="cmdIdSelectInGroupList"/>
+			<!-- Reserve 33__ range for include in group list. -->
+		</GuidSymbol>
+		<GuidSymbol name="guidFactEditorFactory" value="{EE99A954-82C4-4098-A2BD-5C75E3D138A7}"/>
+		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
+			<IDSymbol value="0x0001" name="bmpIdShowNegativeVerbalization"/>
+			<IDSymbol value="0x0002" name="bmpIdShowPositiveVerbalization"/>
+			<IDSymbol value="0x0003" name="bmpIdVerbalizationHyperlinkToDiagramSpy"/>
+		</GuidSymbol>
+		<GuidSymbol name="guidORMToolWindowIcons" value="{EA662CED-462E-41EA-B0B5-42BF76C4B853}">
+			<!-- Keep in sync with PackageResources.cs -->
+			<!-- Note that the values here are the values from PackageResources.cs plus one. -->
+			<IDSymbol value="0x0001" name="bmpIdToolWindowVerbalizationBrowser"/>
+			<IDSymbol value="0x0002" name="bmpIdToolWindowReadingEditor"/>
+			<IDSymbol value="0x0003" name="bmpIdToolWindowReferenceModeEditor"/>
+			<IDSymbol value="0x0004" name="bmpIdToolWindowFactEditor"/>
+			<IDSymbol value="0x0005" name="bmpIdToolWindowModelBrowser"/>
+			<IDSymbol value="0x0006" name="bmpIdToolWindowNotesEditor"/>
+			<IDSymbol value="0x0007" name="bmpIdToolWindowPopulationEditor"/>
+			<IDSymbol value="0x0008" name="bmpIdToolWindowContextWindow"/>
+			<IDSymbol value="0x0009" name="bmpIdToolWindowDescriptionEditor"/>
+			<IDSymbol value="0x000A" name="bmpIdToolWindowDiagramSpy"/>
+		</GuidSymbol>
+		<GuidSymbol name="CMDSETID_StandardCommandSet97" value="Extern">
+			<IDSymbol value="Extern" name="cmdidDelete"/>
+			<IDSymbol value="Extern" name="cmdidPropertiesWindow"/>
+			<IDSymbol value="Extern" name="cmdidErrorListWindow"/>
+			<IDSymbol value="Extern" name="cmdidToolbox"/>
+		</GuidSymbol>
+		<GuidSymbol name="guidCommandIcons" value="{E590BC32-4910-429C-BFA7-24EB2FD63E0D}">
+			<IDSymbol value="0x0001" name="bmpIdDelete"/>
+			<IDSymbol value="0x0002" name="bmpIdCamera"/>
+			<IDSymbol value="0x0003" name="bmpIdUpArrow"/>
+			<IDSymbol value="0x0004" name="bmpIdDownArrow"/>
+			<IDSymbol value="0x0005" name="bmpIdLeftArrow"/>
+			<IDSymbol value="0x0006" name="bmpIdRightArrow"/>
+			<IDSymbol value="0x0007" name="bmpIdFactEditorAutoShapes"/>
+			<IDSymbol value="0x0008" name="bmpIdFactEditorDragShapes"/>
+		</GuidSymbol>
+		<!-- The XML values were obtained using the vsct.exe tool to decompile the CTMENU resource
+		extracted from the XML Editor localization assembly. They might be in the SDK, but I didn't search that hard.
+		Note that the editor guid, which would normally be used for context here, is {fa3cd31e-987b-443a-9b81-186104e8dac1}
+		but the other guidXmlUiCmds is what all of the XML native visibility constraints are tied to (and the one that works) -->
+		<GuidSymbol name="guidXmlEditorContext" value="{fb87333b-16c8-400e-bc8f-f6b890410582}"/>
+		<GuidSymbol name="guidXmlGroup" value="{061317B2-F992-435E-A23D-9EAD4B972ED5}">
+			<IDSymbol value="0x1001" name="IDG_XML_TOOLS"/>
+		</GuidSymbol>
+	</Symbols>
+
 	<Commands package="guidORMDesignerPackage">
 
 		<Menus>
@@ -29,8 +242,14 @@
 					<CommandName>ORMDesignerContextMenu</CommandName>
 				</Strings>
 			</Menu>
+			<Menu Condition="Defined(VSIX_PER_USER)" guid="guidORMDesignerCommandSet" id="menuIdHiddenCommandContainer" priority="0xF000" type="ContextMenu">
+				<Parent guid="guidORMDesignerCommandSet" id="0"/>
+				<Strings>
+					<ButtonText>Parked custom placed commands</ButtonText>
+					<CommandName>ORMDesignerHiddenCommands</CommandName>
+				</Strings>
+			</Menu>
 			<Menu guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolbar" priority="0x0000" type="ToolWindowToolbar">
-				<!-- UNDONE: Should this really be its own parent? -->
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdVerbalizationToolbar"/>
 				<Strings>
 					<ButtonText>ORM Verbalization Toolbar</ButtonText>
@@ -274,7 +493,9 @@
 			<Group guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdFactEditorToolbar"/>
 			</Group>
-			<Group Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs"/>
+			<Group Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs" priority="0x0000">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdHiddenCommandContainer"/>
+			</Group>
 		</Groups>
 
 		<Buttons>
@@ -1024,7 +1245,6 @@
 
 			<Button Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="cmdIdLoadNORMASchemas" type="Button" priority="0x0000">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs"/>
-				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<ButtonText>Load &amp;NORMA Schemas</ButtonText>
@@ -1066,12 +1286,14 @@
 		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidPropertiesWindow" priority="0x0040">
 			<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
 		</CommandPlacement>
-		<CommandPlacement Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs" priority="0x8000">
-			<Parent guid="guidXmlGroup" id="IDM_XML_EDITOR"/>
+		<CommandPlacement Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="cmdIdLoadNORMASchemas" priority="0x8000">
+			<Parent guid="guidXmlGroup" id="IDG_XML_TOOLS"/>
 		</CommandPlacement>
 	</CommandPlacements>
 
-	<!--<VisibilityConstraints/>-->
+	<VisibilityConstraints>
+		<VisibilityItem Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="cmdIdLoadNORMASchemas" context="guidXmlEditorContext"/>
+	</VisibilityConstraints>
 
 	<KeyBindings>
 		<!-- Main designer key bindings -->
@@ -1088,17 +1310,31 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewDiagramSpyWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="D" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdORMDesignerOptions" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="T" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoom100" editor="guidORMDesignerEditor" key1="48" mod1="Control"/>
-		<!-- Note that Control-Shift-0 is a default windows hotkey in and after Windows 7. This was the original setting, but the control-only
-			versions needed to be added so that Zoom100 would have a normal hotkey. -->
-		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoom100" editor="guidORMDesignerEditor" key1="48" mod1="Control Shift"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" editor="guidORMDesignerEditor" key1="187" mod1="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" editor="guidORMDesignerEditor" key1="187" mod1="Control Shift"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomOut" editor="guidORMDesignerEditor" key1="189" mod1="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomOut" editor="guidORMDesignerEditor" key1="189" mod1="Control Shift"/>
+		<!-- Ctrl-W starting in 2026 does a document close. This is common on other editors, but has not been bound before in VS. However,
+		this completely hides all of the window bindings. We put this on Ctrl-W,W instead so it is at least accessible.-->
+		<KeyBinding guid="CLSID_StandardCommandSet97" id="cmdidCloseDocument" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="W" mod2="Control"/>
 
 		<!-- Fact editor key bindings-->
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLineAutoShapes" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdFactEditorCommitLineDragShapes" editor="guidFactEditorFactory" key1="VK_RETURN" mod1="Alt"/>
+
+		<!-- Window key bindings in fact editor so we can jump around. All other tool windows use the designer key bindings.-->
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewModelBrowser" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="M" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewFactEditor" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="F" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReadingEditor" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="R" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewVerbalizationBrowser" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="V" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDescriptionWindow" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="O" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="S" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewNotesWindow" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="N" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="E" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewContextWindow" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="C" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewDiagramSpyWindow" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="D" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdORMDesignerOptions" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="T" mod2="Control"/>
+		<KeyBinding guid="CLSID_StandardCommandSet97" id="cmdidCloseDocument" editor="guidFactEditorFactory" key1="W" mod1="Control" key2="W" mod2="Control"/>
 
 		<!--
 		//****************************-
@@ -1167,7 +1403,7 @@
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TRANSPOSECHAR" editor="guidFactEditorFactory" key1="T" mod1="Control"/>
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TRANSPOSEWORD" editor="guidFactEditorFactory" key1="T" mod1="Control Shift"/>
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_TRANSPOSELINE" editor="guidFactEditorFactory" key1="T" mod1="Alt Shift"/>
-		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELECTCURRENTWORD" editor="guidFactEditorFactory" key1="W" mod1="Control"/>
+		<!--<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELECTCURRENTWORD" editor="guidFactEditorFactory" key1="W" mod1="Control"/>-->
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DELETEWORDRIGHT" editor="guidFactEditorFactory" key1="VK_DELETE" mod1="Control"/>
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_DELETEWORDLEFT" editor="guidFactEditorFactory" key1="VK_BACK" mod1="Control"/>
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_WORDPREV" editor="guidFactEditorFactory" key1="VK_LEFT" mod1="Control"/>
@@ -1198,213 +1434,4 @@
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_UNCOMMENT_BLOCK" editor="guidFactEditorFactory" key1="K" mod1="Control" key2="U" mod2="Control"/>
 		<KeyBinding guid="CMDSETID_StandardCommandSet2K" id="ECMD_SELTOGOBACK" editor="guidFactEditorFactory" key1="VK_OEM_PLUS" mod1="Control"/>
 	</KeyBindings>
-
-	<Symbols>
-		<!-- Keep in sync with ORMPackage.cs -->
-		<GuidSymbol name="guidORMDesignerPackage" value="{EFDDC549-1646-4451-8A51-E5A5E94D647C}"/>
-		<!-- Keep in sync with ORMEditorFactory.cs -->
-		<GuidSymbol name="guidORMDesignerEditor" value="{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}"/>
-		<!-- Keep in sync with ORMCommandSet.cs -->
-		<GuidSymbol name="guidORMDesignerCommandSet" value="{7C51C000-1EAD-4B39-89B5-42BC9F49EA24}">
-			<!-- Keep in sync with ORMCommandSet.cs -->
-
-			<!-- Menus (0x01__) -->
-			<IDSymbol value="0x0100" name="menuIdContextMenu"/>
-			<IDSymbol value="0x0101" name="menuIdVerbalizationToolbar"/>
-			<IDSymbol value="0x0102" name="menuIdErrorList"/>
-			<IDSymbol value="0x0103" name="menuIdReadingEditorContextMenu"/>
-			<IDSymbol value="0x0104" name="menuIdDisplayOrientation"/>
-			<IDSymbol value="0x0105" name="menuIdToolWindows"/>
-			<IDSymbol value="0x0106" name="menuIdDiagramList"/>
-			<IDSymbol value="0x0107" name="menuIdReportGeneratorList"/>
-			<IDSymbol value="0x0108" name="menuIdFactEditorToolbar"/>
-			<IDSymbol value="0x0109" name="menuIdDiagramSpyDiagramList"/>
-			<IDSymbol value="0x010A" name="menuIdGroupCommands"/>
-			<IDSymbol value="0x010B" name="menuIdIncludeInGroup"/>
-			<IDSymbol value="0x010C" name="menuIdDeleteFromGroup"/>
-			<IDSymbol value="0x010D" name="menuIdZoomCommands"/>
-			<IDSymbol value="0x010E" name="menuIdDisableErrorList"/>
-			<IDSymbol value="0x010F" name="menuIdEnableErrorList"/>
-			<IDSymbol value="0x0110" name="menuIdSelectInGroup"/>
-
-			<!-- Groups (0x10__) -->
-			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
-			<IDSymbol value="0x1000" name="groupIdDeleteContext"/>
-			<IDSymbol value="0x1001" name="groupIdFactCommands"/>
-			<IDSymbol value="0x1002" name="groupIdRoleCommands"/>
-			<IDSymbol value="0x1003" name="groupIdModelCommands"/>
-			<IDSymbol value="0x1004" name="groupIdConstraintEditContext"/>
-			<IDSymbol value="0x1005" name="groupIdVerbalizationCommands"/>
-			<IDSymbol value="0x1006" name="groupIdORMToolWindows"/>
-			<IDSymbol value="0x1007" name="groupIdErrorList"/>
-			<IDSymbol value="0x1008" name="groupIdErrorListTest"/>
-			<IDSymbol value="0x1009" name="groupIdReadingEditorContextAddDelete"/>
-			<IDSymbol value="0x100A" name="groupIdReadingEditorContextReadingPromoteDemote"/>
-			<IDSymbol value="0x100B" name="groupIdReadingEditorContextOrderPromoteDemote"/>
-			<IDSymbol value="0x100C" name="groupIdProperties"/>
-			<IDSymbol value="0x100D" name="groupIdFactShapeCommands"/>
-			<IDSymbol value="0x100E" name="groupIdDisplayOrientation"/>
-			<IDSymbol value="0x100F" name="groupIdDisplayConstraintPosition"/>
-			<IDSymbol value="0x1010" name="groupIdDisplayReverseRoleOrder"/>
-			<IDSymbol value="0x1011" name="groupIdToolWindows"/>
-			<IDSymbol value="0x1012" name="groupIdDiagramListTest"/>
-			<IDSymbol value="0x1013" name="groupIdReportGeneratorListTest"/>
-			<IDSymbol value="0x1014" name="groupIdFactEditorCommitCommands"/>
-			<IDSymbol value="0x1015" name="groupIdVerbalizationOptions"/>
-			<IDSymbol value="0x1016" name="groupIdSelectCommands"/>
-			<IDSymbol value="0x1017" name="groupIdDiagramSpyDiagramListTest"/>
-			<IDSymbol value="0x1018" name="groupIdFreeFormCommands"/>
-			<IDSymbol value="0x1019" name="groupIdGroupCommands"/>
-			<IDSymbol value="0x101A" name="groupIdIncludeInGroupListTest"/>
-			<IDSymbol value="0x101B" name="groupIdIncludeInNewGroup"/>
-			<IDSymbol value="0x101C" name="groupIdDeleteFromGroupListTest"/>
-			<IDSymbol value="0x101D" name="groupIdNumberedZoomCommands"/>
-			<IDSymbol value="0x101E" name="groupIdInOutZoomCommands"/>
-			<IDSymbol value="0x101F" name="groupIdErrorEnabling"/>
-			<IDSymbol value="0x1020" name="groupIdDisableErrorListTest"/>
-			<IDSymbol value="0x1021" name="groupIdEnableErrorListTest"/>
-			<IDSymbol value="0x1022" name="groupIdSelectInGroupListTest"/>
-			<IDSymbol value="0x1023" name="groupIdXmlSchemaCatalogs"/>
-
-			<!-- Commands (0x2___) -->
-			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
-			<IDSymbol value="0x28FF" name="cmdIdDebugViewStore"/>
-			<IDSymbol value="0x2900" name="cmdIdViewModelBrowser"/>
-			<IDSymbol value="0x2901" name="cmdIdViewReadingEditor"/>
-			<IDSymbol value="0x2902" name="cmdIdViewReferenceModeEditor"/>
-			<IDSymbol value="0x2903" name="cmdIdInsertRoleAfter"/>
-			<IDSymbol value="0x2904" name="cmdIdInsertRoleBefore"/>
-			<IDSymbol value="0x2905" name="cmdIdViewFactEditor"/>
-			<IDSymbol value="0x2906" name="cmdIdActivateRoleSequence"/>
-			<IDSymbol value="0x2907" name="cmdIdDeleteRoleSequence"/>
-			<IDSymbol value="0x2908" name="cmdIdEditRoleSequenceConstraint"/>
-			<IDSymbol value="0x2909" name="cmdIdMoveRoleSequenceUp"/>
-			<IDSymbol value="0x290A" name="cmdIdMoveRoleSequenceDown"/>
-			<IDSymbol value="0x290B" name="cmdIdCopyImage"/>
-			<IDSymbol value="0x290C" name="cmdIdViewVerbalizationBrowser"/>
-			<IDSymbol value="0x290D" name="cmdIdShowPositiveVerbalization"/>
-			<IDSymbol value="0x290E" name="cmdIdShowNegativeVerbalization"/>
-			<IDSymbol value="0x290F" name="cmdIdAutoLayout"/>
-			<IDSymbol value="0x2910" name="cmdIdToggleSimpleMandatory"/>
-			<IDSymbol value="0x2911" name="cmdIdAddInternalUniqueness"/>
-			<IDSymbol value="0x2912" name="cmdIdExtensionManager"/>
-			<IDSymbol value="0x2913" name="cmdIdViewNotesWindow"/>
-			<IDSymbol value="0x2914" name="cmdIdDeleteAlternate"/>
-			<IDSymbol value="0x2915" name="cmdIdMoveRoleLeft"/>
-			<IDSymbol value="0x2916" name="cmdIdMoveRoleRight"/>
-			<IDSymbol value="0x2917" name="cmdIdViewContextWindow"/>
-			<IDSymbol value="0x2918" name="cmdIdReadingEditorAddReading"/>
-			<IDSymbol value="0x2919" name="cmdIdReadingEditorAddReadingOrder"/>
-			<IDSymbol value="0x291A" name="cmdIdReadingEditorDeleteReading"/>
-			<IDSymbol value="0x291B" name="cmdIdReadingEditorPromoteReading"/>
-			<IDSymbol value="0x291C" name="cmdIdReadingEditorDemoteReading"/>
-			<IDSymbol value="0x291D" name="cmdIdReadingEditorPromoteReadingOrder"/>
-			<IDSymbol value="0x291E" name="cmdIdReadingEditorDemoteReadingOrder"/>
-			<IDSymbol value="0x291F" name="cmdIdObjectifyFactType"/>
-			<IDSymbol value="0x2920" name="cmdIdViewSamplePopulationEditor"/>
-			<IDSymbol value="0x2921" name="cmdIdDisplayOrientationHorizontal"/>
-			<IDSymbol value="0x2922" name="cmdIdDisplayOrientationRotatedLeft"/>
-			<IDSymbol value="0x2923" name="cmdIdDisplayOrientationRotatedRight"/>
-			<IDSymbol value="0x2924" name="cmdIdDisplayConstraintsOnTop"/>
-			<IDSymbol value="0x2925" name="cmdIdDisplayConstraintsOnBottom"/>
-			<IDSymbol value="0x2926" name="cmdIdDisplayReverseRoleOrder"/>
-			<IDSymbol value="0x2927" name="cmdIdExclusiveOrCoupler"/>
-			<IDSymbol value="0x2928" name="cmdIdExclusiveOrDecoupler"/>
-			<IDSymbol value="0x2929" name="cmdIdUnobjectifyFactType"/>
-			<IDSymbol value="0x292A" name="cmdIdViewInformalDescriptionWindow"/>
-			<IDSymbol value="0x292B" name="cmdIdFactEditorCommitLineAutoShapes"/>
-			<IDSymbol value="0x292C" name="cmdIdViewDiagramSpyWindow"/>
-			<IDSymbol value="0x292D" name="cmdIdVerbalizationHyperlinkToDiagramSpy"/>
-			<IDSymbol value="0x292E" name="cmdIdSelectInDiagramSpy"/>
-			<IDSymbol value="0x292F" name="cmdIdSelectInDocumentWindow"/>
-			<IDSymbol value="0x2930" name="cmdIdIncludeInGroup"/>
-			<IDSymbol value="0x2931" name="cmdIdIncludeInNewGroup"/>
-			<IDSymbol value="0x2932" name="cmdIdSelectInModelBrowser"/>
-			<IDSymbol value="0x2933" name="cmdIdSelectNextInCurrentDiagram"/>
-			<IDSymbol value="0x2934" name="cmdIdZoom10"/>
-			<IDSymbol value="0x2935" name="cmdIdZoom25"/>
-			<IDSymbol value="0x2936" name="cmdIdZoom33"/>
-			<IDSymbol value="0x2937" name="cmdIdZoom50"/>
-			<IDSymbol value="0x2938" name="cmdIdZoom66"/>
-			<IDSymbol value="0x2939" name="cmdIdZoom75"/>
-			<IDSymbol value="0x293a" name="cmdIdZoom100"/>
-			<IDSymbol value="0x293b" name="cmdIdZoom125"/>
-			<IDSymbol value="0x293c" name="cmdIdZoom150"/>
-			<IDSymbol value="0x293d" name="cmdIdZoom200"/>
-			<IDSymbol value="0x293e" name="cmdIdZoom300"/>
-			<IDSymbol value="0x293f" name="cmdIdZoom400"/>
-			<IDSymbol value="0x2940" name="cmdIdZoomIn"/>
-			<IDSymbol value="0x2941" name="cmdIdZoomOut"/>
-			<IDSymbol value="0x2942" name="cmdIdLoadNORMASchemas"/>
-			<IDSymbol value="0x2943" name="cmdIdORMDesignerOptions"/>
-			<IDSymbol value="0x2944" name="cmdIdDragInverseUnaryFactType"/>
-			<IDSymbol value="0x2945" name="cmdIdDragLinkFactType"/>
-			<IDSymbol value="0x2946" name="cmdIdFactEditorCommitLineDragShapes"/>
-			<IDSymbol value="0x2947" name="cmdIdDiagramSpyAllDiagrams"/>
-			<IDSymbol value="0x2948" name="cmdIdDragNegatedUnaryConstraints"/>
-
-			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
-			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
-			<!-- Reserve 2A__ range for errors. -->
-			<IDSymbol value="0x2B00" name="cmdIdDiagramList"/>
-			<!-- Reserve 2B__ range for diagram lists. -->
-			<IDSymbol value="0x2C00" name="cmdIdReportGeneratorList"/>
-			<!-- Reserve 2C__ range for reports. -->
-			<IDSymbol value="0x2D00" name="cmdIdDiagramSpyDiagramList"/>
-			<!-- Reserve 2D__ range for diagram spy diagram lists. -->
-			<IDSymbol value="0x2E00" name="cmdIdFreeFormCommandList"/>
-			<!-- Reserve 2E__ range for diagram spy diagram lists. -->
-			<IDSymbol value="0x2F00" name="cmdIdIncludeInGroupList"/>
-			<!-- Reserve 2F__ range for include in group list. -->
-			<IDSymbol value="0x3000" name="cmdIdDeleteFromGroupList"/>
-			<!-- Reserve 30__ range for delete from group list. -->
-			<IDSymbol value="0x3100" name="cmdIdDisableErrorList"/>
-			<!-- Reserve 31__ range for disable error list. -->
-			<IDSymbol value="0x3200" name="cmdIdEnableErrorList"/>
-			<!-- Reserve 32__ range for enable error list. -->
-			<IDSymbol value="0x3300" name="cmdIdSelectInGroupList"/>
-			<!-- Reserve 33__ range for include in group list. -->
-		</GuidSymbol>
-		<GuidSymbol name="guidFactEditorFactory" value="{EE99A954-82C4-4098-A2BD-5C75E3D138A7}"/>
-		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">
-			<IDSymbol value="0x0001" name="bmpIdShowNegativeVerbalization"/>
-			<IDSymbol value="0x0002" name="bmpIdShowPositiveVerbalization"/>
-			<IDSymbol value="0x0003" name="bmpIdVerbalizationHyperlinkToDiagramSpy"/>
-		</GuidSymbol>
-		<GuidSymbol name="guidORMToolWindowIcons" value="{EA662CED-462E-41EA-B0B5-42BF76C4B853}">
-			<!-- Keep in sync with PackageResources.cs -->
-			<!-- Note that the values here are the values from PackageResources.cs plus one. -->
-			<IDSymbol value="0x0001" name="bmpIdToolWindowVerbalizationBrowser"/>
-			<IDSymbol value="0x0002" name="bmpIdToolWindowReadingEditor"/>
-			<IDSymbol value="0x0003" name="bmpIdToolWindowReferenceModeEditor"/>
-			<IDSymbol value="0x0004" name="bmpIdToolWindowFactEditor"/>
-			<IDSymbol value="0x0005" name="bmpIdToolWindowModelBrowser"/>
-			<IDSymbol value="0x0006" name="bmpIdToolWindowNotesEditor"/>
-			<IDSymbol value="0x0007" name="bmpIdToolWindowPopulationEditor"/>
-			<IDSymbol value="0x0008" name="bmpIdToolWindowContextWindow"/>
-			<IDSymbol value="0x0009" name="bmpIdToolWindowDescriptionEditor"/>
-			<IDSymbol value="0x000A" name="bmpIdToolWindowDiagramSpy"/>
-		</GuidSymbol>
-		<GuidSymbol name="CMDSETID_StandardCommandSet97" value="Extern">
-			<IDSymbol value="Extern" name="cmdidDelete"/>
-			<IDSymbol value="Extern" name="cmdidPropertiesWindow"/>
-			<IDSymbol value="Extern" name="cmdidErrorListWindow"/>
-			<IDSymbol value="Extern" name="cmdidToolbox"/>
-		</GuidSymbol>
-		<GuidSymbol name="guidCommandIcons" value="{E590BC32-4910-429C-BFA7-24EB2FD63E0D}">
-			<IDSymbol value="0x0001" name="bmpIdDelete"/>
-			<IDSymbol value="0x0002" name="bmpIdCamera"/>
-			<IDSymbol value="0x0003" name="bmpIdUpArrow"/>
-			<IDSymbol value="0x0004" name="bmpIdDownArrow"/>
-			<IDSymbol value="0x0005" name="bmpIdLeftArrow"/>
-			<IDSymbol value="0x0006" name="bmpIdRightArrow"/>
-			<IDSymbol value="0x0007" name="bmpIdFactEditorAutoShapes"/>
-			<IDSymbol value="0x0008" name="bmpIdFactEditorDragShapes"/>
-		</GuidSymbol>
-		<!-- The XML values were obtained using the vsct.exe tool to decompile the CTMENU resource
-		extracted from the XML Editor localization assembly. I could not find them in the VSSDK. -->
-		<GuidSymbol name="guidXmlGroup" value="{061317B2-F992-435E-A23D-9EAD4B972ED5}">
-			<IDSymbol value="0x0101" name="IDM_XML_EDITOR"/>
-		</GuidSymbol>
-	</Symbols>
 </CommandTable>

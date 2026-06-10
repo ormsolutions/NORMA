@@ -1145,17 +1145,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			private void OnStatusLoadNORMASchemas(object sender, EventArgs e)
 			{
-				IMonitorSelectionService monitorSelection;
-				object selectionContainer;
-				bool inXmlEditor =
-					null != (monitorSelection = MonitorSelection) &&
-					null != (selectionContainer = monitorSelection.CurrentSelectionContainer) &&
-					selectionContainer.GetType().FullName == "Microsoft.XmlEditor.XmlDocumentProperties";
-
+				// This kicks in after the package has loaded. Before that the VisibilityConstraints in the
+				// .vsct file do the work of hiding the menu item.
+				bool enabled;
 				MenuCommand command = (MenuCommand)sender;
 				command.Supported = true;
-				command.Enabled = inXmlEditor;
-				command.Visible = inXmlEditor;
+				try
+				{
+					IMonitorSelectionService monitorSelection;
+					object selectionContainer;
+					enabled =
+						null != (monitorSelection = MonitorSelection) &&
+						null != (selectionContainer = monitorSelection.CurrentSelectionContainer) &&
+						selectionContainer.GetType().FullName == "Microsoft.XmlEditor.XmlDocumentProperties";
+				}
+				catch
+				{
+					// This is usually a timing issues with slow load/close of large files, but it should
+					// clear opening the model again and we have no idea if we should display this or not
+					// without complete information about the selection container.
+					enabled = false;
+				}
+
+				command.Enabled = enabled;
+				command.Visible = enabled;
 			}
 			/// <summary>
 			/// Menu handler

@@ -649,6 +649,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 
 		/// <summary>
+		/// See <see cref="ModelingDocView.Initialize"/>.
+		/// </summary>
+		protected override void Initialize()
+		{
+			base.Initialize();
+			IVsWindowFrame frame = this.Frame;
+			if (frame != null)
+			{
+				Guid commandSetId = typeof(ORMDesignerEditorFactory).GUID;
+				frame.SetGuidProperty((int)__VSFPROPID.VSFPROPID_InheritKeyBindings, ref commandSetId);
+			}
+		}
+
+		/// <summary>
 		/// Get the default context menu for this view
 		/// </summary>
 		protected override CommandID ContextMenuId

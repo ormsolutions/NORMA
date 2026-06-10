@@ -340,10 +340,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								using (RegistryKey formattersKey = rootKey.OpenSubKey(REGISTRYKEY_PLIX_FORMATTERS, RegistryKeyPermissionCheck.ReadSubTree))
 								{
-									string fileName = formattersKey.GetValue("cs", string.Empty, RegistryValueOptions.None) as string;
-									if (!string.IsNullOrEmpty(fileName))
+									if (formattersKey != null) // Sanity check. This is an installation prerequisite.
 									{
-										(fileNames ?? (fileNames = new List<string>())).Add(new System.IO.FileInfo(fileName).Directory.Parent.FullName + @"\$Schemas\PLiXCatalog.xml");
+										string fileName = formattersKey.GetValue("cs", string.Empty, RegistryValueOptions.None) as string;
+										if (!string.IsNullOrEmpty(fileName))
+										{
+											(fileNames ?? (fileNames = new List<string>())).Add(new System.IO.FileInfo(fileName).Directory.Parent.FullName + @"\$Schemas\PLiXCatalog.xml");
+										}
 									}
 								}
 							}

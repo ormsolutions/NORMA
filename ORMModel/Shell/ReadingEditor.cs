@@ -1331,7 +1331,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public static void OnStatusCommand(object sender, ReadingEditorCommands commandFlag)
 		{
 			MenuCommand command = (MenuCommand)sender;
-			command.Enabled = command.Visible = 0 != (commandFlag & ReadingEditor.myInstance.myVisibleCommands);
+			command.Enabled = command.Visible = 0 != (commandFlag & ReadingEditor.myInstance?.myVisibleCommands ?? 0);
 		}
 		/// <summary>
 		/// Call the Drop Down list of Reading Orders to Select a new reading entry
