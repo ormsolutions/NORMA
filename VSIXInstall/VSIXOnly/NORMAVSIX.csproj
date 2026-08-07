@@ -381,7 +381,7 @@
       <TargetPath>ORMSolutions.ORMArchitect.DatabaseImport.$(TargetVisualStudioShortProductName).dll</TargetPath>
     </Content>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" $(TargetVisualStudioNumericVersion) &lt; 15.0 Or ($(TargetVisualStudioNumericVersion) &lt; 17.0 And '$(VSIXPerUser)'=='1')">
     <!-- ModelingSDK Dependencies -->
     <Content Include="$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll">
       <Link>Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll</Link>

@@ -242,7 +242,7 @@
 					<CommandName>ORMDesignerContextMenu</CommandName>
 				</Strings>
 			</Menu>
-			<Menu Condition="Defined(VSIX_PER_USER)" guid="guidORMDesignerCommandSet" id="menuIdHiddenCommandContainer" priority="0xF000" type="ContextMenu">
+			<Menu Condition="Defined(VSIX_PER_USER)" guid="guidORMDesignerCommandSet" id="menuIdHiddenCommandContainer" priority="0xF000" type="Context">
 				<Parent guid="guidORMDesignerCommandSet" id="0"/>
 				<Strings>
 					<ButtonText>Parked custom placed commands</ButtonText>
