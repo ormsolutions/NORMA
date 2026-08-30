@@ -6,27 +6,20 @@ Windows Registry Editor Version 5.00
 "Class"="ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage"
 "CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.Core.VS2022.dll"
 [$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}]
-"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
-[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\Extensions]
-"orm"=dword:00000032
-[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}]
-"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
-[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\Extensions]
-"xml"=dword:00000010
-[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}]
 @="ORMDesignerEditorFactory"
 "DisplayName"="#108"
 "Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
 "EditorTrustLevel"=dword:00000001
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\Extensions]
+"orm"=dword:00000032
+"xml"=dword:00000010
 [$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\LogicalViews]
+"{7651a702-06e5-11d1-8ebd-00a0c90f26ea}"=""
 [$RootKey$\Editors\{ee99a954-82c4-4098-a2bd-5c75e3d138a7}]
 @="ORMFactEditorEditorFactory"
 "DisplayName"="#109"
 "Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
 "EditorTrustLevel"=dword:00000001
-[$RootKey$\Editors\{ee99a954-82c4-4098-a2bd-5c75e3d138a7}\LogicalViews]
-[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\LogicalViews]
-"{7651a702-06e5-11d1-8ebd-00a0c90f26ea}"=""
 [$RootKey$\Languages\Language Services\ORM Fact Editor]
 @="{c50cd300-9d1e-4ab0-b494-73fa23d14d2b}"
 "Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
@@ -178,18 +171,6 @@ Windows Registry Editor Version 5.00
 "Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
 [$RootKey$\ShellFileAssociations\.orm]
 "DefaultIconMoniker"="47b7db2f-a4a5-4ee8-92a3-74ab45abb40d:0"
-[$RootKey$\FontAndColors\Orm Designer]
-"Category"="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"
-"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
-[$RootKey$\FontAndColors\Orm Verbalizer]
-"Category"="{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"
-"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
-[$RootKey$\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}]
-@="ORM Designer"
-"Editor"="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"
-"Extension"="orm"
-"LogicalView"="7651A702-06E5-11D1-8EBD-00A0C90F26EA"
-"Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
 
 ;ORMCustomTool Registration
 [$RootKey$\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}]

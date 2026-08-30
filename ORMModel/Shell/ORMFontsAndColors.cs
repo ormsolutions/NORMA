@@ -381,24 +381,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#region IVsFontAndColorDefaultsProvider Implementation
 		private EditorColors myEditorColors;
 		private VerbalizerColors myVerbalizerColors;
-		private SettingsCategory CategoryFromDesignerColor(ORMDesignerColor designerColor, out int colorIndex)
+		private SettingsCategory SettingsFromDesignerColor(ORMDesignerColor designerColor, out int colorIndex)
 		{
 			SettingsCategory retVal = null;
 			colorIndex = (int)designerColor;
 			if (designerColor >= ORMDesignerColor.FirstEditorColor && designerColor <= ORMDesignerColor.LastEditorColor)
 			{
 				colorIndex -= (int)ORMDesignerColor.FirstEditorColor;
-				retVal = CategoryFromDesignerFont(ORMDesignerColorCategory.Editor);
+				retVal = SettingsFromColorCategory(ORMDesignerColorCategory.Editor);
 			}
 			else if (designerColor >= ORMDesignerColor.FirstVerbalizerColor && designerColor <= ORMDesignerColor.LastVerbalizerColor)
 			{
 				colorIndex -= (int)ORMDesignerColor.FirstVerbalizerColor;
-				retVal = CategoryFromDesignerFont(ORMDesignerColorCategory.Verbalizer);
+				retVal = SettingsFromColorCategory(ORMDesignerColorCategory.Verbalizer);
 			}
 			Debug.Assert(retVal != null); // Value out of range
 			return retVal;
 		}
-		private SettingsCategory CategoryFromDesignerFont(ORMDesignerColorCategory designerColorCategory)
+		private SettingsCategory SettingsFromColorCategory(ORMDesignerColorCategory designerColorCategory)
 		{
 			SettingsCategory retVal = null;
 			switch (designerColorCategory)
@@ -431,12 +431,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			if (rguidCategory == FontAndColorEditorCategory)
 			{
-				ppObj = CategoryFromDesignerFont(ORMDesignerColorCategory.Editor) as IVsFontAndColorDefaults;
+				ppObj = SettingsFromColorCategory(ORMDesignerColorCategory.Editor) as IVsFontAndColorDefaults;
 				return VSConstants.S_OK;
 			}
 			else if (rguidCategory == FontAndColorVerbalizerCategory)
 			{
-				ppObj = CategoryFromDesignerFont(ORMDesignerColorCategory.Verbalizer) as IVsFontAndColorDefaults;
+				ppObj = SettingsFromColorCategory(ORMDesignerColorCategory.Verbalizer) as IVsFontAndColorDefaults;
 				return VSConstants.S_OK;
 			}
 			ppObj = null;
@@ -481,17 +481,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myServiceProvider = serviceProvider;
 				myShell = null;
 				myStorage = null;
-				myStorageOpen = false;
+				myColorDefaults = null;
 				myUserForeColor = Color.Empty;
 				myUserBackColor = Color.Empty;
 				myCategoryGuid = categoryGuid;
 				myGetItemParam = new ColorableItemInfo[1];
 				myIndexConverter = indexConverter;
 			}
-			private bool myStorageOpen;
 			private IServiceProvider myServiceProvider;
 			private IVsUIShell2 myShell;
 			private IVsFontAndColorStorage myStorage;
+			// Fall back on the default if we can't get normal storage. This indicates a setup failure and means the color
+			// customizations will not be available, but this is a rarely used feature and we do not want to block the use
+			// of the designer and/or the verbalization browser because of it.
+			private IVsFontAndColorDefaults myColorDefaults;
 			private Color myUserForeColor;
 			private Color myUserBackColor;
 			private Guid myCategoryGuid;
@@ -502,9 +505,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			public void Close()
 			{
-				if (myStorage != null && myStorageOpen)
+				IVsFontAndColorStorage storage = myStorage;
+				if (storage != null)
 				{
-					myStorage.CloseCategory(); // Ignore hresult return
+					myStorage = null;
+					storage.CloseCategory(); // Ignore hresult return
 				}
 			}
 			/// <summary>
@@ -516,11 +521,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			public ColorItem GetColorItem(int itemIndex)
 			{
 				ColorItem retVal = new ColorItem();
-				EnsureStorage();
-				ColorableItemInfo item = new ColorableItemInfo();
-				myGetItemParam[0] = item;
-				ErrorHandler.ThrowOnFailure(myStorage.GetItem(myIndexConverter(itemIndex), myGetItemParam));
-				item = myGetItemParam[0];
+				ColorableItemInfo item;
+				if (EnsureStorage())
+				{
+					item = new ColorableItemInfo();
+					myGetItemParam[0] = item;
+					ErrorHandler.ThrowOnFailure(myStorage.GetItem(myIndexConverter(itemIndex), myGetItemParam));
+					item = myGetItemParam[0];
+				}
+				else
+				{
+					AllColorableItemInfo[] pItems = new AllColorableItemInfo[1];
+					myColorDefaults.GetItem(itemIndex, pItems);
+					item = pItems[0].Info;
+				}
 				retVal.FontStyle = (item.bFontFlagsValid != 0) ? GetFontStyleFromFontFlags((FONTFLAGS)item.dwFontFlags) : FontStyle.Regular;
 				retVal.ForeColor = (item.bForegroundValid != 0) ? TranslateColorValue(item.crForeground) : Color.Empty;
 				retVal.BackColor = (item.bBackgroundValid != 0) ? TranslateColorValue(item.crBackground) : Color.Empty;
@@ -546,35 +560,58 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="fontInfo">FontInfo structure (out)</param>
 			public void GetFont(out LOGFONTW logFont, out FontInfo fontInfo)
 			{
-				EnsureStorage();
-				LOGFONTW[] logFontParam = new LOGFONTW[1];
-				FontInfo[] fontInfoParam = new FontInfo[1];
-				ErrorHandler.ThrowOnFailure(myStorage.GetFont(logFontParam, fontInfoParam));
-				logFont = logFontParam[0];
-				fontInfo = fontInfoParam[0];
-			}
-			private void EnsureStorage()
-			{
-				if (!myStorageOpen)
+				if (EnsureStorage())
 				{
-					if (myStorage == null)
-					{
-						myStorage = (IVsFontAndColorStorage)myServiceProvider.GetService(typeof(IVsFontAndColorStorage));
-					}
-					ErrorHandler.ThrowOnFailure(myStorage.OpenCategory(ref myCategoryGuid, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS)));
-					myStorageOpen = true;
+					LOGFONTW[] logFontParam = new LOGFONTW[1];
+					FontInfo[] fontInfoParam = new FontInfo[1];
+					ErrorHandler.ThrowOnFailure(myStorage.GetFont(logFontParam, fontInfoParam));
+					logFont = logFontParam[0];
+					fontInfo = fontInfoParam[0];
 				}
+				else
+				{
+					FontInfo[] pInfo = new FontInfo[1];
+					myColorDefaults.GetFont(pInfo);
+					fontInfo = pInfo[0];
+					logFont = new LOGFONTW(); // This is not actually used. In practice a new font is created and managed for each request.
+				}
+			}
+			private bool EnsureStorage()
+			{
+				if (myStorage == null)
+				{
+					if (myColorDefaults != null)
+					{
+						return false;
+					}
+					myStorage = (IVsFontAndColorStorage)myServiceProvider.GetService(typeof(IVsFontAndColorStorage));
+					if (ErrorHandler.Failed(myStorage.OpenCategory(ref myCategoryGuid, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS))))
+					{
+						myStorage = null;
+						if (myCategoryGuid == FontAndColorEditorCategory)
+						{
+							myColorDefaults = new EditorColors(myServiceProvider);
+						}
+						else if (myCategoryGuid == FontAndColorVerbalizerCategory)
+						{
+							myColorDefaults = new VerbalizerColors(myServiceProvider);
+						}
+						return false;
+					}
+				}
+				return true;
 			}
 			private void EnsureUserTextColors()
 			{
 				if (myUserForeColor.IsEmpty)
 				{
-					if (myStorageOpen)
+					IVsFontAndColorStorage storage = myStorage;
+					if (storage != null)
 					{
-						myStorageOpen = false;
-						myStorage.CloseCategory(); // Ignore return
+						Close();
 					}
-					Debug.Assert(myStorage != null); // All paths to this lead through EnsureStore
+
+					myStorage = storage = (IVsFontAndColorStorage)myServiceProvider.GetService(typeof(IVsFontAndColorStorage));
 					Guid textCategory = TextEditorCategory;
 					ErrorHandler.ThrowOnFailure(myStorage.OpenCategory(ref textCategory, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS)));
 					try
@@ -588,7 +625,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					finally
 					{
-						myStorage.CloseCategory(); // Ignore return
+						Close();
 					}
 				}
 			}
@@ -724,7 +761,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <returns>A new font object</returns>
 		protected Font GetFont(ORMDesignerColorCategory fontCategory)
 		{
-			return CategoryFromDesignerFont(fontCategory).GetFont();
+			return SettingsFromColorCategory(fontCategory).GetFont();
 		}
 		Font IORMFontAndColorService.GetFont(ORMDesignerColorCategory fontCategory)
 		{
@@ -739,7 +776,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected Color GetForeColor(ORMDesignerColor colorIndex)
 		{
 			int index;
-			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).ForeColor;
+			return SettingsFromDesignerColor(colorIndex, out index).GetColorItem(index).ForeColor;
 		}
 		Color IORMFontAndColorService.GetForeColor(ORMDesignerColor colorIndex)
 		{
@@ -754,7 +791,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected Color GetBackColor(ORMDesignerColor colorIndex)
 		{
 			int index;
-			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).BackColor;
+			return SettingsFromDesignerColor(colorIndex, out index).GetColorItem(index).BackColor;
 		}
 		Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)
 		{
@@ -768,7 +805,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected FontStyle GetFontFlags(ORMDesignerColor colorIndex)
 		{
 			int index;
-			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).FontStyle;
+			return SettingsFromDesignerColor(colorIndex, out index).GetColorItem(index).FontStyle;
 		}
 		FontStyle IORMFontAndColorService.GetFontStyle(ORMDesignerColor colorIndex)
 		{
@@ -783,7 +820,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			#region Member Variables
 			private ColorItem[] myColors;
-			private LOGFONTW myLogFont;
 			private FontInfo myFontInfo;
 			private bool mySettingsChangePending; // Set to true on events, no effect until OnApply fires
 			private IServiceProvider myServiceProvider;
@@ -807,7 +843,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (myColors != null)
 				{
 					myColors = null;
-					myLogFont = new LOGFONTW();
 					myFontInfo = new FontInfo();
 				}
 			}
@@ -819,7 +854,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					int firstItem = FirstDefaultColorIndex;
 					int lastItem = LastDefaultColorIndex;
-					retriever.GetFont(out myLogFont, out myFontInfo);
+					LOGFONTW logFont;
+					retriever.GetFont(out logFont, out myFontInfo);
 					int itemCount = lastItem - firstItem + 1;
 					myColors = new ColorItem[itemCount];
 					for (int i = 0; i < itemCount; ++i)

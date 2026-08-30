@@ -19,12 +19,14 @@ REM For a non-per user install, the build process writes out schema files that a
 REM written by the installer. This can cause the installer to fail.
 IF "%VSIXPerUser%"=="1" (
 @echo "%~1" /rootSuffix:Exp /skuName:%~4 /skuVersion:%~5 /quiet /uninstall:%NORMAVsixIdentity% > "%scriptFile%"
+@echo start /wait "" "%VSDir%Common7\IDE\devenv.exe" /rootSuffix Exp /updateConfiguration /Command File.Exit >> "%scriptFile%"
 @echo "%~1" /rootSuffix:Exp /skuName:%~4 /skuVersion:%~5 "%RootDir%%~2%~3" >> "%scriptFile%"
 @echo DEL /F /Q "%VSIXExtensionsRootDir%\extensions.configurationchanged" >> "%scriptFile%"
 ) ELSE (
 @echo "%~1" /rootSuffix:Exp /skuName:%~4 /skuVersion:%~5 /quiet /uninstall:%NORMAVsixIdentity% > "%scriptFile%"
 @echo IF EXIST "%VSDir%Xml\Schemas\NORMACatalog.xml" DEL /F /Q "%VSDir%Xml\Schemas\NORMACatalog.xml" >> "%scriptFile%"
 @echo IF EXIST "%VSDir%Xml\Schemas\ORM Solutions\NORMA" RMDIR /S /Q "%VSDir%Xml\Schemas\ORM Solutions\NORMA" >> "%scriptFile%"
+@echo start /wait "" "%VSDir%Common7\IDE\devenv.exe" /rootSuffix Exp /updateConfiguration /Command File.Exit >> "%scriptFile%"
 @echo "%~1" /rootSuffix:Exp /skuName:%~4 /skuVersion:%~5 "%RootDir%%~2%~3" >> "%scriptFile%"
 @echo DEL /F /Q "%VSIXExtensionsRootDir%\extensions.configurationchanged" >> "%scriptFile%"
 )
