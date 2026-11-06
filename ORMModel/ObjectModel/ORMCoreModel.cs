@@ -225,9 +225,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementErrorStateChangedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-				classInfo = directory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
+				classInfo = directory.FindDomainRelationship(FactTypeHasFactInstance.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
-				classInfo = directory.FindDomainRelationship(ObjectTypeHasObjectTypeInstance.DomainClassId);
+				classInfo = directory.FindDomainRelationship(ObjectTypeHasObjectInstance.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
 				classInfo = directory.FindDomainRelationship(ValueConstraintHasValueRange.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardErrorPathDeletedHandler, action);
@@ -1499,8 +1499,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// Culture changes can affect value constraint shapes
 			Store store = Store;
-			ObjectTypeInstance.InvalidateNames(store);
-			FactTypeInstance.InvalidateNames(store);
+			ObjectInstance.InvalidateNames(store);
+			FactInstance.InvalidateNames(store);
 		}
 		void INotifyCultureChange.CultureChanged()
 		{
@@ -1573,8 +1573,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// These properties are used as signals only and should not affect the visibility of a transaction
 			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(FactType.NameChangedDomainPropertyId, null);
-			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(FactTypeInstance.NameChangedDomainPropertyId, null);
-			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ObjectTypeInstance.NameChangedDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(FactInstance.NameChangedDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ObjectInstance.NameChangedDomainPropertyId, null);
 			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ValueConstraint.TextChangedDomainPropertyId, null);
 			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(CardinalityConstraint.TextChangedDomainPropertyId, null);
 		}
@@ -1625,7 +1625,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IUpgradeMessageProvider Implementation
 	}
 	#region IModelErrorOwner Implementations
-	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath
+	partial class FactTypeHasFactInstance : IModelErrorOwnerPath
 	{
 		#region IModelErrorOwnerPath Implementation
 		/// <summary>
@@ -1647,7 +1647,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwnerPath Implementation
 	}
-	partial class ObjectTypeHasObjectTypeInstance : IModelErrorOwnerPath
+	partial class ObjectTypeHasObjectInstance : IModelErrorOwnerPath
 	{
 		#region IModelErrorOwnerPath Implementation
 		/// <summary>

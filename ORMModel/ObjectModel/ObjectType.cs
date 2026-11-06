@@ -2224,6 +2224,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			bag[key] = newHierarchyChange;
 		}
+		/// <summary>
+		/// Return the nearest single supertype with a preferred identifier, or if unidentified
+		/// a single top-most supertype.
+		/// </summary>
+		/// <returns></returns>
+		public ObjectType GetPreferredTerminalSupertype()
+		{
+			return this.FindIdentifyingSupertypeTerminus(false);
+		}
 		#endregion // Subtype and Supertype routines
 		#region ObjectTypeChangeRule
 		/// <summary>
@@ -5126,11 +5135,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// associated fact types and roles). If this is changed, Role.GetIndirectModelErrorOwnerLinkRoles
 				// will need to add a path to the played object type to correctly display
 				// these redirected errors.
-				foreach (IModelErrorOwner objectTypeInstance in this.ObjectTypeInstanceCollection)
+				foreach (IModelErrorOwner objectInstance in this.ObjectInstanceCollection)
 				{
-					foreach (ModelErrorUsage objectTypeInstanceError in objectTypeInstance.GetErrorCollection(startFilter))
+					foreach (ModelErrorUsage objectInstanceError in objectInstance.GetErrorCollection(startFilter))
 					{
-						yield return objectTypeInstanceError;
+						yield return objectInstanceError;
 					}
 				}
 
@@ -5173,13 +5182,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 
-				if (!this.IsValueType)
+				if (!this.IsValueType && this.PreferredIdentifier != null)
 				{
-					LinkedElementCollection<EntityTypeInstance> entityTypeInstances = this.EntityTypeInstanceCollection;
-					int entityTypeInstanceCount = entityTypeInstances.Count;
-					for (int i = 0; i < entityTypeInstanceCount; ++i)
+					LinkedElementCollection<ObjectInstance> entityInstances = this.ObjectInstanceCollection;
+					int entityInstanceCount = entityInstances.Count;
+					for (int i = 0; i < entityInstanceCount; ++i)
 					{
-						foreach (ModelErrorUsage usage in (entityTypeInstances[i] as IModelErrorOwner).GetErrorCollection(filter))
+						foreach (ModelErrorUsage usage in (entityInstances[i] as IModelErrorOwner).GetErrorCollection(filter))
 						{
 							yield return usage;
 						}
@@ -5523,11 +5532,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 				}
 			}
-			IList<ObjectTypeInstance> instances = ObjectTypeInstanceCollection;
+			IList<ObjectInstance> instances = ObjectInstanceCollection;
 			if (instances.Count != 0 &&
 				(filter == null || !filter.FilterChildVerbalizer(instances[0], sign).IsBlocked))
 			{
-				ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
+				ObjectInstanceVerbalizer verbalizer = ObjectInstanceVerbalizer.GetVerbalizer();
 				verbalizer.Initialize(this, instances);
 				yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 			}
@@ -5550,12 +5559,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 
 		#endregion
-		#region ObjectTypeInstanceVerbalizer class
-		private partial class ObjectTypeInstanceVerbalizer
+		#region ObjectInstanceVerbalizer class
+		private partial class ObjectInstanceVerbalizer
 		{
 			private ObjectType myParentObjectType;
-			private IList<ObjectTypeInstance> myInstances;
-			public void Initialize(ObjectType parentObjectType, IList<ObjectTypeInstance> instances)
+			private IList<ObjectInstance> myInstances;
+			public void Initialize(ObjectType parentObjectType, IList<ObjectInstance> instances)
 			{
 				myParentObjectType = parentObjectType;
 				myInstances = instances;
@@ -5569,7 +5578,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				get { return myParentObjectType; }
 			}
-			private IList<ObjectTypeInstance> Instances
+			private IList<ObjectInstance> Instances
 			{
 				get { return myInstances; }
 			}
@@ -5591,12 +5600,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			public override bool Equals(object obj)
 			{
-				ObjectTypeInstanceVerbalizer other;
-				return (null != (other = obj as ObjectTypeInstanceVerbalizer)) && other.myParentObjectType == myParentObjectType;
+				ObjectInstanceVerbalizer other;
+				return (null != (other = obj as ObjectInstanceVerbalizer)) && other.myParentObjectType == myParentObjectType;
 			}
 			#endregion // Equality Overrides
 		}
-		#endregion // ObjectTypeInstanceVerbalizer class
+		#endregion // ObjectInstanceVerbalizer class
 		#region NearestValueConstraintVerbalizer class
 		private partial class NearestValueConstraintVerbalizer
 		{

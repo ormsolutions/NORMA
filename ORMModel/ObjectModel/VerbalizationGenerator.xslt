@@ -417,7 +417,7 @@
 					<plx:local name="reading" dataTypeName="IReading"/>
 					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 					<plx:local name="instanceRoles" dataTypeName="LinkedElementCollection">
-						<plx:passTypeParam dataTypeName="FactTypeRoleInstance"/>
+						<plx:passTypeParam dataTypeName="RoleInstance"/>
 						<plx:initialize>
 							<plx:callInstance name="RoleInstanceCollection" type="property">
 								<plx:callObject>
@@ -438,9 +438,9 @@
 					<xsl:call-template name="PopulateBasicRoleReplacements">
 						<xsl:with-param name="IncludeInstanceData" select="true()"/>
 					</xsl:call-template>
-					<plx:local name="objectifyingInstance" dataTypeName="ObjectTypeInstance">
+					<plx:local name="objectifyingInstance" dataTypeName="ObjectInstance">
 						<plx:initialize>
-							<plx:inlineStatement dataTypeName="ObjectTypeInstance">
+							<plx:inlineStatement dataTypeName="ObjectInstance">
 								<plx:conditionalOperator>
 									<plx:condition>
 										<plx:callThis name="DisplayIdentifier" type="property"/>
@@ -5128,7 +5128,7 @@
 				</plx:assign>
 			</plx:fallbackBranch>
 			<xsl:if test="$IncludeInstanceData">
-				<plx:local dataTypeName="FactTypeRoleInstance" name="roleInstance">
+				<plx:local dataTypeName="RoleInstance" name="roleInstance">
 					<plx:initialize>
 						<plx:nullKeyword/>
 					</plx:initialize>
@@ -5156,7 +5156,7 @@
 							<plx:nameRef name="j"/>
 						</plx:increment>
 					</plx:beforeLoop>
-					<plx:local dataTypeName="FactTypeRoleInstance" name="testInstance">
+					<plx:local dataTypeName="RoleInstance" name="testInstance">
 						<plx:initialize>
 							<plx:callInstance name=".implied" type="arrayIndexer">
 								<plx:callObject>
@@ -5211,9 +5211,9 @@
 							<plx:nameRef name="instanceValue" type="local"/>
 						</plx:left>
 						<plx:right>
-							<plx:callStatic name="GetDisplayString" dataTypeName="ObjectTypeInstance">
+							<plx:callStatic name="GetDisplayString" dataTypeName="ObjectInstance">
 								<plx:passParam>
-									<plx:callInstance name="ObjectTypeInstance" type="property">
+									<plx:callInstance name="ObjectInstance" type="property">
 										<plx:callObject>
 											<plx:nameRef name="roleInstance" type="local"/>
 										</plx:callObject>
@@ -6939,7 +6939,7 @@
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callStatic name="GetDisplayString" dataTypeName="ObjectTypeInstance">
+				<plx:callStatic name="GetDisplayString" dataTypeName="ObjectInstance">
 					<plx:passParam>
 						<plx:nameRef name="objectifyingInstance"/>
 					</plx:passParam>
@@ -13411,7 +13411,7 @@
 							<plx:nameRef name="sbTemp"/>
 						</plx:callObject>
 						<plx:passParam>
-							<plx:callStatic name="GetDisplayString" dataTypeName="ObjectTypeInstance">
+							<plx:callStatic name="GetDisplayString" dataTypeName="ObjectInstance">
 								<plx:passParam>
 									<plx:callInstance name=".implied" type="arrayIndexer">
 										<plx:callObject>

@@ -793,19 +793,19 @@
 		<value>Entity type '{0}' in model '{1}' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</value>
 		<comment>An entity type must have a preferred reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
 	</data>
-	<data name="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.CompactMessage" xml:space="preserve">
+	<data name="ModelError.EntityInstance.ObjectifiedInstanceRequired.CompactMessage" xml:space="preserve">
 		<value>Objectified fact required for entity '{0}'.</value>
-		<comment>Text displayed when an objectified fact instance is not associated with an external identifying instance. Compact form. {0}=instance</comment>
+		<comment>Text displayed when an objectified fact is not associated with an external identifying instance. Compact form. {0}=instance</comment>
 	</data>
-	<data name="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message" xml:space="preserve">
-		<value>Objectified fact instance required for instance '{0}' of '{1}' in model '{2}'.</value>
-		<comment>Text displayed when an objectified fact instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</comment>
+	<data name="ModelError.EntityInstance.ObjectifiedInstanceRequired.Message" xml:space="preserve">
+		<value>Objectified fact required for instance '{0}' of '{1}' in model '{2}'.</value>
+		<comment>Text displayed when an objectified fact is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</comment>
 	</data>
-	<data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.CompactMessage" xml:space="preserve">
+	<data name="ModelError.EntityInstance.TooFewRoleInstances.CompactMessage" xml:space="preserve">
 		<value>Instance '{0}' has an incomplete identifier.</value>
 		<comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. Compact form {0}=instance.</comment>
 	</data>
-	<data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message" xml:space="preserve">
+	<data name="ModelError.EntityInstance.TooFewRoleInstances.Message" xml:space="preserve">
 		<value>'{0}' instance '{1}' in model '{2}' has an incomplete identifier.</value>
 		<comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=instance, {2}=model.</comment>
 	</data>
@@ -841,21 +841,21 @@
 		<value>At least one reading is required for {0}.</value>
 		<comment>Text displayed in the text of the FactTypeRequiresReadingError. {0}=fact type display context</comment>
 	</data>
-	<data name="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.CompactMessage" xml:space="preserve">
+	<data name="ModelError.FactInstance.ObjectifyingInstanceRequired.CompactMessage" xml:space="preserve">
 		<value>Identifier required for fact '{0}'.</value>
-		<comment>Text displayed when an external identifier is needed for a FactTypeInstance. Compact form. {0}=instance.</comment>
+		<comment>Text displayed when an external identifier is needed for a FactInstance. Compact form. {0}=instance.</comment>
 	</data>
-	<data name="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message" xml:space="preserve">
-		<value>Identifier required for fact instance '{0}' in model '{1}'.</value>
-		<comment>Text displayed when an external identifier is needed for a FactTypeInstance. {0}=instance {1}=model.</comment>
+	<data name="ModelError.FactInstance.ObjectifyingInstanceRequired.Message" xml:space="preserve">
+		<value>Identifier required for fact '{0}' in model '{1}'.</value>
+		<comment>Text displayed when an external identifier is needed for a FactInstance. {0}=instance {1}=model.</comment>
 	</data>
-	<data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.CompactMessage" xml:space="preserve">
+	<data name="ModelError.FactInstance.TooFewRoleInstances.CompactMessage" xml:space="preserve">
 		<value>Fact '{0}' has a partial population.</value>
-		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. Compact form. {0}=instance.</comment>
+		<comment>Text displayed when there aren't enough role instances to completely fill a single fact population row. Compact form. {0}=instance.</comment>
 	</data>
-	<data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message" xml:space="preserve">
-		<value>Fact instance '{0}' in model '{1}' has a partial population.</value>
-		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=instance {1}=model.</comment>
+	<data name="ModelError.FactInstance.TooFewRoleInstances.Message" xml:space="preserve">
+		<value>Fact '{0}' in model '{1}' has a partial population.</value>
+		<comment>Text displayed when there aren't enough fact role instances to completely fill a single fact population row. {0}=instance {1}=model.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateConstraintNames.CompactText" xml:space="preserve">
 		<value>Constraint name '{0}' is used by multiple constraints.</value>
@@ -1161,11 +1161,11 @@
 		<value>A data type must be specified for value type '{0}' in model '{1}'.</value>
 		<comment>Text displayed for an unspecified data type</comment>
 	</data>
-	<data name="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.CompactMessage" xml:space="preserve">
+	<data name="ModelError.ValueInstance.CompatibleValueInstance.CompactMessage" xml:space="preserve">
 		<value>Value '{0}' is not of the specified data type '{1}'.</value>
 		<comment>Text displayed when the data type of the sample data doesn't match it's set data type. Compact form. {0}=value, {1}=datatype.</comment>
 	</data>
-	<data name="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message" xml:space="preserve">
+	<data name="ModelError.ValueInstance.CompatibleValueInstance.Message" xml:space="preserve">
 		<value>Value '{0}' in the sample population for value type '{1}' in model '{2}' is not of the specified data type '{3}'.</value>
 		<comment>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model {3}=datatype.</comment>
 	</data>
@@ -1225,29 +1225,13 @@
 		<value>Automatic projection is unavailable because the role path does not contain the exactly one path node with a matching type (the same type or a subtype) for this role.</value>
 		<comment>Automatic projection is explicitly requested for a role in a derived fact type when a single node of a matching type does not exist in the role path.</comment>
 	</data>
-	<data name="ModelException.EntityTypeInstance.EnforceFixedRoleInstance" xml:space="preserve">
-		<value>The role players of an EntityTypeInstanceHasRoleInstance relationship cannot be changed.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to modify either role player on a EntityTypeInstanceHasRoleInstance relationship.</comment>
-	</data>
-	<data name="ModelException.EntityTypeInstance.InvalidEntityTypeParent" xml:space="preserve">
-		<value>Sample entity instances can only be hooked up to an entity.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to hook up a ValueType to an EntityTypeInstance.</comment>
-	</data>
-	<data name="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier" xml:space="preserve">
-		<value>All sample value roles must be part of the parent entity type's preferred identifier.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</comment>
-	</data>
-	<data name="ModelException.EntityTypeInstance.EnforceRoleUniqueness" xml:space="preserve">
-		<value>EntityTypeRoleInstance.Role must be unique in the EntityTypeRoleInstance collection.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to add an EntityTypeRoleInstance with a duplicate Role to the EntityTypeRoleInstance collection.</comment>
-	</data>
-	<data name="ModelException.EntityTypeSubtypeInstance.DuplicateSupertypeInstance" xml:space="preserve">
+	<data name="ModelException.EntitySubtypeInstance.DuplicateSupertypeInstance" xml:space="preserve">
 		<value>A supertype instance can only be associated with one subtype instance per subtype.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to attach an EntityTypeSubtypeInstance to an EntityTypeSubtype that is associated with another EntityTypeSubtypeInstance on the same subtype.</comment>
+		<comment xml:space="preserve">Exception message when an attempt is made to attach an EntitySubtypeInstance to an EntityTypeSubtype that is associated with another EntitySubtypeInstance on the same subtype.</comment>
 	</data>
-	<data name="ModelException.EntityTypeSubtypeInstance.EnforceInitialSubtypeInstance" xml:space="preserve">
+	<data name="ModelException.EntitySubtypeInstance.EnforceInitialSubtypeInstance" xml:space="preserve">
 		<value>Supertype instances cannot be detached from the initial subtype instance.</value>
-		<comment>Exception message when an attempt is made to modify the EntityTypeSubtypeInstance role of the EntityTypeSubtypeInstanceHasSupertypeInstance relationship</comment>
+		<comment>Exception message when an attempt is made to modify the EntitySubtypeInstance role of the EntitySubtypeInstanceHasSupertypeInstance relationship</comment>
 	</data>
 	<data name="ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit" xml:space="preserve">
 		<value>Roles on an ExclusionConstraint linked to a MandatoryConstraint with an ExclusiveOrCoupler should be edited indirectly via the MandatoryConstraint.</value>
@@ -1269,21 +1253,21 @@
 		<value>A role player cannot be the type objectifying the role's parent fact type.</value>
 		<comment>Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
 	</data>
-	<data name="ModelException.FactTypeInstance.DirectionPopulationOfImpliedInstances" xml:space="preserve">
+	<data name="ModelException.FactInstance.DirectionPopulationOfImpliedInstances" xml:space="preserve">
 		<value>Sample population of a FactType implied by an Objectification relationship or a SubtypeFact that provides the preferred identification path is implicit. Direct population is not allowed.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to add a FactTypeInstance to an implied population.</comment>
+		<comment xml:space="preserve">Exception message when an attempt is made to add a FactInstance to an implied population.</comment>
 	</data>
-	<data name="ModelException.FactTypeInstance.InconsistentRoleOwners" xml:space="preserve">
-		<value>All roles in a fact type instance must be owned by the same fact type.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</comment>
+	<data name="ModelException.FactInstance.InconsistentRoleOwners" xml:space="preserve">
+		<value>All roles in a fact must be part of the same fact type.</value>
+		<comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact.</comment>
 	</data>
-	<data name="ModelException.FactTypeInstance.EnforceFixedRoleInstance" xml:space="preserve">
-		<value>The role players of a FactTypeInstanceHasRoleInstance relationship cannot be changed.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to modify either role player on a FactTypeInstanceHasRoleInstance relationship.</comment>
+	<data name="ModelException.FactInstance.EnforceFixedRoleInstance" xml:space="preserve">
+		<value>The role players of a FactInstanceHasRoleInstance relationship cannot be changed.</value>
+		<comment xml:space="preserve">Exception message when an attempt is made to modify either role player on a FactInstanceHasRoleInstance relationship.</comment>
 	</data>
-	<data name="ModelException.FactTypeInstance.EnforceRoleUniqueness" xml:space="preserve">
-		<value>FactTypeRoleInstance.Role must be unique in the FactTypeRoleInstance collection.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to add a FactTypeRoleInstance with a duplicate Role to the FactTypeRoleInstance collection.</comment>
+	<data name="ModelException.FactInstance.EnforceRoleUniqueness" xml:space="preserve">
+		<value>RoleInstance.Role must be unique in the RoleInstance collection.</value>
+		<comment xml:space="preserve">Exception message when an attempt is made to add a RoleInstance with a duplicate Role to the RoleInstance collection.</comment>
 	</data>
 	<data name="ModelException.Model.DuplicateName.Text" xml:space="preserve">
 		<value>The name '{0}' is already in use in this model.</value>
@@ -1296,10 +1280,6 @@
 	<data name="ModelException.Objectification.DirectModificationOfImpliedElement" xml:space="preserve">
 		<value>FactTypes, role players, and the associated internal constraints implied by an Objectification relationship cannot be directly modified.</value>
 		<comment>Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
-	</data>
-	<data name="ModelException.ObjectificationInstance.DirectModificationOfImpliedEntityTypeInstance" xml:space="preserve">
-		<value>Entity instances implied through an objectification pattern are managed automatically via the corresponding FactTypeInstance collection.</value>
-		<comment>Exception message when an attempt is made to modify an EntityTypeInstance implied by a FactTypeInstance and an internal preferred identifier on the objectified FactType.</comment>
 	</data>
 	<data name="ModelException.ObjectificationInstance.IncompleteRolePlayers" xml:space="preserve">
 		<value>Creation or modification an ObjectificationInstance requires fully constructed endpoint instances with instance owners that match the Objectification FactType and EntityType.</value>
@@ -1329,9 +1309,9 @@
 		<value>An object type cannot be both a value type and an objectified fact type.</value>
 		<comment>Exception message when an attempt is made to make an object type both a value type and an objectified fact type.</comment>
 	</data>
-	<data name="ModelException.ObjectTypeInstance.EnforceFixedRolePlayers" xml:space="preserve">
-		<value>The role players of an ObjectTypeHasObjectTypeInstance relationship cannot be changed.</value>
-		<comment>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectTypeInstance relationship.</comment>
+	<data name="ModelException.ObjectInstance.EnforceFixedRolePlayers" xml:space="preserve">
+		<value>The role players of an ObjectTypeHasObjectInstance relationship cannot be changed.</value>
+		<comment>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectInstance relationship.</comment>
 	</data>
 	<data name="ModelException.Reading.DuplicateSignature.Text" xml:space="preserve">
 		<value>The reading signature '{0}' is already used in this model.</value>
@@ -1436,10 +1416,6 @@
 	<data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
 		<value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on binary fact types, and all opposite roles must be attached to the same entity type.</value>
 		<comment>Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
-	</data>
-	<data name="ModelException.ValueTypeInstance.InvalidValueTypeParent" xml:space="preserve">
-		<value>Sample value instances can only be hooked up to a value type.</value>
-		<comment xml:space="preserve">Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</comment>
 	</data>
 	<data name="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString" xml:space="preserve">
 		<value>{0}: {1}</value>
@@ -1601,9 +1577,21 @@
 		<value>Edit '{0}' Instance '{1}'</value>
 		<comment>Text used to describe the transaction when editing an instance.  {0}=ObjectType or FactType name, {1}=instance name</comment>
 	</data>
+	<data name="ModelSamplePopulationEditor.EditInstanceIdentityTagTransactionText" xml:space="preserve">
+		<value>Tag '{0}' Instance '{1}' as '{2}'</value>
+		<comment>Text used to describe the transaction when editing an instance by modifying its identity tag.  {0}=ObjectType or FactType name, {1}=instance name, {2}=new tag name</comment>
+	</data>
+	<data name="ModelSamplePopulationEditor.EditInstanceRemoveIdentityTagTransactionText" xml:space="preserve">
+		<value>Remove tag for '{0}' Instance '{1}'</value>
+		<comment>Text used to describe the transaction when editing an instance by modifying its identity tag.  {0}=ObjectType or FactType name, {1}=instance name</comment>
+	</data>
+	<data name="ModelSamplePopulationEditor.IdentityTag" xml:space="preserve">
+		<value>[Tag]</value>
+		<comment>Header text for the identity tag column in the sample population window.</comment>
+	</data>
 	<data name="ModelSamplePopulationEditor.NewInstanceTransactionText" xml:space="preserve">
 		<value>Add New '{0}' Instance</value>
-		<comment>Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.</comment>
+		<comment>Text used to describe the transaction when creating an instance. Replacement field 0 is the column name of the instance being created.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.NullSelection" xml:space="preserve">
 		<value>&lt;Unspecified&gt;</value>
@@ -1614,12 +1602,12 @@
 		<comment>Text to add to the sample population editor dropdown when the target data type supports auto generation.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText" xml:space="preserve">
-		<value>'{0}' is already associated with another fact instance.</value>
-		<comment>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another fact instance.</comment>
+		<value>'{0}' is already associated with another fact.</value>
+		<comment>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another fact.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.ObjectifyingIdentifierRelationshipConflictsExceptionText" xml:space="preserve">
-		<value>'{0}' cannot be used, existing relationships conflict with relationships on this fact instance.</value>
-		<comment>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing fact instance relationships.</comment>
+		<value>'{0}' cannot be used, existing relationships conflict with relationships on this fact.</value>
+		<comment>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing fact relationships.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RefuseDeleteRoleInstanceExceptionText" xml:space="preserve">
 		<value>This instance is implied by an implicit or explicit simple mandatory constraint.&#xd;&#xa;The identifying instance is a simple value with multiple uses, or is an entity instance.&#xd;&#xa;The instance cannot be deleted.</value>
@@ -1627,11 +1615,11 @@
 	</data>
 	<data name="ModelSamplePopulationEditor.RelateObjectifiedInstanceIdentifierTransactionText" xml:space="preserve">
 		<value>Relate '{0}' Identifier '{1}' to Objectified Instance '{2}'</value>
-		<comment>Text used to describe the transaction when an identifier is attached to an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</comment>
+		<comment>Text used to describe the transaction when an identifier is attached to an objectified fact . {0}=type name, {1}=identifier instance name, {2}=fact name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RemoveFactInstanceTransactionText" xml:space="preserve">
-		<value>Remove Fact Instance '{0}'</value>
-		<comment>Text used to describe the transaction when removing a fact instance. {0}=instance name.</comment>
+		<value>Remove Fact '{0}'</value>
+		<comment>Text used to describe the transaction when removing a fact. {0}=instance name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RemoveObjectInstanceReferenceTransactionText" xml:space="preserve">
 		<value>Remove Reference To '{0}' Instance '{1}' From '{2}'</value>
@@ -1647,7 +1635,7 @@
 	</data>
 	<data name="ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText" xml:space="preserve">
 		<value>Separate '{0}' Identifier '{1}' from Objectified Instance '{2}'</value>
-		<comment>Text used to describe the transaction when an identifier is separated from an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</comment>
+		<comment>Text used to describe the transaction when an identifier is separated from an objectified fact. {0}=type name, {1}=identifier instance name, {2}=fact name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.WindowTitle" xml:space="preserve">
 		<value>ORM Sample Population Editor</value>
@@ -2363,7 +2351,7 @@ The remaining replacements are trimmed for leading/trailing whitespace
 		<value><![CDATA[<html><body>
 <p>This upgraded version of NORMA contains a full rewrite of unary fact types to allow full control over negated (known false) states. This is done by automatically creating paired unary negation fact types in response to setting the <em>UnaryPattern</em> property. These changes are detailed on the @ORMSolutions YouTube channel in the <a href="https://youtu.be/5HZUjjDlFwg">Unary Negation Overview</a> video and a parallel (more detailed) whitepaper at <a href="https://ormsolutions.com/whitepapers/NORMAAugust2024Release_UnaryNegationEtc">NORMA August 2024 Release, Unary Negation, etc.</a>. Other changes are detailed in the August 2024 <a href="https://ormsolutions.com/NORMA/readme.htm">NORMA Readme</a>.</p>
 <p>After opening previous .ORM models you will see a new annotation (a black + sign in a light grey circle) on your unary fact types. This indicates that the UnaryPattern has been migrated to True/False/Unspecified, which matches how the previous unary fact types were mapped to the relational model. We recommend opening the Fact Types section in the ORM Model Browser and visually scanning for unary fact types. Select each unary fact type and verify that the pattern is correct. In many cases, you may find that that the <em>False</em> state is not actually needed. If you keep the negation, you also have the option of making the pair (positive and negative states) mandatory and adding default true/false values.</p>
-<p>There are other changes relating to generating extra <em>isSUBTYPE</em> changes for absorbed subtypes. Be sure to regenerate your (using <em>Run Custom Tool</em> on the .ORM file context menu in the Solution Explorer tool window) and carefully compare the changes. The relational DDL may change even without any unary fact type changes.</p>
+<p>There are other changes relating to generating extra <em>isSUBTYPE</em> changes for absorbed subtypes. Be sure to regenerate your model (using <em>Run Custom Tool</em> on the .ORM file context menu in the Solution Explorer tool window) and carefully compare the changes. The relational DDL may change even without any unary fact type changes.</p>
 <p>This message is shown once when NORMA is upgraded (unless the message is left unread). The user is responsible for determining the ORM files that need to be updated.</p>
 </body></html>]]></value>
 	</data>

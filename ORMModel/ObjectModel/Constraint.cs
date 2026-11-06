@@ -10503,6 +10503,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ModelElement element = e.ModelElement;
 			ObjectType valueType;
 			if (!element.IsDeleted &&
+				e.DomainProperty.Id == ObjectType.NameDomainPropertyId &&
 				(valueType = (ObjectType)element).IsValueType)
 			{
 				Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint, string defaultValue)

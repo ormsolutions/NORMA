@@ -161,9 +161,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						// This allows us to directly edit the implied population, including repair
 						// of population mandatory errors that display on the role of a fact type
 						// with an implied population.
-						FactTypeInstanceImplication implication;
+						FactInstanceImplication implication;
 						if (selectedObject is Role &&
-							(implication = new FactTypeInstanceImplication(testFactType)).IsImplied &&
+							(implication = new FactInstanceImplication(testFactType)).IsImplied &&
 							implication.ImpliedProxyRole == null &&
 							implication.IdentifyingSupertype != null)
 						{
@@ -269,7 +269,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public bool AutoCorrectMandatoryError(PopulationMandatoryError error, Role autoCorrectRole, FactType autoCorrectFactType)
 		{
 			bool retVal = false;
-			ObjectTypeInstance objectInstance = error.ObjectTypeInstance;
+			ObjectInstance objectInstance = error.ObjectInstance;
 			LinkedElementCollection<Role> constraintRoles = error.MandatoryConstraint.RoleCollection;
 
 			// If the constraint has multiple roles, then we need to pick
@@ -334,7 +334,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else if (!(correctSelection = SelectedFactType == autoCorrectFactType))
 				{
-					FactTypeInstanceImplication implication = new FactTypeInstanceImplication(autoCorrectFactType);
+					FactInstanceImplication implication = new FactInstanceImplication(autoCorrectFactType);
 					correctSelection = implication.IsImplied && implication.ImpliedProxyRole == null && implication.IdentifyingSupertype != null && implication.ImpliedByEntityType == SelectedEntityType;
 				}
 				if (correctSelection)
@@ -396,7 +396,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public bool ActivateModelError(ModelError error)
 		{
 			bool retVal = false;
-			if (error is ObjectifiedInstanceRequiredError || error is TooFewFactTypeRoleInstancesError || error is TooFewEntityTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError || error is CompatibleValueTypeInstanceValueError)
+			if (error is ObjectifiedInstanceRequiredError || error is TooFewFactRoleInstancesError || error is TooFewEntityRoleInstancesError || error is ObjectifyingInstanceRequiredError || error is CompatibleValueInstanceError)
 			{
 				Show();
 				retVal = myEditor.ActivateModelError(error);

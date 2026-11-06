@@ -6631,67 +6631,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region ObjectTypeInstanceCollection opposite domain role accessor
+		#region ObjectInstanceCollection opposite domain role accessor
 		
 		/// <summary>
-		/// Gets a list of ObjectTypeInstanceCollection.
+		/// Gets a list of ObjectInstanceCollection.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectType
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ObjectTypeInstance> ObjectTypeInstanceCollection
+		public virtual DslModeling::LinkedElementCollection<ObjectInstance> ObjectInstanceCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectTypeInstance>, ObjectTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeDomainRoleId);
-			}
-		}
-		#endregion
-		#region EntityTypeInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of EntityTypeInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityType
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<EntityTypeInstance> EntityTypeInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeInstance>, EntityTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeDomainRoleId);
-			}
-		}
-		#endregion
-		#region EntityTypeSubtypeInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of EntityTypeSubtypeInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtype
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance> EntityTypeSubtypeInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance>, EntityTypeSubtypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId);
-			}
-		}
-		#endregion
-		#region ValueTypeInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of ValueTypeInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueType
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ValueTypeInstance> ValueTypeInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<ValueTypeInstance>, ValueTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId);
+				return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectInstance>, ObjectInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -8071,19 +8023,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region FactTypeInstanceCollection opposite domain role accessor
+		#region FactInstanceCollection opposite domain role accessor
 		
 		/// <summary>
-		/// Gets a list of FactTypeInstanceCollection.
+		/// Gets a list of FactInstanceCollection.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactType
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactType
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<FactTypeInstance> FactTypeInstanceCollection
+		public virtual DslModeling::LinkedElementCollection<FactInstance> FactInstanceCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<FactTypeInstance>, FactTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeDomainRoleId);
+				return GetRoleCollection<DslModeling::LinkedElementCollection<FactInstance>, FactInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -9620,34 +9572,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region ObjectTypeInstanceCollection opposite domain role accessor
+		#region ObjectInstanceCollection opposite domain role accessor
 		
 		/// <summary>
-		/// Gets a list of ObjectTypeInstanceCollection.
+		/// Gets a list of ObjectInstanceCollection.
 		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.Role
 		/// </summary>
-		public virtual DslModeling::ReadOnlyLinkedElementCollection<ObjectTypeInstance> ObjectTypeInstanceCollection
+		public virtual DslModeling::LinkedElementCollection<ObjectInstance> ObjectInstanceCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<ObjectTypeInstance>, ObjectTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.RoleDomainRoleId);
-			}
-		}
-		#endregion
-		#region EntityInstancesForUnary opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of EntityInstancesForUnary.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRole
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<EntityTypeInstance> EntityInstancesForUnary
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeInstance>, EntityTypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRoleDomainRoleId);
+				return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectInstance>, ObjectInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.RoleDomainRoleId);
 			}
 		}
 		#endregion
@@ -20328,44 +20264,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
 		/// </summary>
-		public virtual DslModeling::ReadOnlyLinkedElementCollection<RoleInstance> RoleInstanceCollection
+		public virtual DslModeling::LinkedElementCollection<RoleInstance> RoleInstanceCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<RoleInstance>, RoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
-			}
-		}
-		#endregion
-		#region EntityTypeRoleInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of EntityTypeRoleInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<EntityTypeRoleInstance> EntityTypeRoleInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeRoleInstance>, EntityTypeRoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
-			}
-		}
-		#endregion
-		#region FactTypeRoleInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of FactTypeRoleInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<FactTypeRoleInstance> FactTypeRoleInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<FactTypeRoleInstance>, FactTypeRoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+				return GetRoleCollection<DslModeling::LinkedElementCollection<RoleInstance>, RoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
 			}
 		}
 		#endregion
@@ -20763,23 +20667,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region ObjectTypeInstance opposite domain role accessor
+		#region ObjectInstance opposite domain role accessor
 		/// <summary>
-		/// Gets or sets ObjectTypeInstance.
+		/// Gets or sets ObjectInstance.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.PopulationMandatoryError
 		/// </summary>
-		public virtual ObjectTypeInstance ObjectTypeInstance
+		public virtual ObjectInstance ObjectInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId) as ObjectTypeInstance;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId) as ObjectInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -20823,29 +20727,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region ObjectTypeInstance opposite domain role accessor
+		#region ObjectInstance opposite domain role accessor
 		/// <summary>
-		/// Gets or sets ObjectTypeInstance.
+		/// Gets or sets ObjectInstance.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredError
 		/// </summary>
-		public virtual ObjectTypeInstance ObjectTypeInstance
+		public virtual ObjectInstance ObjectInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId) as ObjectTypeInstance;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId) as ObjectInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId, this);
 					}
 				}
 				else
@@ -20895,29 +20799,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region FactTypeInstance opposite domain role accessor
+		#region FactInstance opposite domain role accessor
 		/// <summary>
-		/// Gets or sets FactTypeInstance.
+		/// Gets or sets FactInstance.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredError
 		/// </summary>
-		public virtual FactTypeInstance FactTypeInstance
+		public virtual FactInstance FactInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId) as FactTypeInstance;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId) as FactInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId, this);
 					}
 				}
 				else
@@ -30664,28 +30568,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainClass ObjectTypeInstance
+	/// DomainClass ObjectInstance
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {Name})")]
 	[DslModeling::DomainObjectId("870f5ee8-0859-4710-a526-66635f4efd14")]
-	public abstract partial class ObjectTypeInstance : ORMModelElement
+	public partial class ObjectInstance : ORMModelElement
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// ObjectTypeInstance domain class Id.
+		/// ObjectInstance domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x870f5ee8, 0x0859, 0x4710, 0xa5, 0x26, 0x66, 0x63, 0x5f, 0x4e, 0xfd, 0x14);
 		/// <summary>
-		/// Constructor.
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ObjectInstance(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		protected ObjectTypeInstance(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ObjectInstance(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
@@ -30704,8 +30618,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// FactType population prepended by an external identifier reference.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/Name.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Name.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue("")]
 		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::ElementName]
@@ -30725,19 +30639,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the ObjectTypeInstance.Name domain property.
+		/// Value handler for the ObjectInstance.Name domain property.
 		/// </summary>
-		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectTypeInstance, global::System.String>
+		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectInstance, global::System.String>
 		{
 			private NamePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ObjectTypeInstance.Name domain property value handler.
+			/// Gets the singleton instance of the ObjectInstance.Name domain property value handler.
 			/// </summary>
 			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ObjectTypeInstance.Name domain property.
+			/// Gets the Id of the ObjectInstance.Name domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -30753,7 +30667,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ObjectTypeInstance element)
+			public override sealed global::System.String GetValue(ObjectInstance element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for Name because its Kind is
@@ -30767,7 +30681,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ObjectTypeInstance element, global::System.String newValue)
+			public override sealed void SetValue(ObjectInstance element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -30799,8 +30713,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// associated &lt;see cref="ObjectType"/&gt;.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/IdentifierName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/IdentifierName.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentifierName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentifierName.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue("")]
 		[global::System.ComponentModel.ReadOnly(true)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -30819,19 +30733,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the ObjectTypeInstance.IdentifierName domain property.
+		/// Value handler for the ObjectInstance.IdentifierName domain property.
 		/// </summary>
-		internal sealed partial class IdentifierNamePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectTypeInstance, global::System.String>
+		internal sealed partial class IdentifierNamePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectInstance, global::System.String>
 		{
 			private IdentifierNamePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ObjectTypeInstance.IdentifierName domain property value handler.
+			/// Gets the singleton instance of the ObjectInstance.IdentifierName domain property value handler.
 			/// </summary>
 			public static readonly IdentifierNamePropertyHandler Instance = new IdentifierNamePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ObjectTypeInstance.IdentifierName domain property.
+			/// Gets the Id of the ObjectInstance.IdentifierName domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -30847,7 +30761,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ObjectTypeInstance element)
+			public override sealed global::System.String GetValue(ObjectInstance element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for IdentifierName because its Kind is
@@ -30861,7 +30775,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ObjectTypeInstance element, global::System.String newValue)
+			public override sealed void SetValue(ObjectInstance element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -30890,10 +30804,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets or sets the value of NameChanged domain property.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.NameChanged
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance.NameChanged
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/NameChanged.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/NameChanged.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/NameChanged.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/NameChanged.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("f1e0bb68-f047-464b-b17b-6ba865144bb4")]
@@ -30911,19 +30825,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the ObjectTypeInstance.NameChanged domain property.
+		/// Value handler for the ObjectInstance.NameChanged domain property.
 		/// </summary>
-		internal sealed partial class NameChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectTypeInstance, global::System.Int64>
+		internal sealed partial class NameChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectInstance, global::System.Int64>
 		{
 			private NameChangedPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ObjectTypeInstance.NameChanged domain property value handler.
+			/// Gets the singleton instance of the ObjectInstance.NameChanged domain property value handler.
 			/// </summary>
 			public static readonly NameChangedPropertyHandler Instance = new NameChangedPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ObjectTypeInstance.NameChanged domain property.
+			/// Gets the Id of the ObjectInstance.NameChanged domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -30939,7 +30853,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.Int64 GetValue(ObjectTypeInstance element)
+			public override sealed global::System.Int64 GetValue(ObjectInstance element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for NameChanged because its Kind is
@@ -30953,7 +30867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ObjectTypeInstance element, global::System.Int64 newValue)
+			public override sealed void SetValue(ObjectInstance element, global::System.Int64 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -30972,384 +30886,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region PopulationMandatoryErrorCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of PopulationMandatoryErrorCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstance
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<PopulationMandatoryError> PopulationMandatoryErrorCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<PopulationMandatoryError>, PopulationMandatoryError>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
-			}
-		}
-		#endregion
-		#region ObjectType opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ObjectType.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance
-		/// </summary>
-		public virtual ObjectType ObjectType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId) as ObjectType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region RoleCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of RoleCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectTypeInstance
-		/// </summary>
-		public virtual DslModeling::ReadOnlyLinkedElementCollection<Role> RoleCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<Role>, Role>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectTypeInstanceDomainRoleId);
-			}
-		}
-		#endregion
-		#region ObjectifiedInstance opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ObjectifiedInstance.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifyingInstance
-		/// </summary>
-		public virtual FactTypeInstance ObjectifiedInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifyingInstanceDomainRoleId) as FactTypeInstance;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifyingInstanceDomainRoleId, value);
-				}
-			}
-		}
-		#endregion
-		#region ObjectifiedInstanceRequiredError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ObjectifiedInstanceRequiredError.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstance
-		/// </summary>
-		public virtual ObjectifiedInstanceRequiredError ObjectifiedInstanceRequiredError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId) as ObjectifiedInstanceRequiredError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId, value);
-				}
-			}
-		}
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainClass EntityTypeInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("5f8b6a1c-3020-41c9-97b4-e54a3e98b368")]
-	public partial class EntityTypeInstance : ObjectTypeInstance
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// EntityTypeInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5f8b6a1c, 0x3020, 0x41c9, 0x97, 0xb4, 0xe5, 0x4a, 0x3e, 0x98, 0xb3, 0x68);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public EntityTypeInstance(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public EntityTypeInstance(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-		#region EntityType opposite domain role accessor
-		/// <summary>
-		/// Gets or sets EntityType.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstance
-		/// </summary>
-		public virtual ObjectType EntityType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId) as ObjectType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region RoleInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of RoleInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstance
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<EntityTypeRoleInstance> RoleInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeRoleInstance>, EntityTypeRoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstanceDomainRoleId);
-			}
-		}
-		#endregion
-		#region UnaryRoleInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of UnaryRoleInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstance
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<Role> UnaryRoleInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstanceDomainRoleId);
-			}
-		}
-		#endregion
-		#region EntityTypeSubtypeInstanceCollection opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of EntityTypeSubtypeInstanceCollection.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstance
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance> EntityTypeSubtypeInstanceCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance>, EntityTypeSubtypeInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId);
-			}
-		}
-		#endregion
-		#region TooFewEntityTypeRoleInstancesError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets TooFewEntityTypeRoleInstancesError.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstance
-		/// </summary>
-		public virtual TooFewEntityTypeRoleInstancesError TooFewEntityTypeRoleInstancesError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId) as TooFewEntityTypeRoleInstancesError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::ModelElement existingSource;
-				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId)))
-				{
-					if (existingSource != value)
-					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId, this);
-					}
-				}
-				else
-				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId, value);
-				}
-			}
-		}
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainClass EntityTypeSubtypeInstance
-	/// An instance of an EntityType Subtype that uses the preferred identification
-	/// scheme of a parent.
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("19f9a457-d2c6-4d0a-b767-542df80feff3")]
-	public partial class EntityTypeSubtypeInstance : ObjectTypeInstance
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// EntityTypeSubtypeInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x19f9a457, 0xd2c6, 0x4d0a, 0xb7, 0x67, 0x54, 0x2d, 0xf8, 0x0f, 0xef, 0xf3);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public EntityTypeSubtypeInstance(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public EntityTypeSubtypeInstance(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-		#region EntityTypeSubtype opposite domain role accessor
-		/// <summary>
-		/// Gets or sets EntityTypeSubtype.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstance
-		/// </summary>
-		public virtual ObjectType EntityTypeSubtype
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId) as ObjectType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region SupertypeInstance opposite domain role accessor
-		/// <summary>
-		/// Gets or sets SupertypeInstance.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstance
-		/// </summary>
-		public virtual EntityTypeInstance SupertypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId) as EntityTypeInstance;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainClass ValueTypeInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("bcc1483d-cbb8-4e4f-903b-16224768f6f5")]
-	public partial class ValueTypeInstance : ObjectTypeInstance
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// ValueTypeInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xbcc1483d, 0xcbb8, 0x4e4f, 0x90, 0x3b, 0x16, 0x22, 0x47, 0x68, 0xf6, 0xf5);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ValueTypeInstance(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ValueTypeInstance(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
 		#region Value domain property code
 		
 		/// <summary>
@@ -31366,8 +30902,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Gets or sets the value of Value domain property.
 		/// The instance value.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/Value.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/Value.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Value.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Value.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue("")]
 		[DslModeling::DomainObjectId("1d0232ba-a92f-4b81-99bf-2a2a44821030")]
 		public global::System.String Value
@@ -31384,19 +30920,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the ValueTypeInstance.Value domain property.
+		/// Value handler for the ObjectInstance.Value domain property.
 		/// </summary>
-		internal sealed partial class ValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueTypeInstance, global::System.String>
+		internal sealed partial class ValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectInstance, global::System.String>
 		{
 			private ValuePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ValueTypeInstance.Value domain property value handler.
+			/// Gets the singleton instance of the ObjectInstance.Value domain property value handler.
 			/// </summary>
 			public static readonly ValuePropertyHandler Instance = new ValuePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ValueTypeInstance.Value domain property.
+			/// Gets the Id of the ObjectInstance.Value domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -31412,7 +30948,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ValueTypeInstance element)
+			public override sealed global::System.String GetValue(ObjectInstance element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.valuePropertyStorage;
@@ -31423,7 +30959,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ValueTypeInstance element, global::System.String newValue)
+			public override sealed void SetValue(ObjectInstance element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -31454,8 +30990,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Gets or sets the value of InvariantValue domain property.
 		/// The culture-invariant form of the value property.
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/InvariantValue.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/InvariantValue.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue("")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("724b068b-5dfe-4c0c-b21c-b48fdc7a1752")]
@@ -31473,19 +31009,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the ValueTypeInstance.InvariantValue domain property.
+		/// Value handler for the ObjectInstance.InvariantValue domain property.
 		/// </summary>
-		internal sealed partial class InvariantValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueTypeInstance, global::System.String>
+		internal sealed partial class InvariantValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectInstance, global::System.String>
 		{
 			private InvariantValuePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ValueTypeInstance.InvariantValue domain property value handler.
+			/// Gets the singleton instance of the ObjectInstance.InvariantValue domain property value handler.
 			/// </summary>
 			public static readonly InvariantValuePropertyHandler Instance = new InvariantValuePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ValueTypeInstance.InvariantValue domain property.
+			/// Gets the Id of the ObjectInstance.InvariantValue domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -31501,7 +31037,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ValueTypeInstance element)
+			public override sealed global::System.String GetValue(ObjectInstance element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.invariantValuePropertyStorage;
@@ -31512,7 +31048,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ValueTypeInstance element, global::System.String newValue)
+			public override sealed void SetValue(ObjectInstance element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -31527,54 +31063,396 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region ValueType opposite domain role accessor
+		#region IdentityTag domain property code
+		
 		/// <summary>
-		/// Gets or sets ValueType.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstance
+		/// IdentityTag domain property Id.
 		/// </summary>
-		public virtual ObjectType ValueType
+		public static readonly global::System.Guid IdentityTagDomainPropertyId = new global::System.Guid(0xeebc2f09, 0xa82b, 0x475b, 0x8a, 0x0e, 0xf6, 0xb5, 0xab, 0xcc, 0x45, 0x7f);
+		
+		/// <summary>
+		/// Storage for IdentityTag
+		/// </summary>
+		private global::System.String identityTagPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of IdentityTag domain property.
+		/// A friendly name used to distinguish entities when a preferred identifier has not
+		/// been determined.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentityTag.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentityTag.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainObjectId("eebc2f09-a82b-475b-8a0e-f6b5abcc457f")]
+		public global::System.String IdentityTag
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId) as ObjectType;
+				return identityTagPropertyStorage;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, value);
+				IdentityTagPropertyHandler.Instance.SetValue(this, value);
 			}
 		}
-		#endregion
-		#region CompatibleValueTypeInstanceValueError opposite domain role accessor
 		/// <summary>
-		/// Gets or sets CompatibleValueTypeInstanceValueError.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstance
+		/// Value handler for the ObjectInstance.IdentityTag domain property.
 		/// </summary>
-		public virtual CompatibleValueTypeInstanceValueError CompatibleValueTypeInstanceValueError
+		internal sealed partial class IdentityTagPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectInstance, global::System.String>
+		{
+			private IdentityTagPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectInstance.IdentityTag domain property value handler.
+			/// </summary>
+			public static readonly IdentityTagPropertyHandler Instance = new IdentityTagPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectInstance.IdentityTag domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IdentityTagDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectInstance element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.identityTagPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectInstance element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.identityTagPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region AutoIdentityTag domain property code
+		
+		/// <summary>
+		/// AutoIdentityTag domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid AutoIdentityTagDomainPropertyId = new global::System.Guid(0x33e08e16, 0xbff0, 0x4543, 0xbf, 0x7e, 0x37, 0x78, 0xac, 0xb8, 0x3e, 0xff);
+		
+		/// <summary>
+		/// Storage for AutoIdentityTag
+		/// </summary>
+		private global::System.Boolean autoIdentityTagPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of AutoIdentityTag domain property.
+		/// The tag identifying this instance was auto-generated during an identifier
+		/// transition.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/AutoIdentityTag.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/AutoIdentityTag.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("33e08e16-bff0-4543-bf7e-3778acb83eff")]
+		public global::System.Boolean AutoIdentityTag
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId) as CompatibleValueTypeInstanceValueError;
+				return autoIdentityTagPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				AutoIdentityTagPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectInstance.AutoIdentityTag domain property.
+		/// </summary>
+		internal sealed partial class AutoIdentityTagPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectInstance, global::System.Boolean>
+		{
+			private AutoIdentityTagPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectInstance.AutoIdentityTag domain property value handler.
+			/// </summary>
+			public static readonly AutoIdentityTagPropertyHandler Instance = new AutoIdentityTagPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectInstance.AutoIdentityTag domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return AutoIdentityTagDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ObjectInstance element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.autoIdentityTagPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectInstance element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.autoIdentityTagPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PopulationMandatoryErrorCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of PopulationMandatoryErrorCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.ObjectInstance
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<PopulationMandatoryError> PopulationMandatoryErrorCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<PopulationMandatoryError>, PopulationMandatoryError>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.ObjectInstanceDomainRoleId);
+			}
+		}
+		#endregion
+		#region ObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectInstance
+		/// </summary>
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectInstanceDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectInstanceDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region RoleCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of RoleCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectInstance
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<Role> RoleCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectInstanceDomainRoleId);
+			}
+		}
+		#endregion
+		#region SupertypeInstance opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SupertypeInstance.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstance
+		/// </summary>
+		public virtual ObjectInstance SupertypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstanceDomainRoleId) as ObjectInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstanceDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region EntitySubtypeInstanceCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of EntitySubtypeInstanceCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstance
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ObjectInstance> EntitySubtypeInstanceCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectInstance>, ObjectInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId);
+			}
+		}
+		#endregion
+		#region ObjectifiedInstance opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectifiedInstance.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifyingInstance
+		/// </summary>
+		public virtual FactInstance ObjectifiedInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifyingInstanceDomainRoleId) as FactInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifyingInstanceDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region ObjectifiedInstanceRequiredError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectifiedInstanceRequiredError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstance
+		/// </summary>
+		public virtual ObjectifiedInstanceRequiredError ObjectifiedInstanceRequiredError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId) as ObjectifiedInstanceRequiredError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region TooFewEntityRoleInstancesError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets TooFewEntityRoleInstancesError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstance
+		/// </summary>
+		public virtual TooFewEntityRoleInstancesError TooFewEntityRoleInstancesError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId) as TooFewEntityRoleInstancesError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region CompatibleValueInstanceError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CompatibleValueInstanceError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstance
+		/// </summary>
+		public virtual CompatibleValueInstanceError CompatibleValueInstanceError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId) as CompatibleValueInstanceError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId, value);
 				}
 			}
 		}
@@ -31584,20 +31462,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainClass FactTypeInstance
+	/// DomainClass FactInstance
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {Name})")]
 	[DslModeling::DomainObjectId("78458a27-fdb1-4b6e-9d0a-d42dd8d5aead")]
-	public partial class FactTypeInstance : ORMModelElement
+	public partial class FactInstance : ORMModelElement
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// FactTypeInstance domain class Id.
+		/// FactInstance domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x78458a27, 0xfdb1, 0x4b6e, 0x9d, 0x0a, 0xd4, 0x2d, 0xd8, 0xd5, 0xae, 0xad);
 		/// <summary>
@@ -31605,7 +31483,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public FactTypeInstance(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactInstance(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
 		{
 		}
@@ -31615,7 +31493,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public FactTypeInstance(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactInstance(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
@@ -31629,11 +31507,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.Name
+		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.Name
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/Name.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/Name.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.DefaultValue("")]
 		[global::System.ComponentModel.Browsable(false)]
 		[global::System.ComponentModel.ReadOnly(true)]
@@ -31654,19 +31532,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the FactTypeInstance.Name domain property.
+		/// Value handler for the FactInstance.Name domain property.
 		/// </summary>
-		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeInstance, global::System.String>
+		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<FactInstance, global::System.String>
 		{
 			private NamePropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the FactTypeInstance.Name domain property value handler.
+			/// Gets the singleton instance of the FactInstance.Name domain property value handler.
 			/// </summary>
 			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the FactTypeInstance.Name domain property.
+			/// Gets the Id of the FactInstance.Name domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -31682,7 +31560,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(FactTypeInstance element)
+			public override sealed global::System.String GetValue(FactInstance element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for Name because its Kind is
@@ -31696,7 +31574,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(FactTypeInstance element, global::System.String newValue)
+			public override sealed void SetValue(FactInstance element, global::System.String newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -31725,10 +31603,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets or sets the value of NameChanged domain property.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.NameChanged
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.NameChanged
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/NameChanged.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/NameChanged.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/NameChanged.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/NameChanged.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("f510e9db-71bf-4d70-b36a-4c6bf17d0917")]
@@ -31746,19 +31624,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the FactTypeInstance.NameChanged domain property.
+		/// Value handler for the FactInstance.NameChanged domain property.
 		/// </summary>
-		internal sealed partial class NameChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeInstance, global::System.Int64>
+		internal sealed partial class NameChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<FactInstance, global::System.Int64>
 		{
 			private NameChangedPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the FactTypeInstance.NameChanged domain property value handler.
+			/// Gets the singleton instance of the FactInstance.NameChanged domain property value handler.
 			/// </summary>
 			public static readonly NameChangedPropertyHandler Instance = new NameChangedPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the FactTypeInstance.NameChanged domain property.
+			/// Gets the Id of the FactInstance.NameChanged domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -31774,7 +31652,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed global::System.Int64 GetValue(FactTypeInstance element)
+			public override sealed global::System.Int64 GetValue(FactInstance element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for NameChanged because its Kind is
@@ -31788,7 +31666,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(FactTypeInstance element, global::System.Int64 newValue)
+			public override sealed void SetValue(FactInstance element, global::System.Int64 newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -31811,19 +31689,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets or sets FactType.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactInstance
 		/// </summary>
 		public virtual FactType FactType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId) as FactType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactInstanceDomainRoleId) as FactType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactInstanceDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -31832,14 +31710,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets a list of RoleInstanceCollection.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.FactInstance
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<FactTypeRoleInstance> RoleInstanceCollection
+		public virtual DslModeling::LinkedElementCollection<RoleInstance> RoleInstanceCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<FactTypeRoleInstance>, FactTypeRoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.FactTypeInstanceDomainRoleId);
+				return GetRoleCollection<DslModeling::LinkedElementCollection<RoleInstance>, RoleInstance>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.FactInstanceDomainRoleId);
 			}
 		}
 		#endregion
@@ -31849,12 +31727,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstance
 		/// </summary>
-		public virtual ObjectTypeInstance ObjectifyingInstance
+		public virtual ObjectInstance ObjectifyingInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId) as ObjectTypeInstance;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId) as ObjectInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -31879,14 +31757,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets or sets ObjectifyingInstanceRequiredError.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstance
 		/// </summary>
 		public virtual ObjectifyingInstanceRequiredError ObjectifyingInstanceRequiredError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId) as ObjectifyingInstanceRequiredError;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId) as ObjectifyingInstanceRequiredError;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -31902,39 +31780,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId, value);
 				}
 			}
 		}
 		#endregion
-		#region TooFewFactTypeRoleInstancesError opposite domain role accessor
+		#region TooFewFactRoleInstancesError opposite domain role accessor
 		/// <summary>
-		/// Gets or sets TooFewFactTypeRoleInstancesError.
+		/// Gets or sets TooFewFactRoleInstancesError.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstance
 		/// </summary>
-		public virtual TooFewFactTypeRoleInstancesError TooFewFactTypeRoleInstancesError
+		public virtual TooFewFactRoleInstancesError TooFewFactRoleInstancesError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId) as TooFewFactTypeRoleInstancesError;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId) as TooFewFactRoleInstancesError;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesErrorDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesErrorDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId, value);
 				}
 			}
 		}
@@ -31944,19 +31822,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainClass TooFewEntityTypeRoleInstancesError
+	/// DomainClass TooFewEntityRoleInstancesError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityTypeRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityTypeRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("39f447ea-8ea4-483d-b791-848ad27544e2")]
-	public partial class TooFewEntityTypeRoleInstancesError : ModelError
+	public partial class TooFewEntityRoleInstancesError : ModelError
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// TooFewEntityTypeRoleInstancesError domain class Id.
+		/// TooFewEntityRoleInstancesError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x39f447ea, 0x8ea4, 0x483d, 0xb7, 0x91, 0x84, 0x8a, 0xd2, 0x75, 0x44, 0xe2);
 		/// <summary>
@@ -31964,7 +31842,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public TooFewEntityTypeRoleInstancesError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public TooFewEntityRoleInstancesError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
 		{
 		}
@@ -31974,39 +31852,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public TooFewEntityTypeRoleInstancesError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public TooFewEntityRoleInstancesError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
 		#endregion
-		#region EntityTypeInstance opposite domain role accessor
+		#region EntityInstance opposite domain role accessor
 		/// <summary>
-		/// Gets or sets EntityTypeInstance.
+		/// Gets or sets EntityInstance.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesError
 		/// </summary>
-		public virtual EntityTypeInstance EntityTypeInstance
+		public virtual ObjectInstance EntityInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId) as EntityTypeInstance;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesErrorDomainRoleId) as ObjectInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesErrorDomainRoleId, value);
 				}
 			}
 		}
@@ -32016,19 +31894,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainClass TooFewFactTypeRoleInstancesError
+	/// DomainClass TooFewFactRoleInstancesError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactTypeRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactTypeRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("be44dd74-2569-421e-8e1b-abcdc7810c92")]
-	public partial class TooFewFactTypeRoleInstancesError : ModelError
+	public partial class TooFewFactRoleInstancesError : ModelError
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// TooFewFactTypeRoleInstancesError domain class Id.
+		/// TooFewFactRoleInstancesError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xbe44dd74, 0x2569, 0x421e, 0x8e, 0x1b, 0xab, 0xcd, 0xc7, 0x81, 0x0c, 0x92);
 		/// <summary>
@@ -32036,7 +31914,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public TooFewFactTypeRoleInstancesError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public TooFewFactRoleInstancesError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
 		{
 		}
@@ -32046,39 +31924,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public TooFewFactTypeRoleInstancesError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public TooFewFactRoleInstancesError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
 		#endregion
-		#region FactTypeInstance opposite domain role accessor
+		#region FactInstance opposite domain role accessor
 		/// <summary>
-		/// Gets or sets FactTypeInstance.
+		/// Gets or sets FactInstance.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesError
 		/// </summary>
-		public virtual FactTypeInstance FactTypeInstance
+		public virtual FactInstance FactInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId) as FactTypeInstance;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesErrorDomainRoleId) as FactInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesErrorDomainRoleId, value);
 				}
 			}
 		}
@@ -32088,19 +31966,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainClass CompatibleValueTypeInstanceValueError
+	/// DomainClass CompatibleValueInstanceError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueTypeInstanceValueError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueTypeInstanceValueError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueInstanceError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueInstanceError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("d5b21137-31e8-444d-bcd2-58bbf442b4c0")]
-	public partial class CompatibleValueTypeInstanceValueError : ModelError
+	public partial class CompatibleValueInstanceError : ModelError
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// CompatibleValueTypeInstanceValueError domain class Id.
+		/// CompatibleValueInstanceError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd5b21137, 0x31e8, 0x444d, 0xbc, 0xd2, 0x58, 0xbb, 0xf4, 0x42, 0xb4, 0xc0);
 		/// <summary>
@@ -32108,7 +31986,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public CompatibleValueTypeInstanceValueError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public CompatibleValueInstanceError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
 		{
 		}
@@ -32118,39 +31996,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public CompatibleValueTypeInstanceValueError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public CompatibleValueInstanceError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
 		#endregion
-		#region ValueTypeInstance opposite domain role accessor
+		#region ValueInstance opposite domain role accessor
 		/// <summary>
-		/// Gets or sets ValueTypeInstance.
+		/// Gets or sets ValueInstance.
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceError
 		/// </summary>
-		public virtual ValueTypeInstance ValueTypeInstance
+		public virtual ObjectInstance ValueInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId) as ValueTypeInstance;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceErrorDomainRoleId) as ObjectInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
 				DslModeling::ModelElement existingSource;
 				if (null != value &&
-					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId)))
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId)))
 				{
 					if (existingSource != value)
 					{
-						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId, this);
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId, this);
 					}
 				}
 				else
 				{
-					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId, value);
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceErrorDomainRoleId, value);
 				}
 			}
 		}

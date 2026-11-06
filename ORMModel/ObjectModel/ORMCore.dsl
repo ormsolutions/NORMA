@@ -2553,7 +2553,7 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="ObjectTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="870F5EE8-0859-4710-A526-66635F4EFD14" DisplayName="ObjectTypeInstance" InheritanceModifier="Abstract" Description="">
+		<DomainClass Name="ObjectInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="870F5EE8-0859-4710-A526-66635F4EFD14" DisplayName="ObjectInstance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -2570,7 +2570,7 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="IdentifierName" DefaultValue="" DisplayName="IdentifierName" Id="AC967572-B11E-41C9-A206-CC2424E5E17E" Kind="CustomStorage"  GetterAccessModifier="Public" SetterAccessModifier="Private" Description="An ordered tuple of values for this instance, ignores objectification of the associated &lt;see cref=&quot;ObjectType&quot;/&gt;.">
+				<DomainProperty Name="IdentifierName" DefaultValue="" DisplayName="IdentifierName" Id="AC967572-B11E-41C9-A206-CC2424E5E17E" Kind="CustomStorage" GetterAccessModifier="Public" SetterAccessModifier="Private" Description="An ordered tuple of values for this instance, ignores objectification of the associated &lt;see cref=&quot;ObjectType&quot;/&gt;.">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
@@ -2587,26 +2587,6 @@
 						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
-			</Properties>
-		</DomainClass>
-
-		<DomainClass Name="EntityTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5F8B6A1C-3020-41C9-97B4-E54A3E98B368" DisplayName="EntityTypeInstance" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="ObjectTypeInstance"/>
-			</BaseClass>
-		</DomainClass>
-
-		<DomainClass Name="EntityTypeSubtypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="19F9A457-D2C6-4D0A-B767-542DF80FEFF3" DisplayName="EntityTypeSubtypeInstance" Description="An instance of an EntityType Subtype that uses the preferred identification scheme of a parent.">
-			<BaseClass>
-				<DomainClassMoniker Name="ObjectTypeInstance"/>
-			</BaseClass>
-		</DomainClass>
-
-		<DomainClass Name="ValueTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BCC1483D-CBB8-4E4F-903B-16224768F6F5" DisplayName="ValueTypeInstance" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="ObjectTypeInstance"/>
-			</BaseClass>
-			<Properties>
 				<DomainProperty Name="Value" DefaultValue="" DisplayName="Value" Id="1D0232BA-A92F-4B81-99BF-2A2A44821030" Description="The instance value.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
@@ -2617,11 +2597,20 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="IdentityTag" DefaultValue="" DisplayName="IdentityTag" Id="EEBC2F09-A82B-475B-8A0E-F6B5ABCC457F" Description="A friendly name used to distinguish entities when a preferred identifier has not been determined.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="AutoIdentityTag" DefaultValue="" DisplayName="AutoIdentityTag" Id="" IsBrowsable="false" Description="The tag identifying this instance was auto-generated during an identifier transition.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
-
 		</DomainClass>
 
-		<DomainClass Name="FactTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78458A27-FDB1-4B6E-9D0A-D42DD8D5AEAD" DisplayName="FactTypeInstance" Description="">
+		<DomainClass Name="FactInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="78458A27-FDB1-4B6E-9D0A-D42DD8D5AEAD" DisplayName="FactInstance" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -2646,19 +2635,19 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="TooFewEntityTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="39F447EA-8EA4-483D-B791-848AD27544E2" DisplayName="Incomplete Sample Population to Identify EntityType" Description="">
+		<DomainClass Name="TooFewEntityRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="39F447EA-8EA4-483D-B791-848AD27544E2" DisplayName="Incomplete Sample Population to Identify EntityType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="TooFewFactTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BE44DD74-2569-421E-8E1B-ABCDC7810C92" DisplayName="Incomplete FactType Sample Population" Description="">
+		<DomainClass Name="TooFewFactRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BE44DD74-2569-421E-8E1B-ABCDC7810C92" DisplayName="Incomplete FactType Sample Population" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="CompatibleValueTypeInstanceValueError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D5B21137-31E8-444D-BCD2-58BBF442B4C0" DisplayName="Sample Population Value Invalid for DataType" Description="">
+		<DomainClass Name="CompatibleValueInstanceError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D5B21137-31E8-444D-BCD2-58BBF442B4C0" DisplayName="Sample Population Value Invalid for DataType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -3661,7 +3650,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleInstanceHasPopulationUniquenessError" InheritanceModifier="Abstract" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5DBE50CD-A939-484D-9B96-700CB6CC7813">
+		<DomainRelationship Name="RoleInstanceHasPopulationUniquenessError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="5DBE50CD-A939-484D-9B96-700CB6CC7813">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
@@ -3674,46 +3663,6 @@
 			</Source>
 			<Target>
 				<DomainRole Name="PopulationUniquenessError" PropertyName="RoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PopulationUniquenessError" Id="3AE1D857-C7E7-4053-A461-3EB965666F2C">
-					<RolePlayer>
-						<DomainClassMoniker Name="PopulationUniquenessError"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="EntityTypeRoleInstanceHasPopulationUniquenessError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="04312BEF-EA3E-4525-9A1A-903497EFDAF7">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="RoleInstanceHasPopulationUniquenessError"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="RoleInstance" PropertyName="PopulationUniquenessError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="F3EF0D4D-5F76-4DAB-BB6E-B475E7DDA70D">
-					<RolePlayer>
-						<DomainRelationshipMoniker Name="EntityTypeRoleInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="PopulationUniquenessError" PropertyName="EntityTypeRoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PopulationUniquenessError" Id="0F8036BA-33AA-48BC-B058-1BD990A6E264">
-					<RolePlayer>
-						<DomainClassMoniker Name="PopulationUniquenessError"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="FactTypeRoleInstanceHasPopulationUniquenessError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A483FDFE-53EF-4352-8D97-986BF2C0E8E7">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="RoleInstanceHasPopulationUniquenessError"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="RoleInstance" PropertyName="PopulationUniquenessError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="14BF8CDB-9685-49AC-A7B9-696A72D6D97C">
-					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeRoleInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="PopulationUniquenessError" PropertyName="FactTypeRoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PopulationUniquenessError" Id="F00366B7-A23F-48D7-8977-0078EB2CD7B6">
 					<RolePlayer>
 						<DomainClassMoniker Name="PopulationUniquenessError"/>
 					</RolePlayer>
@@ -3881,16 +3830,16 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeInstanceHasPopulationMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E0F0750E-47CB-44C6-B348-A9A1101475A7">
+		<DomainRelationship Name="ObjectInstanceHasPopulationMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E0F0750E-47CB-44C6-B348-A9A1101475A7">
 			<Source>
-				<DomainRole Name="ObjectTypeInstance" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="4A0B3B52-B579-4E07-972C-59F4F98BEAC3">
+				<DomainRole Name="ObjectInstance" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectInstance" Id="4A0B3B52-B579-4E07-972C-59F4F98BEAC3">
 					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="PopulationMandatoryError" PropertyName="ObjectTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PopulationMandatoryError" Id="078CF514-9F4C-44C2-9173-3A5F3EDFAFCB">
+				<DomainRole Name="PopulationMandatoryError" PropertyName="ObjectInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PopulationMandatoryError" Id="078CF514-9F4C-44C2-9173-3A5F3EDFAFCB">
 					<RolePlayer>
 						<DomainClassMoniker Name="PopulationMandatoryError"/>
 					</RolePlayer>
@@ -5599,243 +5548,98 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasObjectTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="F4343CDE-A3C7-402C-AF81-CBDC8F092C9E">
+		<DomainRelationship Name="ObjectTypeHasObjectInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="F4343CDE-A3C7-402C-AF81-CBDC8F092C9E">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="4BA85C9E-99D0-4F84-864B-B8E8C305B2C4">
+				<DomainRole Name="ObjectType" PropertyName="ObjectInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="4BA85C9E-99D0-4F84-864B-B8E8C305B2C4">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ObjectTypeInstance" PropertyName="ObjectType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="9DFF9164-DC48-46B8-A244-7B9FAB8598DB">
+				<DomainRole Name="ObjectInstance" PropertyName="ObjectType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectInstance" Id="9DFF9164-DC48-46B8-A244-7B9FAB8598DB">
 					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeHasEntityTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="0F9CDA9D-88CE-47DD-B202-93B1455E08C3">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="EntityType" PropertyName="EntityTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityType" Id="5A293722-12D6-4B42-A336-3281A404E785">
-					<RolePlayer>
-						<DomainClassMoniker Name="ObjectType"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="EntityTypeInstance" PropertyName="EntityType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EntityTypeInstance" Id="DCB0CB77-842D-4B69-950D-26C3C4509B6D">
-					<RolePlayer>
-						<DomainClassMoniker Name="EntityTypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="EntityTypeSubtypeHasEntityTypeSubtypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="7E059BD5-D4A9-48A1-88FA-6459B77D7E23">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="EntityTypeSubtype" PropertyName="EntityTypeSubtypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeSubtype" Id="0DADE527-8AD4-4234-9EF4-F78FD7D360C2">
-					<RolePlayer>
-						<DomainClassMoniker Name="ObjectType"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="EntityTypeSubtypeInstance" PropertyName="EntityTypeSubtype" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EntityTypeSubtypeInstance" Id="9A51223A-5D4D-4E86-BB76-A49F28DEE71D">
-					<RolePlayer>
-						<DomainClassMoniker Name="EntityTypeSubtypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="ValueTypeHasValueTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="E01B8EC6-F3BF-4963-92DB-7E352501C04D">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ObjectTypeHasObjectTypeInstance"/>
-			</BaseRelationship>
-			<Source>
-				<DomainRole Name="ValueType" PropertyName="ValueTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="9558751B-6AE9-424D-8B62-66B71F01A207">
-					<RolePlayer>
-						<DomainClassMoniker Name="ObjectType"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="ValueTypeInstance" PropertyName="ValueType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueTypeInstance" Id="17DA5F43-028E-4F9B-8E91-105DBF10AEE3">
-					<RolePlayer>
-						<DomainClassMoniker Name="ValueTypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="RoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="true" InheritanceModifier="Abstract" Id="D3162C67-DE52-4B0D-802F-824E6ED5B74B">
+		<DomainRelationship Name="RoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="true" Id="D3162C67-DE52-4B0D-802F-824E6ED5B74B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Role" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="C927C1AA-2E2D-41CF-9D87-0A69A63F3E99">
+				<DomainRole Name="Role" PropertyName="ObjectInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="C927C1AA-2E2D-41CF-9D87-0A69A63F3E99">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ObjectTypeInstance" PropertyName="RoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="7E4356D2-05D5-4194-BDBC-F5B96D22E419">
+				<DomainRole Name="ObjectInstance" PropertyName="RoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectInstance" Id="7E4356D2-05D5-4194-BDBC-F5B96D22E419">
 					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="true" Id="5DB3A2C1-C5DE-4C4A-97C2-E09CE11537D3">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="RoleInstance"/>
-			</BaseRelationship>
-			<!-- The Source and Target elements here should be redundant.
-				 Tracking issue at http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=164144
-				 If this issue is fixed up, go back to using CreateAsRelationshipName tags in the ORMCore.SerializationExtensions.xml
-				 file corresponding to this relationship (reverse changes for changeset 706). -->
+		<DomainRelationship Name="EntitySubtypeInstanceHasSupertypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F11D087F-8B5B-4AC9-9B67-F967D5A5013E">
 			<Source>
-				<DomainRole Name="Role" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Role" Id="26D1BF78-FC2B-4D86-BDB3-C185FE443DAC">
+				<DomainRole Name="EntitySubtypeInstance" PropertyName="SupertypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EntitySubtypeInstance" Id="23F6CEC5-E016-40AD-A4D2-B684A9CA0231">
 					<RolePlayer>
-						<DomainClassMoniker Name="Role"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ObjectTypeInstance" PropertyName="RoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ObjectTypeInstance" Id="B24B068F-BF3C-4D4A-9569-0305F9B5AA7E">
+				<DomainRole Name="SupertypeInstance" PropertyName="EntitySubtypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SupertypeInstance" Id="BC2CD94C-D143-4676-8036-D4094A61B970">
 					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" AllowsDuplicates="true" Id="FC7C9715-6886-46C2-A7A0-3BFD95CD0766">
-			<BaseRelationship>
-				<DomainRelationshipMoniker Name="RoleInstance"/>
-			</BaseRelationship>
-			<!-- The Source and Target elements here should be redundant.
-				 Tracking issue at http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=164144
-				 If this issue is fixed up, go back to using CreateAsRelationshipName tags in the ORMCore.SerializationExtensions.xml
-				 file corresponding to this relationship (reverse changes for changeset 706). -->
-			<Source>
-				<DomainRole Name="Role" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Role" Id="BDEB47FC-DD0A-4509-9269-2EA5C196F68F">
-					<RolePlayer>
-						<DomainClassMoniker Name="Role"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="ObjectTypeInstance" PropertyName="RoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ObjectTypeInstance" Id="2CDE9B25-54C8-42B6-A54F-61210345E9A0">
-					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="EntityTypeInstanceHasRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="05C64570-96FE-42C4-B9A6-F88D3BDC7C1F">
+		<DomainRelationship Name="FactTypeHasFactInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="5283F53B-0DA8-4E4C-8A31-BDE51057E7EF">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="EntityTypeInstance" PropertyName="RoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeInstance" Id="9997C315-3B87-4533-A45F-C62AFA68647C">
-					<RolePlayer>
-						<DomainClassMoniker Name="EntityTypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="RoleInstance" PropertyName="EntityTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="C85848F4-9E45-44E7-AAAF-5E632CAB6D09">
-					<RolePlayer>
-						<DomainRelationshipMoniker Name="EntityTypeRoleInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="EntityTypeInstancePopulatesUnaryRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="FB8F62AE-53D4-42CF-AEA1-3CB8AC9F28FE">
-			<Source>
-				<DomainRole Name="EntityTypeInstance" PropertyName="UnaryRoleInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeInstance" Id="2F088568-CEEB-4B68-8C48-DFBCD59F31C4">
-					<RolePlayer>
-						<DomainClassMoniker Name="EntityTypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="UnaryRole" PropertyName="EntityInstancesForUnary" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="UnaryRole" Id="099F0092-23BA-48FC-A47B-CA419F979CCB">
-					<RolePlayer>
-						<DomainClassMoniker Name="Role"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="EntityTypeSubtypeInstanceHasSupertypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="F11D087F-8B5B-4AC9-9B67-F967D5A5013E">
-			<Source>
-				<DomainRole Name="EntityTypeSubtypeInstance" PropertyName="SupertypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="EntityTypeSubtypeInstance" Id="23F6CEC5-E016-40AD-A4D2-B684A9CA0231">
-					<RolePlayer>
-						<DomainClassMoniker Name="EntityTypeSubtypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Source>
-			<Target>
-				<DomainRole Name="SupertypeInstance" PropertyName="EntityTypeSubtypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SupertypeInstance" Id="BC2CD94C-D143-4676-8036-D4094A61B970">
-					<RolePlayer>
-						<DomainClassMoniker Name="EntityTypeInstance"/>
-					</RolePlayer>
-				</DomainRole>
-			</Target>
-		</DomainRelationship>
-
-		<DomainRelationship Name="FactTypeHasFactTypeInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="5283F53B-0DA8-4E4C-8A31-BDE51057E7EF">
-			<!--<BaseRelationship>
-				<DomainRelationshipMoniker Name="ORMElementLink"/>
-			</BaseRelationship>-->
-			<Source>
-				<DomainRole Name="FactType" PropertyName="FactTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="4690EAFF-667B-4AA6-93ED-9487E109C7BC">
+				<DomainRole Name="FactType" PropertyName="FactInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="4690EAFF-667B-4AA6-93ED-9487E109C7BC">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="FactTypeInstance" PropertyName="FactType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FactTypeInstance" Id="E2961A99-6EB7-45D5-9EAF-EC1C39FD026B">
+				<DomainRole Name="FactInstance" PropertyName="FactType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FactInstance" Id="E2961A99-6EB7-45D5-9EAF-EC1C39FD026B">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeInstance"/>
+						<DomainClassMoniker Name="FactInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeInstanceHasRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="F92B6EC1-8055-4502-BD5D-763D1F5B6849">
+		<DomainRelationship Name="FactInstanceHasRoleInstance" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="false" Id="F92B6EC1-8055-4502-BD5D-763D1F5B6849">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactTypeInstance" PropertyName="RoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeInstance" Id="82D54796-2A6C-48C4-8B9C-36CE1914D3BC">
+				<DomainRole Name="FactInstance" PropertyName="RoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactInstance" Id="82D54796-2A6C-48C4-8B9C-36CE1914D3BC">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeInstance"/>
+						<DomainClassMoniker Name="FactInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="RoleInstance" PropertyName="FactTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="AF7B2192-02B6-49A6-A6D7-67A608124BB6">
+				<DomainRole Name="RoleInstance" PropertyName="FactInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="AF7B2192-02B6-49A6-A6D7-67A608124BB6">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeRoleInstance"/>
+						<DomainRelationshipMoniker Name="RoleInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -5845,14 +5649,14 @@
 			<Source>
 				<DomainRole Name="ObjectifiedInstance" PropertyName="ObjectifyingInstance" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectifiedInstance" Id="819A1D2B-125B-4193-A336-25BE03EA91C3">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeInstance"/>
+						<DomainClassMoniker Name="FactInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<DomainRole Name="ObjectifyingInstance" PropertyName="ObjectifiedInstance" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectifyingInstance" Id="326E4CF1-6A1F-41AB-B535-3A016CE59C7F">
 					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -5863,14 +5667,14 @@
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="FactTypeInstance" PropertyName="ObjectifyingInstanceRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeInstance" Id="2D8DD1D8-131E-44E7-9030-E16CC588A0AA">
+				<DomainRole Name="FactInstance" PropertyName="ObjectifyingInstanceRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactInstance" Id="2D8DD1D8-131E-44E7-9030-E16CC588A0AA">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeInstance"/>
+						<DomainClassMoniker Name="FactInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ObjectifyingInstanceRequiredError" PropertyName="FactTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectifyingInstanceRequiredError" Id="0B7C29C1-067C-4986-9CB6-E485CD091C28">
+				<DomainRole Name="ObjectifyingInstanceRequiredError" PropertyName="FactInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectifyingInstanceRequiredError" Id="0B7C29C1-067C-4986-9CB6-E485CD091C28">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectifyingInstanceRequiredError"/>
 					</RolePlayer>
@@ -5883,14 +5687,14 @@
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="ObjectTypeInstance" PropertyName="ObjectifiedInstanceRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="07CBB8AE-FC88-4F02-905E-2CE7258EBA46">
+				<DomainRole Name="ObjectInstance" PropertyName="ObjectifiedInstanceRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectInstance" Id="07CBB8AE-FC88-4F02-905E-2CE7258EBA46">
 					<RolePlayer>
-						<DomainClassMoniker Name="ObjectTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ObjectifiedInstanceRequiredError" PropertyName="ObjectTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectifiedInstanceRequiredError" Id="B8B818DD-B4F9-4641-992F-C405C45C6F8F">
+				<DomainRole Name="ObjectifiedInstanceRequiredError" PropertyName="ObjectInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectifiedInstanceRequiredError" Id="B8B818DD-B4F9-4641-992F-C405C45C6F8F">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectifiedInstanceRequiredError"/>
 					</RolePlayer>
@@ -5898,61 +5702,61 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="922E0A74-9384-4D25-9C38-E0AB709FEE8F">
+		<DomainRelationship Name="EntityHasTooFewIdentifyingRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="922E0A74-9384-4D25-9C38-E0AB709FEE8F">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="EntityTypeInstance" PropertyName="TooFewEntityTypeRoleInstancesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeInstance" Id="715ED45E-2C85-491E-A577-3A6985347687">
+				<DomainRole Name="EntityInstance" PropertyName="TooFewEntityRoleInstancesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityInstance" Id="715ED45E-2C85-491E-A577-3A6985347687">
 					<RolePlayer>
-						<DomainClassMoniker Name="EntityTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="TooFewEntityTypeRoleInstancesError" PropertyName="EntityTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="TooFewEntityTypeRoleInstancesError" Id="61D2D2DF-749C-4D93-8EF4-5CCD92E03154">
+				<DomainRole Name="TooFewEntityRoleInstancesError" PropertyName="EntityInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="TooFewEntityRoleInstancesError" Id="61D2D2DF-749C-4D93-8EF4-5CCD92E03154">
 					<RolePlayer>
-						<DomainClassMoniker Name="TooFewEntityTypeRoleInstancesError"/>
+						<DomainClassMoniker Name="TooFewEntityRoleInstancesError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6AC86DD8-1766-472E-B70F-B788C04ED688">
+		<DomainRelationship Name="FactHasTooFewFactRoleInstancesError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6AC86DD8-1766-472E-B70F-B788C04ED688">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="FactTypeInstance" PropertyName="TooFewFactTypeRoleInstancesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeInstance" Id="AC1F89F9-1DBC-4826-8035-6EA0C1D35EB1">
+				<DomainRole Name="FactInstance" PropertyName="TooFewFactRoleInstancesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactInstance" Id="AC1F89F9-1DBC-4826-8035-6EA0C1D35EB1">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeInstance"/>
+						<DomainClassMoniker Name="FactInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="TooFewFactTypeRoleInstancesError" PropertyName="FactTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="TooFewFactTypeRoleInstancesError" Id="8D72911A-53E9-4E0D-8BE7-79FC16057ED5">
+				<DomainRole Name="TooFewFactRoleInstancesError" PropertyName="FactInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="TooFewFactRoleInstancesError" Id="8D72911A-53E9-4E0D-8BE7-79FC16057ED5">
 					<RolePlayer>
-						<DomainClassMoniker Name="TooFewFactTypeRoleInstancesError"/>
+						<DomainClassMoniker Name="TooFewFactRoleInstancesError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A8AF2A8F-CDD0-41CB-B8CD-60CF28277288">
+		<DomainRelationship Name="ValueInstanceHasCompatibleValueError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A8AF2A8F-CDD0-41CB-B8CD-60CF28277288">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="ValueTypeInstance" PropertyName="CompatibleValueTypeInstanceValueError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueTypeInstance" Id="5C173594-AA0C-45BA-92F1-8D80A74E1300">
+				<DomainRole Name="ValueInstance" PropertyName="CompatibleValueInstanceError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueInstance" Id="5C173594-AA0C-45BA-92F1-8D80A74E1300">
 					<RolePlayer>
-						<DomainClassMoniker Name="ValueTypeInstance"/>
+						<DomainClassMoniker Name="ObjectInstance"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="CompatibleValueTypeInstanceValueError" PropertyName="ValueTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CompatibleValueTypeInstanceValueError" Id="52774478-7F8B-4974-A266-75463EA1808F">
+				<DomainRole Name="CompatibleValueInstanceError" PropertyName="ValueInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CompatibleValueInstanceError" Id="52774478-7F8B-4974-A266-75463EA1808F">
 					<RolePlayer>
-						<DomainClassMoniker Name="CompatibleValueTypeInstanceValueError"/>
+						<DomainClassMoniker Name="CompatibleValueInstanceError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

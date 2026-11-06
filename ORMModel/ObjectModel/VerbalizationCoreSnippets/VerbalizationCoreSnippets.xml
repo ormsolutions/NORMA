@@ -286,14 +286,14 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="CombinedObjectAndInstanceTypeMissing"><![CDATA[Missing {0}]]></Snippet>
 			<Snippet type="TextInstanceValue"><![CDATA[<span class="instance">'{0}'</span>]]></Snippet>
 			<Snippet type="NonTextInstanceValue"><![CDATA[<span class="instance">{0}</span>]]></Snippet>
-			<Snippet type="FactTypeInstanceBlockStart"><![CDATA[<br/><span class="quantifier">Examples: </span><span class="smallIndent">]]></Snippet>
-			<Snippet type="FactTypeInstanceBlockEnd"><![CDATA[</span>]]></Snippet>
-			<Snippet type="FactTypeInstanceIdentifier"><![CDATA[<span class="smallIndent"><span class="quantifier">Identifier: <span class="instance">{0}</span></span></span>]]></Snippet>
-			<Snippet type="ObjectTypeInstanceListOpen"><![CDATA[<br/><span class="quantifier">Examples:</span> ]]></Snippet>
-			<Snippet type="ObjectTypeInstanceListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="ObjectTypeInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="ObjectTypeInstanceListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
-			<Snippet type="ObjectTypeInstanceListClose"><![CDATA[]]></Snippet>
+			<Snippet type="FactBlockStart"><![CDATA[<br/><span class="quantifier">Examples: </span><span class="smallIndent">]]></Snippet>
+			<Snippet type="FactBlockEnd"><![CDATA[</span>]]></Snippet>
+			<Snippet type="FactIdentifier"><![CDATA[<span class="smallIndent"><span class="quantifier">Identifier: <span class="instance">{0}</span></span></span>]]></Snippet>
+			<Snippet type="ObjectInstanceListOpen"><![CDATA[<br/><span class="quantifier">Examples:</span> ]]></Snippet>
+			<Snippet type="ObjectInstanceListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
+			<Snippet type="ObjectInstanceListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
+			<Snippet type="ObjectInstanceListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
+			<Snippet type="ObjectInstanceListClose"><![CDATA[]]></Snippet>
 			<Snippet type="FactTypeListOpen"><![CDATA[<br/><span class="indent"><span class="quantifier">Fact Types:</span><span class="smallIndent"><br/>]]></Snippet>
 			<Snippet type="FactTypeListPairSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="FactTypeListSeparator"><![CDATA[<br/>]]></Snippet>

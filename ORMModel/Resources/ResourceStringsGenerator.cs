@@ -1156,14 +1156,6 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedObjectificationNotAllowed");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to modify an EntityTypeInstance implied by a FactTypeInstance and an internal preferred identifier on the objectified FactType.</summary>
-		public static string ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectificationInstance.DirectModificationOfImpliedEntityTypeInstance");
-			}
-		}
 		/// <summary>Exception message when an attempt is made to create an ObjectificationInstance will partially constructed endpoint instances.</summary>
 		public static string ModelExceptionObjectificationInstanceIncompleteRolePlayers
 		{
@@ -2172,12 +2164,12 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforceIsIndependentPattern");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectTypeInstance relationship.</summary>
-		public static string ModelExceptionObjectTypeInstanceEnforceFixedRolePlayers
+		/// <summary>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectInstance relationship.</summary>
+		public static string ModelExceptionObjectInstanceEnforceFixedRolePlayers
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectTypeInstance.EnforceFixedRolePlayers");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectInstance.EnforceFixedRolePlayers");
 			}
 		}
 		/// <summary>Exception message when an attempt is made to set both a primary identifier and a value type on the same object type.</summary>
@@ -2292,92 +2284,52 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.ReportSnippetsTypeDescription");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to add a FactTypeInstance to an implied population.</summary>
-		public static string ModelExceptionFactTypeInstanceDirectionPopulationOfImpliedInstances
+		/// <summary>Exception message when an attempt is made to add a FactInstance to an implied population.</summary>
+		public static string ModelExceptionFactInstanceDirectionPopulationOfImpliedInstances
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.DirectionPopulationOfImpliedInstances");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactInstance.DirectionPopulationOfImpliedInstances");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to modify either role player on a FactTypeInstanceHasRoleInstance relationship.</summary>
-		public static string ModelExceptionFactTypeInstanceEnforceFixedRoleInstance
+		/// <summary>Exception message when an attempt is made to modify either role player on a FactInstanceHasRoleInstance relationship.</summary>
+		public static string ModelExceptionFactInstanceEnforceFixedRoleInstance
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.EnforceFixedRoleInstance");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactInstance.EnforceFixedRoleInstance");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to add a FactTypeRoleInstance with a duplicate Role to the FactTypeRoleInstance collection.</summary>
-		public static string ModelExceptionFactTypeInstanceEnforceRoleUniqueness
+		/// <summary>Exception message when an attempt is made to add a RoleInstance with a duplicate Role to the RoleInstance collection.</summary>
+		public static string ModelExceptionFactInstanceEnforceRoleUniqueness
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.EnforceRoleUniqueness");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactInstance.EnforceRoleUniqueness");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</summary>
-		public static string ModelExceptionFactTypeInstanceInconsistentRoleOwners
+		/// <summary>Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact.</summary>
+		public static string ModelExceptionFactInstanceInconsistentRoleOwners
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.InconsistentRoleOwners");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactInstance.InconsistentRoleOwners");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to modify either role player on a EntityTypeInstanceHasRoleInstance relationship.</summary>
-		public static string ModelExceptionEntityTypeInstanceEnforceFixedRoleInstance
+		/// <summary>Exception message when an attempt is made to attach an EntitySubtypeInstance to an EntityTypeSubtype that is associated with another EntitySubtypeInstance on the same subtype.</summary>
+		public static string ModelExceptionEntitySubtypeInstanceDuplicateSupertypeInstance
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.EnforceFixedRoleInstance");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntitySubtypeInstance.DuplicateSupertypeInstance");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to add an EntityTypeRoleInstance with a duplicate Role to the EntityTypeRoleInstance collection.</summary>
-		public static string ModelExceptionEntityTypeInstanceEnforceRoleUniqueness
+		/// <summary>Exception message when an attempt is made to modify the EntitySubtypeInstance role of the EntitySubtypeInstanceHasSupertypeInstance relationship</summary>
+		public static string ModelExceptionEntitySubtypeInstanceEnforceInitialSubtypeInstance
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.EnforceRoleUniqueness");
-			}
-		}
-		/// <summary>Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</summary>
-		public static string ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier");
-			}
-		}
-		/// <summary>Exception message when an attempt is made to hook up a ValueType to an EntityTypeInstance.</summary>
-		public static string ModelExceptionEntityTypeInstanceInvalidEntityTypeParent
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.InvalidEntityTypeParent");
-			}
-		}
-		/// <summary>Exception message when an attempt is made to attach an EntityTypeSubtypeInstance to an EntityTypeSubtype that is associated with another EntityTypeSubtypeInstance on the same subtype.</summary>
-		public static string ModelExceptionEntityTypeSubtypeInstanceDuplicateSupertypeInstance
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeSubtypeInstance.DuplicateSupertypeInstance");
-			}
-		}
-		/// <summary>Exception message when an attempt is made to modify the EntityTypeSubtypeInstance role of the EntityTypeSubtypeInstanceHasSupertypeInstance relationship</summary>
-		public static string ModelExceptionEntityTypeSubtypeInstanceEnforceInitialSubtypeInstance
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeSubtypeInstance.EnforceInitialSubtypeInstance");
-			}
-		}
-		/// <summary>Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</summary>
-		public static string ModelExceptionValueTypeInstanceInvalidValueTypeParent
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ValueTypeInstance.InvalidValueTypeParent");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntitySubtypeInstance.EnforceInitialSubtypeInstance");
 			}
 		}
 		public static string RingConstraintTypeDescriptionAcyclic
@@ -2794,7 +2746,23 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EditInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.</summary>
+		/// <summary>Text used to describe the transaction when editing an instance by modifying its identity tag.  {0}=ObjectType or FactType name, {1}=instance name, {2}=new tag name</summary>
+		public static string ModelSamplePopulationEditorEditInstanceIdentityTagTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EditInstanceIdentityTagTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when editing an instance by modifying its identity tag.  {0}=ObjectType or FactType name, {1}=instance name</summary>
+		public static string ModelSamplePopulationEditorEditInstanceRemoveIdentityTagTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EditInstanceRemoveIdentityTagTransactionText");
+			}
+		}
+		/// <summary>Text used to describe the transaction when creating an instance. Replacement field 0 is the column name of the instance being created.</summary>
 		public static string ModelSamplePopulationEditorNewInstanceTransactionText
 		{
 			get
@@ -2802,7 +2770,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NewInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another fact instance.</summary>
+		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another fact.</summary>
 		public static string ModelSamplePopulationEditorObjectifyingIdentifierAlreadyUsedExceptionText
 		{
 			get
@@ -2810,7 +2778,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText");
 			}
 		}
-		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing fact instance relationships.</summary>
+		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing fact relationships.</summary>
 		public static string ModelSamplePopulationEditorObjectifyingIdentifierRelationshipConflictsExceptionText
 		{
 			get
@@ -2826,7 +2794,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RefuseDeleteRoleInstanceExceptionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when an identifier is attached to an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
+		/// <summary>Text used to describe the transaction when an identifier is attached to an objectified fact . {0}=type name, {1}=identifier instance name, {2}=fact name.</summary>
 		public static string ModelSamplePopulationEditorRelateObjectifiedInstanceIdentifierTransactionText
 		{
 			get
@@ -2834,7 +2802,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RelateObjectifiedInstanceIdentifierTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when removing a fact instance. {0}=instance name.</summary>
+		/// <summary>Text used to describe the transaction when removing a fact. {0}=instance name.</summary>
 		public static string ModelSamplePopulationEditorRemoveFactInstanceTransactionText
 		{
 			get
@@ -2866,7 +2834,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveUnaryRoleInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when an identifier is separated from an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
+		/// <summary>Text used to describe the transaction when an identifier is separated from an objectified fact. {0}=type name, {1}=identifier instance name, {2}=fact name.</summary>
 		public static string ModelSamplePopulationEditorSeparateObjectifiedInstanceIdentifierTransactionText
 		{
 			get
@@ -2888,6 +2856,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.WindowTitle");
+			}
+		}
+		/// <summary>Header text for the identity tag column in the sample population window.</summary>
+		public static string ModelSamplePopulationEditorIdentityTag
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.IdentityTag");
 			}
 		}
 		/// <summary>Text to place when selection is null in the sample population window.</summary>
@@ -3490,84 +3466,84 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.CompactMessage");
 			}
 		}
-		/// <summary>Text displayed when an objectified fact instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</summary>
-		public static string ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredMessage
+		/// <summary>Text displayed when an objectified fact is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</summary>
+		public static string ModelErrorEntityInstanceObjectifiedInstanceRequiredMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityInstance.ObjectifiedInstanceRequired.Message");
 			}
 		}
-		/// <summary>Text displayed when an objectified fact instance is not associated with an external identifying instance. Compact form. {0}=instance</summary>
-		public static string ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredCompactMessage
+		/// <summary>Text displayed when an objectified fact is not associated with an external identifying instance. Compact form. {0}=instance</summary>
+		public static string ModelErrorEntityInstanceObjectifiedInstanceRequiredCompactMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.CompactMessage");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityInstance.ObjectifiedInstanceRequired.CompactMessage");
 			}
 		}
 		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=instance, {2}=model.</summary>
-		public static string ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage
+		public static string ModelErrorEntityInstanceTooFewRoleInstancesMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityInstance.TooFewRoleInstances.Message");
 			}
 		}
 		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. Compact form {0}=instance.</summary>
-		public static string ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesCompactMessage
+		public static string ModelErrorEntityInstanceTooFewRoleInstancesCompactMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.CompactMessage");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityInstance.TooFewRoleInstances.CompactMessage");
 			}
 		}
-		/// <summary>Text displayed when an external identifier is needed for a FactTypeInstance. {0}=instance {1}=model.</summary>
-		public static string ModelErrorFactTypeInstanceObjectifyingInstanceRequiredMessage
+		/// <summary>Text displayed when an external identifier is needed for a FactInstance. {0}=instance {1}=model.</summary>
+		public static string ModelErrorFactInstanceObjectifyingInstanceRequiredMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactInstance.ObjectifyingInstanceRequired.Message");
 			}
 		}
-		/// <summary>Text displayed when an external identifier is needed for a FactTypeInstance. Compact form. {0}=instance.</summary>
-		public static string ModelErrorFactTypeInstanceObjectifyingInstanceRequiredCompactMessage
+		/// <summary>Text displayed when an external identifier is needed for a FactInstance. Compact form. {0}=instance.</summary>
+		public static string ModelErrorFactInstanceObjectifyingInstanceRequiredCompactMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.ObjectifyingInstanceRequired.CompactMessage");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactInstance.ObjectifyingInstanceRequired.CompactMessage");
 			}
 		}
-		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=instance {1}=model.</summary>
-		public static string ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage
+		/// <summary>Text displayed when there aren't enough fact role instances to completely fill a single fact population row. {0}=instance {1}=model.</summary>
+		public static string ModelErrorFactInstanceTooFewRoleInstancesMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactInstance.TooFewRoleInstances.Message");
 			}
 		}
-		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. Compact form. {0}=instance.</summary>
-		public static string ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesCompactMessage
+		/// <summary>Text displayed when there aren't enough role instances to completely fill a single fact population row. Compact form. {0}=instance.</summary>
+		public static string ModelErrorFactInstanceTooFewRoleInstancesCompactMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.CompactMessage");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactInstance.TooFewRoleInstances.CompactMessage");
 			}
 		}
 		/// <summary>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model {3}=datatype.</summary>
-		public static string ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage
+		public static string ModelErrorValueInstanceCompatibleValueInstanceMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueInstance.CompatibleValueInstance.Message");
 			}
 		}
 		/// <summary>Text displayed when the data type of the sample data doesn't match it's set data type. Compact form. {0}=value, {1}=datatype.</summary>
-		public static string ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueCompactMessage
+		public static string ModelErrorValueInstanceCompatibleValueInstanceCompactMessage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.CompactMessage");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueInstance.CompatibleValueInstance.CompactMessage");
 			}
 		}
 		/// <summary>Text used as the class name, displayed in the properties window.</summary>

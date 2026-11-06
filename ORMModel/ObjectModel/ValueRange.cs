@@ -2246,7 +2246,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 						}
 
-						// See comments in ValueTypeInstance.InvariantValueFixupListener regarding invariant forms of default values.
+						// See comments in ValueInstance.InvariantValueFixupListener regarding invariant forms of default values.
 					}
 				}
 			}

@@ -194,7 +194,6 @@
 	<ResourceString name="ModelExceptionObjectificationImpliedFactObjectified" model="Model" resourceName="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified"/>
 	<ResourceString name="ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact" model="Model" resourceName="ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact"/>
 	<ResourceString name="ModelExceptionObjectificationImpliedObjectificationNotAllowed" model="Model" resourceName="ModelException.Objectification.ImpliedObjectificationNotAllowed"/>
-	<ResourceString name="ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance" model="Model" resourceName="ModelException.ObjectificationInstance.DirectModificationOfImpliedEntityTypeInstance"/>
 	<ResourceString name="ModelExceptionObjectificationInstanceIncompleteRolePlayers" model="Model" resourceName="ModelException.ObjectificationInstance.IncompleteRolePlayers"/>
 	<ResourceString name="ModelExceptionReadingDuplicateSignature" model="Model" resourceName="ModelException.Reading.DuplicateSignature.Text"/>
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse"/>
@@ -321,7 +320,7 @@
 	<ResourceString name="ModelExceptionEnforceRolePlayerNotNestingType" model="Model" resourceName="ModelException.FactType.EnforceRolePlayerNotNestingType"/>
 	<ResourceString name="ModelExceptionFactTypeEnforceNoRoleMigration" model="Model" resourceName="ModelException.FactType.EnforceNoRoleMigration"/>
 	<ResourceString name="ModelExceptionObjectTypeEnforceIsIndependentPattern" model="Model" resourceName="ModelException.ObjectType.EnforceIsIndependentPattern"/>
-	<ResourceString name="ModelExceptionObjectTypeInstanceEnforceFixedRolePlayers" model="Model" resourceName="ModelException.ObjectTypeInstance.EnforceFixedRolePlayers"/>
+	<ResourceString name="ModelExceptionObjectInstanceEnforceFixedRolePlayers" model="Model" resourceName="ModelException.ObjectInstance.EnforceFixedRolePlayers"/>
 	<ResourceString name="ModelExceptionEnforcePreferredIdentifierForEntityType" model="Model" resourceName="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType"/>
 	<ResourceString name="ModelExceptionExclusiveOrConstraintCouplerDirectExclusionConstraintEdit" model="Model" resourceName="ModelException.ExclusiveOrConstraintCoupler.DirectExclusionConstraintEdit"/>
 	<ResourceString name="ModelExceptionIsMandatoryRequiresAttachedFactType" model="Model" resourceName="ModelException.Role.IsMandatoryRequiresAttachedFactType"/>
@@ -336,17 +335,12 @@
 	<ResourceString name="CoreVerbalizationSnippetsTypeDescription" model="Model" resourceName="Verbalization.SnippetsTypeDescription"/>
 	<ResourceString name="VerbalizationReportSnippetsDefaultDescription" model="Model" resourceName="Verbalization.ReportSnippetsDefaultDescription"/>
 	<ResourceString name="VerbalizationReportSnippetsTypeDescription" model="Model" resourceName="Verbalization.ReportSnippetsTypeDescription"/>
-	<ResourceString name="ModelExceptionFactTypeInstanceDirectionPopulationOfImpliedInstances" model="Model" resourceName="ModelException.FactTypeInstance.DirectionPopulationOfImpliedInstances"/>
-	<ResourceString name="ModelExceptionFactTypeInstanceEnforceFixedRoleInstance" model="Model" resourceName="ModelException.FactTypeInstance.EnforceFixedRoleInstance"/>
-	<ResourceString name="ModelExceptionFactTypeInstanceEnforceRoleUniqueness" model="Model" resourceName="ModelException.FactTypeInstance.EnforceRoleUniqueness"/>
-	<ResourceString name="ModelExceptionFactTypeInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactTypeInstance.InconsistentRoleOwners"/>
-	<ResourceString name="ModelExceptionEntityTypeInstanceEnforceFixedRoleInstance" model="Model" resourceName="ModelException.EntityTypeInstance.EnforceFixedRoleInstance"/>
-	<ResourceString name="ModelExceptionEntityTypeInstanceEnforceRoleUniqueness" model="Model" resourceName="ModelException.EntityTypeInstance.EnforceRoleUniqueness"/>
-	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier"/>
-	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidEntityTypeParent" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidEntityTypeParent"/>
-	<ResourceString name="ModelExceptionEntityTypeSubtypeInstanceDuplicateSupertypeInstance" model="Model" resourceName="ModelException.EntityTypeSubtypeInstance.DuplicateSupertypeInstance"/>
-	<ResourceString name="ModelExceptionEntityTypeSubtypeInstanceEnforceInitialSubtypeInstance" model="Model" resourceName="ModelException.EntityTypeSubtypeInstance.EnforceInitialSubtypeInstance"/>
-	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValueTypeParent" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValueTypeParent"/>
+	<ResourceString name="ModelExceptionFactInstanceDirectionPopulationOfImpliedInstances" model="Model" resourceName="ModelException.FactInstance.DirectionPopulationOfImpliedInstances"/>
+	<ResourceString name="ModelExceptionFactInstanceEnforceFixedRoleInstance" model="Model" resourceName="ModelException.FactInstance.EnforceFixedRoleInstance"/>
+	<ResourceString name="ModelExceptionFactInstanceEnforceRoleUniqueness" model="Model" resourceName="ModelException.FactInstance.EnforceRoleUniqueness"/>
+	<ResourceString name="ModelExceptionFactInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactInstance.InconsistentRoleOwners"/>
+	<ResourceString name="ModelExceptionEntitySubtypeInstanceDuplicateSupertypeInstance" model="Model" resourceName="ModelException.EntitySubtypeInstance.DuplicateSupertypeInstance"/>
+	<ResourceString name="ModelExceptionEntitySubtypeInstanceEnforceInitialSubtypeInstance" model="Model" resourceName="ModelException.EntitySubtypeInstance.EnforceInitialSubtypeInstance"/>
 	<ResourceString name="RingConstraintTypeDescriptionAcyclic" model="Model" resourceName="RingConstraintType.Description.Acyclic"/>
 	<ResourceString name="RingConstraintTypeDescriptionAntisymmetric" model="Model" resourceName="RingConstraintType.Description.Antisymmetric"/>
 	<ResourceString name="RingConstraintTypeDescriptionAsymmetric" model="Model" resourceName="RingConstraintType.Description.Asymmetric"/>
@@ -400,6 +394,8 @@
 	<ResourceString name="ModelSamplePopulationEditorAddObjectInstanceReferenceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.AddObjectInstanceReferenceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorAddUnaryRoleInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.AddUnaryRoleInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorEditInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.EditInstanceTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorEditInstanceIdentityTagTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.EditInstanceIdentityTagTransactionText"/>
+	<ResourceString name="ModelSamplePopulationEditorEditInstanceRemoveIdentityTagTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.EditInstanceRemoveIdentityTagTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorNewInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.NewInstanceTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorObjectifyingIdentifierAlreadyUsedExceptionText" model="Model" resourceName="ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText"/>
 	<ResourceString name="ModelSamplePopulationEditorObjectifyingIdentifierRelationshipConflictsExceptionText" model="Model" resourceName="ModelSamplePopulationEditor.ObjectifyingIdentifierRelationshipConflictsExceptionText"/>
@@ -412,6 +408,7 @@
 	<ResourceString name="ModelSamplePopulationEditorSeparateObjectifiedInstanceIdentifierTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText"/>
 	<ResourceString name="ModelSamplePopulationEditorEmptyDisplayText" model="Model" resourceName="ModelSamplePopulationEditor.EmptyDisplayText"/>
 	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle"/>
+	<ResourceString name="ModelSamplePopulationEditorIdentityTag" model="Model" resourceName="ModelSamplePopulationEditor.IdentityTag"/>
 	<ResourceString name="ModelSamplePopulationEditorNullSelection" model="Model" resourceName="ModelSamplePopulationEditor.NullSelection"/>
 	<ResourceString name="ModelSamplePopulationEditorGenerateInstance" model="Model" resourceName="ModelSamplePopulationEditor.GenerateInstance"/>
 	<ResourceString name="NameGeneratorAbbreviationsEditorAbbreviationColumnHeader" model="Model" resourceName="NameGeneratorAbbreviations.Editor.AbbreviationColumnHeader"/>
@@ -487,16 +484,16 @@
 	<ResourceString name="ModelErrorFactTypeRequiresReadingMessageCompact" model="Model" resourceName="ModelError.FactType.RequiresReading.CompactMessage"/>
 	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message"/>
 	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessageCompact" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.CompactMessage"/>
-	<ResourceString name="ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredMessage" model="Model" resourceName="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message"/>
-	<ResourceString name="ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredCompactMessage" model="Model" resourceName="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.CompactMessage"/>
-	<ResourceString name="ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage" model="Model" resourceName="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message"/>
-	<ResourceString name="ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesCompactMessage" model="Model" resourceName="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.CompactMessage"/>
-	<ResourceString name="ModelErrorFactTypeInstanceObjectifyingInstanceRequiredMessage" model="Model" resourceName="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message"/>
-	<ResourceString name="ModelErrorFactTypeInstanceObjectifyingInstanceRequiredCompactMessage" model="Model" resourceName="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.CompactMessage"/>
-	<ResourceString name="ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage" model="Model" resourceName="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message"/>
-	<ResourceString name="ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesCompactMessage" model="Model" resourceName="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.CompactMessage"/>
-	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message"/>
-	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueCompactMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.CompactMessage"/>
+	<ResourceString name="ModelErrorEntityInstanceObjectifiedInstanceRequiredMessage" model="Model" resourceName="ModelError.EntityInstance.ObjectifiedInstanceRequired.Message"/>
+	<ResourceString name="ModelErrorEntityInstanceObjectifiedInstanceRequiredCompactMessage" model="Model" resourceName="ModelError.EntityInstance.ObjectifiedInstanceRequired.CompactMessage"/>
+	<ResourceString name="ModelErrorEntityInstanceTooFewRoleInstancesMessage" model="Model" resourceName="ModelError.EntityInstance.TooFewRoleInstances.Message"/>
+	<ResourceString name="ModelErrorEntityInstanceTooFewRoleInstancesCompactMessage" model="Model" resourceName="ModelError.EntityInstance.TooFewRoleInstances.CompactMessage"/>
+	<ResourceString name="ModelErrorFactInstanceObjectifyingInstanceRequiredMessage" model="Model" resourceName="ModelError.FactInstance.ObjectifyingInstanceRequired.Message"/>
+	<ResourceString name="ModelErrorFactInstanceObjectifyingInstanceRequiredCompactMessage" model="Model" resourceName="ModelError.FactInstance.ObjectifyingInstanceRequired.CompactMessage"/>
+	<ResourceString name="ModelErrorFactInstanceTooFewRoleInstancesMessage" model="Model" resourceName="ModelError.FactInstance.TooFewRoleInstances.Message"/>
+	<ResourceString name="ModelErrorFactInstanceTooFewRoleInstancesCompactMessage" model="Model" resourceName="ModelError.FactInstance.TooFewRoleInstances.CompactMessage"/>
+	<ResourceString name="ModelErrorValueInstanceCompatibleValueInstanceMessage" model="Model" resourceName="ModelError.ValueInstance.CompatibleValueInstance.Message"/>
+	<ResourceString name="ModelErrorValueInstanceCompatibleValueInstanceCompactMessage" model="Model" resourceName="ModelError.ValueInstance.CompatibleValueInstance.CompactMessage"/>
 	<ResourceString name="ExclusiveOrConstraint" model="Model" resourceName="ExclusiveOrConstraint.ClassName"/>
 	<ResourceString name="ExclusiveOrConstraintMandatoryConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName"/>
 	<ResourceString name="ExclusiveOrConstraintExclusionConstraintSurveyNameFormat" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraint.SurveyNameFormat"/>

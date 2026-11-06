@@ -920,17 +920,17 @@ Format: Model Error: {0}</xs:documentation>
 						<xs:documentation>Description: Used to output a non-text instance value. Format: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="FactTypeInstanceBlockStart">
+				<xs:enumeration value="FactBlockStart">
 					<xs:annotation>
 						<xs:documentation>Description: Text and formatting to begin a sample population verbalization of fact types block. Format: Examples:</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="FactTypeInstanceBlockEnd">
+				<xs:enumeration value="FactBlockEnd">
 					<xs:annotation>
 						<xs:documentation>Description: Formatted single snippet used to end a sample population verbalization of fact types block.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="FactTypeInstanceIdentifier">
+				<xs:enumeration value="FactIdentifier">
 					<xs:annotation>
 						<xs:documentation>Description: The text describing the identifier for an objectified FactType instance with an external identifier. Format: Identifier:</xs:documentation>
 					</xs:annotation>
@@ -985,27 +985,27 @@ Format: Model Error: {0}</xs:documentation>
 						<xs:documentation>Description: Text used to close the derived from list.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ObjectTypeInstanceListOpen">
+				<xs:enumeration value="ObjectInstanceListOpen">
 					<xs:annotation>
 						<xs:documentation> Description:  Text and formatting to begin a sample population verbalization of object types block. Format: Examples:</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ObjectTypeInstanceListPairSeparator">
+				<xs:enumeration value="ObjectInstanceListPairSeparator">
 					<xs:annotation>
 						<xs:documentation>Description: Text used to separate items in a sample population verbalization list. Format: , </xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ObjectTypeInstanceListSeparator">
+				<xs:enumeration value="ObjectInstanceListSeparator">
 					<xs:annotation>
 						<xs:documentation>Description: Text used to separate items in a sample population verbalization list.	Format: ,</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ObjectTypeInstanceListFinalSeparator">
+				<xs:enumeration value="ObjectInstanceListFinalSeparator">
 					<xs:annotation>
 						<xs:documentation>Description: Text used to separate the last two items in a sample population verbalization list, or object types. Format: ,</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ObjectTypeInstanceListClose">
+				<xs:enumeration value="ObjectInstanceListClose">
 					<xs:annotation>
 						<xs:documentation>Description: Text used to close the sample population verbalization list. Format: .</xs:documentation>
 					</xs:annotation>

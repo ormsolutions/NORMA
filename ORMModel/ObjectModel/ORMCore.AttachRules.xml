@@ -206,7 +206,7 @@
 				<arg:RuleOn targetType="Definition"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="DerivationNote">
+		<arg:RuleContainer class="DerivationNote">cla
 			<arg:ChangeRule methodName="DerivationNoteChangedRule">
 				<arg:RuleOn targetType="DerivationNote"/>
 			</arg:ChangeRule>
@@ -293,56 +293,6 @@
 			<arg:RolePlayerChangeRule methodName="TestRemovePreferredIdentifierRolePlayerChangeRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
-		</arg:RuleContainer>
-		<arg:RuleContainer class="EntityTypeInstance">
-			<arg:AddRule methodName="EntityTypeInstanceAddedRule">
-				<arg:RuleOn targetType="EntityTypeHasEntityTypeInstance"/>
-			</arg:AddRule>
-			<arg:DeletingRule methodName="EntityTypeInstanceDeletingRule">
-				<arg:RuleOn targetType="EntityTypeInstance"/>
-			</arg:DeletingRule>
-			<arg:AddRule methodName="EntityTypeRoleInstanceAddedRule">
-				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="EntityTypeRoleInstanceDeletedRule">
-				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
-			</arg:DeleteRule>
-			<arg:AddRule methodName="EntityTypeUnaryRoleInstanceAddedRule">
-				<arg:RuleOn targetType="EntityTypeInstancePopulatesUnaryRole"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="EntityTypeUnaryRoleInstanceDeletedRule">
-				<arg:RuleOn targetType="EntityTypeInstancePopulatesUnaryRole"  fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
-			</arg:DeleteRule>
-			<arg:AddRule methodName="ObjectificationAddedRule">
-				<arg:RuleOn targetType="Objectification"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="ObjectificationDeletedRule">
-				<arg:RuleOn targetType="Objectification" priority="1"/>
-			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangedRule">
-				<arg:RuleOn targetType="Objectification" priority="1"/>
-			</arg:RolePlayerChangeRule>
-			<arg:ChangeRule methodName="MandatoryModalityChangedRule">
-				<arg:RuleOn targetType="MandatoryConstraint"/>
-			</arg:ChangeRule>
-			<arg:AddRule methodName="PreferredIdentifierAddedRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="PreferredIdentifierDeletedRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
-			</arg:DeleteRule>
-			<arg:AddRule methodName="PreferredIdentifierRoleAddedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="PreferredIdentifierRoleDeletedRule">
-				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
-			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangedRule">
-				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
-			</arg:RolePlayerChangeRule>
-			<arg:DeleteRule methodName="RoleInstanceHasPopulationUniquenessErrorDeletedRule">
-				<arg:RuleOn targetType="RoleInstanceHasPopulationUniquenessError"/>
-			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ExclusiveOrConstraintCoupler">
 			<arg:AddRule methodName="CouplerAddRule">
@@ -549,9 +499,9 @@
 				<arg:RuleOn targetType="RolePathOwnerHasSubquery" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="FactTypeInstance">
-			<arg:AddRule methodName="FactTypeInstanceAddedRule">
-				<arg:RuleOn targetType="FactTypeHasFactTypeInstance"/>
+		<arg:RuleContainer class="FactInstance">
+			<arg:AddRule methodName="FactInstanceAddedRule">
+				<arg:RuleOn targetType="FactTypeHasFactInstance"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="FactTypeRoleAddedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
@@ -559,23 +509,23 @@
 			<arg:DeleteRule methodName="FactTypeRoleDeletedRule">
 				<arg:RuleOn targetType="FactTypeHasRole"/>
 			</arg:DeleteRule>
-			<arg:AddRule methodName="FactTypeRoleInstanceAddedRule">
-				<arg:RuleOn targetType="FactTypeInstanceHasRoleInstance"/>
+			<arg:AddRule methodName="FactRoleInstanceAddedRule">
+				<arg:RuleOn targetType="FactInstanceHasRoleInstance"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="FactTypeNameChangedRule">
 				<arg:RuleOn targetType="FactType"/>
 			</arg:ChangeRule>
-			<arg:DeleteRule methodName="FactTypeRoleInstanceDeletedRule">
-				<arg:RuleOn targetType="FactTypeInstanceHasRoleInstance" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			<arg:DeleteRule methodName="RoleInstanceDeletedRule">
+				<arg:RuleOn targetType="FactInstanceHasRoleInstance" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="FactTypeInstanceHasRoleInstanceRolePlayerChangedRule">
-				<arg:RuleOn targetType="FactTypeInstanceHasRoleInstance"/>
+			<arg:RolePlayerChangeRule methodName="FactInstanceHasRoleInstanceRolePlayerChangedRule">
+				<arg:RuleOn targetType="FactInstanceHasRoleInstance"/>
 			</arg:RolePlayerChangeRule>
-			<arg:RolePlayerChangeRule methodName="FactTypeRoleInstanceRolePlayerChangedRule">
-				<arg:RuleOn targetType="FactTypeRoleInstance"/>
+			<arg:RolePlayerChangeRule methodName="RoleInstanceRolePlayerChangedRule">
+				<arg:RuleOn targetType="RoleInstance"/>
 			</arg:RolePlayerChangeRule>
-			<arg:ChangeRule methodName="ObjectTypeInstanceNameChangedRule">
-				<arg:RuleOn targetType="ObjectTypeInstance"/>
+			<arg:ChangeRule methodName="ObjectInstanceNameChangedRule">
+				<arg:RuleOn targetType="ObjectInstance"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FrequencyConstraint">
@@ -729,9 +679,6 @@
 			<arg:RolePlayerChangeRule methodName="ObjectificationInstanceRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectificationInstance"/>
 			</arg:RolePlayerChangeRule>
-			<arg:RolePlayerChangeRule methodName="RoleInstanceRolePlayerChangedRule" methodInRuleClass="true">
-				<arg:RuleOn targetType="RoleInstance"/>
-			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ObjectType">
 			<arg:AddRule methodName="CheckForIncompatibleRelationshipAddRule" fireBefore="true">
@@ -817,45 +764,51 @@
 				<arg:RuleOn targetType="ValueTypeHasDataType"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
-		<arg:RuleContainer class="ObjectTypeInstance">
+		<arg:RuleContainer class="ObjectInstance">
 			<arg:AddRule methodName="ConstraintRoleSequenceHasRoleAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ConstraintRoleSequenceHasRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule">
-				<arg:RuleOn targetType="EntityTypeInstanceHasRoleInstance"/>
-			</arg:RolePlayerChangeRule>
-			<arg:AddRule methodName="EntityTypeSupertypeInstanceAddedRule">
-				<arg:RuleOn targetType="EntityTypeSubtypeInstanceHasSupertypeInstance"/>
-			</arg:AddRule>
-			<arg:DeletingRule methodName="EntityTypeSubtypeInstanceDeletingRule" methodInRuleClass="true">
-				<arg:RuleOn targetType="EntityTypeSubtypeInstance"/>
+			<arg:DeletingRule methodName="EntityInstanceDeletingRule">
+				<arg:RuleOn targetType="ObjectInstance"/>
 			</arg:DeletingRule>
-			<arg:AddRule methodName="EntityTypeSubtypeInstanceAddedRule">
-				<arg:RuleOn targetType="EntityTypeSubtypeHasEntityTypeSubtypeInstance"/>
+			<arg:AddRule methodName="IdentifyingRoleInstanceAddedRule">
+				<arg:RuleOn targetType="FactInstanceHasRoleInstance"/>
 			</arg:AddRule>
-			<arg:DeleteRule methodName="EntityTypeSupertypeInstanceDeletedRule">
-				<arg:RuleOn targetType="EntityTypeSubtypeInstanceHasSupertypeInstance"/>
+			<arg:DeletingRule methodName="IdentifyingRoleInstanceDeletingRule">
+				<arg:RuleOn targetType="FactInstanceHasRoleInstance"/>
+			</arg:DeletingRule>
+			<arg:AddRule methodName="EntitySupertypeInstanceAddedRule">
+				<arg:RuleOn targetType="EntitySubtypeInstanceHasSupertypeInstance"/>
+			</arg:AddRule>
+			<arg:DeletingRule methodName="EntitySubtypeInstanceDeletingRule" methodInRuleClass="true">
+				<arg:RuleOn targetType="ObjectInstance"/>
+			</arg:DeletingRule>
+			<arg:DeleteRule methodName="EntitySupertypeInstanceDeletedRule">
+				<arg:RuleOn targetType="EntitySubtypeInstanceHasSupertypeInstance"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="EntityTypeSupertypeInstanceRolePlayerChangedRule">
-				<arg:RuleOn targetType="EntityTypeSubtypeInstanceHasSupertypeInstance"/>
+			<arg:RolePlayerChangeRule methodName="EntitySupertypeInstanceRolePlayerChangedRule">
+				<arg:RuleOn targetType="EntitySubtypeInstanceHasSupertypeInstance"/>
 			</arg:RolePlayerChangeRule>
-			<arg:ChangeRule methodName="FactTypeInstanceNameChangedRule">
-				<arg:RuleOn targetType="FactTypeInstance"/>
+			<arg:ChangeRule methodName="FactInstanceNameChangedRule">
+				<arg:RuleOn targetType="FactInstance"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="FactTypeNameChangedRule">
 				<arg:RuleOn targetType="FactType"/>
 			</arg:ChangeRule>
-			<arg:ChangeRule methodName="MandatoryConstraintChangedRule">
+			<arg:ChangeRule methodName="IdentityTagChangedRule">
+				<arg:RuleOn targetType="ObjectInstance"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="MandatoryModalityChangedRule">
 				<arg:RuleOn targetType="MandatoryConstraint"/>
 			</arg:ChangeRule>
 			<arg:AddRule methodName="ObjectificationAddedRule">
 				<arg:RuleOn targetType="Objectification"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ObjectificationDeletedRule">
-				<arg:RuleOn targetType="Objectification"/>
+				<arg:RuleOn targetType="Objectification" priority="1"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="ObjectificationInstanceAddedRule">
 				<arg:RuleOn targetType="ObjectificationInstance"/>
@@ -863,23 +816,44 @@
 			<arg:DeleteRule methodName="ObjectificationInstanceDeletedRule">
 				<arg:RuleOn targetType="ObjectificationInstance"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="ObjectificationInstanceRolePlayerChangeRule">
+			<arg:RolePlayerChangeRule methodName="ObjectificationInstanceRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectificationInstance"/>
 			</arg:RolePlayerChangeRule>
 			<arg:RolePlayerChangeRule methodName="ObjectificationRolePlayerChangeRule">
-				<arg:RuleOn targetType="Objectification"/>
+				<arg:RuleOn targetType="Objectification" priority="1"/>
 			</arg:RolePlayerChangeRule>
-			<arg:AddRule methodName="ObjectTypeInstanceAddedRule">
-				<arg:RuleOn targetType="ObjectTypeHasObjectTypeInstance"/>
+			<arg:AddRule methodName="ObjectInstanceAddedRule">
+				<arg:RuleOn targetType="ObjectTypeHasObjectInstance"/>
 			</arg:AddRule>
-			<arg:RolePlayerChangeRule methodName="ObjectTypeInstanceRolePlayerChangedRule">
-				<arg:RuleOn targetType="ObjectTypeHasObjectTypeInstance"/>
+			<arg:RolePlayerChangeRule methodName="ObjectInstanceRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypeHasObjectInstance"/>
+			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="ObjectTypeNameChangedRule">
+				<arg:RuleOn targetType="ObjectType"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="PreferredIdentifierAddedRule">
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="PreferredIdentifierDeletedRule">
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="PreferredIdentifierRoleAddedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="PreferredIdentifierRoleDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangedRule">
+				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
 			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="RoleInstanceAddedRule">
 				<arg:RuleOn targetType="RoleInstance"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="RoleInstanceDeletedRule">
 				<arg:RuleOn targetType="RoleInstance"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="RoleInstanceHasPopulationUniquenessErrorDeletedRule">
+				<arg:RuleOn targetType="RoleInstanceHasPopulationUniquenessError"/>
 			</arg:DeleteRule>
 			<arg:RolePlayerChangeRule methodName="RoleInstanceRolePlayerChangedRule">
 				<arg:RuleOn targetType="RoleInstance"/>
@@ -895,6 +869,18 @@
 			</arg:RolePlayerChangeRule>
 			<arg:ChangeRule methodName="PreferredSupertypeChangedRule">
 				<arg:RuleOn targetType="SubtypeFact"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="ValueTypeHasDataTypeAddedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ValueTypeHasDataTypeDeletedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="ValueTypeHasDataTypeRolePlayerChangedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="ValueInstanceValueChangedRule">
+				<arg:RuleOn targetType="ObjectInstance"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMModel">
@@ -1654,23 +1640,6 @@
 			<arg:ChangeRule methodName="ValueRangeChangeRule">
 				<arg:RuleOn targetType="ValueRange"/>
 			</arg:ChangeRule>
-		</arg:RuleContainer>
-		<arg:RuleContainer class="ValueTypeInstance">
-			<arg:AddRule methodName="ValueTypeHasDataTypeAddedRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType"/>
-			</arg:AddRule>
-			<arg:DeleteRule methodName="ValueTypeHasDataTypeDeletedRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType"/>
-			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="ValueTypeHasDataTypeRolePlayerChangeRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType"/>
-			</arg:RolePlayerChangeRule>
-			<arg:ChangeRule methodName="ValueTypeInstanceValueChangedRule">
-				<arg:RuleOn targetType="ValueTypeInstance"/>
-			</arg:ChangeRule>
-			<arg:AddRule methodName="ValueTypeHasValueTypeInstanceAddedRule">
-				<arg:RuleOn targetType="ValueTypeHasValueTypeInstance"/>
-			</arg:AddRule>
 		</arg:RuleContainer>
 	</arg:Model>
 </arg:Rules>

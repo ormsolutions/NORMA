@@ -2507,20 +2507,20 @@
 			</Constraint>
 		</Constraints>
 		<SampleInstances>
-			<SingleSnippet type="FactTypeInstanceBlockStart" childHelperFor="FactType" snippetRef="FactTypeInstanceBlockStart"/>
-			<SingleSnippet type="FactTypeInstanceBlockEnd" childHelperFor="FactType" snippetRef="FactTypeInstanceBlockEnd"/>
-			<SampleInstance type="FactTypeInstanceVerbalizer" childHelperFor="FactType">
-				<!-- UNDONE: Collapse this to use a mechanism similar to ObjectTypeInstanceVerbalizer.
+			<SingleSnippet type="FactInstanceBlockStart" childHelperFor="FactType" snippetRef="FactBlockStart"/>
+			<SingleSnippet type="FactInstanceBlockEnd" childHelperFor="FactType" snippetRef="FactBlockEnd"/>
+			<SampleInstance type="FactInstanceVerbalizer" childHelperFor="FactType">
+				<!-- UNDONE: Collapse this to use a mechanism similar to ObjectInstanceVerbalizer.
 				IterateInstances should support a FactType parent, and the BlockStart/BlockEnd snippets
 				should be folded into a normal listStyle. -->
 				<FactInstance/>
-				<Snippet ref="FactTypeInstanceIdentifier" conditionalMatch="ObjectifyingInstance">
+				<Snippet ref="FactIdentifier" conditionalMatch="ObjectifyingInstance">
 					<ObjectifyingInstanceIdentifierName/>
 				</Snippet>
 			</SampleInstance>
-			<SampleInstance type="ObjectTypeInstanceVerbalizer" childHelperFor="ObjectType">
-				<IterateInstances listStyle="ObjectTypeInstanceList">
-					<ObjectTypeInstanceValue/>
+			<SampleInstance type="ObjectInstanceVerbalizer" childHelperFor="ObjectType">
+				<IterateInstances listStyle="ObjectInstanceList">
+					<ObjectInstanceValue/>
 				</IterateInstances>
 			</SampleInstance>
 		</SampleInstances>

@@ -21,7 +21,7 @@
 // identified by another entity as a single unit. This corresponds to the original
 // design, but becomes ambiguous on a text edit because it is not clear if the user
 // is editing the referenced entity instance or creating a new one. Note that the
-// work was not done in BaseBranch.RecurseValueTypeInstance to extend this functionality to
+// work was not done in BaseBranch.RecurseValueInstance to extend this functionality to
 // subtype instances, which have the same ambiguity issues, so this would need to be implemented
 // if this is turned on.
 // CONSIDER: Enable the functionality for a new instance where there is no ambiguity.
@@ -43,6 +43,12 @@ using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Runtime.CompilerServices;
+using System.Diagnostics.Eventing.Reader;
+
+
+
 
 
 #if VISUALSTUDIO_9_0
@@ -289,6 +295,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Overlay index
 			/// </summary>
 			ErrorOverlay,
+			/// <summary>
+			/// IdentityTag image
+			/// </summary>
+			IdentityTag,
 		}
 		private static InstanceTypeImageIndex GetImageIndex(Role role, ObjectType objectType, bool ignoreObjectification, bool resolveUnaryRolePlayer)
 		{
@@ -312,12 +322,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					retVal = InstanceTypeImageIndex.ValueType;
 				}
-				else if (null != (pid = objectType.ResolvedPreferredIdentifier))
+				else
 				{
 					ignoreObjectification = ignoreObjectification || objectType.NestedFactType == null;
-					retVal = (pid.PreferredIdentifierFor == objectType) ?
-						ignoreObjectification ? InstanceTypeImageIndex.EntityType : InstanceTypeImageIndex.EntityTypeObjectification :
-						ignoreObjectification ? InstanceTypeImageIndex.EntityTypeSubtype : InstanceTypeImageIndex.EntityTypeSubtypeObjectification;
+					if (null != (pid = objectType.ResolvedPreferredIdentifier))
+					{
+						retVal = (pid.PreferredIdentifierFor == objectType) ?
+							ignoreObjectification ? InstanceTypeImageIndex.EntityType : InstanceTypeImageIndex.EntityTypeObjectification :
+							ignoreObjectification ? InstanceTypeImageIndex.EntityTypeSubtype : InstanceTypeImageIndex.EntityTypeSubtypeObjectification;
+					}
+					else if (null != objectType.GetPreferredTerminalSupertype())
+					{
+						retVal = ignoreObjectification ? InstanceTypeImageIndex.EntityTypeSubtype : InstanceTypeImageIndex.EntityTypeSubtypeObjectification;
+					}
+					else
+					{
+						retVal = ignoreObjectification ? InstanceTypeImageIndex.IdentityTag : InstanceTypeImageIndex.EntityTypeObjectification;
+					}
 				}
 			}
 			return retVal;
@@ -354,39 +375,59 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			DisconnectTree();
 			ObjectType entityType = mySelectedEntityType;
 			UniquenessConstraint preferredIdentifier = entityType.ResolvedPreferredIdentifier;
+			ObjectType unidentifiedRootSupertype = null;
+			Func<ObjectType, bool, ObjectTypeIdentityInfo> identityKindCache = CreateObjectTypeIdentityCache();
+			bool showIdentityTag = 0 != (identityKindCache(entityType, false).Kind & ObjectTypeIdentityKind.IdentityTag);
+			int roleStartOffset = showIdentityTag ? 2 : 1;
+			AdjustVisibility(true);
+			int idLength;
+			VirtualTreeColumnHeader[] headers;
 			if (preferredIdentifier != null)
 			{
-				AdjustVisibility(true);
-				int numColumns;
-				VirtualTreeColumnHeader[] headers;
 				ObjectType preferredFor = preferredIdentifier.PreferredIdentifierFor;
 				if (entityType == preferredFor)
 				{
 					LinkedElementCollection<Role> roleCollection = preferredIdentifier.RoleCollection;
-					numColumns = roleCollection.Count;
-					headers = new VirtualTreeColumnHeader[numColumns + 1];
-					for (int i = 0; i < numColumns; ++i)
+					idLength = roleCollection.Count;
+					headers = new VirtualTreeColumnHeader[idLength + roleStartOffset];
+					for (int i = 0; i < idLength; ++i)
 					{
 						Role role = roleCollection[i].Role;
 						ObjectType columnRolePlayer = role.RolePlayer;
-						headers[i + 1] = new VirtualTreeColumnHeader(BaseBranch.DeriveColumnName(role, false, false), VirtualTreeColumnHeaderStyles.Default, (int)GetImageIndex(role, (numColumns == 1 && columnRolePlayer.IsValueType) ? entityType : columnRolePlayer, false, false));
+						headers[i + roleStartOffset] = new VirtualTreeColumnHeader(BaseBranch.DeriveColumnName(role, false, false), VirtualTreeColumnHeaderStyles.Default, (int)GetImageIndex(role, (idLength == 1 && columnRolePlayer.IsValueType) ? entityType : columnRolePlayer, false, false));
 					}
 				}
 				else
 				{
-					numColumns = 1;
-					headers = new VirtualTreeColumnHeader[2];
-					headers[1] = new VirtualTreeColumnHeader(BaseBranch.DeriveColumnName(entityType, false), VirtualTreeColumnHeaderStyles.Default, (int)InstanceTypeImageIndex.EntityTypeSubtype);
+					idLength = 1;
+					headers = new VirtualTreeColumnHeader[roleStartOffset + 1];
+					// The obvious name here is the preferredFor name, but either name is correct due to the is-a relationship
+					// between the instances. The current names provides the only distinction for the selection type, so it is
+					// better to show subtype(supertype(...)) than just supertype(...) in this scenario.
+					headers[roleStartOffset] = new VirtualTreeColumnHeader(BaseBranch.DeriveColumnName(entityType, false), VirtualTreeColumnHeaderStyles.Default, (int)InstanceTypeImageIndex.EntityTypeSubtype);
 				}
-				headers[0] = CreateRowNumberColumn();
-				vtrSamplePopulation.SetColumnHeaders(headers, true);
-				myBranch = new EntityTypeBranch(mySelectedEntityType, numColumns + 1);
-				ConnectTree();
+			}
+			else if (null != (unidentifiedRootSupertype = entityType.GetPreferredTerminalSupertype()))
+			{
+				idLength = 1;
+				headers = new VirtualTreeColumnHeader[roleStartOffset + 1];
+				// UNDONE: NOW Work on the naming here. It is highly unlikely DeriveColumnName will handle an unidentified type. Add type([]=(,,)) for IdentityTag.
+				// The identity tag always comes from the supertype, so is never shown on this code path.
+				headers[roleStartOffset] = new VirtualTreeColumnHeader(BaseBranch.DeriveColumnName(entityType, false), VirtualTreeColumnHeaderStyles.Default, (int)InstanceTypeImageIndex.EntityTypeSubtype);
 			}
 			else
 			{
-				AdjustVisibility(false);
+				idLength = 0;
+				headers = new VirtualTreeColumnHeader[2];
 			}
+			headers[0] = CreateRowNumberColumn();
+			if (showIdentityTag)
+			{
+				headers[1] = CreateIdentityTagColumn();
+			}
+			vtrSamplePopulation.SetColumnHeaders(headers, true);
+			myBranch = new EntityTypeBranch(mySelectedEntityType, preferredIdentifier, unidentifiedRootSupertype, idLength, identityKindCache, showIdentityTag);
+			ConnectTree();
 		}
 
 		private void PopulateControlForFactType()
@@ -702,6 +743,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			return new VirtualTreeColumnHeader(string.Empty, 35, true);
 		}
 
+		private VirtualTreeColumnHeader CreateIdentityTagColumn()
+		{
+			return new VirtualTreeColumnHeader(ResourceStrings.ModelSamplePopulationEditorIdentityTag, VirtualTreeColumnHeaderStyles.Default, (int)InstanceTypeImageIndex.IdentityTag);
+		}
+
 		private void DisconnectTree()
 		{
 			ITree tree = this.vtrSamplePopulation.Tree;
@@ -866,29 +912,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					subtypeFact != null && subtypeFact.ProvidesPreferredIdentifier && autoCorrectRole is SupertypeMetaRole && Array.IndexOf<ModelElement>(representedElements, subtype = subtypeFact.Subtype) != -1) ||
 					(autoCorrectRole.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole && Array.IndexOf<ModelElement>(representedElements, autoCorrectRole.OppositeOrUnaryRole.Role.RolePlayer) != -1))
 				{
-					ObjectTypeInstance instance = error.ObjectTypeInstance;
+					ObjectInstance instance = error.ObjectInstance;
 					MandatoryConstraint constraint = error.MandatoryConstraint;
-					EntityTypeSubtypeInstance subtypeInstance = null;
-					FactTypeInstance factInstance = null;
-					EntityTypeInstance entityInstance = null;
-					FactTypeInstanceImplication implication;
+					ObjectInstance subtypeInstance = null;
+					FactInstance factInstance = null;
+					ObjectInstance entityInstance = null;
+					FactInstanceImplication implication;
 					Store store = instance.Store;
 					using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, (subtype != null) ? subtype.Name : factType.Name)))
 					{
 						if (subtype != null)
 						{
-							subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance((EntityTypeInstance)instance, subtype, false, true);
+							subtypeInstance = ObjectInstance.GetSubtypeInstance(instance, subtype, false, true);
 						}
-						else if ((implication = new FactTypeInstanceImplication(factType)).IsImplied && implication.ImpliedProxyRole == null && (impliedSupertype = implication.IdentifyingSupertype) != null)
+						else if ((implication = new FactInstanceImplication(factType)).IsImplied && implication.ImpliedProxyRole == null && (impliedSupertype = implication.IdentifyingSupertype) != null)
 						{
 							FactType selectedFactType = mySelectedFactType;
 							impliedEntityType = implication.ImpliedByEntityType;
 							EntityTypeBranch.ConnectInstance(impliedSupertype, impliedSupertype != impliedEntityType ? impliedEntityType : null, ref entityInstance, ref subtypeInstance, instance, autoCorrectRole);
 							if (selectedFactType != null && entityInstance != null)
 							{
-								factInstance = new FactTypeInstance(store);
+								factInstance = new FactInstance(store);
 								factInstance.FactType = selectedFactType;
-								new ObjectificationInstance(factInstance, (ObjectTypeInstance)subtypeInstance ?? entityInstance);
+								new ObjectificationInstance(factInstance, (ObjectInstance)subtypeInstance ?? entityInstance);
 							}
 						}
 						else
@@ -901,8 +947,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 					}
 					ObjectifiedInstanceRequiredError objectifiedInstanceRequired;
-					TooFewFactTypeRoleInstancesError partialFactInstanceError;
-					TooFewEntityTypeRoleInstancesError partialEntityInstanceError;
+					TooFewFactRoleInstancesError partialFactInstanceError;
+					TooFewEntityRoleInstancesError partialEntityInstanceError;
 					object selectErrorObject = null;
 					object selectInstance = null;
 					if (null != subtypeInstance)
@@ -920,7 +966,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else if (null != entityInstance)
 					{
-						if (null != (partialEntityInstanceError = entityInstance.TooFewEntityTypeRoleInstancesError))
+						if (null != (partialEntityInstanceError = entityInstance.TooFewEntityRoleInstancesError))
 						{
 							selectErrorObject = partialEntityInstanceError;
 						}
@@ -931,7 +977,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else if (null != factInstance)
 					{
-						if (null != (partialFactInstanceError = factInstance.TooFewFactTypeRoleInstancesError))
+						if (null != (partialFactInstanceError = factInstance.TooFewFactRoleInstancesError))
 						{
 							// The new fact instance is likely to have a partial
 							// population. Activate the row if this is the case.
@@ -966,22 +1012,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			// Add special handling for incomplete identifier errors on objectified
 			// EntityType instances with an external identifier. These instances are
 			// not displayed (they are in the dropdown for the identifier column), so
-			// there is no way to select and expand them without associating an empty FactTypeInstance.
+			// there is no way to select and expand them without associating an empty FactInstance.
 			// Note that the identifier picker dropdown special cases empty identifier instances
 			// so that they can be easily 'stolen' for other instances.
-			TooFewEntityTypeRoleInstancesError partialIdentifierError;
-			EntityTypeInstance entityInstance;
+			TooFewEntityRoleInstancesError partialIdentifierError;
+			ObjectInstance entityInstance;
 			ObjectType entityType;
-			if (null != (partialIdentifierError = error as TooFewEntityTypeRoleInstancesError) &&
-				null != (entityInstance = partialIdentifierError.EntityTypeInstance) &&
+			if (null != (partialIdentifierError = error as TooFewEntityRoleInstancesError) &&
+				null != (entityInstance = partialIdentifierError.EntityInstance) &&
 				null != entityInstance.ObjectifiedInstanceRequiredError &&
 				null != (entityType = entityInstance.EntityType))
 			{
 				Store store = entityInstance.Store;
 				FactType factType = entityType.NestedFactType;
-				using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorRelateObjectifiedInstanceIdentifierTransactionText, entityType.Name, entityInstance.IdentifierName, FactTypeInstance.GenerateEmptyInstanceName(factType))))
+				using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorRelateObjectifiedInstanceIdentifierTransactionText, entityType.Name, entityInstance.IdentifierName, FactInstance.GenerateEmptyInstanceName(factType))))
 				{
-					FactTypeInstance factInstance = new FactTypeInstance(store);
+					FactInstance factInstance = new FactInstance(store);
 					factInstance.FactType = factType; // Must be set if the error is present
 					entityInstance.ObjectifiedInstance = factInstance;
 					t.Commit();
@@ -1055,6 +1101,226 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return false;
 		}
+		/// <summary>
+		/// Determine if the IdentityTag column should be display for an entity type.
+		/// 
+		/// </summary>
+		/// <param name="entityType">The type to test</param>
+		/// <param name="resolvedPreferredIdentifier">The preferred identifier. This may be from a supertype.</param>
+		/// <param name="unidentifiedRootSupertype">If there is no preferred identifier, assume the top-most single supertype
+		/// will ultimately be the identifying supertype.</param>
+		/// <returns>True if there is no preferred identifier and this is not a subtype, otherwise, return true if there are explicitly tagged elements on this type.</returns>
+		private static bool TestShowEntityTypeIdentityTag(ObjectType entityType, UniquenessConstraint resolvedPreferredIdentifier, ObjectType unidentifiedRootSupertype)
+		{
+			if (resolvedPreferredIdentifier != null)
+			{
+				if (resolvedPreferredIdentifier.PreferredIdentifierFor == entityType)
+				{
+					// This is a self-identifying type. These are only tagged if the type has explicitly
+					// typed elements.
+					foreach (ObjectInstance instance in entityType.ObjectInstanceCollection)
+					{
+						if (!string.IsNullOrEmpty(instance.IdentityTag) && !instance.AutoIdentityTag)
+						{
+							// Any explicitly tagged instance forces the whole type to show the color.
+							return true;
+						}
+					}
+				}
+				// We do not test population for the supertype. In this case, the population (if needed) is shown
+				// as part of the expandable supertype identifiers.
+			}
+			else if (unidentifiedRootSupertype == null)
+			{
+				return true;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Determine how an object type is identified. This affects how sample population
+		/// for an object instance is displayed (expanded or as a single value).
+		/// </summary>
+		[Flags]
+		private enum ObjectTypeIdentityKind
+		{
+			/// <summary>
+			/// No flags are set
+			/// </summary>
+			None = 0,
+			/// <summary>
+			/// The instance is for a value type and is identified by the value
+			/// </summary>
+			Value = 1,
+			/// <summary>
+			/// The entity type is directly identified
+			/// </summary>
+			DirectIdentifier = 2,
+			/// <summary>
+			/// The non-subtype identifier resolves to a single value (possibly across multiple identifiers)
+			/// </summary>
+			SimpleIdentifier = 4,
+			/// <summary>
+			/// The entity type is identified through a supertype that has an identifier
+			/// </summary>
+			IdentifiedSupertype = 8,
+			/// <summary>
+			/// The entity type is identifier through an unidentified terminal supertype
+			/// </summary>
+			UnidentifiedSupertype = 0x10,
+			/// <summary>
+			/// The entity type has a visible tag column. This can appear on its own or with
+			/// a direct identifier. However, with a supertype identifier the tag is associated with
+			/// the supertype, not the subtype.
+			/// </summary>
+			IdentityTag = 0x20,
+		}
+
+		/// <summary>
+		/// Specify identifying information about an entity type display.
+		/// </summary>
+		private struct ObjectTypeIdentityInfo
+		{
+			/// <summary>
+			/// The display kind.
+			/// </summary>
+			public readonly ObjectTypeIdentityKind Kind;
+
+			/// <summary>
+			/// The related supertype, if any.
+			/// </summary>
+			public readonly ObjectType Supertype;
+
+			/// <summary>
+			/// Create a new <see cref="ObjectTypeIdentityInfo"/>
+			/// </summary>
+			public ObjectTypeIdentityInfo(ObjectTypeIdentityKind kind, ObjectType supertype)
+			{
+				this.Kind = kind;
+				this.Supertype = supertype;
+			}
+
+			/// <summary>
+			/// Determine if the entity should be expanded as a single value.
+			/// This will be true for a direct, simple identifier with no identity tag,
+			/// or an identity tag without other elements.
+			/// </summary>
+			public bool DisplayAsInlineValue
+			{
+				get
+				{
+					ObjectTypeIdentityKind kind = this.Kind;
+					if (0 == (kind & (ObjectTypeIdentityKind.IdentifiedSupertype | ObjectTypeIdentityKind.UnidentifiedSupertype)))
+					{
+						bool hasIdentityTag = 0 != (kind & ObjectTypeIdentityKind.IdentityTag);
+						if (0 != (kind & (ObjectTypeIdentityKind.SimpleIdentifier | ObjectTypeIdentityKind.Value)))
+						{
+							return !hasIdentityTag;
+						}
+						else if (hasIdentityTag && 0 == (kind & ObjectTypeIdentityKind.DirectIdentifier))
+						{
+							return true;
+						}
+					}
+					return false;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Cacheable structure using identifiers to indicate how instance of an object type are represented
+		/// during an editable session (without resetting the topmost branch) in the population editor.
+		/// </summary>
+		private class ObjectTypeIdentityInfo_WithIds
+		{
+			public readonly ObjectTypeIdentityKind Kind;
+			public readonly Nullable<Guid> SupertypeId;
+
+			/// <summary>
+			/// Create a new <see cref="ObjectTypeIdentityInfo_WithIds"/> instance
+			/// </summary>
+			/// <param name="kind">The display kind</param>
+			/// <param name="supertypeId">The supertype identifier</param>
+			public ObjectTypeIdentityInfo_WithIds(ObjectTypeIdentityKind kind, Nullable<Guid> supertypeId)
+			{
+				this.Kind = kind;
+				this.SupertypeId = supertypeId;
+			}
+
+			/// <summary>
+			/// Convert to the structure with a supertype instance instead of the id.
+			/// </summary>
+			/// <param name="store">The context <see cref="Store"/></param>
+			/// <returns>Populated <see cref="ObjectTypeIdentityInfo"/></returns>
+			public ObjectTypeIdentityInfo AsObjectTypeIdentityInfo(Store store)
+			{
+				ObjectTypeIdentityKind kind = this.Kind;
+				return new ObjectTypeIdentityInfo(kind, 0 != (kind & (ObjectTypeIdentityKind.IdentifiedSupertype | ObjectTypeIdentityKind.UnidentifiedSupertype)) ? store.DefaultPartition.ElementDirectory.FindElement(this.SupertypeId.GetValueOrDefault()) as ObjectType : null);
+			}
+		}
+		private static Func<Func<ObjectType, bool, ObjectTypeIdentityInfo>> CreateObjectTypeIdentityCache = () =>
+		{
+			Dictionary<Guid, ObjectTypeIdentityInfo_WithIds> cache = null;
+			return (ObjectType objectType, bool isUsed) =>
+			{
+				bool calc = false;
+				ObjectTypeIdentityInfo_WithIds cachedResult;
+				if (cache == null)
+				{
+					if (!isUsed)
+					{
+						cache = new Dictionary<Guid, ObjectTypeIdentityInfo_WithIds>();
+						calc = true;
+					}
+				}
+				else if (cache.TryGetValue(objectType.Id, out cachedResult))
+				{
+					return cachedResult.AsObjectTypeIdentityInfo(objectType.Store);
+				}
+				else
+				{
+					calc = !isUsed;
+				}
+
+				if (calc)
+				{
+					UniquenessConstraint pid = null;
+					ObjectType supertype = null;
+					ObjectTypeIdentityKind kind = ObjectTypeIdentityKind.None;
+					if (objectType.DataType != null)
+					{
+						kind = ObjectTypeIdentityKind.Value;
+					}
+					else if (null != (pid = objectType.ResolvedPreferredIdentifier))
+					{
+						supertype = pid.PreferredIdentifierFor;
+						if (supertype == objectType)
+						{
+							kind = ObjectTypeIdentityKind.DirectIdentifier;
+							supertype = null;
+							if (!HasComplexIdentifier(objectType))
+							{
+								kind |= ObjectTypeIdentityKind.SimpleIdentifier;
+							}
+						}
+						else
+						{
+							kind = ObjectTypeIdentityKind.IdentifiedSupertype;
+						}
+					}
+					else if (null != (supertype = objectType.GetPreferredTerminalSupertype()))
+					{
+						kind |= ObjectTypeIdentityKind.UnidentifiedSupertype;
+					}
+					if (TestShowEntityTypeIdentityTag(objectType, pid, pid == null ? supertype : null))
+					{
+						kind |= ObjectTypeIdentityKind.IdentityTag;
+					}
+					cache[objectType.Id] = new ObjectTypeIdentityInfo_WithIds(kind, supertype?.Id);
+					return new ObjectTypeIdentityInfo(kind, supertype);
+				}
+				return default(ObjectTypeIdentityInfo);
+			};
+		};
 		#endregion
 		#region Model Events and Handler Methods
 		#region Event Handler Attach/Detach Methods
@@ -1100,7 +1366,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(RolePlayerRemovedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(RolePlayerRolePlayerChangedEvent), action);
 
-			// Track EntityTypeInstance changes
+			// Track object type classification changes
+			classInfo = dataDirectory.FindDomainRelationship(ValueTypeHasDataType.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent), action);
+
+			// Track EntityInstance changes
 			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent), action);
@@ -1327,6 +1598,37 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		#endregion // Fact Type Instance Event Handlers
+		#region Object Type Transition Event Handlers
+		private void DataTypeAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			if (myRepopulated)
+			{
+				return;
+			}
+			ObjectType valueType = ((ValueTypeHasDataType)e.ModelElement).ValueType;
+			if (valueType == mySelectedEntityType && !valueType.IsDeleted) // Outright deletion is handled separately
+			{
+				mySelectedFactType = null;
+				mySelectedEntityType = null;
+				mySelectedValueType = valueType;
+				PopulateControlForValueType();
+			}
+		}
+		private void DataTypeRemovedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			if (myRepopulated)
+			{
+				return;
+			}
+			ObjectType objectType = ((ValueTypeHasDataType)e.ModelElement).ValueType;
+			if (objectType == mySelectedValueType && !objectType.IsDeleted)
+			{
+				mySelectedValueType = null;
+				mySelectedEntityType = objectType;
+				PopulateControlForEntityType();
+			}
+		}
+		#endregion // Object Type Transition Event Handlers
 		#region Entity Type Instance Event Handlers
 		private void ProcessPreferredIdentifierEvent(EntityTypeHasPreferredIdentifier link, ObjectType entityType, UniquenessConstraint preferredIdentifier)
 		{
@@ -1339,7 +1641,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			if (null != (selectedEntityType = mySelectedEntityType))
 			{
-				if (!entityType.IsDeleted && entityType == selectedEntityType)
+				if (!entityType.IsDeleted && myBranch.HasBranchesForEntityType(entityType))
 				{
 					if (null != (mySelectedFactType = entityType.NestedFactType))
 					{
@@ -1354,26 +1656,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			else if (null != (selectedFactType = mySelectedFactType))
 			{
-				if (selectedFactType == entityType.NestedFactType)
+				bool repopulate = false;
+				if (selectedFactType == entityType.NestedFactType || myBranch?.HasBranchesForEntityType(entityType) == true)
+				{
+					repopulate = true;
+				}
+				else
+				{
+					if (preferredIdentifier == null)
+					{
+						preferredIdentifier = link.PreferredIdentifier;
+					}
+
+					// Check if the selected FactType's population is now implied
+					if (!preferredIdentifier.IsDeleted)
+					{
+						foreach (Role identifierRole in preferredIdentifier.RoleCollection)
+						{
+							if (identifierRole.FactType == selectedFactType)
+							{
+								repopulate = true;
+							}
+						}
+					}
+				}
+
+				if (repopulate)
 				{
 					PopulateControlForFactType();
 					return;
-				}
-				if (preferredIdentifier == null)
-				{
-					preferredIdentifier = link.PreferredIdentifier;
-				}
-				// Check if the selected FactType's population is now implied
-				if (!preferredIdentifier.IsDeleted)
-				{
-					foreach (Role identifierRole in preferredIdentifier.RoleCollection)
-					{
-						if (identifierRole.FactType == selectedFactType)
-						{
-							PopulateControlForFactType();
-							return;
-						}
-					}
 				}
 			}
 			TestRepopulateForIdentifierPart(entityType);
@@ -1747,7 +2058,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// supports expanding branches for a single 'new' row that
 		/// is not attached to any instance. This interface is used along
 		/// with <see cref="IUnattachedBranch"/> to smoothly coordinate
-		/// attached these branches to the correct instances in response
+		/// attaching these branches to the correct instances in response
 		/// to events.
 		/// </summary>
 		private interface IUnattachedBranchOwner
@@ -1756,12 +2067,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Anchor an expansion branch that is not currently associated with an
 			/// instance.
 			/// </summary>
-			/// <param name="objectInstance">The <see cref="ObjectTypeInstance"/> to attach. If this instance is already attached
+			/// <param name="objectInstance">The <see cref="ObjectInstance"/> to attach. If this instance is already attached
 			/// in another row in the parent then no modifications are made.</param>
-			/// <param name="factInstance">The <see cref="FactTypeInstance"/> to attach. If this instance is already attached
+			/// <param name="factInstance">The <see cref="FactInstance"/> to attach. If this instance is already attached
 			/// in another row in the parent then no modifications are made.</param>
 			/// <returns>True if all unattached branches were successfully attached</returns>
-			bool TryAnchorUnattachedBranches(ObjectTypeInstance objectInstance, FactTypeInstance factInstance);
+			bool TryAnchorUnattachedBranches(ObjectInstance objectInstance, FactInstance factInstance);
 		}
 		/// <summary>
 		/// Implemented on an expansion branch so that an implementation of
@@ -1773,9 +2084,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Attach instance information to an expanded branch
 			/// </summary>
-			/// <param name="objectInstance">The <see cref="ObjectTypeInstance"/> to attach</param>
-			/// <param name="factInstance">The <see cref="FactTypeInstance"/> to attach</param>
-			void AnchorUnattachedBranch(ObjectTypeInstance objectInstance, FactTypeInstance factInstance);
+			/// <param name="objectInstance">The <see cref="ObjectInstance"/> to attach</param>
+			/// <param name="factInstance">The <see cref="FactInstance"/> to attach</param>
+			void AnchorUnattachedBranch(ObjectInstance objectInstance, FactInstance factInstance);
 		}
 		private abstract class BaseBranch : IBranch, IMultiColumnBranch
 		{
@@ -1798,10 +2109,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private BranchModificationEventHandler myModificationEvents;
 			#endregion // Member Variables
 			#region Construction
-			public BaseBranch(int columnCount, Store store)
+			public BaseBranch(int columnCount, Store store, Func<ObjectType, bool, ObjectTypeIdentityInfo> objectTypeIdentityCache)
 			{
 				this.myColumnCount = columnCount;
 				this.myStore = store;
+				this.myObjectTypeIdentityCache = objectTypeIdentityCache;
 			}
 			#endregion // Construction
 			#region CellEditContext class, used for label editing
@@ -1823,7 +2135,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					/// </summary>
 					private sealed class InstanceDropDown : ElementPicker<InstanceDropDown>
 					{
-						private delegate ObjectTypeInstance AutoInstanceGenerator();
+						private delegate ObjectInstance AutoInstanceGenerator();
 						private IList myInstanceList;
 						private AutoInstanceGenerator myAutoInstanceGenerator;
 						private bool myNoNullItem;
@@ -1957,11 +2269,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									};
 								}
 
-								IList<ObjectTypeInstance> instances = rolePlayer.ObjectTypeInstanceCollection;
+								IList<ObjectInstance> instances = rolePlayer.ObjectInstanceCollection;
 								int instanceCount = instances.Count;
 								ObjectType subtype;
 								bool displayIdentifierNames = false;
-								ObjectTypeInstance currentInstance = (ObjectTypeInstance)contextInstance.myColumnInstance;
+								ObjectInstance currentInstance = (ObjectInstance)contextInstance.myColumnInstance;
 								ObjectType preferredFor;
 								ObjectType contextEntityType = contextInstance.myEntityType;
 								bool isEntityEditor = contextInstance.myIsEntityTypeEditor;
@@ -1971,18 +2283,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 									// Show the current instance and any other instance that is not currently attached,
 									// plus a null to detach the entity instance. We also show any instance that is
-									// currently associated with an empty FactTypeInstance. These empty instances
+									// currently associated with an empty FactInstance. These empty instances
 									// are generated in response to a user action (selecting from the pick list or
 									// activating a model error) and are expendable. However, we don't show them
 									// if the instance we're currently choosing for is empty as this results in
-									// the pointless exercise of moving an identifier from one empty FactTypeInstance
+									// the pointless exercise of moving an identifier from one empty FactInstance
 									// to another.
-									ObjectTypeInstance[] unreferencedSupertypeInstances = null;
+									ObjectInstance[] unreferencedSupertypeInstances = null;
 									int unreferenceSupertypeInstanceCount = 0;
 									subtype = contextInstance.myEntityTypeSubtype;
 									if (subtype != null)
 									{
-										unreferencedSupertypeInstances = GetUnreferencedSupertypeInstances(subtype.ObjectTypeInstanceCollection, contextEntityType.ObjectTypeInstanceCollection, null);
+										unreferencedSupertypeInstances = GetUnreferencedSupertypeInstances(subtype.ObjectInstanceCollection, contextEntityType.ObjectInstanceCollection, null);
 										if (unreferencedSupertypeInstances != null)
 										{
 											unreferenceSupertypeInstanceCount = unreferencedSupertypeInstances.Length;
@@ -1992,8 +2304,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									bool showIdentifiersFromEmptyFactInstances = currentInstance != null || contextInstance.myFactInstance != null;
 									for (int i = 0; i < instanceCount; ++i)
 									{
-										ObjectTypeInstance instance = instances[i];
-										FactTypeInstance objectifiedInstance;
+										ObjectInstance instance = instances[i];
+										FactInstance objectifiedInstance;
 										if (instance != currentInstance &&
 											(null == (objectifiedInstance = instance.ObjectifiedInstance) ||
 											(showIdentifiersFromEmptyFactInstances && objectifiedInstance.RoleInstanceCollection.Count == 0)))
@@ -2005,12 +2317,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									if (unattachedCount != 0)
 									{
 										int totalCount = unattachedCount + ((currentInstance != null) ? 1 : 0) + unreferenceSupertypeInstanceCount;
-										ObjectTypeInstance[] filteredInstances = new ObjectTypeInstance[totalCount];
+										ObjectInstance[] filteredInstances = new ObjectInstance[totalCount];
 										unattachedCount = -1;
 										for (int i = 0; i < instanceCount; ++i)
 										{
-											ObjectTypeInstance instance = instances[i];
-											FactTypeInstance objectifiedInstance;
+											ObjectInstance instance = instances[i];
+											FactInstance objectifiedInstance;
 											if (instance == currentInstance ||
 												null == (objectifiedInstance = instance.ObjectifiedInstance) ||
 												(showIdentifiersFromEmptyFactInstances && objectifiedInstance.RoleInstanceCollection.Count == 0))
@@ -2043,7 +2355,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									else if (unreferenceSupertypeInstanceCount != 0)
 									{
-										ObjectTypeInstance[] newInstances = new ObjectTypeInstance[unreferenceSupertypeInstanceCount + 1];
+										ObjectInstance[] newInstances = new ObjectInstance[unreferenceSupertypeInstanceCount + 1];
 										newInstances[0] = currentInstance;
 										unreferencedSupertypeInstances.CopyTo(newInstances, 1);
 										instances = newInstances;
@@ -2051,7 +2363,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									else if (displayIdentifierNames)
 									{
-										myInstanceList = new ObjectTypeInstance[] { currentInstance };
+										myInstanceList = new ObjectInstance[] { currentInstance };
 										if (autoGenDataType != null)
 										{
 											return new string[] { ResourceStrings.ModelSamplePopulationEditorGenerateInstance, currentInstance.IdentifierName };
@@ -2067,7 +2379,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									else
 									{
-										return new ObjectTypeInstance[] { currentInstance };
+										return new ObjectInstance[] { currentInstance };
 									}
 								}
 								else if (null != (subtype = contextInstance.myEntityTypeSubtype))
@@ -2076,7 +2388,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 									// Put all unused supertype instances in the list, plus the supertype
 									// of the current subtype instance.
-									ObjectTypeInstance[] filteredInstances = GetUnreferencedSupertypeInstances(subtype.ObjectTypeInstanceCollection, instances, contextInstance.mySubtypeInstance);
+									ObjectInstance[] filteredInstances = GetUnreferencedSupertypeInstances(subtype.ObjectInstanceCollection, instances, contextInstance.mySubtypeInstance);
 									if (filteredInstances != null)
 									{
 										instances = filteredInstances;
@@ -2096,7 +2408,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									// Normal role player with a subtype, show the current instances and the unattached
 									// supertype instances.
-									ObjectTypeInstance[] unreferencedSupertypeInstances = GetUnreferencedSupertypeInstances(instances, preferredFor.ObjectTypeInstanceCollection, null);
+									ObjectInstance[] unreferencedSupertypeInstances = GetUnreferencedSupertypeInstances(instances, preferredFor.ObjectInstanceCollection, null);
 									if (unreferencedSupertypeInstances != null)
 									{
 										if (instanceCount == 0)
@@ -2106,7 +2418,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										}
 										else
 										{
-											ObjectTypeInstance[] newInstances = new ObjectTypeInstance[instanceCount + unreferencedSupertypeInstances.Length];
+											ObjectInstance[] newInstances = new ObjectInstance[instanceCount + unreferencedSupertypeInstances.Length];
 											instances.CopyTo(newInstances, 0);
 											unreferencedSupertypeInstances.CopyTo(newInstances, instanceCount);
 											instances = newInstances;
@@ -2131,28 +2443,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 												}
 												else
 												{
-													return currentInstance == null ? null : new ObjectTypeInstance[] { currentInstance };
+													return currentInstance == null ? null : new ObjectInstance[] { currentInstance };
 												}
 											case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
-												List<ObjectTypeInstance> filteredInstances = null;
-												foreach (ObjectTypeInstance instance in instances)
+												List<ObjectInstance> filteredInstances = null;
+												foreach (ObjectInstance instance in instances)
 												{
 													bool keepInstance = instance == currentInstance;
 													if (!keepInstance)
 													{
 														keepInstance = true;
-														foreach (EntityTypeRoleInstance testRoleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(instance))
+														foreach (RoleInstance roleInstance in RoleInstance.GetLinksToRoleCollection(instance))
 														{
-															if (testRoleInstance.EntityTypeInstance.EntityType == contextEntityType)
+															if (roleInstance.IdentifiedEntityInstance?.EntityType == contextEntityType)
 															{
 																keepInstance = false;
 																break;
 															}
 														}
 													}
+
 													if (keepInstance)
 													{
-														(filteredInstances ?? (filteredInstances = new List<ObjectTypeInstance>(instanceCount))).Add(instance);
+														(filteredInstances ?? (filteredInstances = new List<ObjectInstance>(instanceCount))).Add(instance);
 													}
 												}
 												if (filteredInstances == null)
@@ -2171,11 +2484,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 								if (filterEmptyInstances)
 								{
-									List<ObjectTypeInstance> filteredList = null;
+									List<ObjectInstance> filteredList = null;
 									int lastFiltered = -1;
 									for (int i = 0; i < instanceCount; ++i)
 									{
-										ObjectTypeInstance testInstance = instances[i];
+										ObjectInstance testInstance = instances[i];
 										if (currentInstance != testInstance && IsEmptyInstance(testInstance))
 										{
 											if (filteredList == null)
@@ -2186,7 +2499,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 												}
 												else
 												{
-													filteredList = new List<ObjectTypeInstance>(instanceCount - lastFiltered - 1);
+													filteredList = new List<ObjectInstance>(instanceCount - lastFiltered - 1);
 													// Add up to this point
 													for (int j = lastFiltered + 1; j < i; ++j)
 													{
@@ -2258,9 +2571,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						DataType dataType = dataTypeUse.DataType;
 						bool useInvariant = !dataType.CanParseAnyValue && dataType.IsCultureSensitive;
-						foreach (ObjectTypeInstance instance in dataTypeUse.ValueType.ObjectTypeInstanceCollection)
+						foreach (ObjectInstance instance in dataTypeUse.ValueType.ObjectInstanceCollection)
 						{
-							ValueTypeInstance valueInstance = instance as ValueTypeInstance;
+							ObjectInstance valueInstance = instance;
 							if (valueInstance != null)
 							{
 								yield return useInvariant ? valueInstance.InvariantValue : valueInstance.Value;
@@ -2273,23 +2586,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					/// <param name="subtypeInstances">The full set of subtype instances</param>
 					/// <param name="supertypeInstances">The full set of instances</param>
 					/// <param name="filterInstance">A subtype instance to ignore</param>
-					/// <returns><see cref="ObjectTypeInstance"/> array containing <see cref="EntityTypeInstance"/> elements</returns>
-					private static ObjectTypeInstance[] GetUnreferencedSupertypeInstances(IList<ObjectTypeInstance> subtypeInstances, IList<ObjectTypeInstance> supertypeInstances, EntityTypeSubtypeInstance filterInstance)
+					/// <returns><see cref="ObjectInstance"/> array containing <see cref="ObjectInstance"/> elements representing entity instances</returns>
+					private static ObjectInstance[] GetUnreferencedSupertypeInstances(IList<ObjectInstance> subtypeInstances, IList<ObjectInstance> supertypeInstances, ObjectInstance filterInstance)
 					{
 						int instanceCount = supertypeInstances.Count;
 						int subtypeInstanceCount = subtypeInstances.Count;
 						int currentInstanceCount = (filterInstance == null) ? 0 : 1;
-						ObjectTypeInstance[] filteredInstances = null;
+						ObjectInstance[] filteredInstances = null;
 						if (subtypeInstanceCount >= currentInstanceCount)
 						{
 							instanceCount -= subtypeInstanceCount - currentInstanceCount;
 							Debug.Assert(instanceCount >= 0);
-							filteredInstances = new ObjectTypeInstance[instanceCount];
+							filteredInstances = new ObjectInstance[instanceCount];
 							if (instanceCount != 0)
 							{
-								ObjectTypeInstance[] referencedSupertypeInstances = new ObjectTypeInstance[subtypeInstanceCount - currentInstanceCount];
+								ObjectInstance[] referencedSupertypeInstances = new ObjectInstance[subtypeInstanceCount - currentInstanceCount];
 								int i = 0;
-								foreach (EntityTypeSubtypeInstance subtypeInstance in subtypeInstances)
+								foreach (ObjectInstance subtypeInstance in subtypeInstances)
 								{
 									if (subtypeInstance != filterInstance)
 									{
@@ -2298,9 +2611,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 								}
 								i = 0;
-								foreach (ObjectTypeInstance instance in supertypeInstances)
+								foreach (ObjectInstance instance in supertypeInstances)
 								{
-									if (-1 == Array.IndexOf<ObjectTypeInstance>(referencedSupertypeInstances, instance))
+									if (-1 == Array.IndexOf<ObjectInstance>(referencedSupertypeInstances, instance))
 									{
 										filteredInstances[i] = instance;
 										++i;
@@ -2326,7 +2639,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								else
 								{
 									CellEditContext editContext = (CellEditContext)context.Instance;
-									ObjectTypeInstance currentInstance = editContext.myColumnInstance;
+									ObjectInstance currentInstance = editContext.myColumnInstance;
 									if (currentInstance != null && stringValue == currentInstance.Name)
 									{
 										return currentInstance;
@@ -2351,7 +2664,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 						{
-							ObjectTypeInstance typedValue = (ObjectTypeInstance)value;
+							ObjectInstance typedValue = (ObjectInstance)value;
 							if (typedValue != null)
 							{
 								return typedValue.Name;
@@ -2387,9 +2700,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						// Ignore strings coming through here with an as cast. Opening the
 						// dropdown with dirty text will attempt a set value
-						ObjectTypeInstance typedValue = value as ObjectTypeInstance;
+						ObjectInstance typedValue = value as ObjectInstance;
 						CellEditContext context = (CellEditContext)component;
-						ObjectTypeInstance columnInstance = context.myColumnInstance;
+						ObjectInstance columnInstance = context.myColumnInstance;
 						Role role = context.myRole;
 						if (typedValue == null)
 						{
@@ -2397,36 +2710,50 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								if (context.myIsEntityTypeEditor)
 								{
-									EntityTypeSubtypeInstance subtypeInstance = context.mySubtypeInstance;
+									ObjectInstance subtypeInstance = context.mySubtypeInstance;
 									if (subtypeInstance != null)
 									{
-										EntityTypeInstance entityInstance = context.myEntityInstance;
+										ObjectInstance entityInstance = context.myEntityInstance;
 										using (Transaction t = role.Store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, context.myEntityTypeSubtype.Name, subtypeInstance.Name)))
 										{
 											subtypeInstance.Delete();
 											t.Commit();
 										}
-										context.UpdateInstanceFields(null, null);
+										context.UpdateInstanceFields((ObjectInstance)null, null);
 									}
 									else
 									{
-										EntityTypeInstance entityInstance = context.myEntityInstance;
-										IList<EntityTypeRoleInstance> entityRoleInstances = entityInstance.RoleInstanceCollection;
-										EntityTypeRoleInstance roleInstance = EntityTypeInstance.FindRoleInstance(entityRoleInstances, role);
-										ObjectTypeInstance deleteInstance = roleInstance.ObjectTypeInstance;
-										ValueTypeInstance deleteValueInstance = null;
+										ObjectInstance entityInstance = context.myEntityInstance;
+										RoleInstance roleInstance = entityInstance.FindIdentifyingRoleInstance(role);
+										ObjectInstance deleteInstance = roleInstance.ObjectInstance;
+										ObjectInstance deleteValueInstance = null;
 										if (role.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
 										{
 											// See comments in EntityTypeBranch.CommitLabelEdit
-											deleteValueInstance = deleteInstance as ValueTypeInstance;
-											if (deleteValueInstance == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
+											deleteValueInstance = deleteInstance;
+											if (deleteValueInstance == null || deleteValueInstance.ValueType == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
 											{
 												throw new InvalidOperationException(ResourceStrings.ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText);
 											}
 										}
 
+										RoleInstance matchingSingleRoleInstance = null;
+										entityInstance.IterateIdentifyingRoleInstances((testRole, testRoleleInstance) => {
+											if (testRoleleInstance != null)
+											{
+												if (matchingSingleRoleInstance == null && testRoleleInstance.ObjectInstance == deleteInstance)
+												{
+													matchingSingleRoleInstance = roleInstance;
+													return false;
+												}
+
+												matchingSingleRoleInstance = null;
+												return true;
+											}
+											return false;
+										});
 										using (Transaction t = role.Store.TransactionManager.BeginTransaction(
-											((entityRoleInstances.Count + entityInstance.UnaryRoleInstanceCollection.Count) == 1) ?
+											matchingSingleRoleInstance != null ?
 												string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, context.ContextObjectType.Name, entityInstance.Name) :
 												string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(role, false), deleteInstance.Name, entityInstance.Name)))
 										{
@@ -2446,15 +2773,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 								else
 								{
-									FactTypeInstance factInstance = context.myFactInstance;
+									FactInstance factInstance = context.myFactInstance;
 									if (role != null)
 									{
-										IList<FactTypeRoleInstance> factRoleInstances = factInstance.RoleInstanceCollection;
-										FactTypeRoleInstance roleInstance = FactTypeInstance.FindRoleInstance(factRoleInstances, role);
+										IList<RoleInstance> factRoleInstances = factInstance.RoleInstanceCollection;
+										RoleInstance roleInstance = FactInstance.FindRoleInstance(factRoleInstances, role);
 										using (Transaction t = role.Store.TransactionManager.BeginTransaction(
 											(factRoleInstances.Count == 1) ?
 											string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveFactInstanceTransactionText, factInstance.Name) :
-											string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(role, true), roleInstance.ObjectTypeInstance.Name, factInstance.Name)))
+											string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(role, true), roleInstance.ObjectInstance.Name, factInstance.Name)))
 										{
 											roleInstance.Delete();
 											t.Commit();
@@ -2481,16 +2808,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								if (targetContextObjectType != typedValue.ObjectType)
 								{
 									// This occurs if the list has been extended to show unreferenced supertype instances
-									typedValue = EntityTypeSubtypeInstance.GetSubtypeInstance((EntityTypeInstance)typedValue, targetContextObjectType, false, true);
+									// UNDONE: NOW Stopped here. This throws if forceCreate (the true arg) is respected. It needs to be inside the transaction.
+									// In a preferred subtype situation, the typedValue.Name is the same (used below for transaction text), but I'm not sure
+									// if this happens for secondary subtypes, which will populate a 1-1 relationship to get the correct name.
+									// Is it possible to retroactively change the name of a transaction before commit? NO. Consider just doing two transactions.
+									// Possibly just use typedValue.IdentifierName??
+									typedValue = ObjectInstance.GetSubtypeInstance(typedValue, targetContextObjectType, false, true);
 								}
 
 								string instanceName = null;
 								{
-									FactTypeInstance factTypeInstance;
-									EntityTypeInstance entityInstance;
-									if (null != (factTypeInstance = context.myFactInstance))
+									FactInstance factInstance;
+									ObjectInstance entityInstance;
+									if (null != (factInstance = context.myFactInstance))
 									{
-										instanceName = factTypeInstance.Name;
+										instanceName = factInstance.Name;
 									}
 									else if (null != (entityInstance = context.myEntityInstance))
 									{
@@ -2509,7 +2841,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										entityEditorBranch.ConnectInstance(typedValue, role, null, context.myFactInstance);
 										if (context.myIsEntityTypeEditor)
 										{
-											context.UpdateInstanceFields((ObjectTypeInstance)context.mySubtypeInstance ?? context.myEntityInstance);
+											context.UpdateInstanceFields((ObjectInstance)context.mySubtypeInstance ?? context.myEntityInstance);
 										}
 										else
 										{
@@ -2518,14 +2850,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									else if (context.myIsEntityTypeEditor)
 									{
-										EntityTypeInstance entityInstance = context.myEntityInstance;
-										EntityTypeSubtypeInstance subtypeInstance = context.mySubtypeInstance;
+										ObjectInstance entityInstance = context.myEntityInstance;
+										ObjectInstance subtypeInstance = context.mySubtypeInstance;
 										EntityTypeBranch.ConnectInstance(context.myEntityType, context.myEntityTypeSubtype, ref entityInstance, ref subtypeInstance, typedValue, role);
 										context.UpdateInstanceFields(entityInstance, subtypeInstance);
 									}
 									else
 									{
-										FactTypeInstance factInstance = context.myFactInstance;
+										FactInstance factInstance = context.myFactInstance;
 										FactTypeBranch.ConnectInstance(ref factInstance, typedValue, role, null);
 										context.UpdateInstanceFields(factInstance, null);
 									}
@@ -2537,7 +2869,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							else
 							{
-								FactTypeInstance factInstance = context.myFactInstance;
+								FactInstance factInstance = context.myFactInstance;
 								FactType factType;
 								using (Transaction t = targetContextObjectType.Store.TransactionManager.BeginTransaction(string.Format(
 									ResourceStrings.ModelSamplePopulationEditorRelateObjectifiedInstanceIdentifierTransactionText,
@@ -2545,12 +2877,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									typedValue.IdentifierName,
 									(factInstance != null) ?
 										factInstance.Name :
-										(null != (factType = targetContextObjectType.NestedFactType) ? FactTypeInstance.GenerateEmptyInstanceName(factType) : ""))))
+										(null != (factType = targetContextObjectType.NestedFactType) ? FactInstance.GenerateEmptyInstanceName(factType) : ""))))
 								{
 									if (targetContextObjectType != typedValue.ObjectType)
 									{
 										// This occurs if the list has been extended to show unreferenced supertype instances
-										typedValue = EntityTypeSubtypeInstance.GetSubtypeInstance((EntityTypeInstance)typedValue, targetContextObjectType, false, true);
+										typedValue = ObjectInstance.GetSubtypeInstance(typedValue, targetContextObjectType, false, true);
 									}
 									EntityEditorBranch entityEditorBranch = context.myEditBranch;
 									if (entityEditorBranch != null)
@@ -2576,14 +2908,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						get
 						{
-							return typeof(ObjectTypeInstance);
+							return typeof(ObjectInstance);
 						}
 					}
 					public sealed override Type PropertyType
 					{
 						get
 						{
-							return typeof(ObjectTypeInstance);
+							return typeof(ObjectInstance);
 						}
 					}
 					public sealed override bool IsReadOnly
@@ -2616,23 +2948,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				private readonly bool myIsEntityTypeEditor;
 				private readonly Action<string> myEmulateCommitLabelEdit;
 				private readonly ObjectType myAutoGenerateValueType;
-				private EntityTypeInstance myEntityInstance;
-				private EntityTypeSubtypeInstance mySubtypeInstance;
-				private FactTypeInstance myFactInstance;
-				private ObjectTypeInstance myColumnInstance;
+				private ObjectInstance myEntityInstance;
+				private ObjectInstance mySubtypeInstance;
+				private FactInstance myFactInstance;
+				private ObjectInstance myColumnInstance;
 				#endregion // Member Variables
 				#region Constructor
 				/// <summary>
-				/// Create an editing context for the given entityType role and entityTypeInstance
+				/// Create an editing context for the given entityType role and entityInstance
 				/// </summary>
 				/// <param name="entityType">The entityType to attach to instances to.</param>
 				/// <param name="entityTypeSubtype">A subtype of the entity to attach to.</param>
 				/// <param name="role">The role being edited</param>
-				/// <param name="entityInstance">The current entityTypeInstance. Can be null.</param>
-				/// <param name="subtypeInstance">The current entityTypeSubtypeInstance. Can be null.</param>
+				/// <param name="entityInstance">The current entityInstance. Can be null.</param>
+				/// <param name="subtypeInstance">The current EntitySubtypeInstance. Can be null.</param>
 				/// <param name="editBranch">Branch the editor exists on</param>
 				/// <param name="emulateCommitLabelEdit">Callback to emulate the action of label edit on the calling branch.</param>
-				public CellEditContext(ObjectType entityType, ObjectType entityTypeSubtype, Role role, EntityTypeInstance entityInstance, EntityTypeSubtypeInstance subtypeInstance, EntityEditorBranch editBranch, Action<string> emulateCommitLabelEdit)
+				public CellEditContext(ObjectType entityType, ObjectType entityTypeSubtype, Role role, ObjectInstance entityInstance, ObjectInstance subtypeInstance, EntityEditorBranch editBranch, Action<string> emulateCommitLabelEdit)
 				{
 					Debug.Assert(entityType != null);
 					Debug.Assert(role != null);
@@ -2647,55 +2979,66 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// <summary>
 				/// Update instance fields for an entity type editor edit context
 				/// </summary>
-				private void UpdateInstanceFields(ObjectTypeInstance objectInstance)
+				private void UpdateInstanceFields(ObjectInstance objectInstance)
 				{
 					if (objectInstance == null)
 					{
 						return; // Ignore when creating a new instance
 					}
-					EntityTypeSubtypeInstance subtypeInstance = objectInstance as EntityTypeSubtypeInstance;
-					EntityTypeInstance entityInstance = (subtypeInstance != null) ? subtypeInstance.SupertypeInstance : (EntityTypeInstance)objectInstance;
-					ObjectType entityTypeSubtype;
-					if (subtypeInstance == null &&
+					ObjectInstance supertypeInstance = objectInstance.SupertypeInstance;
+					ObjectInstance entityInstance;
+					ObjectInstance subtypeInstance;
+					if (supertypeInstance != null)
+					{
+						subtypeInstance = objectInstance;
+						entityInstance = supertypeInstance;
+					}
+					else
+					{
+						subtypeInstance = null;
+						entityInstance = objectInstance;
+					}
+						ObjectType entityTypeSubtype;
+					if (entityInstance == objectInstance &&
 						null != (entityTypeSubtype = myEntityTypeSubtype))
 					{
 						// Doing this simple sanity check means that we can call this
 						// update function for all subtype cases.
-						subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, entityTypeSubtype, true, false);
+						subtypeInstance = ObjectInstance.GetSubtypeInstance(entityInstance, entityTypeSubtype, true, false);
 					}
 					UpdateInstanceFields(entityInstance, subtypeInstance);
 				}
 				/// <summary>
 				/// Update instance fields for an entity type editor edit context
 				/// </summary>
-				private void UpdateInstanceFields(EntityTypeInstance entityInstance, EntityTypeSubtypeInstance subtypeInstance)
+				private void UpdateInstanceFields(ObjectInstance entityInstance, ObjectInstance subtypeInstance)
 				{
 					Debug.Assert(myIsEntityTypeEditor);
 					myEntityInstance = entityInstance;
 					mySubtypeInstance = subtypeInstance;
-					ObjectTypeInstance newInstance = null;
+					ObjectInstance newInstance = null;
 					if (myEntityTypeSubtype != null)
 					{
 						newInstance = entityInstance;
 					}
 					else if (entityInstance != null)
 					{
-						EntityTypeRoleInstance roleInstance = entityInstance.FindRoleInstance(myRole);
+						RoleInstance roleInstance = entityInstance.FindIdentifyingRoleInstance(myRole);
 						if (roleInstance != null)
 						{
-							newInstance = roleInstance.ObjectTypeInstance;
+							newInstance = roleInstance.ObjectInstance;
 						}
 					}
 					myColumnInstance = newInstance;
 				}
 				/// <summary>
-				/// Create an editing context for the given role and factTypeInstance
+				/// Create an editing context for the given role and factInstance
 				/// </summary>
 				/// <param name="role">The role being edited</param>
-				/// <param name="factInstance">The current <see cref="FactTypeInstance"/>. Can be null.</param>
+				/// <param name="factInstance">The current <see cref="FactInstance"/>. Can be null.</param>
 				/// <param name="editBranch">Branch the editor exists on</param>
 				/// <param name="emulateCommitLabelEdit">Callback to emulate the action of label edit on the calling branch.</param>
-				public CellEditContext(Role role, FactTypeInstance factInstance, EntityEditorBranch editBranch, Action<string> emulateCommitLabelEdit)
+				public CellEditContext(Role role, FactInstance factInstance, EntityEditorBranch editBranch, Action<string> emulateCommitLabelEdit)
 				{
 					Debug.Assert(role != null);
 					myRole = role;
@@ -2705,14 +3048,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					UpdateInstanceFields(factInstance, null);
 				}
 				/// <summary>
-				/// Create an editing context for the given objectifying type and factTypeInstance
+				/// Create an editing context for the given objectifying type and factInstance
 				/// </summary>
 				/// <param name="objectifyingType">The objectifying type to modify.</param>
-				/// <param name="factInstance">The current <see cref="FactTypeInstance"/>. Can be null.</param>
+				/// <param name="factInstance">The current <see cref="FactInstance"/>. Can be null.</param>
 				/// <param name="objectifyingInstance">The current objectifying instance. Can be null.</param>
 				/// <param name="editBranch">Branch the editor exists on</param>
 				/// <param name="emulateCommitLabelEdit">Callback to emulate the action of label edit on the calling branch.</param>
-				public CellEditContext(ObjectType objectifyingType, FactTypeInstance factInstance, ObjectTypeInstance objectifyingInstance, EntityEditorBranch editBranch, Action<string> emulateCommitLabelEdit)
+				public CellEditContext(ObjectType objectifyingType, FactInstance factInstance, ObjectInstance objectifyingInstance, EntityEditorBranch editBranch, Action<string> emulateCommitLabelEdit)
 				{
 					Debug.Assert(objectifyingType != null);
 					UniquenessConstraint pid = objectifyingType.ResolvedPreferredIdentifier;
@@ -2735,7 +3078,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// <summary>
 				/// Update instance fields for a FactType context
 				/// </summary>
-				private void UpdateInstanceFields(FactTypeInstance factInstance, ObjectTypeInstance objectifyingInstance)
+				private void UpdateInstanceFields(FactInstance factInstance, ObjectInstance objectifyingInstance)
 				{
 					Debug.Assert(!myIsEntityTypeEditor);
 					Role role = myRole;
@@ -2747,13 +3090,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					else
 					{
 						myFactInstance = factInstance;
-						ObjectTypeInstance newInstance = null;
+						ObjectInstance newInstance = null;
 						if (factInstance != null)
 						{
-							FactTypeRoleInstance roleInstance = factInstance.FindRoleInstance(role);
+							RoleInstance roleInstance = factInstance.FindRoleInstance(role);
 							if (roleInstance != null)
 							{
-								newInstance = roleInstance.ObjectTypeInstance;
+								newInstance = roleInstance.ObjectInstance;
 							}
 						}
 						myColumnInstance = newInstance;
@@ -2793,6 +3136,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						Role role = myRole;
 						return (role != null && (!(role is SubtypeMetaRole) || myEntityType == null)) ? role.RolePlayer : myIsEntityTypeEditor ? myEntityType : (myEntityTypeSubtype ?? myEntityType);
+					}
+				}
+
+				/// <summary>
+				/// Get alternate editing text if the value displays differently
+				/// </summary>
+				public string ContextAlternateText
+				{
+					get
+					{
+						ObjectInstance instance = myColumnInstance;
+						if (instance != null)
+						{
+							ObjectType type = instance.ObjectType;
+							if (type.DataType == null && type.PreferredIdentifier == null) // Note that we do not use inline edits for supertype references, so we do not need to check the recursive ResolvedPreferredIdentifier
+							{
+								string tag = instance.IdentityTag;
+								if (!string.IsNullOrEmpty(tag))
+								{
+									return tag;
+								}
+							}
+						}
+						return null;
 					}
 				}
 				#endregion // Accessor Properties
@@ -2838,14 +3205,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							if (this.EditControlStyle == TypeEditorHostEditControlStyle.TransparentEditRegion)
 							{
 								CellEditContext instance = (CellEditContext)CurrentInstance;
-								ObjectTypeInstance columnInstance = instance.myColumnInstance;
+								ObjectInstance columnInstance = instance.myColumnInstance;
 								Role role = instance.myRole;
 								if (columnInstance == null)
 								{
 									ObjectType objectifyingType = (role != null) ? ((role is SubtypeMetaRole) ? instance.myEntityType : role.RolePlayer) : (instance.myEntityTypeSubtype ?? instance.myEntityType);
 									if (objectifyingType != null)
 									{
-										return ObjectTypeInstance.GetDisplayString(null, (role is SubtypeMetaRole) ? objectifyingType : (instance.myEntityTypeSubtype ?? objectifyingType), role == null);
+										return ObjectInstance.GetDisplayString(null, (role is SubtypeMetaRole) ? objectifyingType : (instance.myEntityTypeSubtype ?? objectifyingType), role == null);
 									}
 								}
 								else if (role == null)
@@ -2929,6 +3296,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							// Defer to the normal text edit if the control is not dirty
 							return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
 						};
+						retVal.AlternateText = editContext.ContextAlternateText;
 					}
 					else if (!defaultEdit)
 					{
@@ -3530,16 +3898,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				};
 			}
 			/// <summary>
-			/// Determine if the specified instance is empty. A <see cref="ValueTypeInstance"/>
-			/// is never empty, an <see cref="EntityTypeInstance"/> is empty if it has not
-			/// attached instances, and a <see cref="EntityTypeSubtypeInstance"/> is empty if
-			/// its <see cref="P:EntityTypeSubtypeInstance.SupertypeInstance"/> is empty
+			/// Determine if the specified instance is empty. A value instance
+			/// is never empty, an entity instance is empty if it has not
+			/// attached instances, and an entity subtype instance is empty if
+			/// its <see cref="P:ObjectInstance.SupertypeInstance"/> is empty
 			/// </summary>
-			public static bool IsEmptyInstance(ObjectTypeInstance objectInstance)
+			public static bool IsEmptyInstance(ObjectInstance objectInstance)
 			{
-				EntityTypeSubtypeInstance subtypeInstance = objectInstance as EntityTypeSubtypeInstance;
-				EntityTypeInstance entityInstance = (subtypeInstance != null) ? subtypeInstance.SupertypeInstance : objectInstance as EntityTypeInstance;
-				return entityInstance == null || (entityInstance.RoleInstanceCollection.Count + entityInstance.UnaryRoleInstanceCollection.Count) == 0;
+				// UNDONE: NOW Kill EntityTypeRoleInstance Verify the identityTag check for all uses
+				ObjectType entityType = objectInstance.EntityType;
+				if (entityType != null && string.IsNullOrEmpty(objectInstance.IdentityTag))
+				{
+					if (entityType.PreferredIdentifier == null)
+					{
+						objectInstance = objectInstance.SupertypeInstance;
+					}
+					return objectInstance != null ? !objectInstance.IterateIdentifyingRoleInstances((role, roleInstance) => roleInstance != null) : true;
+				}
+				return false;
 			}
 			/// <summary>
 			/// Given an <see cref="ObjectType"/> that is a subtype without an explicit
@@ -3604,19 +3980,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// A helper function to safely attach a <paramref name="factInstance"/> to the external <paramref name="identifierInstance"/>
 			/// that identifies the objectified <see cref="FactType"/> population.
 			/// </summary>
-			/// <param name="factInstance">The <see cref="FactTypeInstance"/> associated with an objectified <see cref="FactType"/></param>
-			/// <param name="identifierInstance">The <see cref="ObjectTypeInstance"/> associated with the objectifying type that identifies this <paramref name="factInstance"/></param>
-			/// <remarks>An identifier can be moved from one FactTypeInstance to another if the original instance has no population. If
+			/// <param name="factInstance">The <see cref="FactInstance"/> associated with an objectified <see cref="FactType"/></param>
+			/// <param name="identifierInstance">The <see cref="ObjectInstance"/> associated with the objectifying type that identifies this <paramref name="factInstance"/></param>
+			/// <remarks>An identifier can be moved from one FactInstance to another if the original instance has no population. If
 			/// the specified <paramref name="factInstance"/> has an empty identifier, then all references to the empty identifier are
 			/// transferred to the new identifier. This facilititates the creation of empty placeholder identifiers that to provide
 			/// a means of referencing an objectified instance.</remarks>
-			/// <exception cref="InvalidOperationException">Is thrown if the identifier is already attached to another non-empty FactTypeInstance</exception>
-			protected static void ConnectObjectifyingIdentifierInstance(FactTypeInstance factInstance, ObjectTypeInstance identifierInstance)
+			/// <exception cref="InvalidOperationException">Is thrown if the identifier is already attached to another non-empty FactInstance</exception>
+			protected static void ConnectObjectifyingIdentifierInstance(FactInstance factInstance, ObjectInstance identifierInstance)
 			{
 				ObjectificationInstance existingInstanceLink;
 				// Make sure that a differed objectified instance already attached to the
 				// parent instance can be safely abandoned
-				FactTypeInstance existingObjectifiedInstance;
+				FactInstance existingObjectifiedInstance;
 				if (null != (existingObjectifiedInstance = identifierInstance.ObjectifiedInstance))
 				{
 					if (existingObjectifiedInstance == factInstance)
@@ -3638,23 +4014,34 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				if (null != (existingInstanceLink = ObjectificationInstance.GetLinkToObjectifyingInstance(factInstance)))
 				{
-					// If the current identifier identifier is empty, meaning that it has no attached role instances, then
+					// If the current instance is empty, meaning that it has no attached identifying role instances, then
 					// its instance exists solely for the purpose of relating objectified FactType information to other instances.
-					// In this case, we want to abandon the empty identifier to be deleted by the rules engine, but only after we
+					// In this case, we want to abandon the empty instance to be deleted by the rules engine, but only after we
 					// move all referencing links to the new instance.
-					ObjectTypeInstance objectifyingInstance = existingInstanceLink.ObjectifyingInstance;
-					EntityTypeSubtypeInstance objectifyingSubtypeInstance = objectifyingInstance as EntityTypeSubtypeInstance;
-					EntityTypeInstance objectifyingEntityInstance = (null != objectifyingSubtypeInstance) ? objectifyingSubtypeInstance.SupertypeInstance : (EntityTypeInstance)objectifyingInstance;
-					if ((objectifyingEntityInstance.RoleInstanceCollection.Count + objectifyingEntityInstance.UnaryRoleInstanceCollection.Count) == 0)
+					ObjectInstance objectifyingInstance = existingInstanceLink.ObjectifyingInstance;
+					ObjectInstance supertypeInstance = objectifyingInstance.SupertypeInstance;
+					ObjectInstance objectifyingSubtypeInstance;
+					ObjectInstance objectifyingEntityInstance;
+					if (supertypeInstance != null)
+					{
+						objectifyingSubtypeInstance = objectifyingInstance;
+						objectifyingEntityInstance = supertypeInstance;
+					}
+					else
+					{
+						objectifyingSubtypeInstance = null;
+						objectifyingEntityInstance = objectifyingInstance;
+					}
+					if (!objectifyingEntityInstance.IterateIdentifyingRoleInstances((role, instance) => instance != null))
 					{
 						try
 						{
-							EntityTypeSubtypeInstance identifierSubtypeInstance = identifierInstance as EntityTypeSubtypeInstance;
-							EntityTypeInstance identifierEntityInstance = (null == identifierSubtypeInstance) ? (EntityTypeInstance)identifierInstance : null; // We don't care about the supertype instance
-							Debug.Assert((objectifyingSubtypeInstance == null) == (identifierSubtypeInstance == null)); // The old and new instance types should always match
+							ObjectInstance identifierSupertypeInstance = identifierInstance.SupertypeInstance;
+							ObjectInstance identifierEntityInstance = (null == identifierSupertypeInstance) ? identifierInstance : null; // We don't care about the supertype instance
+							Debug.Assert((supertypeInstance == null) == (identifierSupertypeInstance == null)); // The old and new instance types should always match
 							if (identifierEntityInstance != null)
 							{
-								foreach (EntityTypeSubtypeInstanceHasSupertypeInstance supertypeLink in EntityTypeSubtypeInstanceHasSupertypeInstance.GetLinksToEntityTypeSubtypeInstanceCollection(objectifyingEntityInstance))
+								foreach (EntitySubtypeInstanceHasSupertypeInstance supertypeLink in EntitySubtypeInstanceHasSupertypeInstance.GetLinksToEntitySubtypeInstanceCollection(objectifyingEntityInstance))
 								{
 									supertypeLink.SupertypeInstance = identifierEntityInstance;
 								}
@@ -3663,25 +4050,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							foreach (RoleInstance roleInstance in RoleInstance.GetLinksToRoleCollection(objectifyingInstance))
 							{
 #if ROLEINSTANCE_ROLEPLAYERCHANGE
-								link.ObjectTypeInstance = resultEntityInstance;
+								link.ObjectInstance = resultEntityInstance;
 #else
-								FactTypeRoleInstance factRoleInstance;
-								if (null != (factRoleInstance = roleInstance as FactTypeRoleInstance))
+								if (roleInstance.Role.FactType.UnaryPattern != UnaryValuePattern.NotUnary)
 								{
-									FactTypeInstance reattachFactInstance = factRoleInstance.FactTypeInstance;
+									FactInstance reattachFactInstance = roleInstance.FactInstance;
 									roleInstance.Delete();
-									new FactTypeRoleInstance(roleInstance.Role, identifierInstance).FactTypeInstance = reattachFactInstance;
-								}
-								else
-								{
-									EntityTypeInstance reattachEntityInstance = ((EntityTypeRoleInstance)roleInstance).EntityTypeInstance;
-									roleInstance.Delete();
-									new EntityTypeRoleInstance(roleInstance.Role, identifierInstance).EntityTypeInstance = reattachEntityInstance;
+									new RoleInstance(roleInstance.Role, identifierInstance).FactInstance = reattachFactInstance;
 								}
 #endif // ROLEINSTANCE_ROLEPLAYERCHANGE
 							}
-
-							// There is no analog to this code for unary role instances. The roles would be reattached to the original instance.
 						}
 						catch (InvalidOperationException)
 						{
@@ -3695,15 +4073,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					factInstance.ObjectifyingInstance = identifierInstance;
 				}
 			}
-			protected static ObjectTypeInstance RecurseValueTypeInstance(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string newText, ref ValueTypeInstance rootInstance, bool create, bool allowValueEdit)
+			protected static ObjectInstance RecurseValueInstance(ObjectInstance startObjectInstance, ObjectType parentType, string newText, ref ObjectInstance rootInstance, bool create, bool allowValueEdit)
 			{
+				UniquenessConstraint pid;
 				if (parentType.IsValueType)
 				{
 					DataType valueDataType = parentType.DataType;
 					if (create && valueDataType.CanCompare)
 					{
 						bool canParseAnyValue = valueDataType.CanParseAnyValue;
-						LinkedElementCollection<ValueTypeInstance> instances = parentType.ValueTypeInstanceCollection;
+						LinkedElementCollection<ObjectInstance> instances = parentType.ObjectInstanceCollection;
 						int instanceCount = instances.Count;
 						if (instanceCount != 0)
 						{
@@ -3715,7 +4094,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							for (int i = 0; i < instanceCount; ++i)
 							{
-								ValueTypeInstance currentValueInstance = instances[i];
+								ObjectInstance currentValueInstance = instances[i];
 								string value = currentValueInstance.Value;
 								if (validNewValue)
 								{
@@ -3734,42 +4113,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					if (!create)
 					{
-						return objectTypeInstance;
+						return startObjectInstance;
 					}
 					Debug.Assert(parentType.Store.TransactionActive, "Transaction must be active to create new instances");
-					ValueTypeInstance editValueTypeInstance = objectTypeInstance as ValueTypeInstance;
-					if (editValueTypeInstance != null)
+					ObjectInstance editValueInstance = startObjectInstance;
+					if (editValueInstance != null)
 					{
-						if (allowValueEdit && RoleInstance.GetLinksToRoleCollection(editValueTypeInstance).Count <= 1)
+						if (allowValueEdit && RoleInstance.GetLinksToRoleCollection(editValueInstance).Count <= 1)
 						{
-							editValueTypeInstance.Value = newText;
+							editValueInstance.Value = newText;
 						}
 						else
 						{
-							editValueTypeInstance = AddAndInitializeValueTypeInstance(newText, parentType);
+							editValueInstance = AddAndInitializeValueInstance(newText, parentType);
 						}
 					}
 					else
 					{
-						editValueTypeInstance = AddAndInitializeValueTypeInstance(newText, parentType);
+						editValueInstance = AddAndInitializeValueInstance(newText, parentType);
 					}
-					rootInstance = editValueTypeInstance;
-					return editValueTypeInstance;
+					rootInstance = editValueInstance;
+					return editValueInstance;
 				}
-				else
+				else if (null != (pid = parentType.PreferredIdentifier))
 				{
-					UniquenessConstraint pid = parentType.PreferredIdentifier;
 					LinkedElementCollection<Role> identifierRoles = pid.RoleCollection;
 					Debug.Assert(identifierRoles.Count == 1);
 					Role identifierRole = identifierRoles[0];
-					EntityTypeInstance editEntityInstance = objectTypeInstance as EntityTypeInstance;
-					// Note that we don't offer direct text editing of subtype instances, so is either a ValueTypeInstance
-					// of an EntityTypeInstance.
-					EntityTypeRoleInstance editingRoleInstance = null;
+					ObjectInstance editEntityInstance = startObjectInstance;
+					// Note that we don't offer direct text editing of subtype instances, so is either a ValueInstance
+					// of an EntityInstance.
+					RoleInstance editingRoleInstance = null;
 					bool recurseAllowValueEdit = create;
 					if (editEntityInstance != null)
 					{
-						editingRoleInstance = editEntityInstance.FindRoleInstance(identifierRole);
+						editingRoleInstance = editEntityInstance.FindIdentifyingRoleInstance(identifierRole);
 						if (recurseAllowValueEdit)
 						{
 							// Before recursing and potentially allowing an edit to the underlying value instance,
@@ -3787,24 +4165,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							else
 							{
 								maxLeft -= setCount;
-								recurseAllowValueEdit = editEntityInstance.EntityTypeSubtypeInstanceCollection.Count <= maxLeft;
+								recurseAllowValueEdit = editEntityInstance.EntitySubtypeInstanceCollection.Count <= maxLeft;
 							}
 						}
 					}
-					ObjectTypeInstance objectInstance = RecurseValueTypeInstance(
-						(editingRoleInstance != null) ? editingRoleInstance.ObjectTypeInstance : null,
+					ObjectInstance objectInstance = RecurseValueInstance(
+						(editingRoleInstance != null) ? editingRoleInstance.ObjectInstance : null,
 						identifierRole.RolePlayer,
 						newText,
 						ref rootInstance,
 						create,
 						recurseAllowValueEdit);
-					LinkedElementCollection<EntityTypeInstance> instances = parentType.EntityTypeInstanceCollection;
+					LinkedElementCollection<ObjectInstance> instances = parentType.ObjectInstanceCollection;
 					int instanceCount = instances.Count;
-					for(int i = 0; i < instanceCount; ++i)
+					for (int i = 0; i < instanceCount; ++i)
 					{
-						EntityTypeInstance instance = instances[i];
-						LinkedElementCollection<EntityTypeRoleInstance> roleInstances = instance.RoleInstanceCollection;
-						if(roleInstances.Count == 1 && roleInstances[0].ObjectTypeInstance == objectInstance)
+						ObjectInstance instance = instances[i];
+						RoleInstance matchingSingleRoleInstance = null;
+						instance.IterateIdentifyingRoleInstances((role, roleInstance) => {
+							if (roleInstance != null)
+							{
+								if (matchingSingleRoleInstance == null && roleInstance.ObjectInstance == objectInstance)
+								{
+									matchingSingleRoleInstance = roleInstance;
+									return false;
+								}
+								matchingSingleRoleInstance = null;
+								return true;
+							}
+							return false;
+						});
+
+						if(matchingSingleRoleInstance != null)
 						{
 							return instance;
 						}
@@ -3820,27 +4212,86 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							1 == (identifierFactTypes = pid.FactTypeCollection).Count &&
 							objectifiedFactType == identifierFactTypes[0])
 						{
-							FactTypeInstance editFactInstance;
-							if (editEntityInstance == null || editEntityInstance.RoleInstanceCollection.Count != 0 || null == (editFactInstance = editEntityInstance.ObjectifiedInstance))
+							// UNDONE: NOW Kill EntityTypeRoleInstance I don't think we're treating this separately any more. See if this case even exists. It should be handled automatically by EnsureIdentifyingRoleInstance in the other branch.
+							FactInstance editFactInstance;
+							if (editEntityInstance == null || editEntityInstance.IterateIdentifyingRoleInstances((role, roleInstance) => roleInstance != null) || null == (editFactInstance = editEntityInstance.ObjectifiedInstance))
 							{
-								editFactInstance = new FactTypeInstance(objectifiedFactType.Store);
+								editFactInstance = new FactInstance(objectifiedFactType.Store);
 								editFactInstance.FactType = objectifiedFactType;
-								editEntityInstance = (EntityTypeInstance)editFactInstance.ObjectifyingInstance;
+								editEntityInstance = editFactInstance.ObjectifyingInstance;
 							}
-							new FactTypeRoleInstance(identifierRole, objectInstance).FactTypeInstance = editFactInstance;
+							new RoleInstance(identifierRole, objectInstance).FactInstance = editFactInstance;
 						}
 						else
 						{
-							if (editEntityInstance == null || editEntityInstance.RoleInstanceCollection.Count != 0)
+							if (editEntityInstance == null || editEntityInstance.IterateIdentifyingRoleInstances((role, instance) => instance != null))
 							{
-								editEntityInstance = new EntityTypeInstance(parentType.Store);
-								editEntityInstance.EntityType = parentType;
+								editEntityInstance = new ObjectInstance(parentType.Store);
+								editEntityInstance.ObjectType = parentType;
 							}
-							new EntityTypeRoleInstance(identifierRole, objectInstance).EntityTypeInstance = editEntityInstance;
+							editEntityInstance.EnsureIdentifyingRoleInstance(identifierRole, objectInstance);
 						}
 					}
 					return editEntityInstance;
 				}
+				else
+				{
+					// Set the identity tag if there is no preferred identifier
+
+					// First see if we have an existing instance with this name in the identity tag
+					if (!string.IsNullOrEmpty(newText))
+					{
+						foreach (ObjectInstance existingMatch in parentType.ObjectInstanceCollection)
+						{
+							if (existingMatch.IdentityTag == newText)
+							{
+								return existingMatch;
+							}
+						}
+					}
+
+					ObjectInstance editEntityInstance = startObjectInstance;
+					if (create)
+					{
+						if (editEntityInstance == null || RoleInstance.GetLinksToRoleCollection(editEntityInstance).Count > 1)
+						{
+							editEntityInstance = new ObjectInstance(parentType.Store);
+							editEntityInstance.ObjectType = parentType;
+						}
+						editEntityInstance.AutoIdentityTag = false;
+						editEntityInstance.IdentityTag = newText;
+					}
+					return editEntityInstance;
+				}
+			}
+			private Func<ObjectType, bool, ObjectTypeIdentityInfo> myObjectTypeIdentityCache;
+			/// <summary>
+			/// Return a cache to determine if an identity tag is visible for a given type.
+			/// This is shared between a root branch and all expansions.
+			/// If the second argument is true and the object type has not been cached, this returns
+			/// an <see cref="ObjectTypeIdentityInfo"/> with a <see cref="ObjectTypeIdentityInfo.Kind"/> value
+			/// of <see cref="ObjectTypeIdentityKind.None"/>
+			/// </summary>
+			public Func<ObjectType, bool, ObjectTypeIdentityInfo> ObjectTypeIdentityCache
+			{
+				get
+				{
+					Func<ObjectType, bool, ObjectTypeIdentityInfo> testVisible = myObjectTypeIdentityCache;
+					if (testVisible == null)
+					{
+						myObjectTypeIdentityCache = testVisible = CreateObjectTypeIdentityCache();
+					}
+					return testVisible;
+				}
+			}
+			/// <summary>
+			/// Determine if entity identity info has been requested for a given
+			/// object type in this branch.
+			/// </summary>
+			public bool HasBranchesForEntityType(ObjectType objectType)
+			{
+				Func<ObjectType, bool, ObjectTypeIdentityInfo> cache = myObjectTypeIdentityCache;
+				return cache != null && cache(objectType, true).Kind != ObjectTypeIdentityKind.None;
 			}
 			#endregion // Helper Methods
 			#region Branch Update Methods
@@ -3932,11 +4383,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			protected static ValueTypeInstance AddAndInitializeValueTypeInstance(string newText, ObjectType parentValueType)
+			protected static ObjectInstance AddAndInitializeValueInstance(string newText, ObjectType parentValueType)
 			{
 				Debug.Assert(parentValueType.IsValueType);
-				ValueTypeInstance newInstance = new ValueTypeInstance(parentValueType.Store);
-				newInstance.ValueType = parentValueType;
+				ObjectInstance newInstance = new ObjectInstance(parentValueType.Store);
+				newInstance.ObjectType = parentValueType;
 				newInstance.Value = newText;
 				return newInstance;
 			}
@@ -4017,17 +4468,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private sealed class ValueTypeBranch : BaseBranch, IBranch, IMultiColumnBranch
 		{
 			#region Member Variables
-			private readonly List<ValueTypeInstance> myCachedInstances;
+			private readonly List<ObjectInstance> myCachedInstances;
 			private readonly ObjectType myValueType;
 			#endregion
 			#region Construction
 			// Value Type Branches will always have 1 column, plus the full row select column
-			public ValueTypeBranch(ObjectType selectedValueType) : base(2, selectedValueType.Store)
+			public ValueTypeBranch(ObjectType selectedValueType) : base(2, selectedValueType.Store, null)
 			{
 				Debug.Assert(selectedValueType.IsValueType);
 				myValueType = selectedValueType;
-				myCachedInstances = new List<ValueTypeInstance>();
-				myCachedInstances.AddRange(selectedValueType.ValueTypeInstanceCollection);
+				myCachedInstances = new List<ObjectInstance>();
+				myCachedInstances.AddRange(selectedValueType.ObjectInstanceCollection);
 			}
 			#endregion
 			#region IBranch Interface Members
@@ -4049,13 +4500,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					using (Transaction t = Store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, valueType.Name)))
 					{
-						AddAndInitializeValueTypeInstance(newText, valueType);
+						AddAndInitializeValueInstance(newText, valueType);
 						t.Commit();
 					}
 				}
 				else if (textIsEmpty)
 				{
-					ValueTypeInstance valueInstance = valueType.ValueTypeInstanceCollection[row];
+					ObjectInstance valueInstance = valueType.ObjectInstanceCollection[row];
 					using (Transaction t = Store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, valueType.Name, valueInstance.Name)))
 					{
 						valueInstance.Delete();
@@ -4064,7 +4515,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else
 				{
-					ValueTypeInstance valueInstance = valueType.ValueTypeInstanceCollection[row];
+					ObjectInstance valueInstance = valueType.ObjectInstanceCollection[row];
 					using (Transaction t = Store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, valueType.Name, valueInstance.Name)))
 					{
 						valueInstance.Value = newText;
@@ -4132,10 +4583,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				int column = 0;
 				if (style == ErrorObject)
 				{
-					CompatibleValueTypeInstanceValueError badValueError;
-					if (null != (badValueError = obj as CompatibleValueTypeInstanceValueError))
+					CompatibleValueInstanceError badValueError;
+					if (null != (badValueError = obj as CompatibleValueInstanceError))
 					{
-						obj = badValueError.ValueTypeInstance;
+						obj = badValueError.ValueInstance;
 						style = ObjectStyle.TrackingObject;
 						column = 1; // The first column is for full-row select, choose the second to edit.
 					}
@@ -4143,9 +4594,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (style == ObjectStyle.TrackingObject)
 				{
 					int row;
-					ValueTypeInstance valueInstance;
+					ObjectInstance valueInstance;
 					ObjectType valueType;
-					if (null != (valueInstance = obj as ValueTypeInstance) &&
+					if (null != (valueInstance = obj as ObjectInstance) &&
 						(valueType = valueInstance.ValueType) == myValueType &&
 						-1 != (row = myCachedInstances.IndexOf(valueInstance)))
 					{
@@ -4161,32 +4612,32 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 				DomainClassInfo classInfo;
 				
-				classInfo = dataDirectory.FindDomainRelationship(ValueTypeHasValueTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasValueTypeInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasValueTypeInstanceDeletedEvent), action);
+				classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasObjectInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasValueInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasValueInstanceDeletedEvent), action);
 
-				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ValueTypeInstance.ValueDomainPropertyId);
-				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueTypeInstanceValueChangedEvent), action);
+				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ObjectInstance.ValueDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueInstanceValueChangedEvent), action);
 			}
-			private void ValueTypeHasValueTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			private void ValueTypeHasValueInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				ValueTypeHasValueTypeInstance link = e.ModelElement as ValueTypeHasValueTypeInstance;
-				ObjectType valueType = link.ValueType;
-				if (!valueType.IsDeleted && valueType == myValueType)
+				ObjectTypeHasObjectInstance link = (ObjectTypeHasObjectInstance)e.ModelElement;
+				ObjectType valueType = link.ObjectType;
+				if (!valueType.IsDeleted && valueType == myValueType && valueType.DataType != null)
 				{
-					myCachedInstances.Add(link.ValueTypeInstance);
+					myCachedInstances.Add(link.ObjectInstance);
 					base.AddInstanceDisplay(VisibleItemCount - 1);
 				}
 			}
 
-			private void ValueTypeHasValueTypeInstanceDeletedEvent(object sender, ElementDeletedEventArgs e)
+			private void ValueTypeHasValueInstanceDeletedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				ValueTypeHasValueTypeInstance link = e.ModelElement as ValueTypeHasValueTypeInstance;
-				ObjectType valueType = link.ValueType;
-				if (!valueType.IsDeleted && valueType == myValueType)
+				ObjectTypeHasObjectInstance link = (ObjectTypeHasObjectInstance)e.ModelElement;
+				ObjectType valueType = link.ObjectType;
+				if (!valueType.IsDeleted && valueType == myValueType && valueType.DataType != null)
 				{
-					List<ValueTypeInstance> instances = myCachedInstances;
-					int instanceLocation = instances.IndexOf(link.ValueTypeInstance);
+					List<ObjectInstance> instances = myCachedInstances;
+					int instanceLocation = instances.IndexOf(link.ObjectInstance);
 					if (instanceLocation != -1) // Possible on add followed by delete in the same transaction
 					{
 						instances.RemoveAt(instanceLocation);
@@ -4195,13 +4646,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			private void ValueTypeInstanceValueChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			private void ValueInstanceValueChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
-				ValueTypeInstance instance = e.ModelElement as ValueTypeInstance;
+				ObjectInstance instance = (ObjectInstance)e.ModelElement;
 				ObjectType modifiedValueType = instance.ValueType;
 				if (modifiedValueType != null && !modifiedValueType.IsDeleted && modifiedValueType == myValueType)
 				{
-					int location = modifiedValueType.ValueTypeInstanceCollection.IndexOf(instance);
+					int location = modifiedValueType.ObjectInstanceCollection.IndexOf(instance);
 					if (location != -1)
 					{
 						base.EditInstanceDisplay(location);
@@ -4235,7 +4686,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if(base.IsFullRowSelectColumn(column) && row < myCachedInstances.Count)
 				{
-					ValueTypeInstance valueInstance = myValueType.ValueTypeInstanceCollection[row];
+					ObjectInstance valueInstance = myValueType.ObjectInstanceCollection[row];
 					using (Transaction t = Store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, myValueType.Name, valueInstance.Name)))
 					{
 						valueInstance.Delete();
@@ -4268,11 +4719,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// in the list, can be distinguished from a modification of an
 			/// empty instance.
 			/// </summary>
-			private readonly List<ObjectTypeInstance> myCachedInstances;
+			private readonly List<ObjectInstance> myCachedInstances;
 			/// <summary>
 			/// The count of known instances in the cache that are not currently empty.
 			/// </summary>
 			private int myNonEmptyInstanceCount;
+			private bool myShowIdentityTag;
 			private readonly ObjectType myEntityType;
 			private readonly ObjectType myEntityTypeSubtype;
 			/// <summary>
@@ -4284,36 +4736,48 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private IUnattachedBranch[] myUnattachedBranches;
 			#endregion
 			#region Construction
-			public EntityTypeBranch(ObjectType entityType, int numColumns)
-				: base(numColumns, entityType.Store)
+			public EntityTypeBranch(ObjectType entityType, UniquenessConstraint preferredIdentifier, ObjectType unidentifiedRootSupertype, int idLength, Func<ObjectType, bool, ObjectTypeIdentityInfo> objectTypeIdentityCache, bool showIdentityTag)
+				: base(idLength + (showIdentityTag ? 2 : 1), entityType.Store, objectTypeIdentityCache) // +1 for row selection column, +2 to show identity tag column
 			{
 				Debug.Assert(!entityType.IsValueType);
-				UniquenessConstraint preferredIdentifier = entityType.ResolvedPreferredIdentifier;
-				ObjectType preferredFor = preferredIdentifier.PreferredIdentifierFor;
-				if (preferredFor == entityType)
+				myShowIdentityTag = showIdentityTag;
+				if (preferredIdentifier != null)
+				{
+					ObjectType preferredFor = preferredIdentifier.PreferredIdentifierFor;
+					if (preferredFor == entityType)
+					{
+						myEntityType = entityType;
+					}
+					else
+					{
+						myEntityTypeSubtype = entityType;
+						myEntityType = preferredFor;
+					}
+				}
+				else if (unidentifiedRootSupertype != null)
+				{
+					myEntityTypeSubtype = entityType;
+					myEntityType = unidentifiedRootSupertype;
+				}
+				else
 				{
 					myEntityType = entityType;
 				}
-				else
-				{
-					myEntityTypeSubtype = entityType;
-					myEntityType = preferredFor;
-				}
-				LinkedElementCollection<ObjectTypeInstance> instances = entityType.ObjectTypeInstanceCollection;
+				LinkedElementCollection<ObjectInstance> instances = entityType.ObjectInstanceCollection;
 				int instanceCount = instances.Count;
-				List<ObjectTypeInstance> instanceCache;
+				List<ObjectInstance> instanceCache;
 				if (instanceCount == 0)
 				{
-					instanceCache = new List<ObjectTypeInstance>();
+					instanceCache = new List<ObjectInstance>();
 				}
 				else
 				{
-					instanceCache = new List<ObjectTypeInstance>(instanceCount);
+					instanceCache = new List<ObjectInstance>(instanceCount);
 					int lastEmptyIndex = instanceCount;
 					int nonEmptyCount = 0;
 					for (int i = 0; i < instanceCount; ++i)
 					{
-						ObjectTypeInstance instance = instances[i];
+						ObjectInstance instance = instances[i];
 						if (IsEmptyInstance(instance))
 						{
 							if (lastEmptyIndex == instanceCount)
@@ -4353,31 +4817,59 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Store store = Store;
 				ObjectType selectedEntityType = myEntityType;
 				ObjectType selectedEntityTypeSubtype = myEntityTypeSubtype;
-				// If editing an existing EntityTypeInstance
+				// If editing an existing EntityInstance
 				if (row != NewRowIndex)
 				{
-					EntityTypeInstance editInstance;
-					EntityTypeSubtypeInstance editSubtypeInstance;
+					ObjectInstance editInstance;
+					ObjectInstance editSubtypeInstance;
 					if (selectedEntityTypeSubtype != null)
 					{
-						editSubtypeInstance = (EntityTypeSubtypeInstance)myCachedInstances[row];
+						editSubtypeInstance = myCachedInstances[row];
 						editInstance = editSubtypeInstance.SupertypeInstance;
 					}
 					else
 					{
-						editInstance = (EntityTypeInstance)myCachedInstances[row];
+						editInstance = myCachedInstances[row];
 						editSubtypeInstance = null;
 					}
-					Role identifierRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
-					IList<EntityTypeRoleInstance> editRoleInstances = editInstance.RoleInstanceCollection;
-					EntityTypeRoleInstance editRoleInstance = EntityTypeInstance.FindRoleInstance(editRoleInstances, identifierRole);
-					// If editing an existing EntityTypeRoleInstance
+
+					int identifierOffset = 1;
+					if (myShowIdentityTag)
+					{
+						if (column == 1)
+						{
+							// Editing the identity tag. We may not have a preferred identifier in this case
+							if (delete && editInstance.RoleCollection.Count == 0 && editInstance.EntitySubtypeInstanceCollection.Count == 0)
+							{
+								using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, selectedEntityType.Name, editInstance.Name)))
+								{
+									editInstance.Delete();
+									t.Commit();
+								}
+							}
+							else
+							{
+								using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceIdentityTagTransactionText, selectedEntityType.Name, editInstance.Name, newText)))
+								{
+									editInstance.AutoIdentityTag = false;
+									editInstance.IdentityTag = newText;
+									t.Commit();
+								}
+							}
+							return LabelEditResult.AcceptEdit;
+						}
+						identifierOffset = 2;
+					}
+
+					Role identifierRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - identifierOffset]; // If we get this far (no identity tag) then we have a preferred identifier
+					RoleInstance editRoleInstance = editInstance.FindIdentifyingRoleInstance(identifierRole);
+					// If editing an existing RoleInstance
 					if (editRoleInstance != null)
 					{
 						if (delete)
 						{
-							ObjectTypeInstance deleteInstance = editRoleInstance.ObjectTypeInstance;
-							ValueTypeInstance deleteValueInstance = null;
+							ObjectInstance deleteInstance = editRoleInstance.ObjectInstance;
+							ObjectInstance deleteValueInstance = null;
 							if (identifierRole.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
 							{
 								// If we delete the role instance then a new instance will be created automatically because of
@@ -4385,15 +4877,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								// and if the ValueType instance is playing no other roles. This is the standard popular reference
 								// mode pattern. If this is the case, then we delete the opposite ValueType instance. If this is
 								// not the case, then we should not proceed with the deletion.
-								deleteValueInstance = deleteInstance as ValueTypeInstance;
-								if (deleteValueInstance == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
+								deleteValueInstance = deleteInstance;
+								if (deleteValueInstance == null || deleteValueInstance.ValueType == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
 								{
 									throw new InvalidOperationException(ResourceStrings.ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText);
 								}
 							}
 
 							using (Transaction t = store.TransactionManager.BeginTransaction(
-								((editRoleInstances.Count + editInstance.UnaryRoleInstanceCollection.Count) == 1) ?
+								editInstance.IterateIdentifyingRoleInstances((identifyingRole, testRoleInstance) => testRoleInstance != null && testRoleInstance != editRoleInstance) ?
 									string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, selectedEntityType.Name, editInstance.Name) :
 									string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(identifierRole, false), deleteInstance.Name, editInstance.Name)))
 							{
@@ -4411,24 +4903,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						else
 						{
 							ObjectType editRolePlayer = editRoleInstance.Role.RolePlayer;
-							ObjectTypeInstance objectInstance = editRoleInstance.ObjectTypeInstance;
+							ObjectInstance objectInstance = editRoleInstance.ObjectInstance;
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, editRolePlayer.Name, objectInstance.Name)))
 							{
-								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(objectInstance, editRolePlayer, newText, ref instance, true, true);
+								ObjectInstance instance = null;
+								ObjectInstance result = RecurseValueInstance(objectInstance, editRolePlayer, newText, ref instance, true, true);
 								ConnectInstance(myEntityType, myEntityTypeSubtype, ref editInstance, ref editSubtypeInstance, result, identifierRole);
 								t.Commit();
 							}
 						}
 						return LabelEditResult.AcceptEdit;
 					}
-					// If editing an existing EntityTypeInstance but creating a new EntityTypeRoleInstance
+					// If editing an existing EntityInstance but creating a new RoleInstance
 					else if (!delete)
 					{
 						using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedEntityType.Name)))
 						{
-							ValueTypeInstance instance = null;
-							ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance, true, true);
+							ObjectInstance instance = null;
+							ObjectInstance result = RecurseValueInstance(null, identifierRole.RolePlayer, newText, ref instance, true, true);
 							ConnectInstance(myEntityType, myEntityTypeSubtype, ref editInstance, ref editSubtypeInstance, result, identifierRole);
 							t.Commit();
 						}
@@ -4440,12 +4932,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedEntityType.Name)))
 					{
-						Role identifierRole = selectedEntityTypeSubtype != null ? GetIdentifyingSupertypeRole(selectedEntityTypeSubtype) : selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
-						ValueTypeInstance instance = null;
-						ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance, true, true);
-						EntityTypeInstance parentInstance = null;
-						EntityTypeSubtypeInstance parentSubtypeInstance = null;
-						ConnectInstance(selectedEntityType, selectedEntityTypeSubtype, ref parentInstance, ref parentSubtypeInstance, result, identifierRole);
+						if (myShowIdentityTag && column == 1)
+						{
+							ObjectInstance instance = new ObjectInstance(selectedEntityType.Store);
+							instance.ObjectType = selectedEntityType;
+							instance.AutoIdentityTag = false;
+							instance.IdentityTag = newText;
+						}
+						else
+						{
+							Role identifierRole = selectedEntityTypeSubtype != null ? GetIdentifyingSupertypeRole(selectedEntityTypeSubtype) : selectedEntityType.PreferredIdentifier.RoleCollection[column - (myShowIdentityTag ? 2 : 1)];
+							ObjectInstance instance = null;
+							ObjectInstance result = RecurseValueInstance(null, identifierRole.RolePlayer, newText, ref instance, true, true);
+							ObjectInstance parentInstance = null;
+							ObjectInstance parentSubtypeInstance = null;
+							ConnectInstance(selectedEntityType, selectedEntityTypeSubtype, ref parentInstance, ref parentSubtypeInstance, result, identifierRole);
+						}
 						t.Commit();
 					}
 					return LabelEditResult.AcceptEdit;
@@ -4457,35 +4959,37 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if (style == ObjectStyle.SubItemExpansion)
 				{
+					column -= myShowIdentityTag ? 2 : 1;
 					ObjectType selectedEntityTypeSubtype = myEntityTypeSubtype;
 					EntityEditorBranch expandedBranch;
-					ObjectTypeInstance parentInstance = null;
+					ObjectInstance parentInstance = null;
 					if (selectedEntityTypeSubtype != null)
 					{
 						expandedBranch = new EntityEditorBranch(
 							null,
 							selectedEntityTypeSubtype,
-							parentInstance = (row < myNonEmptyInstanceCount ? (EntityTypeSubtypeInstance)myCachedInstances[row] : null),
+							parentInstance = (row < myNonEmptyInstanceCount ? myCachedInstances[row] : null),
 							GetPreferredSubtypeRole(selectedEntityTypeSubtype),
 							this);
 					}
 					else
 					{
 						ObjectType selectedEntityType = myEntityType;
-						ObjectTypeInstance editInstance = null;
-						Role identifierRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
-						if (identifierRole.FactType.UnaryPattern != UnaryValuePattern.NotUnary)
+						ObjectInstance editInstance = null;
+						UniquenessConstraint pid = selectedEntityType.PreferredIdentifier;
+						Role identifierRole;
+						if (pid == null || (identifierRole = pid.RoleCollection[column]).FactType.UnaryPattern != UnaryValuePattern.NotUnary)
 						{
 							return null;
 						}
-						EntityTypeInstance parentEntityInstance = null;
+						ObjectInstance parentEntityInstance = null;
 						if (row < myNonEmptyInstanceCount)
 						{
-							parentEntityInstance = (EntityTypeInstance)myCachedInstances[row];
-							EntityTypeRoleInstance foundRoleInstance = parentEntityInstance.FindRoleInstance(identifierRole);
+							parentEntityInstance = myCachedInstances[row];
+							RoleInstance foundRoleInstance = parentEntityInstance.FindIdentifyingRoleInstance(identifierRole);
 							if (foundRoleInstance != null)
 							{
-								editInstance = foundRoleInstance.ObjectTypeInstance;
+								editInstance = foundRoleInstance.ObjectInstance;
 							}
 						}
 						expandedBranch = new EntityEditorBranch(parentEntityInstance, selectedEntityType, editInstance, identifierRole, this);
@@ -4493,7 +4997,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (parentInstance == null)
 					{
 						IUnattachedBranch[] branches = myUnattachedBranches ?? (myUnattachedBranches = new IUnattachedBranch[ColumnCount - 1]);
-						branches[column - 1] = expandedBranch;
+						branches[column] = expandedBranch;
 					}
 					return expandedBranch;
 				}
@@ -4503,8 +5007,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			string IBranch.GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
-				if (text == null)
+				if (text == null) // Signal that this is the new row
 				{
+					if (myShowIdentityTag)
+					{
+						if (column == 1)
+						{
+							return string.Empty;
+						}
+						--column;
+					}
 					ObjectType displayType = null;
 					Role identifierRole;
 					if (myEntityTypeSubtype != null)
@@ -4515,28 +5027,36 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						displayType = identifierRole.RolePlayer;
 					}
-					text = displayType != null ? ObjectTypeInstance.GetDisplayString(null, displayType, false) : string.Empty;
+					text = displayType != null ? ObjectInstance.GetDisplayString(null, displayType, false) : string.Empty;
 				}
 				else if (text.Length == 0)
 				{
+					if (myShowIdentityTag)
+					{
+						if (column == 1)
+						{
+							return myCachedInstances[row].IdentityTag;
+						}
+						--column;
+					}
 					if (myEntityTypeSubtype != null)
 					{
-						EntityTypeSubtypeInstance subtypeInstance = (EntityTypeSubtypeInstance)myCachedInstances[row];
-						text = (subtypeInstance != null) ? subtypeInstance.Name : ObjectTypeInstance.GetDisplayString(null, myEntityType, false);
+						ObjectInstance subtypeInstance = myCachedInstances[row];
+						text = (subtypeInstance != null) ? subtypeInstance.Name : ObjectInstance.GetDisplayString(null, myEntityType, false);
 					}
 					else
 					{
 						ObjectType selectedEntityType = myEntityType;
-						EntityTypeInstance selectedInstance = (EntityTypeInstance)myCachedInstances[row];
+						ObjectInstance selectedInstance = myCachedInstances[row];
 						Role identifierRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
+						RoleInstance roleInstance = selectedInstance.FindIdentifyingRoleInstance(identifierRole);
 						if (identifierRole.FactType.UnaryPattern == UnaryValuePattern.NotUnary)
 						{
-							EntityTypeRoleInstance roleInstance = selectedInstance.FindRoleInstance(identifierRole);
-							text = (roleInstance != null) ? roleInstance.ObjectTypeInstance.Name : ObjectTypeInstance.GetDisplayString(null, identifierRole.RolePlayer, false);
+							text = (roleInstance != null) ? roleInstance.ObjectInstance.Name : ObjectInstance.GetDisplayString(null, identifierRole.RolePlayer, false);
 						}
 						else
 						{
-							text = EntityTypeInstancePopulatesUnaryRole.GetLink(selectedInstance, identifierRole) != null ? "\x2713" : string.Empty;
+							text = roleInstance != null ? "\x2713" : string.Empty;
 						}
 					}
 				}
@@ -4561,18 +5081,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					Role identifierRole;
 					// Checking the StateMask is a workaround to an tree control issue where an expanded sibling subitem
 					// will cause a checkbox to draw in all of the empty rows inside the unary column cell.
-					if (requiredData.StateMask != 0 &&
+					if (
+						requiredData.StateMask != 0 &&
 						!IsReadOnly && // The text is also a checkbox in the readonly case. There is no need to set the second check
-						myEntityTypeSubtype == null &&
-						(identifierRole = myEntityType.PreferredIdentifier.RoleCollection[column - 1]).FactType.UnaryPattern != UnaryValuePattern.NotUnary)
+						myEntityTypeSubtype == null
+					)
 					{
-						bool isChecked = false;
-						if (row < NewRowIndex)
+						if (myShowIdentityTag)
 						{
-							EntityTypeInstance selectedInstance = myEntityTypeSubtype != null ? ((EntityTypeSubtypeInstance)myCachedInstances[row]).SupertypeInstance : (EntityTypeInstance)myCachedInstances[row];
-							isChecked = null != EntityTypeInstancePopulatesUnaryRole.GetLink(selectedInstance, identifierRole);
+							if (column == 1)
+							{
+								if (row != NewRowIndex)
+								{
+									ObjectInstance selectedInstance = myEntityTypeSubtype != null ? myCachedInstances[row].SupertypeInstance : myCachedInstances[row];
+									if (selectedInstance != null && !string.IsNullOrEmpty(selectedInstance.IdentityTag) && !selectedInstance.AutoIdentityTag)
+									{
+										retVal.Bold = true;
+									}
+								}
+								return retVal;
+							}
+							--column;
 						}
-						retVal.StateImageIndex = (short)(isChecked ? StandardCheckBoxImage.CheckedFlat : StandardCheckBoxImage.UncheckedFlat);
+						if ((identifierRole = myEntityType.PreferredIdentifier.RoleCollection[column - 1]).FactType.UnaryPattern != UnaryValuePattern.NotUnary)
+						{
+							bool isChecked = false;
+							if (row < NewRowIndex)
+							{
+								ObjectInstance selectedInstance = myEntityTypeSubtype != null ? myCachedInstances[row].SupertypeInstance : myCachedInstances[row];
+								isChecked = null != selectedInstance.FindIdentifyingRoleInstance(identifierRole);
+							}
+							retVal.StateImageIndex = (short)(isChecked ? StandardCheckBoxImage.CheckedFlat : StandardCheckBoxImage.UncheckedFlat);
+						}
 					}
 				}
 				return retVal;
@@ -4582,46 +5122,56 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Role identifierRole;
 				if (
 					!IsReadOnly &&
-					myEntityTypeSubtype == null &&
-					(identifierRole = myEntityType.PreferredIdentifier.RoleCollection[column -1]).FactType.UnaryPattern != UnaryValuePattern.NotUnary
+					myEntityTypeSubtype == null
 				)
 				{
-					EntityTypeInstance parentInstance = null;
-					EntityTypeSubtypeInstance parentSubtypeInstance = null;
-					if (row < NewRowIndex)
+					if (myShowIdentityTag)
 					{
-						if (myEntityTypeSubtype != null)
+						if (column == 1)
 						{
-							parentSubtypeInstance = (EntityTypeSubtypeInstance)myCachedInstances[row];
-							parentInstance = parentSubtypeInstance.SupertypeInstance;
+							return StateRefreshChanges.None;
 						}
-						else
-						{
-							parentInstance = (EntityTypeInstance)myCachedInstances[row];
-						}
-
-						EntityTypeInstancePopulatesUnaryRole unaryRoleInstance;
-						if (null != (unaryRoleInstance = EntityTypeInstancePopulatesUnaryRole.GetLink(parentInstance, identifierRole)))
-						{
-							using (Transaction t = identifierRole.Store.TransactionManager.BeginTransaction(
-								(parentInstance.RoleInstanceCollection.Count + parentInstance.UnaryRoleInstanceCollection.Count) == 1 ?
-									string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, parentInstance.EntityType.Name, parentInstance.Name) :
-									string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveUnaryRoleInstanceTransactionText, string.Format(identifierRole.FactType.GetDefaultReading().Text, identifierRole.RolePlayer?.Name ?? string.Empty), parentInstance.Name)))
-							{
-								unaryRoleInstance.Delete();
-								t.Commit();
-							}
-							return StateRefreshChanges.Current;
-						}
+						--column;
 					}
-
-					using (Transaction t = identifierRole.Store.TransactionManager.BeginTransaction(
-						parentInstance == null ?
-							string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, myEntityType.Name) :
-							string.Format(ResourceStrings.ModelSamplePopulationEditorAddUnaryRoleInstanceTransactionText, string.Format(identifierRole.FactType.GetDefaultReading().Text, identifierRole.RolePlayer?.Name ?? string.Empty), parentInstance.Name)))
+					if ((identifierRole = myEntityType.PreferredIdentifier.RoleCollection[column - 1]).FactType.UnaryPattern != UnaryValuePattern.NotUnary)
 					{
-						ConnectInstance(myEntityType, myEntityTypeSubtype, ref parentInstance, ref parentSubtypeInstance, null, identifierRole);
-						t.Commit();
+						ObjectInstance parentInstance = null;
+						ObjectInstance parentSubtypeInstance = null;
+						if (row < NewRowIndex)
+						{
+							if (myEntityTypeSubtype != null)
+							{
+								parentSubtypeInstance = myCachedInstances[row];
+								parentInstance = parentSubtypeInstance.SupertypeInstance;
+							}
+							else
+							{
+								parentInstance = myCachedInstances[row];
+							}
+
+							RoleInstance roleInstance = parentInstance.FindIdentifyingRoleInstance(identifierRole);
+							if (roleInstance != null && roleInstance.Role.FactType.UnaryPattern != UnaryValuePattern.NotUnary)
+							{
+								using (Transaction t = identifierRole.Store.TransactionManager.BeginTransaction(
+									parentInstance.IterateIdentifyingRoleInstances((role, testInstance) => testInstance != null && testInstance != roleInstance) ?
+										string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, parentInstance.EntityType.Name, parentInstance.Name) :
+										string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveUnaryRoleInstanceTransactionText, string.Format(identifierRole.FactType.GetDefaultReading().Text, identifierRole.RolePlayer?.Name ?? string.Empty), parentInstance.Name)))
+								{
+									roleInstance.Delete();
+									t.Commit();
+								}
+								return StateRefreshChanges.Current;
+							}
+						}
+
+						using (Transaction t = identifierRole.Store.TransactionManager.BeginTransaction(
+							parentInstance == null ?
+								string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, myEntityType.Name) :
+								string.Format(ResourceStrings.ModelSamplePopulationEditorAddUnaryRoleInstanceTransactionText, string.Format(identifierRole.FactType.GetDefaultReading().Text, identifierRole.RolePlayer?.Name ?? string.Empty), parentInstance.Name)))
+						{
+							ConnectInstance(myEntityType, myEntityTypeSubtype, ref parentInstance, ref parentSubtypeInstance, null, identifierRole);
+							t.Commit();
+						}
 					}
 				}
 				return StateRefreshChanges.None;
@@ -4631,6 +5181,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if (!base.IsFullRowSelectColumn(column))
 				{
+					if (myShowIdentityTag)
+					{
+						if (column == 1)
+						{
+							return false;
+						}
+						--column;
+					}
 					Role role;
 					return myEntityTypeSubtype != null || ((role = myEntityType.ResolvedPreferredIdentifier.RoleCollection[column - 1]).FactType.UnaryPattern == UnaryValuePattern.NotUnary && HasComplexIdentifier(role.RolePlayer));
 				}
@@ -4654,24 +5212,25 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if (style == ErrorObject)
 				{
-					TooFewEntityTypeRoleInstancesError partialPopulationError;
-					CompatibleValueTypeInstanceValueError badValueError;
+					TooFewEntityRoleInstancesError partialPopulationError;
+					CompatibleValueInstanceError badValueError;
 					int row = -1;
-					int column = 0;
-					if (null != (partialPopulationError = obj as TooFewEntityTypeRoleInstancesError))
+					int column = myShowIdentityTag ? 1 : 0;
+					if (null != (partialPopulationError = obj as TooFewEntityRoleInstancesError))
 					{
-						EntityTypeInstance entityInstance = partialPopulationError.EntityTypeInstance;
+						ObjectInstance entityInstance = partialPopulationError.EntityInstance;
+						UniquenessConstraint pid;
 						int testRow;
 						if (entityInstance.EntityType == myEntityType &&
 							-1 != (testRow = myCachedInstances.IndexOf(entityInstance)) &&
-							testRow < myNonEmptyInstanceCount)
+							testRow < myNonEmptyInstanceCount &&
+							null != (pid = myEntityType.PreferredIdentifier))
 						{
-							IList<Role> identifierRoles = myEntityType.PreferredIdentifier.RoleCollection;
-							IList<EntityTypeRoleInstance> roleInstances = entityInstance.RoleInstanceCollection;
+							IList<Role> identifierRoles = pid.RoleCollection;
 							int roleCount = identifierRoles.Count;
 							for (int i = 0; i < roleCount; ++i)
 							{
-								if (null == EntityTypeInstance.FindRoleInstance(roleInstances, identifierRoles[i]))
+								if (null == entityInstance.FindIdentifyingRoleInstance(identifierRoles[i]))
 								{
 									row = testRow;
 									column = i + 1;
@@ -4680,18 +5239,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 						}
 					}
-					else if (null != (badValueError = obj as CompatibleValueTypeInstanceValueError))
+					else if (null != (badValueError = obj as CompatibleValueInstanceError))
 					{
-						ValueTypeInstance valueInstance = badValueError.ValueTypeInstance;
-						foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(valueInstance))
+						ObjectInstance valueInstance = badValueError.ValueInstance;
+						foreach (RoleInstance roleInstance in RoleInstance.GetLinksToRoleCollection(valueInstance))
 						{
-							EntityTypeInstance entityInstance = roleInstance.EntityTypeInstance;
+							ObjectInstance entityInstance = roleInstance.IdentifiedEntityInstance;
+							UniquenessConstraint pid;
 							int testRow;
-							if (entityInstance.EntityType == myEntityType &&
+							if (entityInstance != null &&
+								entityInstance.EntityType == myEntityType &&
 								-1 != (testRow = myCachedInstances.IndexOf(entityInstance)) &&
-								testRow < myNonEmptyInstanceCount)
+								testRow < myNonEmptyInstanceCount &&
+								null != (pid = myEntityType.PreferredIdentifier))
 							{
-								IList<Role> identifierRoles = myEntityType.PreferredIdentifier.RoleCollection;
+								IList<Role> identifierRoles = pid.RoleCollection;
 								row = testRow;
 								column = identifierRoles.IndexOf(roleInstance.Role) + 1;
 								break;
@@ -4706,9 +5268,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				else if (style == ObjectStyle.TrackingObject)
 				{
 					int row;
-					EntityTypeInstance entityInstance;
+					ObjectInstance entityInstance;
 					ObjectType entityType;
-					if (null != (entityInstance = obj as EntityTypeInstance) &&
+					if (null != (entityInstance = obj as ObjectInstance) &&
 						(entityType = entityInstance.EntityType) == myEntityType &&
 						-1 != (row = myCachedInstances.IndexOf(entityInstance)) &&
 						row < myNonEmptyInstanceCount)
@@ -4726,6 +5288,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					case 0:
 						return SubItemCellStyles.Simple;
+					case 1:
+						return myShowIdentityTag ? SubItemCellStyles.Simple : SubItemCellStyles.Mixed;
 					default:
 						return SubItemCellStyles.Mixed;
 				}
@@ -4737,13 +5301,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 				DomainClassInfo classInfo;
 
-				// Track EntityTypeInstance changes
-				classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasObjectTypeInstance.DomainClassId);
+				// Track EntityInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasObjectInstance.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(InstanceAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(InstanceRemovedEvent), action);
 
-				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
-				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
+				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ObjectInstance.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectInstanceNameChangedEvent), action);
 
 				propertyInfo = dataDirectory.FindDomainProperty(Role.NameDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent), action);
@@ -4753,38 +5317,39 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent), action);
 
 				// Handlers to manage empty instances based on the role content
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeRoleInstanceRemovedEvent), action);
+				classInfo = dataDirectory.FindDomainRelationship(FactInstanceHasRoleInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityRoleInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityRoleInstanceRemovedEvent), action);
 
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstancePopulatesUnaryRole.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeUnaryRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeUnaryRoleInstanceRemovedEvent), action);
-
-				eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRole(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId), new EventHandler<RolePlayerChangedEventArgs>(SubtypeInstanceSupertypeRolePlayerChangedEvent), action);
+				eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRole(EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId), new EventHandler<RolePlayerChangedEventArgs>(SubtypeInstanceSupertypeRolePlayerChangedEvent), action);
 			}
 
 			private void InstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				ObjectTypeHasObjectTypeInstance link = (ObjectTypeHasObjectTypeInstance)e.ModelElement;
+				ObjectTypeHasObjectInstance link = (ObjectTypeHasObjectInstance)e.ModelElement;
 				if (!link.IsDeleted)
 				{
 					ObjectType linkEntityType = link.ObjectType;
-					if (linkEntityType == (myEntityTypeSubtype ?? myEntityType) && myEntityType.PreferredIdentifier != null)
+					if (linkEntityType == (myEntityTypeSubtype ?? myEntityType))
 					{
-						TestNotifyAddInstance(link.ObjectTypeInstance);
+						ObjectInstance instance = link.ObjectInstance;
+						if (myEntityType.PreferredIdentifier != null || !string.IsNullOrEmpty(instance.IdentityTag))
+						{
+							TestNotifyAddInstance(instance);
+						}
 					}
 				}
 			}
 
 			private void InstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				ObjectTypeHasObjectTypeInstance link = (ObjectTypeHasObjectTypeInstance)e.ModelElement;
+				ObjectTypeHasObjectInstance link = (ObjectTypeHasObjectInstance)e.ModelElement;
 				ObjectType entityType = link.ObjectType;
-				if (!entityType.IsDeleted && entityType == (myEntityTypeSubtype ?? myEntityType) && myEntityType.PreferredIdentifier != null)
+				if (!entityType.IsDeleted && entityType == (myEntityTypeSubtype ?? myEntityType))
 				{
-					List<ObjectTypeInstance> instances = myCachedInstances;
-					int instanceLocation = instances.IndexOf(link.ObjectTypeInstance);
+					ObjectInstance instance = link.ObjectInstance;
+					List<ObjectInstance> instances = myCachedInstances;
+					int instanceLocation = instances.IndexOf(instance);
 					if (instanceLocation != -1) // Possible on add followed by delete in the same transaction, or with an empty instance
 					{
 						instances.RemoveAt(instanceLocation);
@@ -4797,9 +5362,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			private void ObjectTypeInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			private void ObjectInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
-				ObjectTypeInstance objectInstance = (ObjectTypeInstance)e.ModelElement;
+				ObjectInstance objectInstance = (ObjectInstance)e.ModelElement;
 				if (!objectInstance.IsDeleted &&
 					objectInstance.ObjectType == (myEntityTypeSubtype ?? myEntityType))
 				{
@@ -4841,16 +5406,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					LinkedElementCollection<Role> pidRoles = pid.RoleCollection;
 					int pidRoleCount = pidRoles.Count;
-					for (int i = 0; i < pidRoleCount; ++i)
+					int headerOffset = myShowIdentityTag ? 2 : 1;
+					if (headerOffset +  pidRoleCount == ColumnCount) // Sanity check, protect against transitioning identifier styles.
 					{
-						base.EditColumnHeader(i + 1, false, false, pidRoles[i]);
+						for (int i = 0; i < pidRoleCount; ++i)
+						{
+							base.EditColumnHeader(i + headerOffset, false, false, pidRoles[i]);
+						}
 					}
 				}
 			}
 			/// <summary>
-			/// Helper function for <see cref="EntityTypeRoleInstanceAddedEvent"/> and <see cref="EntityTypeUnaryRoleInstanceAddedEvent"/>
+			/// Helper function for <see cref="EntityRoleInstanceAddedEvent"/>
 			/// </summary>
-			private void EntityTypeInstancePartAddedEvent(EntityTypeInstance entityInstance)
+			private void EntityInstancePartAddedEvent(ObjectInstance entityInstance)
 			{
 				if (
 					!entityInstance.IsDeleted &&
@@ -4859,7 +5428,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					// Make sure we have the appropriate instance
 					ObjectType testSubtype = myEntityTypeSubtype;
-					ObjectTypeInstance verifyInstance = (testSubtype == null) ? (ObjectTypeInstance)entityInstance : EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, testSubtype, true, false);
+					ObjectInstance verifyInstance = (testSubtype == null) ? entityInstance : ObjectInstance.GetSubtypeInstance(entityInstance, testSubtype, true, false);
 					if (verifyInstance != null)
 					{
 						TestNotifyAddInstance(verifyInstance);
@@ -4867,20 +5436,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// Helper function for <see cref="EntityTypeRoleInstanceRemovedEvent"/> and <see cref="EntityTypeUnaryRoleInstanceRemovedEvent"/>
+			/// Helper function for <see cref="EntityRoleInstanceRemovedEvent"/>
 			/// </summary>
-			private void EntityTypeInstancePartRemovedEvent(EntityTypeInstance entityInstance)
+			private void EntityInstancePartRemovedEvent(ObjectInstance entityInstance)
 			{
 				if (!entityInstance.IsDeleted &&
 					entityInstance.EntityType == myEntityType &&
-					entityInstance.RoleInstanceCollection.Count == 0 &&
-					entityInstance.UnaryRoleInstanceCollection.Count == 0)
+					string.IsNullOrEmpty(entityInstance.IdentityTag) &&
+					!entityInstance.HasIdentifyingRoleInstance)
 				{
 					ObjectType testSubtype = myEntityTypeSubtype;
-					ObjectTypeInstance verifyInstance = (testSubtype == null) ? (ObjectTypeInstance)entityInstance : EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, testSubtype, true, false);
+					ObjectInstance verifyInstance = (testSubtype == null) ? entityInstance : ObjectInstance.GetSubtypeInstance(entityInstance, testSubtype, true, false);
 					if (verifyInstance != null)
 					{
-						List<ObjectTypeInstance> instances = myCachedInstances;
+						List<ObjectInstance> instances = myCachedInstances;
 						int instanceLocation = instances.IndexOf(verifyInstance);
 						if (instanceLocation != -1 && instanceLocation < myNonEmptyInstanceCount)
 						{
@@ -4892,41 +5461,37 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			private void EntityTypeRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			private void EntityRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				EntityTypeInstanceHasRoleInstance link = (EntityTypeInstanceHasRoleInstance)e.ModelElement;
+				FactInstanceHasRoleInstance link = (FactInstanceHasRoleInstance)e.ModelElement;
 				if (!link.IsDeleted)
 				{
-					EntityTypeInstancePartAddedEvent(link.EntityTypeInstance);
+					link.FindEntityWithIdentifyingRole(out ObjectInstance entityInstance, out Role identifyingRole);
+					if (entityInstance != null)
+					{
+						EntityInstancePartAddedEvent(entityInstance);
+					}
 				}
 			}
-			private void EntityTypeRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void EntityRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				EntityTypeInstancePartRemovedEvent(((EntityTypeInstanceHasRoleInstance)e.ModelElement).EntityTypeInstance);
-			}
-			private void EntityTypeUnaryRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-			{
-				EntityTypeInstancePopulatesUnaryRole link = (EntityTypeInstancePopulatesUnaryRole)e.ModelElement;
-				if (!link.IsDeleted)
+				((FactInstanceHasRoleInstance)e.ModelElement).FindEntityWithIdentifyingRole(out ObjectInstance entityInstance, out Role identifyingRole);
+				if (entityInstance != null)
 				{
-					EntityTypeInstancePartAddedEvent(link.EntityTypeInstance);
+					EntityInstancePartRemovedEvent(entityInstance);
 				}
-			}
-			private void EntityTypeUnaryRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
-			{
-				EntityTypeInstancePartRemovedEvent(((EntityTypeInstancePopulatesUnaryRole)e.ModelElement).EntityTypeInstance);
 			}
 			private void SubtypeInstanceSupertypeRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
 			{
-				EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ElementLink;
-				EntityTypeSubtypeInstance subtypeInstance;
+				EntitySubtypeInstanceHasSupertypeInstance link = (EntitySubtypeInstanceHasSupertypeInstance)e.ElementLink;
+				ObjectInstance subtypeInstance;
 				if (!link.IsDeleted &&
-					!(subtypeInstance = link.EntityTypeSubtypeInstance).IsDeleted &&
-					subtypeInstance.EntityTypeSubtype == myEntityTypeSubtype)
+					!(subtypeInstance = link.EntitySubtypeInstance).IsDeleted &&
+					subtypeInstance.ObjectType == myEntityTypeSubtype)
 				{
 					if (IsEmptyInstance(subtypeInstance))
 					{
-						List<ObjectTypeInstance> instances = myCachedInstances;
+						List<ObjectInstance> instances = myCachedInstances;
 						int instanceLocation = instances.IndexOf(subtypeInstance);
 						if (instanceLocation != -1 && instanceLocation < myNonEmptyInstanceCount)
 						{
@@ -4944,20 +5509,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Event Handlers
 			#region IUnattachedBranchOwner Implementation
-			bool IUnattachedBranchOwner.TryAnchorUnattachedBranches(ObjectTypeInstance objectInstance, FactTypeInstance factInstance)
+			bool IUnattachedBranchOwner.TryAnchorUnattachedBranches(ObjectInstance objectInstance, FactInstance factInstance)
 			{
-				EntityTypeInstance entityInstance;
-				if (objectInstance != null &&
-					null != (entityInstance = objectInstance as EntityTypeInstance) &&
-					!entityInstance.IsDeleted &&
-					entityInstance.EntityType == myEntityType)
+				if (
+					objectInstance != null &&
+					!objectInstance.IsDeleted &&
+					objectInstance.ObjectType == myEntityType
+				)
 				{
 					// Make sure we have the appropriate instance
 					ObjectType testSubtype = myEntityTypeSubtype;
-					ObjectTypeInstance verifyInstance = (testSubtype == null) ? (ObjectTypeInstance)entityInstance : EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, testSubtype, true, false);
-					if (verifyInstance != null)
+					if (objectInstance.ObjectType?.PreferredIdentifier != null || (testSubtype == null && !string.IsNullOrEmpty(objectInstance.IdentityTag)))
 					{
-						return TestNotifyAddInstance(verifyInstance);
+						ObjectInstance verifyInstance = (testSubtype == null) ? objectInstance : ObjectInstance.GetSubtypeInstance(objectInstance, testSubtype, true, false);
+						if (verifyInstance != null)
+						{
+							return TestNotifyAddInstance(verifyInstance);
+						}
 					}
 				}
 				return false;
@@ -4993,7 +5561,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="parentSubtypeInstance">Subtype instance to connect to. Created if needed.</param>
 			/// <param name="connectInstance">Instance to connect. Not set for a unary identifier role</param>
 			/// <param name="identifierRole">Role to connect to</param>
-			public static void ConnectInstance(ObjectType entityType, ObjectType entityTypeSubtype, ref EntityTypeInstance parentInstance, ref EntityTypeSubtypeInstance parentSubtypeInstance, ObjectTypeInstance connectInstance, Role identifierRole)
+			public static void ConnectInstance(ObjectType entityType, ObjectType entityTypeSubtype, ref ObjectInstance parentInstance, ref ObjectInstance parentSubtypeInstance, ObjectInstance connectInstance, Role identifierRole)
 			{
 				Debug.Assert(entityType != null);
 				Store store = entityType.Store;
@@ -5007,18 +5575,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					if (null != entityTypeSubtype)
 					{
-						EntityTypeInstance supertypeInstance;
-						EntityTypeSubtypeInstance subtypeInstance;
-						if (null != (subtypeInstance = connectInstance as EntityTypeSubtypeInstance))
+						ObjectInstance supertypeInstance = connectInstance.SupertypeInstance;
+						if (supertypeInstance != null)
 						{
-							parentSubtypeInstance = subtypeInstance;
-							parentInstance = subtypeInstance.SupertypeInstance;
+							parentSubtypeInstance = connectInstance;
+							parentInstance = supertypeInstance;
 							return;
 						}
-						else if (null != (supertypeInstance = connectInstance as EntityTypeInstance))
+						else if (connectInstance.ObjectType?.PreferredIdentifier != null)
 						{
-							parentInstance = supertypeInstance;
-							parentSubtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(supertypeInstance, entityTypeSubtype, false, true);
+							parentInstance = connectInstance;
+							parentSubtypeInstance = ObjectInstance.GetSubtypeInstance(connectInstance, entityTypeSubtype, false, true);
 							return;
 						}
 					}
@@ -5031,15 +5598,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
 								// The FactType patterns are one-to-one and implied. We should never
 								// create another instance if one is already available.
-								foreach (EntityTypeRoleInstance testRoleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(connectInstance))
+								foreach (RoleInstance testRoleInstance in RoleInstance.GetLinksToRoleCollection(connectInstance))
 								{
-									EntityTypeInstance testEntityInstance = testRoleInstance.EntityTypeInstance;
-									if (testEntityInstance.EntityType == entityType)
+									ObjectInstance testEntityInstance = testRoleInstance.IdentifiedEntityInstance;
+									if (testEntityInstance != null && testEntityInstance.EntityType == entityType)
 									{
 										parentInstance = testEntityInstance;
 										if (entityTypeSubtype != null)
 										{
-											parentSubtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(testEntityInstance, entityTypeSubtype, true, false);
+											parentSubtypeInstance = ObjectInstance.GetSubtypeInstance(testEntityInstance, entityTypeSubtype, true, false);
 										}
 										break;
 									}
@@ -5048,41 +5615,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						if (parentInstance == null)
 						{
-							parentInstance = new EntityTypeInstance(store);
-							parentInstance.EntityType = entityType;
-							new EntityTypeRoleInstance(identifierRole, connectInstance).EntityTypeInstance = parentInstance;
+							parentInstance = new ObjectInstance(store);
+							parentInstance.ObjectType = entityType;
+							parentInstance.EnsureIdentifyingRoleInstance(identifierRole, connectInstance);
 						}
 					}
 					else
 					{
-						parentInstance = new EntityTypeInstance(store);
-						parentInstance.EntityType = entityType;
-						new EntityTypeInstancePopulatesUnaryRole(parentInstance, identifierRole);
+						parentInstance = new ObjectInstance(store);
+						parentInstance.ObjectType = entityType;
+						parentInstance.EnsureIdentifyingRoleInstance(identifierRole, null);
 					}
 
 					if (entityTypeSubtype != null && parentSubtypeInstance == null)
 					{
-						parentSubtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(parentInstance, entityTypeSubtype, false, true);
+						parentSubtypeInstance = ObjectInstance.GetSubtypeInstance(parentInstance, entityTypeSubtype, false, true);
 					}
 				}
 				else if (parentSubtypeInstance != null)
 				{
-					parentSubtypeInstance.SupertypeInstance = (EntityTypeInstance)connectInstance;
+					parentSubtypeInstance.SupertypeInstance = connectInstance;
 				}
 				else
 				{
-					parentInstance.EnsureRoleInstance(identifierRole, connectInstance);
+					parentInstance.EnsureIdentifyingRoleInstance(identifierRole, connectInstance);
 				}
 			}
 			/// <summary>
-			/// See if a <see cref="ObjectTypeInstance"/> needs to be added.
+			/// See if a <see cref="ObjectInstance"/> needs to be added.
 			/// Anchor unattached branches and notify as needed.
 			/// </summary>
 			/// <param name="objectInstance">The instance to attach</param>
 			/// <returns>Returns true if the new instance was previously unknown and is not empty.</returns>
-			private bool TestNotifyAddInstance(ObjectTypeInstance objectInstance)
+			private bool TestNotifyAddInstance(ObjectInstance objectInstance)
 			{
-				List<ObjectTypeInstance> instances = myCachedInstances;
+				List<ObjectInstance> instances = myCachedInstances;
 				int instanceCount = instances.Count;
 				int instanceLocation = instances.IndexOf(objectInstance);
 				bool isEmpty = IsEmptyInstance(objectInstance);
@@ -5143,7 +5710,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (instanceLocation > nonEmptyCount)
 					{
 						// Swap the current empty into the non empty slot
-						ObjectTypeInstance emptyInstance = instances[nonEmptyCount];
+						ObjectInstance emptyInstance = instances[nonEmptyCount];
 						instances[nonEmptyCount] = instances[instanceLocation];
 						instances[instanceLocation] = emptyInstance;
 					}
@@ -5158,9 +5725,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				CellEditContext retVal = null;
 				useDefaultEdit = false;
+				int roleOffset = 1;
+				if (myShowIdentityTag)
+				{
+					if (column == 1)
+					{
+						useDefaultEdit = true;
+						return null;
+					}
+					roleOffset = 2;
+				}
 				ObjectType entityType = myEntityType;
 				ObjectType entityTypeSubtype = myEntityTypeSubtype;
-				Role identifierRole = entityType.PreferredIdentifier.RoleCollection[column - 1];
+				Role identifierRole = entityType.PreferredIdentifier.RoleCollection[column - roleOffset];
 				ObjectType columnRolePlayer;
 				if (
 					null != (columnRolePlayer = identifierRole.RolePlayer) &&
@@ -5168,14 +5745,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					(entityTypeSubtype != null || identifierRole.FactType.UnaryPattern == UnaryValuePattern.NotUnary)
 				)
 				{
-					List<ObjectTypeInstance> instances = myCachedInstances;
-					EntityTypeInstance editInstance = null;
-					EntityTypeSubtypeInstance editSubtypeInstance = null;
+					List<ObjectInstance> instances = myCachedInstances;
+					ObjectInstance editInstance = null;
+					ObjectInstance editSubtypeInstance = null;
 					if (row < myNonEmptyInstanceCount)
 					{
 						editInstance = (entityTypeSubtype != null) ?
-							(editSubtypeInstance = (EntityTypeSubtypeInstance)myCachedInstances[row]).SupertypeInstance :
-							(EntityTypeInstance)myCachedInstances[row];
+							(editSubtypeInstance = myCachedInstances[row]).SupertypeInstance :
+							myCachedInstances[row];
 					}
 					retVal = new CellEditContext(
 						entityType,
@@ -5196,17 +5773,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (base.IsFullRowSelectColumn(column) && row < myNonEmptyInstanceCount)
 				{
 					ObjectType targetType = myEntityTypeSubtype ?? myEntityType;
-					ObjectTypeInstance targetInstance = targetType.ObjectTypeInstanceCollection[row];
+					ObjectInstance targetInstance = targetType.ObjectInstanceCollection[row];
 					if (myEntityTypeSubtype == null)
 					{
-						LinkedElementCollection<Role> roles = myEntityType.PreferredIdentifier.RoleCollection;
+						UniquenessConstraint pid = myEntityType.PreferredIdentifier;
+						LinkedElementCollection<Role> roles;
 						Role identifierRole;
-						ValueTypeInstance oppositeValueInstance;
-						EntityTypeRoleInstance roleInstance;
-						if (roles.Count == 1 &&
+						ObjectInstance oppositeValueInstance;
+						RoleInstance identifyingRoleInstance;
+						if (pid != null &&
+							(roles = pid.RoleCollection).Count == 1 &&
 							(identifierRole = roles[0]).GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole &&
-							null != (roleInstance = ((EntityTypeInstance)targetInstance).FindRoleInstance(identifierRole)) &&
-							(null == (oppositeValueInstance = roleInstance.ObjectTypeInstance as ValueTypeInstance) ||
+							null != (identifyingRoleInstance = targetInstance.FindIdentifyingRoleInstance(identifierRole)) &&
+							(null == (oppositeValueInstance = identifyingRoleInstance.ObjectInstance) ||
+							oppositeValueInstance.ValueType == null ||
 							RoleInstance.GetLinksToRoleCollection(oppositeValueInstance).Count > 1))
 						{
 							throw new InvalidOperationException(ResourceStrings.ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText);
@@ -5227,9 +5807,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			#region Member Variables
 			private readonly FactType myFactType;
-			private List<FactTypeInstance> myCachedFactInstances;
-			private List<ObjectTypeInstance> myCachedObjectInstances;
-			private FactTypeInstanceImplication myImplicationProxy;
+			private List<FactInstance> myCachedFactInstances;
+			private List<ObjectInstance> myCachedObjectInstances;
+			private FactInstanceImplication myImplicationProxy;
 			private ObjectType myObjectifyingType;
 			/// <summary>
 			/// Expansion branches from the 'new' row that need to
@@ -5241,7 +5821,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			#endregion
 			#region Construction
 			public FactTypeBranch(FactType selectedFactType, int factTypeColumnCount, ObjectType objectifyingType)
-				: base(factTypeColumnCount + ((objectifyingType == null) ? 1 : 2), selectedFactType.Store)
+				: base(factTypeColumnCount + ((objectifyingType == null) ? 1 : 2), selectedFactType.Store, CreateObjectTypeIdentityCache())
 			{
 				myFactType = selectedFactType;
 				ValidateReadOnlyProxyObject();
@@ -5252,7 +5832,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else
 				{
-					myCachedFactInstances = new List<FactTypeInstance>(selectedFactType.FactTypeInstanceCollection);
+					myCachedFactInstances = new List<FactInstance>(selectedFactType.FactInstanceCollection);
 				}
 				myObjectifyingType = objectifyingType;
 			}
@@ -5262,21 +5842,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				bool delete = newText.Length == 0;
 				Store store = Store;
-				// If editing an existing FactTypeInstance
+				// If editing an existing FactInstance
 				if (row != NewRowIndex)
 				{
 					FactType selectedFactType = myFactType;
-					FactTypeInstance editInstance = myCachedFactInstances[row];
+					FactInstance editInstance = myCachedFactInstances[row];
 					switch (ResolveColumn(ref column))
 					{
 						case ColumnType.FactType:
 							Role factRole = selectedFactType.OrderedRoleCollection[column].Role;
-							LinkedElementCollection<FactTypeRoleInstance> factRoleInstances = editInstance.RoleInstanceCollection;
-							FactTypeRoleInstance editRoleInstance = FactTypeInstance.FindRoleInstance(factRoleInstances, factRole);
-							// If editing an existing FactTypeRoleInstance
+							LinkedElementCollection<RoleInstance> factRoleInstances = editInstance.RoleInstanceCollection;
+							RoleInstance editRoleInstance = FactInstance.FindRoleInstance(factRoleInstances, factRole);
+							// If editing an existing RoleInstance
 							if (editRoleInstance != null)
 							{
-								ObjectTypeInstance attachedInstance = editRoleInstance.ObjectTypeInstance;
+								ObjectInstance attachedInstance = editRoleInstance.ObjectInstance;
 								if (delete)
 								{
 									if (factRoleInstances.Count == 1)
@@ -5298,11 +5878,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 								else
 								{
-									ValueTypeInstance instance = null;
+									ObjectInstance instance = null;
 									ObjectType editRolePlayer = editRoleInstance.Role.RolePlayer;
 									using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, editRolePlayer.Name, attachedInstance.Name)))
 									{
-										ObjectTypeInstance result = RecurseValueTypeInstance(attachedInstance, editRolePlayer, newText, ref instance, true, true);
+										ObjectInstance result = RecurseValueInstance(attachedInstance, editRolePlayer, newText, ref instance, true, true);
 										ConnectInstance(ref editInstance, result, factRole, null);
 										if (t.HasPendingChanges)
 										{
@@ -5312,13 +5892,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 								return LabelEditResult.AcceptEdit;
 							}
-							// If editing an existing FactTypeInstance but creating a new FactTypeRoleInstance
+							// If editing an existing FactInstance but creating a new RoleInstance
 							else if (!delete)
 							{
 								using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedFactType.Name)))
 								{
-									ValueTypeInstance instance = null;
-									ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true, true);
+									ObjectInstance instance = null;
+									ObjectInstance result = RecurseValueInstance(null, factRole.RolePlayer, newText, ref instance, true, true);
 									editInstance.EnsureRoleInstance(factRole, result);
 									t.Commit();
 								}
@@ -5326,29 +5906,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							break;
 						case ColumnType.EntityType:
-							ObjectTypeInstance objectifyingInstance = editInstance.ObjectifyingInstance;
+							ObjectInstance objectifyingInstance = editInstance.ObjectifyingInstance;
 							ObjectType objectifyingType = myObjectifyingType;
 							if (objectifyingInstance != null)
 							{
 								if (delete)
 								{
 									// Check for an empty start instance, note assumption that we aren't text-editing a subtype instance
-									EntityTypeInstance objectifyingEntityInstance;
-									LinkedElementCollection<EntityTypeRoleInstance> entityRoleInstances;
-									if (null == (objectifyingEntityInstance = objectifyingInstance as EntityTypeInstance) ||
-										(entityRoleInstances = objectifyingEntityInstance.RoleInstanceCollection).Count == 0)
+									ObjectInstance objectifyingEntityInstance;
+									LinkedElementCollection<Role> pidRoles;
+									int pidRoleCount;
+									if (null == (objectifyingEntityInstance = objectifyingInstance) ||
+										null == (pidRoles = objectifyingEntityInstance.EntityType?.PreferredIdentifier?.RoleCollection) ||
+										0 == (pidRoleCount = pidRoles.Count))
 									{
 										return LabelEditResult.CancelEdit;
 									}
+
+
 									// Delete entity instance. Note that the user can choose 'unspecified' to detach
-									EntityTypeRoleInstance entityRoleInstance;
-									ValueTypeInstance deleteValueInstance = null;
-									if (entityRoleInstances.Count == 1 &&
-										(entityRoleInstance = entityRoleInstances[0]).Role.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
+									RoleInstance identifyingRoleInstance;
+									Role pidRole;
+									ObjectInstance deleteValueInstance = null;
+									if (pidRoleCount == 1 &&
+										null != (identifyingRoleInstance = objectifyingEntityInstance.FindIdentifyingRoleInstance(pidRole = pidRoles[0])) &&
+										pidRole.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
 									{
 										// See comments in EntityTypeBranch.CommitLabelEdit
-										deleteValueInstance = entityRoleInstance.ObjectTypeInstance as ValueTypeInstance;
-										if (deleteValueInstance == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
+										deleteValueInstance = identifyingRoleInstance.ObjectInstance;
+										if (deleteValueInstance == null || deleteValueInstance.ValueType == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
 										{
 											throw new InvalidOperationException(ResourceStrings.ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText);
 										}
@@ -5369,10 +5955,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 								else
 								{
-									ValueTypeInstance instance = null;
+									ObjectInstance instance = null;
 									using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, objectifyingType.Name, objectifyingInstance.Name)))
 									{
-										ObjectTypeInstance result = RecurseValueTypeInstance(objectifyingInstance, objectifyingType, newText, ref instance, true, true);
+										ObjectInstance result = RecurseValueInstance(objectifyingInstance, objectifyingType, newText, ref instance, true, true);
 										if (result != objectifyingInstance)
 										{
 											ConnectInstance(ref editInstance, result, null, objectifyingType);
@@ -5389,9 +5975,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedFactType.Name)))
 								{
-									ValueTypeInstance instance = null;
-									ObjectTypeInstance result = RecurseValueTypeInstance(null, objectifyingType, newText, ref instance, true, true);
-									FactTypeInstance existingResultInstance;
+									ObjectInstance instance = null;
+									ObjectInstance result = RecurseValueInstance(null, objectifyingType, newText, ref instance, true, true);
+									FactInstance existingResultInstance;
 									if (null != (existingResultInstance = result.ObjectifiedInstance) &&
 										existingResultInstance.RoleInstanceCollection.Count != 0)
 									{
@@ -5417,13 +6003,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							FactType selectedFactType = myFactType;
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedFactType.Name)))
 							{
-								FactTypeInstance newInstance = new FactTypeInstance(store);
+								FactInstance newInstance = new FactInstance(store);
 								newInstance.FactType = selectedFactType;
 								Role factRole = selectedFactType.OrderedRoleCollection[column].Role;
-								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true, true);
-								instance.Value = newText;
-								new FactTypeRoleInstance(factRole, result).FactTypeInstance = newInstance;
+								ObjectInstance instance = null;
+								ObjectInstance result = RecurseValueInstance(null, factRole.RolePlayer, newText, ref instance, true, true);
+								// instance.Value = newText; // UNDONE: NOW Check set Value after RecurseValueInstance???
+								new RoleInstance(factRole, result).FactInstance = newInstance;
 								t.Commit();
 							}
 							break;
@@ -5431,11 +6017,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							ObjectType objectifyingType = myObjectifyingType;
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, objectifyingType.Name)))
 							{
-								FactTypeInstance newInstance = new FactTypeInstance(store);
+								FactInstance newInstance = new FactInstance(store);
 								newInstance.FactType = myFactType;
-								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(null, objectifyingType, newText, ref instance, true, true);
-								instance.Value = newText;
+								ObjectInstance instance = null;
+								ObjectInstance result = RecurseValueInstance(null, objectifyingType, newText, ref instance, true, true);
+								// instance.Value = newText; // UNDONE: NOW Check set Value after RecurseValueInstance???
 								newInstance.ObjectifyingInstance = result;
 								t.Commit();
 							}
@@ -5451,21 +6037,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (style == ObjectStyle.SubItemExpansion)
 				{
 					FactType selectedFactType = myFactType;
-					List<FactTypeInstance> instances = myCachedFactInstances;
-					FactTypeInstance parentInstance = (row < instances.Count) ? instances[row] : null;
+					List<FactInstance> instances = myCachedFactInstances;
+					FactInstance parentInstance = (row < instances.Count) ? instances[row] : null;
 					EntityEditorBranch expandedBranch = null;
 					int startColumn = column;
 					switch (ResolveColumn(ref column))
 					{
 						case ColumnType.FactType:
 							Role selectedRole = selectedFactType.OrderedRoleCollection[column].Role;
-							ObjectTypeInstance editInstance = null;
+							ObjectInstance editInstance = null;
 							if (parentInstance != null)
 							{
-								FactTypeRoleInstance foundRoleInstance = parentInstance.FindRoleInstance(selectedRole);
+								RoleInstance foundRoleInstance = parentInstance.FindRoleInstance(selectedRole);
 								if (foundRoleInstance != null)
 								{
-									editInstance = foundRoleInstance.ObjectTypeInstance;
+									editInstance = foundRoleInstance.ObjectInstance;
 									Debug.Assert(editInstance != null);
 								}
 							}
@@ -5493,10 +6079,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					switch (ResolveColumn(ref column))
 					{
 						case ColumnType.FactType:
-							text = ObjectTypeInstance.GetDisplayString(null, myFactType.OrderedRoleCollection[column].Role.RolePlayer, false);
+							text = ObjectInstance.GetDisplayString(null, myFactType.OrderedRoleCollection[column].Role.RolePlayer, false);
 							break;
 						case ColumnType.EntityType:
-							text = ObjectTypeInstance.GetDisplayString(null, myObjectifyingType, true);
+							text = ObjectInstance.GetDisplayString(null, myObjectifyingType, true);
 							break;
 					}
 				}
@@ -5505,20 +6091,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (IsReadOnly)
 					{
 						Debug.Assert(myObjectifyingType == null);
-						ObjectTypeInstance instance = myCachedObjectInstances[row];
+						ObjectInstance instance = myCachedObjectInstances[row];
 						if (instance != null)
 						{
 							RoleProxy impliedRole = myImplicationProxy.ImpliedProxyRole;
 							if (impliedRole != null &&
 								myFactType.OrderedRoleCollection.IndexOf(impliedRole) == column - 1)
 							{
-								FactTypeInstance factInstance;
+								FactInstance factInstance;
 								if (null != (factInstance = instance.ObjectifiedInstance))
 								{
 									Role targetRole = impliedRole.TargetRole;
-									FactTypeRoleInstance factRoleInstance;
+									RoleInstance factRoleInstance;
 									if (null != (factRoleInstance = factInstance.FindRoleInstance(targetRole)) &&
-										null != (instance = factRoleInstance.ObjectTypeInstance))
+										null != (instance = factRoleInstance.ObjectInstance))
 									{
 										text = instance.Name;
 									}
@@ -5534,7 +6120,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									identifyingRole == myFactType.OrderedRoleCollection[column] &&
 									identifyingRole.FactType.UnaryPattern == UnaryValuePattern.NotUnary)
 								{
-									text = (instance as EntityTypeInstance)?.FindRoleInstance(identifyingRole)?.ObjectTypeInstance?.Name ?? string.Empty;
+									text = instance.FindIdentifyingRoleInstance(identifyingRole)?.ObjectInstance?.Name ?? string.Empty;
 								}
 								else
 								{
@@ -5545,26 +6131,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else
 					{
-						FactTypeInstance factInstance = myCachedFactInstances[row];
+						FactInstance factInstance = myCachedFactInstances[row];
 						switch (ResolveColumn(ref column))
 						{
 							case ColumnType.FactType:
-								LinkedElementCollection<FactTypeRoleInstance> factTypeRoleInstances = factInstance.RoleInstanceCollection;
-								int roleInstanceCount = factTypeRoleInstances.Count;
-								FactTypeRoleInstance instance;
+								LinkedElementCollection<RoleInstance> roleInstances = factInstance.RoleInstanceCollection;
+								int roleInstanceCount = roleInstances.Count;
+								RoleInstance instance;
 								Role factTypeRole = myFactType.OrderedRoleCollection[column].Role;
 								for (int i = 0; i < roleInstanceCount; ++i)
 								{
-									if (factTypeRole == (instance = factTypeRoleInstances[i]).Role)
+									if (factTypeRole == (instance = roleInstances[i]).Role)
 									{
-										return instance.ObjectTypeInstance.Name;
+										return instance.ObjectInstance.Name;
 									}
 								}
-								text = ObjectTypeInstance.GetDisplayString(null, factTypeRole.RolePlayer, false);
+								text = ObjectInstance.GetDisplayString(null, factTypeRole.RolePlayer, false);
 								break;
 							case ColumnType.EntityType:
-								ObjectTypeInstance objectifyingInstance = factInstance.ObjectifyingInstance;
-								text = (objectifyingInstance != null) ? objectifyingInstance.IdentifierName : ObjectTypeInstance.GetDisplayString(null, myObjectifyingType, true);
+								ObjectInstance objectifyingInstance = factInstance.ObjectifyingInstance;
+								text = (objectifyingInstance != null) ? objectifyingInstance.IdentifierName : ObjectInstance.GetDisplayString(null, myObjectifyingType, true);
 								break;
 						}
 					}
@@ -5599,9 +6185,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						case ColumnType.FactType:
 							ObjectType rolePlayer = myFactType.OrderedRoleCollection[column].Role.RolePlayer;
-							return rolePlayer != null && (rolePlayer.NestedFactType != null || HasComplexIdentifier(rolePlayer));
+							return rolePlayer != null && (rolePlayer.NestedFactType != null || !ObjectTypeIdentityCache(rolePlayer, false).DisplayAsInlineValue);
 						case ColumnType.EntityType:
-							return HasComplexIdentifier(myObjectifyingType);
+							return !ObjectTypeIdentityCache(myObjectifyingType, false).DisplayAsInlineValue;
 					}
 				}
 				return false;
@@ -5634,28 +6220,28 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
-				List<FactTypeInstance> instances;
+				List<FactInstance> instances;
 				TrackingObjectAction trackingAction = TrackingObjectAction.ThisLevel;
 				int row = -1;
 				int column = 0;
 				if (style == ErrorObject &&
 					null != (instances = myCachedFactInstances))
 				{
-					TooFewFactTypeRoleInstancesError partialFactInstancePopulationError;
-					TooFewEntityTypeRoleInstancesError partialEntityInstancePopulationError;
+					TooFewFactRoleInstancesError partialFactInstancePopulationError;
+					TooFewEntityRoleInstancesError partialEntityInstancePopulationError;
 					ObjectifyingInstanceRequiredError objectifyingInstanceError;
-					FactTypeInstance factInstance;
-					if (null != (partialFactInstancePopulationError = obj as TooFewFactTypeRoleInstancesError))
+					FactInstance factInstance;
+					if (null != (partialFactInstancePopulationError = obj as TooFewFactRoleInstancesError))
 					{
-						factInstance = partialFactInstancePopulationError.FactTypeInstance;
+						factInstance = partialFactInstancePopulationError.FactInstance;
 						if (-1 != (row = instances.IndexOf(factInstance)))
 						{
 							IList<RoleBase> factRoles = myFactType.OrderedRoleCollection;
-							IList<FactTypeRoleInstance> roleInstances = factInstance.RoleInstanceCollection;
+							IList<RoleInstance> roleInstances = factInstance.RoleInstanceCollection;
 							int roleCount = factRoles.Count;
 							for (int i = 0; i < roleCount; ++i)
 							{
-								if (null == FactTypeInstance.FindRoleInstance(roleInstances, factRoles[i].Role))
+								if (null == FactInstance.FindRoleInstance(roleInstances, factRoles[i].Role))
 								{
 									int testColumn = 1;
 									column = i + (ResolveColumn(ref testColumn) == ColumnType.EntityType ? 2 : 1);
@@ -5664,11 +6250,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 						}
 					}
-					else if (null != (partialEntityInstancePopulationError = obj as TooFewEntityTypeRoleInstancesError))
+					else if (null != (partialEntityInstancePopulationError = obj as TooFewEntityRoleInstancesError))
 					{
-						EntityTypeInstance entityInstance;
+						ObjectInstance entityInstance;
 						ObjectType entityType;
-						if (null != (entityInstance = partialEntityInstancePopulationError.EntityTypeInstance) &&
+						if (null != (entityInstance = partialEntityInstancePopulationError.EntityInstance) &&
 							null != (entityType = entityInstance.ObjectType) &&
 							null != (factInstance = entityInstance.ObjectifiedInstance) &&
 							-1 != (row = instances.IndexOf(factInstance)))
@@ -5678,13 +6264,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								pid.IsObjectifiedPreferredIdentifier)
 							{
 								IList<RoleBase> factRoles = myFactType.OrderedRoleCollection;
-								IList<FactTypeRoleInstance> roleInstances = factInstance.RoleInstanceCollection;
+								IList<RoleInstance> roleInstances = factInstance.RoleInstanceCollection;
 								IList<Role> identifierRoles = null;
 								int roleCount = factRoles.Count;
 								for (int i = 0; i < roleCount; ++i)
 								{
 									Role role = factRoles[i].Role;
-									if (null == FactTypeInstance.FindRoleInstance(roleInstances, factRoles[i].Role))
+									if (null == FactInstance.FindRoleInstance(roleInstances, factRoles[i].Role))
 									{
 										// The identifier roles are a subset of the FactType roles, but can be a proper
 										// subset. Use the displayed order (based on the FactType), but verify that
@@ -5706,14 +6292,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else if (null != (objectifyingInstanceError = obj as ObjectifyingInstanceRequiredError))
 					{
-						if (-1 != (row = instances.IndexOf(objectifyingInstanceError.FactTypeInstance)))
+						if (-1 != (row = instances.IndexOf(objectifyingInstanceError.FactInstance)))
 						{
 							column = 1;
 						}
 					}
 					else if (obj is ObjectifiedInstanceRequiredError)
 					{
-						// Grab the first FactTypeInstance without an objectifying instance, or the new row
+						// Grab the first FactInstance without an objectifying instance, or the new row
 						row = 0;
 						int instanceCount = instances.Count;
 						for (;row < instanceCount; ++row)
@@ -5728,16 +6314,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else if (style == ObjectStyle.TrackingObject)
 				{
-					FactTypeInstance factInstance;
-					EntityTypeInstance entityInstance;
-					if (null != (factInstance = obj as FactTypeInstance))
+					FactInstance factInstance;
+					ObjectInstance entityInstance;
+					if (null != (factInstance = obj as FactInstance))
 					{
 						if (!IsReadOnly)
 						{
 							row = myCachedFactInstances.IndexOf(factInstance);
 						}
 					}
-					else if (null != (entityInstance = obj as EntityTypeInstance))
+					else if (null != (entityInstance = obj as ObjectInstance) && entityInstance.ObjectType?.PreferredIdentifier != null) // Check for the entity instance pattern
 					{
 						if (IsReadOnly)
 						{
@@ -5775,33 +6361,33 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 				DomainClassInfo classInfo;
 
-				// Track EntityTypeInstance changes
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityTypeInstanceRemovedEvent), action);
+				// Track EntityInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasObjectInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityInstanceRemovedEvent), action);
 
-				// Track FactTypeInstance changes
-				classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactTypeInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasFactTypeInstanceRemovedEvent), action);
+				// Track FactInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasFactInstanceRemovedEvent), action);
 
-				classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent), action);
+				classInfo = dataDirectory.FindDomainRelationship(FactInstanceHasRoleInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactInstanceHasRoleInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactInstanceHasRoleInstanceRemovedEvent), action);
 
 #if ROLEINSTANCE_ROLEPLAYERCHANGE
-				classInfo = dataDirectory.FindDomainRelationship(FactTypeRoleInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(FactTypeRoleInstanceRolePlayerChangedEvent), action);
+				classInfo = dataDirectory.FindDomainRelationship(RoleInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(RoleInstanceRolePlayerChangedEvent), action);
 #endif // ROLEINSTANCE_ROLEPLAYERCHANGE
 
 				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(Role.NameDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent), action);
 
-				propertyInfo = dataDirectory.FindDomainProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
-				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
+				propertyInfo = dataDirectory.FindDomainProperty(ObjectInstance.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectInstanceNameChangedEvent), action);
 
-				propertyInfo = dataDirectory.FindDomainProperty(FactTypeInstance.NameChangedDomainPropertyId);
-				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeInstanceNameChangedEvent), action);
+				propertyInfo = dataDirectory.FindDomainProperty(FactInstance.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(FactInstanceNameChangedEvent), action);
 
 				classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
 				propertyInfo = dataDirectory.FindDomainProperty(ObjectType.NameDomainPropertyId);
@@ -5813,34 +6399,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationInstanceRolePlayerChangedEvent), action);
 
 				// Handlers to manage implied instances based on the role content
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeRoleInstanceRemovedEvent), action);
+				classInfo = dataDirectory.FindDomainRelationship(FactInstanceHasRoleInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(IdentifyingRoleInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(IdentifyingRoleInstanceRemovedEvent), action);
 
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstancePopulatesUnaryRole.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeUnaryRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeUnaryRoleInstanceRemovedEvent), action);
-
-				eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRole(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId), new EventHandler<RolePlayerChangedEventArgs>(SubtypeInstanceSupertypeRolePlayerChangedEvent), action);
+				eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRole(EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId), new EventHandler<RolePlayerChangedEventArgs>(SubtypeInstanceSupertypeRolePlayerChangedEvent), action);
 			}
 
-			private void ObjectTypeInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			private void ObjectInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
-				ObjectTypeInstance objectTypeInstance = (ObjectTypeInstance)e.ModelElement;
-				FactTypeInstance factInstance;
+				ObjectInstance objectInstance = (ObjectInstance)e.ModelElement;
+				FactInstance factInstance;
 				ObjectType objectifyingType;
 				if (IsReadOnly)
 				{
 					int index;
-					if (myImplicationProxy.ImpliedByEntityType == objectTypeInstance.ObjectType &&
-						-1 != (index = myCachedObjectInstances.IndexOf(objectTypeInstance)))
+					if (myImplicationProxy.ImpliedByEntityType == objectInstance.ObjectType &&
+						-1 != (index = myCachedObjectInstances.IndexOf(objectInstance)))
 					{
 						EditInstanceDisplay(index);
 					}
 				}
 				else if (null != (objectifyingType = myObjectifyingType) &&
-					objectifyingType == objectTypeInstance.ObjectType &&
-					null != (factInstance = objectTypeInstance.ObjectifiedInstance))
+					objectifyingType == objectInstance.ObjectType &&
+					null != (factInstance = objectInstance.ObjectifiedInstance))
 				{
 					int index = myCachedFactInstances.IndexOf(factInstance);
 					if (index != -1)
@@ -5850,11 +6432,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			private void FactTypeInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			private void FactInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
 				if (!IsReadOnly)
 				{
-					int index = myCachedFactInstances.IndexOf((FactTypeInstance)e.ModelElement);
+					int index = myCachedFactInstances.IndexOf((FactInstance)e.ModelElement);
 					if (index != -1)
 					{
 						EditInstanceDisplay(index);
@@ -5863,14 +6445,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 
 
-			private void EntityTypeHasEntityTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			private void EntityTypeHasEntityInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
-				ObjectType entityType = link.EntityType;
-				if (entityType != null && !entityType.IsDeleted && entityType == myImplicationProxy.ImpliedByEntityType)
+				ObjectTypeHasObjectInstance link = e.ModelElement as ObjectTypeHasObjectInstance;
+				ObjectType entityType = link.ObjectType;
+				if (entityType != null && !entityType.IsDeleted && entityType == myImplicationProxy.ImpliedByEntityType && entityType.PreferredIdentifier != null)
 				{
-					List<ObjectTypeInstance> instances = myCachedObjectInstances;
-					ObjectTypeInstance addedInstance = link.EntityTypeInstance;
+					List<ObjectInstance> instances = myCachedObjectInstances;
+					ObjectInstance addedInstance = link.ObjectInstance;
 					if (!instances.Contains(addedInstance)) // Possible for implied entity instances when the preferred identifier changes
 					{
 						instances.Add(addedInstance);
@@ -5879,14 +6461,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			private void EntityTypeHasEntityTypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void EntityTypeHasEntityInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
-				ObjectType entityType = link.EntityType;
-				if (entityType != null && !entityType.IsDeleted && entityType == myImplicationProxy.ImpliedByEntityType)
+				ObjectTypeHasObjectInstance link = e.ModelElement as ObjectTypeHasObjectInstance;
+				ObjectType entityType = link.ObjectType;
+				if (entityType != null && !entityType.IsDeleted && entityType == myImplicationProxy.ImpliedByEntityType && entityType.PreferredIdentifier != null)
 				{
-					List<ObjectTypeInstance> instances = myCachedObjectInstances;
-					int instanceLocation = instances.IndexOf(link.EntityTypeInstance);
+					List<ObjectInstance> instances = myCachedObjectInstances;
+					int instanceLocation = instances.IndexOf(link.ObjectInstance);
 					if (instanceLocation != -1) // Possible on add followed by delete in the same transaction
 					{
 						instances.RemoveAt(instanceLocation);
@@ -5894,27 +6476,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			private void FactTypeHasFactTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			private void FactTypeHasFactInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				FactTypeHasFactTypeInstance link;
+				FactTypeHasFactInstance link;
 				FactType factType;
 				if (!IsReadOnly &&
-					!(factType = (link = (FactTypeHasFactTypeInstance)e.ModelElement).FactType).IsDeleted &&
+					!(factType = (link = (FactTypeHasFactInstance)e.ModelElement).FactType).IsDeleted &&
 					factType == myFactType)
 				{
-					TestNotifyAddInstance(link.FactTypeInstance);
+					TestNotifyAddInstance(link.FactInstance);
 				}
 			}
-			private void FactTypeHasFactTypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void FactTypeHasFactInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
+				FactTypeHasFactInstance link = e.ModelElement as FactTypeHasFactInstance;
 				FactType factType = link.FactType;
-				List<FactTypeInstance> instances;
+				List<FactInstance> instances;
 				if (!factType.IsDeleted &&
 					factType == myFactType &&
 					null != (instances = myCachedFactInstances))
 				{
-					int instanceLocation = instances.IndexOf(link.FactTypeInstance);
+					int instanceLocation = instances.IndexOf(link.FactInstance);
 					if (instanceLocation != -1) // Possible on add followed by delete in the same transaction
 					{
 						instances.RemoveAt(instanceLocation);
@@ -5923,20 +6505,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			private void FactTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			private void FactInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				EditFactInstanceDisplay(((FactTypeInstanceHasRoleInstance)e.ModelElement).FactTypeInstance);
+				EditFactInstanceDisplay(((FactInstanceHasRoleInstance)e.ModelElement).FactInstance);
 			}
 
 #if !ROLEINSTANCE_ROLEPLAYERCHANGE
-			private void FactTypeRoleInstanceRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+			private void RoleInstanceRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
 			{
-				EditFactInstanceDisplay(((FactTypeRoleInstance)e.ElementLink).FactTypeInstance);
+				EditFactInstanceDisplay(((RoleInstance)e.ElementLink).FactInstance);
 			}
 #endif // ROLEINSTANCE_ROLEPLAYERCHANGE
-			private void FactTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void FactInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				EditFactInstanceDisplay(((FactTypeInstanceHasRoleInstance)e.ModelElement).FactTypeInstance);
+				EditFactInstanceDisplay(((FactInstanceHasRoleInstance)e.ModelElement).FactInstance);
 			}
 			private void ObjectificationInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
@@ -5959,7 +6541,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					EditFactInstanceDisplay(((ObjectificationInstance)e.ElementLink).ObjectifiedInstance);
 					if (e.DomainRole.Id == ObjectificationInstance.ObjectifiedInstanceDomainRoleId)
 					{
-						EditFactInstanceDisplay((FactTypeInstance)e.OldRolePlayer);
+						EditFactInstanceDisplay((FactInstance)e.OldRolePlayer);
 					}
 				}
 			}
@@ -5979,8 +6561,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private void ValidateReadOnlyProxyObject()
 			{
 				FactType factType = myFactType;
-				FactTypeInstanceImplication newProxy = new FactTypeInstanceImplication(factType);
-				FactTypeInstanceImplication oldProxy = myImplicationProxy;
+				FactInstanceImplication newProxy = new FactInstanceImplication(factType);
+				FactInstanceImplication oldProxy = myImplicationProxy;
 				int oldItemCount = -1;
 				if (oldProxy.IsImplied)
 				{
@@ -5990,7 +6572,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						if (!newProxy.IsImplied)
 						{
 							myCachedObjectInstances = null;
-							myCachedFactInstances = new List<FactTypeInstance>(factType.FactTypeInstanceCollection);
+							myCachedFactInstances = new List<FactInstance>(factType.FactInstanceCollection);
 						}
 						else
 						{
@@ -6013,12 +6595,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			private static List<ObjectTypeInstance> GetNonEmptyObjectInstances(ObjectType objectType)
+			private static List<ObjectInstance> GetNonEmptyObjectInstances(ObjectType objectType)
 			{
-				LinkedElementCollection<ObjectTypeInstance> instances = objectType.ObjectTypeInstanceCollection;
+				LinkedElementCollection<ObjectInstance> instances = objectType.ObjectInstanceCollection;
 				int instanceCount = 0;
-				List<ObjectTypeInstance> retVal = new List<ObjectTypeInstance>(instanceCount);
-				foreach (ObjectTypeInstance instance in instances)
+				List<ObjectInstance> retVal = new List<ObjectInstance>(instanceCount);
+				foreach (ObjectInstance instance in instances)
 				{
 					if (!IsEmptyInstance(instance))
 					{
@@ -6040,9 +6622,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// Helper function for <see cref="EntityTypeRoleInstanceAddedEvent"/> and <see cref="EntityTypeUnaryRoleInstanceAddedEvent"/>
+			/// Helper function for <see cref="IdentifyingRoleInstanceAddedEvent"/>
 			/// </summary>
-			private void EntityTypeInstancePartAddedEvent(EntityTypeInstance entityInstance, ObjectType proxyObjectType)
+			private void EntityInstancePartAddedEvent(ObjectInstance entityInstance, ObjectType proxyObjectType)
 			{
 				if (
 					!entityInstance.IsDeleting &&
@@ -6050,11 +6632,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				)
 				{
 					ObjectType subtype = myImplicationProxy.ImpliedByEntityType;
-					ObjectTypeInstance verifyInstance = (subtype == proxyObjectType) ? (ObjectTypeInstance)entityInstance : EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
+					ObjectInstance verifyInstance = (subtype == proxyObjectType) ? (ObjectInstance)entityInstance : ObjectInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
 					if (verifyInstance != null)
 					{
 						// Make sure we have the appropriate instance
-						List<ObjectTypeInstance> instances = myCachedObjectInstances;
+						List<ObjectInstance> instances = myCachedObjectInstances;
 						if (!instances.Contains(verifyInstance))
 						{
 							instances.Add(verifyInstance);
@@ -6064,20 +6646,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// Helper function for <see cref="EntityTypeRoleInstanceRemovedEvent"/> and <see cref="EntityTypeUnaryRoleInstanceRemovedEvent"/>
+			/// Helper function for <see cref="IdentifyingRoleInstanceRemovedEvent"/>
 			/// </summary>
-			private void EntityTypeInstancePartRemovedEvent(EntityTypeInstance entityInstance, ObjectType proxyObjectType)
+			private void EntityInstancePartRemovedEvent(ObjectInstance entityInstance, ObjectType proxyObjectType)
 			{
 				if (entityInstance.IsDeleted &&
 					entityInstance.EntityType == proxyObjectType &&
-					entityInstance.RoleInstanceCollection.Count == 0 &&
-					entityInstance.UnaryRoleInstanceCollection.Count == 0)
+					string.IsNullOrEmpty(entityInstance.IdentityTag) &&
+					!entityInstance.HasIdentifyingRoleInstance)
 				{
 					ObjectType subtype = myImplicationProxy.ImpliedByEntityType;
-					ObjectTypeInstance verifyInstance = (subtype == proxyObjectType) ? (ObjectTypeInstance)entityInstance : EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
+					ObjectInstance verifyInstance = (subtype == proxyObjectType) ? (ObjectInstance)entityInstance : ObjectInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
 					if (verifyInstance != null)
 					{
-						List<ObjectTypeInstance> instances = myCachedObjectInstances;
+						List<ObjectInstance> instances = myCachedObjectInstances;
 						int instanceLocation = instances.IndexOf(verifyInstance);
 						if (instanceLocation != -1) // Possible on add followed by delete in the same transaction
 						{
@@ -6087,40 +6669,28 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			private void EntityTypeRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-			{
-				ObjectType proxyObjectType;
-				EntityTypeInstanceHasRoleInstance link;
-				if (null != (proxyObjectType = myImplicationProxy.IdentifyingSupertype) &&
-					!(link = (EntityTypeInstanceHasRoleInstance)e.ModelElement).IsDeleted)
-				{
-					EntityTypeInstancePartAddedEvent(link.EntityTypeInstance, proxyObjectType);
-				}
-			}
-			private void EntityTypeUnaryRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-			{
-				ObjectType proxyObjectType;
-				EntityTypeInstancePopulatesUnaryRole link;
-				if (null != (proxyObjectType = myImplicationProxy.IdentifyingSupertype) &&
-					!(link = (EntityTypeInstancePopulatesUnaryRole)e.ModelElement).IsDeleted)
-				{
-					EntityTypeInstancePartAddedEvent(link.EntityTypeInstance, proxyObjectType);
-				}
-			}
-			private void EntityTypeRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void IdentifyingRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
 				ObjectType proxyObjectType;
 				if (null != (proxyObjectType = myImplicationProxy.IdentifyingSupertype))
 				{
-					EntityTypeInstancePartRemovedEvent(((EntityTypeInstanceHasRoleInstance)e.ModelElement).EntityTypeInstance, proxyObjectType);
+					((FactInstanceHasRoleInstance)e.ModelElement).FindEntityWithIdentifyingRole(out ObjectInstance entityInstance, out Role identifyingRole);
+					if (entityInstance != null)
+					{
+						EntityInstancePartAddedEvent(entityInstance, proxyObjectType);
+					}
 				}
 			}
-			private void EntityTypeUnaryRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void IdentifyingRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
 				ObjectType proxyObjectType;
 				if (null != (proxyObjectType = myImplicationProxy.IdentifyingSupertype))
 				{
-					EntityTypeInstancePartRemovedEvent(((EntityTypeInstancePopulatesUnaryRole)e.ModelElement).EntityTypeInstance, proxyObjectType);
+					((FactInstanceHasRoleInstance)e.ModelElement).FindEntityWithIdentifyingRole(out ObjectInstance entityInstance, out Role identifyingRole);
+					if (entityInstance != null)
+					{
+						EntityInstancePartRemovedEvent(entityInstance, proxyObjectType);
+					}
 				}
 			}
 			private void SubtypeInstanceSupertypeRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
@@ -6131,13 +6701,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					null != (proxySupertype = myImplicationProxy.IdentifyingSupertype) &&
 					proxySubType != proxySupertype)
 				{
-					EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ElementLink;
-					EntityTypeSubtypeInstance subtypeInstance;
+					EntitySubtypeInstanceHasSupertypeInstance link = (EntitySubtypeInstanceHasSupertypeInstance)e.ElementLink;
+					ObjectInstance subtypeInstance;
 					if (!link.IsDeleted &&
-						!(subtypeInstance = link.EntityTypeSubtypeInstance).IsDeleted &&
-						subtypeInstance.EntityTypeSubtype == proxySubType)
+						!(subtypeInstance = link.EntitySubtypeInstance).IsDeleted &&
+						subtypeInstance.ObjectType == proxySubType)
 					{
-						List<ObjectTypeInstance> instances = myCachedObjectInstances;
+						List<ObjectInstance> instances = myCachedObjectInstances;
 						if (IsEmptyInstance(subtypeInstance))
 						{
 							int instanceLocation = instances.IndexOf(subtypeInstance);
@@ -6160,7 +6730,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Event Handlers
 			#region IUnattachedBranchOwner Implementation
-			bool IUnattachedBranchOwner.TryAnchorUnattachedBranches(ObjectTypeInstance objectInstance, FactTypeInstance factInstance)
+			bool IUnattachedBranchOwner.TryAnchorUnattachedBranches(ObjectInstance objectInstance, FactInstance factInstance)
 			{
 				if (!IsReadOnly &&
 					(factInstance != null ||
@@ -6236,20 +6806,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="connectInstance">Instance to connect</param>
 			/// <param name="factTypeRole">Role to connect to</param>
 			/// <param name="objectifyingType">Objectifying <see cref="ObjectType"/>. Specified in place of <paramref name="factTypeRole"/>
-			/// to relate a <see cref="FactTypeInstance"/> to an existing objectifying <see cref="ObjectTypeInstance"/></param>
-			public static void ConnectInstance(ref FactTypeInstance parentInstance, ObjectTypeInstance connectInstance, Role factTypeRole, ObjectType objectifyingType)
+			/// to relate a <see cref="FactInstance"/> to an existing objectifying <see cref="ObjectInstance"/></param>
+			public static void ConnectInstance(ref FactInstance parentInstance, ObjectInstance connectInstance, Role factTypeRole, ObjectType objectifyingType)
 			{
 				Debug.Assert(connectInstance != null);
 				if (factTypeRole != null)
 				{
-					connectInstance = EntityTypeSubtypeInstance.GetTypedInstance(connectInstance, factTypeRole.RolePlayer);
+					connectInstance = ObjectInstance.GetTypedSubtypeInstance(connectInstance, factTypeRole.RolePlayer);
 					Store store = factTypeRole.Store;
 					FactType factType = factTypeRole.FactType;
 					if (parentInstance == null)
 					{
-						parentInstance = new FactTypeInstance(store);
+						parentInstance = new FactInstance(store);
 						parentInstance.FactType = factType;
-						new FactTypeRoleInstance(factTypeRole, connectInstance).FactTypeInstance = parentInstance;
+						new RoleInstance(factTypeRole, connectInstance).FactInstance = parentInstance;
 					}
 					else
 					{
@@ -6261,21 +6831,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					Debug.Assert(objectifyingType != null);
 					if (parentInstance == null)
 					{
-						parentInstance = new FactTypeInstance(objectifyingType.Store);
+						parentInstance = new FactInstance(objectifyingType.Store);
 						parentInstance.FactType = objectifyingType.NestedFactType;
 					}
 					ConnectObjectifyingIdentifierInstance(parentInstance, connectInstance);
 				}
 			}
 			/// <summary>
-			/// See if a <see cref="FactTypeInstance"/> needs to be added.
+			/// See if a <see cref="FactInstance"/> needs to be added.
 			/// Anchor unattached branches and notify as needed.
 			/// </summary>
 			/// <param name="factInstance">The instance to attach</param>
 			/// <returns>Returns true if the new instance is added.</returns>
-			private bool TestNotifyAddInstance(FactTypeInstance factInstance)
+			private bool TestNotifyAddInstance(FactInstance factInstance)
 			{
-				List<FactTypeInstance> instances;
+				List<FactInstance> instances;
 				if (null != (instances = myCachedFactInstances) &&
 					!instances.Contains(factInstance))
 				{
@@ -6286,7 +6856,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					IUnattachedBranch[] notifyBranches = myUnattachedBranches;
 					if (notifyBranches != null)
 					{
-						ObjectTypeInstance objectifyingInstance = factInstance.ObjectifyingInstance;
+						ObjectInstance objectifyingInstance = factInstance.ObjectifyingInstance;
 						for (int i = 0; i < notifyBranches.Length; ++i)
 						{
 							IUnattachedBranch notifyBranch = notifyBranches[i];
@@ -6303,7 +6873,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Helper Methods
 			#region Branch Update Methods
-			private void EditFactInstanceDisplay(FactTypeInstance factInstance)
+			private void EditFactInstanceDisplay(FactInstance factInstance)
 			{
 				FactType factType = myFactType;
 				if (factInstance != null &&
@@ -6311,7 +6881,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					null != (factType = myFactType) &&
 					factInstance.FactType == factType)
 				{
-					List<FactTypeInstance> instances;
+					List<FactInstance> instances;
 					int location;
 					if (null != (instances = myCachedFactInstances) &&
 						-1 != (location = instances.IndexOf(factInstance)))
@@ -6333,9 +6903,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					case ColumnType.FactType:
 						Role role = myFactType.OrderedRoleCollection[column].Role;
 						rolePlayer = role.RolePlayer;
-						if (rolePlayer != null && (rolePlayer.IsValueType || rolePlayer.ResolvedPreferredIdentifier != null))
+						if (rolePlayer != null)
 						{
-							List<FactTypeInstance> instances = myCachedFactInstances;
+							List<FactInstance> instances = myCachedFactInstances;
 							retVal = new CellEditContext(
 								role,
 								(row < instances.Count) ? instances[row] : null,
@@ -6350,8 +6920,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						rolePlayer = myObjectifyingType;
 						if (rolePlayer.ResolvedPreferredIdentifier != null)
 						{
-							List<FactTypeInstance> instances = myCachedFactInstances;
-							FactTypeInstance factInstance = (row < instances.Count) ? instances[row] : null;
+							List<FactInstance> instances = myCachedFactInstances;
+							FactInstance factInstance = (row < instances.Count) ? instances[row] : null;
 							retVal = new CellEditContext(
 								rolePlayer,
 								factInstance,
@@ -6370,13 +6940,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if (base.IsFullRowSelectColumn(column) && myImplicationProxy.ImpliedByEntityType == null)
 				{
-					IList<FactTypeInstance> instances = myCachedFactInstances;
+					IList<FactInstance> instances = myCachedFactInstances;
 					if (instances != null && row < instances.Count)
 					{
-						FactTypeInstance factInstance = instances[row];
+						FactInstance factInstance = instances[row];
 						using (Transaction t = Store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveFactInstanceTransactionText, factInstance.Name)))
 						{
-							ObjectTypeInstance objectInstance = (myObjectifyingType != null) ? factInstance.ObjectifyingInstance : null;
+							ObjectInstance objectInstance = (myObjectifyingType != null) ? factInstance.ObjectifyingInstance : null;
 							factInstance.Delete();
 							if (objectInstance != null && !objectInstance.IsDeleted) // Might delete automatically if implied. Otherwise, remove it.
 							{
@@ -6393,16 +6963,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			#region Member Variables
 			private readonly BaseBranch myParentBranch;
-			private EntityTypeInstance myEditInstance;
-			private EntityTypeSubtypeInstance myEditSubtypeInstance;
-			private EntityTypeInstance myParentEntityInstance;
-			private EntityTypeSubtypeInstance myParentEntitySubtypeInstance;
+			private ObjectInstance myEditInstance;
+			private ObjectInstance myEditSubtypeInstance;
+			private ObjectInstance myParentEntityInstance;
+			private ObjectInstance myParentEntitySubtypeInstance;
 			private List<EntityEditorBranch> myExpansions = null;
 			private readonly ObjectType myParentEntityType;
 			private readonly FactType myParentFactType;
-			private FactTypeInstance myParentFactInstance;
+			private FactInstance myParentFactInstance;
 			private readonly Role myEditRole;
 			private readonly ObjectType myObjectifyingType;
+			private readonly bool myShowIdentityTag;
 			private int myItemCountCache;
 			#endregion // Member Variables
 			#region Constructors
@@ -6411,24 +6982,25 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			/// <param name="parentObjectInstance">Instance of the parent Entity type which contains the given editInstance. Pass null for a top-level subtype situation.</param>
 			/// <param name="parentEntityType">The Entity type which contains the given editInstance</param>
-			/// <param name="editInstance">The <see cref="EntityTypeInstance"/> or <see cref="EntityTypeSubtypeInstance"/> which will be edited</param>
+			/// <param name="editInstance">The <see cref="ObjectInstance"/> that is either an entity instance or an entity subtype instance which will be edited</param>
 			/// <param name="editRole">Role from the parent Entity type which is being edited. Pass in a <see cref="SubtypeMetaRole"/> to indicate a top-level subtype</param>
 			/// <param name="parentBranch">Reference to the parent editing branch</param>
-			public EntityEditorBranch(ObjectTypeInstance parentObjectInstance, ObjectType parentEntityType, ObjectTypeInstance editInstance, Role editRole, BaseBranch parentBranch)
+			public EntityEditorBranch(ObjectInstance parentObjectInstance, ObjectType parentEntityType, ObjectInstance editInstance, Role editRole, BaseBranch parentBranch)
 				: this(editInstance, editRole, null, parentBranch)
 			{
 				myParentEntityType = parentEntityType;
 				if (parentObjectInstance != null)
 				{
-					EntityTypeSubtypeInstance subtypeInstance;
-					if (null != (subtypeInstance = parentObjectInstance as EntityTypeSubtypeInstance))
+					ObjectInstance supertypeInstance = parentObjectInstance.SupertypeInstance;
+					if (supertypeInstance != null)
 					{
-						myParentEntitySubtypeInstance = subtypeInstance;
-						myParentEntityInstance = subtypeInstance.SupertypeInstance;
+						myParentEntitySubtypeInstance = parentObjectInstance;
+						myParentEntityInstance = supertypeInstance;
 					}
 					else
 					{
-						myParentEntityInstance = parentObjectInstance as EntityTypeInstance;
+						myParentEntityInstance = parentObjectInstance;
+						myParentEntitySubtypeInstance = null;
 					}
 				}
 			}
@@ -6438,11 +7010,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			/// <param name="parentFactInstance">Instance of the parent Fact type which contains the given editInstance</param>
 			/// <param name="parentFactType">The Fact type which contains the given editInstance</param>
-			/// <param name="editInstance">The <see cref="EntityTypeInstance"/> or <see cref="EntityTypeSubtypeInstance"/> which will be edited</param>
+			/// <param name="editInstance">The <see cref="ObjectInstance"/> for an entity type or entity type subtype which will be edited</param>
 			/// <param name="editRole">Role from the <paramref name="parentFactType"/> which is being edited</param>
 			/// <param name="objectifyingType">The objectifying type associated with the <paramref name="parentFactType"/>. Used in place of <paramref name="editRole"/> to edit the objectification relationship.</param>
 			/// <param name="parentBranch">Reference to the parent editing branch</param>
-			public EntityEditorBranch(FactTypeInstance parentFactInstance, FactType parentFactType, ObjectTypeInstance editInstance, Role editRole, ObjectType objectifyingType, BaseBranch parentBranch)
+			public EntityEditorBranch(FactInstance parentFactInstance, FactType parentFactType, ObjectInstance editInstance, Role editRole, ObjectType objectifyingType, BaseBranch parentBranch)
 				: this(editInstance, editRole, objectifyingType, parentBranch)
 			{
 				myParentFactType = parentFactType;
@@ -6452,7 +7024,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					myParentEntityType = objectifyingType;
 					if (myEditRole == null) // The edit role is set by initial constructor for subtype identifier cases
 					{
-						ObjectTypeInstance objectInstance;
+						ObjectInstance objectInstance;
 						if (null != parentFactInstance &&
 							null != (objectInstance = parentFactInstance.ObjectifyingInstance))
 						{
@@ -6465,11 +7037,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Create a sub item editing branch
 			/// </summary>
-			/// <param name="editInstance">The <see cref="EntityTypeInstance"/> or <see cref="EntityTypeSubtypeInstance"/> which will be edited</param>
+			/// <param name="editInstance">The <see cref="ObjectInstance"/> for an entity type or entity type subtypes. The object instance will be edited</param>
 			/// <param name="editRole">Role from the parent Entity type which is being edited</param>
 			/// <param name="objectifyingType">The objectifying type associated with the <paramref name="editInstance"/>. Used in place of <paramref name="editRole"/> to edit the objectification relationship.</param>
 			/// <param name="parentBranch">Reference to the parent editing branch</param>
-			private EntityEditorBranch(ObjectTypeInstance editInstance, Role editRole, ObjectType objectifyingType, BaseBranch parentBranch) : base(2, (editRole != null) ? editRole.Store : objectifyingType.Store)
+			private EntityEditorBranch(ObjectInstance editInstance, Role editRole, ObjectType objectifyingType, BaseBranch parentBranch) : base(1, (editRole != null) ? editRole.Store : objectifyingType.Store, parentBranch.ObjectTypeIdentityCache)
 			{
 				if (editInstance != null)
 				{
@@ -6513,15 +7085,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						myItemCountCache = 1;
 					}
 				}
+
+				if (0 != (this.ObjectTypeIdentityCache(contextObjectType, false).Kind & ObjectTypeIdentityKind.IdentityTag))
+				{
+					myShowIdentityTag = true;
+					++myItemCountCache;
+				}
 			}
 			/// <summary>
 			/// Create a sub item editing branch
 			/// </summary>
 			/// <param name="parentEntitySubtypeInstance">Instance of the parent Entity type which contains the given editInstance</param>
 			/// <param name="parentEntityType">The Entity type which contains the given editInstance</param>
-			/// <param name="editInstance">The <see cref="EntityTypeInstance"/> or <see cref="EntityTypeSubtypeInstance"/> which will be edited</param>
+			/// <param name="editInstance">The <see cref="ObjectInstance"/> representing an entity instance or entity subtype instance pattern which will be edited</param>
 			/// <param name="parentBranch">Reference to the parent editing branch</param>
-			private EntityEditorBranch(EntityTypeSubtypeInstance parentEntitySubtypeInstance, ObjectType parentEntityType, ObjectTypeInstance editInstance, BaseBranch parentBranch)
+			private EntityEditorBranch(ObjectInstance parentEntitySubtypeInstance, ObjectType parentEntityType, ObjectInstance editInstance, BaseBranch parentBranch)
 				: this(editInstance, GetIdentifyingSupertypeRole(parentEntityType), null, parentBranch)
 			{
 				myParentEntityType = parentEntityType;
@@ -6548,48 +7126,33 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				bool delete = newText.Length == 0;
 				ObjectType rowType;
 				Role rowRole;
-				ObjectTypeInstance rowInstance;
-				FactTypeInstance rowFactInstance;
-				EntityTypeInstance entityInstance;
-				IList<EntityTypeRoleInstance> entityRoleInstances;
-				IList<EntityTypeInstancePopulatesUnaryRole> unaryRoleInstances;
-				EntityTypeRoleInstance entityRoleInstance;
-				EntityTypeInstancePopulatesUnaryRole unaryRoleInstance;
+				ObjectInstance rowInstance;
+				FactInstance rowFactInstance;
+				ObjectInstance entityInstance;
+				RoleInstance identifyingRoleInstance;
 				RowType resolvedRowType;
 				Store store = Store;
-				switch (resolvedRowType = ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out rowInstance, out unaryRoleInstance))
+				switch (resolvedRowType = ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out identifyingRoleInstance, out rowInstance))
 				{
+					case RowType.UnaryIdentifierRole: // This may be a dead path, but the code handles it correctly if it is ever hit
 					case RowType.IdentifierRole:
 						entityInstance = myEditInstance;
-						entityRoleInstances = null;
-						unaryRoleInstances = null;
-						entityRoleInstance = null;
-						unaryRoleInstance = null;
 						if (entityInstance != null)
 						{
-							entityRoleInstances = entityInstance.RoleInstanceCollection;
-							unaryRoleInstances = EntityTypeInstancePopulatesUnaryRole.GetLinksToUnaryRoleInstanceCollection(entityInstance);
-							entityRoleInstance = EntityTypeInstance.FindRoleInstance(entityRoleInstances, rowRole);
+							identifyingRoleInstance = entityInstance.FindIdentifyingRoleInstance(rowRole);
 						}
 						if (delete)
 						{
-							if (entityInstance != null && (entityRoleInstance != null || unaryRoleInstance != null))
+							if (entityInstance != null && identifyingRoleInstance != null)
 							{
 								using (Transaction t = rowRole.Store.TransactionManager.BeginTransaction(
-									((entityRoleInstances.Count + unaryRoleInstances.Count) == 1) ?
+									(string.IsNullOrEmpty(entityInstance.IdentityTag) && !entityInstance.IterateIdentifyingRoleInstances((testRole, roleInstance) => roleInstance != null && testRole != rowRole)) ?
 										string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, entityInstance.EntityType.Name, entityInstance.Name) :
-										(entityRoleInstance != null ?
-											string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(rowRole, false), entityRoleInstance.ObjectTypeInstance.Name, entityInstance.Name) :
+										(resolvedRowType == RowType.IdentifierRole && identifyingRoleInstance != null ?
+											string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(rowRole, false), identifyingRoleInstance.ObjectInstance.Name, entityInstance.Name) :
 											string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveUnaryRoleInstanceTransactionText, string.Format(rowRole.FactType.GetDefaultReading().Text, rowRole.RolePlayer?.Name ?? string.Empty), entityInstance.Name))))
 								{
-									if (entityRoleInstance != null)
-									{
-										entityRoleInstance.Delete();
-									}
-									else // Either the role instance or the unary role instance must be set based on containing if block
-									{
-										unaryRoleInstance.Delete();
-									}
+									identifyingRoleInstance.Delete();
 									t.Commit();
 								}
 								return LabelEditResult.AcceptEdit;
@@ -6599,15 +7162,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, rowType.Name)))
 							{
-								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(
-									(entityRoleInstance != null) ? entityRoleInstance.ObjectTypeInstance : null,
+								ObjectInstance instance = null;
+								ObjectInstance result = RecurseValueInstance(
+									(identifyingRoleInstance != null) ? identifyingRoleInstance.ObjectInstance : null,
 									rowType,
 									newText,
 									ref instance,
 									true,
 									true);
-								instance.Value = newText;
+								//instance.Value = newText; // UNDONE: NOW Check set Value after RecurseValueInstance???
 								ConnectInstance(result, rowRole, null, null);
 								t.Commit();
 							}
@@ -6615,12 +7178,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						break;
 					case RowType.FactRole:
-						FactTypeRoleInstance factRoleInstance = null;
-						IList<FactTypeRoleInstance> factRoleInstances = null;
+						RoleInstance factRoleInstance = null;
+						IList<RoleInstance> factRoleInstances = null;
 						if (rowFactInstance != null)
 						{
 							factRoleInstances = rowFactInstance.RoleInstanceCollection;
-							factRoleInstance = FactTypeInstance.FindRoleInstance(factRoleInstances, rowRole);
+							factRoleInstance = FactInstance.FindRoleInstance(factRoleInstances, rowRole);
 						}
 						if (delete)
 						{
@@ -6630,7 +7193,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								using (Transaction t = rowRole.Store.TransactionManager.BeginTransaction(
 									(factRoleInstances.Count == 1) ?
 										string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveFactInstanceTransactionText, rowFactInstance.Name) :
-										string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(rowRole, true), factRoleInstance.ObjectTypeInstance.Name, rowFactInstance.Name)))
+										string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceReferenceTransactionText, GetRolePlayerTypeName(rowRole, true), factRoleInstance.ObjectInstance.Name, rowFactInstance.Name)))
 								{
 									factRoleInstance.Delete();
 									t.Commit();
@@ -6642,15 +7205,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, rowType.Name)))
 							{
-								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(
-									(factRoleInstance != null) ? factRoleInstance.ObjectTypeInstance : null,
+								ObjectInstance instance = null;
+								ObjectInstance result = RecurseValueInstance(
+									(factRoleInstance != null) ? factRoleInstance.ObjectInstance : null,
 									rowType,
 									newText,
 									ref instance,
 									true,
 									true);
-								instance.Value = newText;
+								// instance.Value = newText;  // UNDONE: NOW Check set Value after RecurseValueInstance???
 								ConnectInstance(result, rowRole, null, null);
 								t.Commit();
 							}
@@ -6662,27 +7225,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							entityInstance = myEditInstance;
 							if (entityInstance != null &&
-								((entityRoleInstances = entityInstance.RoleInstanceCollection).Count + (unaryRoleInstances = EntityTypeInstancePopulatesUnaryRole.GetLinksToUnaryRoleInstanceCollection(entityInstance)).Count) == 1)
+								entityInstance.ObjectType?.PreferredIdentifier != null &&
+								(string.IsNullOrEmpty(entityInstance.IdentityTag) && !entityInstance.IterateIdentifyingRoleInstances((testRole, roleInstance) => roleInstance != null && testRole != rowRole)))
 							{
-								ObjectTypeInstance deleteInstance;
-								if (entityRoleInstances.Count == 1)
-								{
-									entityRoleInstance = entityRoleInstances[0];
-									deleteInstance = entityRoleInstance.ObjectTypeInstance;
-									unaryRoleInstance = null;
-								}
-								else
-								{
-									unaryRoleInstance = unaryRoleInstances[0];
-									deleteInstance = unaryRoleInstance.EntityTypeInstance;
-									entityRoleInstance = null;
-								}
-								ValueTypeInstance deleteValueInstance = null;
-								if (entityRoleInstance != null && entityRoleInstance.Role.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
+								ObjectInstance deleteInstance;
+								identifyingRoleInstance = entityInstance.FindIdentifyingRoleInstance(rowRole);
+								deleteInstance = identifyingRoleInstance?.ObjectInstance;
+								ObjectInstance deleteValueInstance = null;
+								if (identifyingRoleInstance != null && identifyingRoleInstance.Role.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
 								{
 									// See comments in EntityTypeBranch.CommitLabelEdit
-									deleteValueInstance = deleteInstance as ValueTypeInstance;
-									if (deleteValueInstance == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
+									deleteValueInstance = deleteInstance;
+									if (deleteValueInstance == null || deleteValueInstance.ValueType == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
 									{
 										throw new InvalidOperationException(ResourceStrings.ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText);
 									}
@@ -6707,15 +7261,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, rowType.Name)))
 							{
 								Role supertypeRole = GetIdentifyingSupertypeRole(rowType);
-								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(
+								ObjectInstance instance = null;
+								ObjectInstance result = RecurseValueInstance(
 									myEditInstance,
 									supertypeRole.RolePlayer,
 									newText,
 									ref instance,
 									true,
 									true);
-								instance.Value = newText;
+								// instance.Value = newText; // UNDONE: NOW Check set Value after RecurseValueInstance???
 								ConnectInstance(result, supertypeRole, null, null);
 								t.Commit();
 							}
@@ -6725,23 +7279,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					case RowType.ObjectifyingIdentifier:
 						if (delete)
 						{
-							entityInstance = rowInstance as EntityTypeInstance;
+							entityInstance = rowInstance;
 							if (entityInstance != null &&
-								((entityRoleInstances = entityInstance.RoleInstanceCollection).Count + (unaryRoleInstances = EntityTypeInstancePopulatesUnaryRole.GetLinksToUnaryRoleInstanceCollection(entityInstance)).Count) == 1)
+								entityInstance.ObjectType?.PreferredIdentifier != null &&
+								(string.IsNullOrEmpty(entityInstance.IdentityTag) && !entityInstance.IterateIdentifyingRoleInstances((testRole, roleInstance) => roleInstance != null && testRole != rowRole)))
 							{
-								entityRoleInstance = null;
-								ValueTypeInstance deleteValueInstance = null;
-								if (entityRoleInstances.Count == 1)
+								ObjectInstance deleteValueInstance = null;
+								identifyingRoleInstance = entityInstance.FindIdentifyingRoleInstance(rowRole);
+								if (identifyingRoleInstance?.Role.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
 								{
-									entityRoleInstance = entityRoleInstances[0];
-									if (entityRoleInstance.Role.GetReferenceSchemePattern() == ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole)
+									// See comments in EntityTypeBranch.CommitLabelEdit
+									deleteValueInstance = identifyingRoleInstance.ObjectInstance;
+									if (deleteValueInstance == null || deleteValueInstance.ValueType == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
 									{
-										// See comments in EntityTypeBranch.CommitLabelEdit
-										deleteValueInstance = entityRoleInstance.ObjectTypeInstance as ValueTypeInstance;
-										if (deleteValueInstance == null || RoleInstance.GetLinksToRoleCollection(deleteValueInstance).Count > 1)
-										{
-											throw new InvalidOperationException(ResourceStrings.ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText);
-										}
+										throw new InvalidOperationException(ResourceStrings.ModelSamplePopulationEditorRefuseDeleteRoleInstanceExceptionText);
 									}
 								}
 
@@ -6764,20 +7315,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, rowType.Name)))
 							{
-								ValueTypeInstance instance = null;
-								ObjectTypeInstance result = RecurseValueTypeInstance(
+								ObjectInstance instance = null;
+								ObjectInstance result = RecurseValueInstance(
 									myEditInstance,
 									rowType,
 									newText,
 									ref instance,
 									true,
 									true);
-								instance.Value = newText;
+								// instance.Value = newText; // UNDONE: NOW Check set Value after RecurseValueInstance???
 								ConnectInstance(result, null, rowType, null);
 								t.Commit();
 							}
 							return LabelEditResult.AcceptEdit;
 						}
+						break;
+					case RowType.IdentityTag:
+						// UNDONE: NOW Figure this out. Add IdentityTag support to RecurseValueInstance or simply connect here?
 						break;
 				}
 				return LabelEditResult.CancelEdit;
@@ -6789,17 +7343,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Role role;
 				int startRow = row;
 				RowType rowType = ResolveRow(ref row, out instanceType, out role);
-				VirtualTreeDisplayData retVal = new VirtualTreeDisplayData((short)GetImageIndex(role, instanceType, rowType == RowType.ObjectifyingIdentifier, false));
+				VirtualTreeDisplayData retVal = new VirtualTreeDisplayData((short)(rowType == RowType.IdentityTag ?
+					InstanceTypeImageIndex.IdentityTag :
+					GetImageIndex(role, instanceType, rowType == RowType.ObjectifyingIdentifier, false)));
+
 				if (rowType == RowType.UnaryIdentifierRole && !IsReadOnly && requiredData.StateMask != 0) // See comment on StateMask in EntityTypeBranch
 				{
 					ObjectType dummyRowType;
-					ObjectTypeInstance dummyRowInstance;
-					FactTypeInstance dummyFactInstance;
-					EntityTypeInstancePopulatesUnaryRole unaryRowInstance;
+					ObjectInstance dummyRowInstance;
+					FactInstance dummyFactInstance;
+					RoleInstance identifyingRoleInstance;
 
 					// Use the more involved routine to get the unary check state
-					ResolveRow(ref startRow, out dummyRowType, out role, out dummyFactInstance, out dummyRowInstance, out unaryRowInstance);
-					retVal.StateImageIndex = (short)(unaryRowInstance != null ? StandardCheckBoxImage.CheckedFlat : StandardCheckBoxImage.UncheckedFlat);
+					ResolveRow(ref startRow, out dummyRowType, out role, out dummyFactInstance, out identifyingRoleInstance, out dummyRowInstance);
+					retVal.StateImageIndex = (short)(identifyingRoleInstance != null ? StandardCheckBoxImage.CheckedFlat : StandardCheckBoxImage.UncheckedFlat);
 				}
 				return retVal;
 			}
@@ -6807,22 +7364,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			StateRefreshChanges IBranch.ToggleState(int row, int column)
 			{
 				ObjectType rowType;
-				ObjectTypeInstance dummyRowInstance;
-				FactTypeInstance dummyFactInstance;
-				EntityTypeInstancePopulatesUnaryRole unaryRoleInstance;
+				ObjectInstance dummyRowInstance;
+				FactInstance dummyFactInstance;
+				RoleInstance identifyingRoleInstance;
 				Role unaryRole;
-				if (!IsReadOnly && RowType.UnaryIdentifierRole == ResolveRow(ref row, out rowType, out unaryRole, out dummyFactInstance, out dummyRowInstance, out unaryRoleInstance))
+				if (!IsReadOnly && RowType.UnaryIdentifierRole == ResolveRow(ref row, out rowType, out unaryRole, out dummyFactInstance, out identifyingRoleInstance, out dummyRowInstance))
 				{
-					if (unaryRoleInstance != null)
+					if (identifyingRoleInstance != null)
 					{
-						EntityTypeInstance parentInstance = unaryRoleInstance.EntityTypeInstance;
-						bool instanceDeleting = (parentInstance.RoleInstanceCollection.Count + parentInstance.UnaryRoleInstanceCollection.Count) == 1;
+						ObjectInstance parentInstance = dummyRowInstance;
+						bool instanceDeleting = string.IsNullOrEmpty(parentInstance.IdentityTag) && !parentInstance.IterateIdentifyingRoleInstances((testRole, roleInstance) => roleInstance != null && testRole != unaryRole);
 						using (Transaction t = unaryRole.Store.TransactionManager.BeginTransaction(
 							instanceDeleting ?
 								string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveObjectInstanceTransactionText, parentInstance.EntityType.Name, parentInstance.Name) :
 								string.Format(ResourceStrings.ModelSamplePopulationEditorRemoveUnaryRoleInstanceTransactionText, string.Format(unaryRole.FactType.GetDefaultReading().Text, unaryRole.RolePlayer?.Name ?? string.Empty), parentInstance.Name)))
 						{
-							unaryRoleInstance.Delete();
+							identifyingRoleInstance.Delete();
 							t.Commit();
 						}
 
@@ -6853,12 +7410,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					ObjectType rowType;
 					Role rowRole;
-					ObjectTypeInstance rowInstance;
-					FactTypeInstance rowFactInstance;
-					EntityTypeInstancePopulatesUnaryRole dummyUnaryRowInstance;
+					ObjectInstance rowInstance;
+					FactInstance rowFactInstance;
+					RoleInstance identifyingRoleInstance;
 					bool trackExpansion = false;
 					EntityEditorBranch expansion = null;
-					switch (ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out rowInstance, out dummyUnaryRowInstance))
+					switch (ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out identifyingRoleInstance, out rowInstance))
 					{
 						case RowType.IdentifierRole:
 							expansion = new EntityEditorBranch(myEditInstance, rowType, rowInstance, rowRole, this);
@@ -6866,14 +7423,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							break;
 						//case RowType.UnaryIdentifierRole: This is handled with a local checkbox, not an expansion
 						case RowType.Supertype:
-							expansion =  new EntityEditorBranch(myEditSubtypeInstance, rowType, myEditInstance, this);
+							expansion = new EntityEditorBranch(myEditSubtypeInstance, rowType, myEditInstance, this);
 							trackExpansion = true;
 							break;
 						case RowType.FactRole:
 							expansion = new EntityEditorBranch(rowFactInstance, myEditRole.RolePlayer.NestedFactType, rowInstance, rowRole, null, this);
 							break;
 						case RowType.ObjectifyingIdentifier:
-							expansion =  new EntityEditorBranch(rowFactInstance, rowType.NestedFactType, rowInstance, null, rowType, this);
+							expansion = new EntityEditorBranch(rowFactInstance, rowType.NestedFactType, rowInstance, null, rowType, this);
 							trackExpansion = true;
 							break;
 					}
@@ -6888,21 +7445,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			string IBranch.GetText(int row, int column)
 			{
-				ObjectTypeInstance instance;
+				ObjectInstance instance;
 				ObjectType instanceType;
-				EntityTypeInstancePopulatesUnaryRole unaryInstance;
+				RoleInstance identifyingRoleInstance;
 				Role dummyRole;
-				FactTypeInstance dummyFactInstance;
-				switch (ResolveRow(ref row, out instanceType, out dummyRole, out dummyFactInstance, out instance, out unaryInstance))
+				FactInstance dummyFactInstance;
+				switch (ResolveRow(ref row, out instanceType, out dummyRole, out dummyFactInstance, out identifyingRoleInstance, out instance))
 				{
 					case RowType.ObjectifyingIdentifier:
-						return (instance != null) ? instance.IdentifierName : ObjectTypeInstance.GetDisplayString(null, instanceType, true);
+						return (instance != null) ? instance.IdentifierName : ObjectInstance.GetDisplayString(null, instanceType, true);
 					case RowType.Supertype:
-						return (instance != null) ? instance.Name : ObjectTypeInstance.GetDisplayString(null, GetIdentifyingSupertypeRole(instanceType).RolePlayer, false);
+						return (instance != null) ? instance.Name : ObjectInstance.GetDisplayString(null, GetIdentifyingSupertypeRole(instanceType).RolePlayer, false);
 					case RowType.UnaryIdentifierRole:
-						return unaryInstance != null ? "\x2713" : string.Empty;
+						return identifyingRoleInstance != null ? "\x2713" : string.Empty;
+					case RowType.IdentityTag:
+						return instance != null ? instance.IdentityTag : string.Empty;
 				}
-				return (instance != null) ? instance.Name : ObjectTypeInstance.GetDisplayString(null, instanceType, false);
+				return (instance != null) ? instance.Name : ObjectInstance.GetDisplayString(null, instanceType, false);
 			}
 
 			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
@@ -6912,6 +7471,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ObjectType rowObjectType;
 					Role rowRole;
 					RowType rowType = ResolveRow(ref row, out rowObjectType, out rowRole);
+					if (rowType == RowType.IdentityTag)
+					{
+						return ResourceStrings.ModelSamplePopulationEditorIdentityTag;
+					}
 					return (rowRole != null) ?
 						DeriveColumnName(rowRole, rowType == RowType.ObjectifyingIdentifier, false) :
 						DeriveColumnName(rowObjectType, rowType == RowType.ObjectifyingIdentifier);
@@ -6924,7 +7487,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ObjectType instanceType;
 				Role dummyRole;
 				RowType rowType = ResolveRow(ref row, out instanceType, out dummyRole);
-				return instanceType != null && ((rowType != RowType.ObjectifyingIdentifier && instanceType.NestedFactType != null) || HasComplexIdentifier(instanceType));
+				return instanceType != null && rowType != RowType.IdentityTag && ((rowType != RowType.ObjectifyingIdentifier && instanceType.NestedFactType != null) || HasComplexIdentifier(instanceType));
 			}
 			private new int VisibleItemCount
 			{
@@ -6942,29 +7505,35 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
-				TooFewEntityTypeRoleInstancesError partialEntityInstancePopulationError;
-				EntityTypeInstance entityInstance;
+				TooFewEntityRoleInstancesError partialEntityInstancePopulationError;
+				ObjectInstance entityInstance;
 				ObjectType entityType;
+				UniquenessConstraint pid;
 				if (style == ErrorObject &&
-					null != (partialEntityInstancePopulationError = obj as TooFewEntityTypeRoleInstancesError) &&
-					null != (entityInstance = partialEntityInstancePopulationError.EntityTypeInstance) &&
+					null != (partialEntityInstancePopulationError = obj as TooFewEntityRoleInstancesError) &&
+					null != (entityInstance = partialEntityInstancePopulationError.EntityInstance) &&
 					null != (entityType = entityInstance.EntityType) &&
-					myParentEntityType == entityType)
+					myParentEntityType == entityType &&
+					null != (pid = entityType.PreferredIdentifier))
 				{
 					int row = -1;
-					IList<Role> identifierRoles = entityType.PreferredIdentifier.RoleCollection;
-					IList<EntityTypeRoleInstance> roleInstances = entityInstance.RoleInstanceCollection;
+					IList<Role> identifierRoles = pid.RoleCollection;
 					int roleCount = identifierRoles.Count;
 					for (int i = 0; i < roleCount; ++i)
 					{
-						if (null == EntityTypeInstance.FindRoleInstance(roleInstances, identifierRoles[i]))
+						if (null == entityInstance.FindIdentifyingRoleInstance(identifierRoles[i]))
 						{
 							row = i;
 							break;
 						}
 					}
+
 					if (row != -1)
 					{
+						if (myShowIdentityTag)
+						{
+							++row;
+						}
 						return new LocateObjectData(row, 0, (int)TrackingObjectAction.ThisLevel);
 					}
 				}
@@ -6977,116 +7546,83 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 				DomainClassInfo classInfo;
 
-				// Track EntityTypeInstance changes
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeSubtypeInstanceHasSupertypeInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeSubtypeHasSupertypeInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeSubtypeHasSupertypeInstanceRemovedEvent), action);
-				eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRole(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId), new EventHandler<RolePlayerChangedEventArgs>(EntityTypeSubtypeInstanceHasSupertypeInstanceRolePlayerChangedEvent), action);
+				// Track EntityInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(EntitySubtypeInstanceHasSupertypeInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntitySubtypeHasSupertypeInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntitySubtypeHasSupertypeInstanceRemovedEvent), action);
+				eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRole(EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId), new EventHandler<RolePlayerChangedEventArgs>(EntitySubtypeInstanceHasSupertypeInstanceRolePlayerChangedEvent), action);
 
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeRoleInstanceRemovedEvent), action);
-
-				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstancePopulatesUnaryRole.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeUnaryRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeUnaryRoleInstanceRemovedEvent), action);
-
-				classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeRoleInstanceAddedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeRoleInstanceRemovedEvent), action);
+				classInfo = dataDirectory.FindDomainRelationship(FactInstanceHasRoleInstance.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactRoleInstanceAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactRoleInstanceRemovedEvent), action);
 
 				classInfo = dataDirectory.FindDomainRelationship(ObjectificationInstance.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectificationInstanceAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectificationInstanceRemovedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectificationInstanceRolePlayerChangedEvent), action);
 
-				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ObjectTypeInstance.NameChangedDomainPropertyId);
-				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeInstanceNameChangedEvent), action);
+				DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ObjectInstance.NameChangedDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectInstanceNameChangedEvent), action);
 			}
 
-			private void EntityTypeSubtypeInstanceHasSupertypeInstanceRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+			private void EntitySubtypeInstanceHasSupertypeInstanceRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
 			{
-				EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ElementLink;
-				ObjectTypeInstance instance;
-				EntityTypeSubtypeInstance subtypeInstance = link.EntityTypeSubtypeInstance;
+				EntitySubtypeInstanceHasSupertypeInstance link = (EntitySubtypeInstanceHasSupertypeInstance)e.ElementLink;
+				ObjectInstance instance;
+				ObjectInstance subtypeInstance = link.EntitySubtypeInstance;
 				if (RecurseInstanceUpdate(null, link.SupertypeInstance, subtypeInstance, null, InstanceUpdateType.Subtype, out instance) ||
-					RecurseInstanceUpdate(null, (EntityTypeInstance)e.OldRolePlayer, subtypeInstance, null, InstanceUpdateType.Subtype, out instance))
+					RecurseInstanceUpdate(null, (ObjectInstance)e.OldRolePlayer, subtypeInstance, null, InstanceUpdateType.Subtype, out instance))
 				{
 					EditColumnDisplay(0);
 				}
 			}
-			private void EntityTypeSubtypeHasSupertypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			private void EntitySubtypeHasSupertypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ModelElement;
-				ObjectTypeInstance instance;
-				if (RecurseInstanceUpdate(null, link.SupertypeInstance, link.EntityTypeSubtypeInstance, null, InstanceUpdateType.Subtype, out instance))
+				EntitySubtypeInstanceHasSupertypeInstance link = (EntitySubtypeInstanceHasSupertypeInstance)e.ModelElement;
+				ObjectInstance instance;
+				if (RecurseInstanceUpdate(null, link.SupertypeInstance, link.EntitySubtypeInstance, null, InstanceUpdateType.Subtype, out instance))
 				{
 					EditColumnDisplay(0);
 				}
 			}
-			private void EntityTypeSubtypeHasSupertypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void EntitySubtypeHasSupertypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
-				EntityTypeSubtypeInstanceHasSupertypeInstance link = (EntityTypeSubtypeInstanceHasSupertypeInstance)e.ModelElement;
-				ObjectTypeInstance instance;
-				if (RecurseInstanceUpdate(null, link.SupertypeInstance, link.EntityTypeSubtypeInstance, null, InstanceUpdateType.Subtype, out instance))
-				{
-					EditColumnDisplay(0);
-				}
-			}
-			private void EntityTypeRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-			{
-				EntityTypeInstanceHasRoleInstance link = (EntityTypeInstanceHasRoleInstance)e.ModelElement;
-				ObjectTypeInstance instance;
-				if (RecurseInstanceUpdate(null, link.EntityTypeInstance, null, link.RoleInstance.Role, InstanceUpdateType.EntityTypeIdentifierRole, out instance))
-				{
-					EditColumnDisplay(0);
-				}
-			}
-			private void EntityTypeUnaryRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-			{
-				EntityTypeInstancePopulatesUnaryRole link = (EntityTypeInstancePopulatesUnaryRole)e.ModelElement;
-				ObjectTypeInstance instance;
-				if (RecurseInstanceUpdate(null, link.EntityTypeInstance, null, link.UnaryRole, InstanceUpdateType.EntityTypeIdentifierRole, out instance))
+				EntitySubtypeInstanceHasSupertypeInstance link = (EntitySubtypeInstanceHasSupertypeInstance)e.ModelElement;
+				ObjectInstance instance;
+				if (RecurseInstanceUpdate(null, link.SupertypeInstance, link.EntitySubtypeInstance, null, InstanceUpdateType.Subtype, out instance))
 				{
 					EditColumnDisplay(0);
 				}
 			}
 
-			private void EntityTypeRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void FactRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
-				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-				ObjectTypeInstance instance;
-				if (RecurseInstanceUpdate(null, link.EntityTypeInstance, null, link.RoleInstance.Role, InstanceUpdateType.EntityTypeIdentifierRole, out instance))
+				FactInstanceHasRoleInstance link = (FactInstanceHasRoleInstance)e.ModelElement;
+				RoleInstance roleInstance = link.RoleInstance;
+				Role role = roleInstance.Role;
+				ObjectInstance instance;
+				if (RecurseInstanceUpdate(link.FactInstance, null, null, role, InstanceUpdateType.FactTypeRole, out instance))
 				{
 					EditColumnDisplay(0);
 				}
-			}
-			private void EntityTypeUnaryRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
-			{
-				EntityTypeInstancePopulatesUnaryRole link = e.ModelElement as EntityTypeInstancePopulatesUnaryRole;
-				ObjectTypeInstance instance;
-				if (RecurseInstanceUpdate(null, link.EntityTypeInstance, null, link.UnaryRole, InstanceUpdateType.EntityTypeIdentifierRole, out instance))
-				{
-					EditColumnDisplay(0);
-				}
-			}
 
-			private void FactTypeRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-			{
-				FactTypeInstanceHasRoleInstance link = (FactTypeInstanceHasRoleInstance)e.ModelElement;
-				ObjectTypeInstance instance;
-				if (RecurseInstanceUpdate(link.FactTypeInstance, null, null, link.RoleInstance.Role, InstanceUpdateType.FactTypeRole, out instance))
+				ObjectInstance entityInstance = roleInstance.IdentifiedEntityInstance;
+				if (entityInstance != null &&
+					(role.RolePlayer != entityInstance.EntityType || role.FactType.UnaryPattern != UnaryValuePattern.NotUnary))
 				{
-					EditColumnDisplay(0);
+					if (RecurseInstanceUpdate(null, entityInstance, null, link.RoleInstance.Role, InstanceUpdateType.EntityTypeIdentifierRole, out instance))
+					{
+						EditColumnDisplay(0);
+					}
 				}
 			}
 
 			private void ObjectificationInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
 				ObjectificationInstance link = (ObjectificationInstance)e.ModelElement;
-				ObjectTypeInstance instance = link.ObjectifyingInstance;
-				EntityTypeSubtypeInstance subtypeInstance = instance as EntityTypeSubtypeInstance;
-				if (RecurseInstanceUpdate(link.ObjectifiedInstance, (subtypeInstance == null) ? (EntityTypeInstance)instance : null, subtypeInstance, null, InstanceUpdateType.ObjectificationIdentifier, out instance))
+				ObjectInstance instance = link.ObjectifyingInstance;
+				bool isSubtypeInstance = instance.SupertypeInstance != null;
+				if (RecurseInstanceUpdate(link.ObjectifiedInstance, isSubtypeInstance ? null : instance, isSubtypeInstance ? instance : null, null, InstanceUpdateType.ObjectificationIdentifier, out instance))
 				{
 					EditColumnDisplay(0);
 				}
@@ -7095,9 +7631,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private void ObjectificationInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
 				ObjectificationInstance link = (ObjectificationInstance)e.ModelElement;
-				ObjectTypeInstance instance = link.ObjectifyingInstance;
-				EntityTypeSubtypeInstance subtypeInstance = instance as EntityTypeSubtypeInstance;
-				if (RecurseInstanceUpdate(link.ObjectifiedInstance, (subtypeInstance == null) ? (EntityTypeInstance)instance : null, subtypeInstance, null, InstanceUpdateType.ObjectificationIdentifier, out instance))
+				ObjectInstance instance = link.ObjectifyingInstance;
+				bool isSubtypeInstance = instance.SupertypeInstance != null;
+				if (RecurseInstanceUpdate(link.ObjectifiedInstance, isSubtypeInstance ? null : instance,  isSubtypeInstance ? instance : null, null, InstanceUpdateType.ObjectificationIdentifier, out instance))
 				{
 					EditColumnDisplay(0);
 				}
@@ -7106,22 +7642,41 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private void ObjectificationInstanceRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
 			{
 				ObjectificationInstance link = (ObjectificationInstance)e.ElementLink;
-				ObjectTypeInstance instance = link.ObjectifyingInstance;
-				EntityTypeSubtypeInstance subtypeInstance = instance as EntityTypeSubtypeInstance;
-				EntityTypeInstance entityInstance = (subtypeInstance == null) ? (EntityTypeInstance)instance : null;
-				FactTypeInstance factInstance = link.ObjectifiedInstance;
+				ObjectInstance instance = link.ObjectifyingInstance;
+				ObjectInstance subtypeInstance;
+				ObjectInstance entityInstance;
+				if (instance.SupertypeInstance != null)
+				{
+					subtypeInstance = instance;
+					entityInstance = null;
+				}
+				else
+				{
+					entityInstance = instance;
+					subtypeInstance = null;
+				}
+
+				FactInstance factInstance = link.ObjectifiedInstance;
 				bool success;
 				if (!(success = RecurseInstanceUpdate(factInstance, entityInstance, subtypeInstance, null, InstanceUpdateType.ObjectificationIdentifier, out instance)))
 				{
 					if (e.DomainRole.Id == ObjectificationInstance.ObjectifiedInstanceDomainRoleId)
 					{
-						factInstance = (FactTypeInstance)e.OldRolePlayer;
+						factInstance = (FactInstance)e.OldRolePlayer;
 					}
 					else
 					{
-						instance = (ObjectTypeInstance)e.OldRolePlayer;
-						subtypeInstance = instance as EntityTypeSubtypeInstance;
-						entityInstance = (subtypeInstance == null) ? (EntityTypeInstance)instance : null;
+						instance = (ObjectInstance)e.OldRolePlayer;
+						if (instance.SupertypeInstance != null)
+						{
+							subtypeInstance = instance;
+							entityInstance = null;
+						}
+						else
+						{
+							entityInstance = instance;
+							subtypeInstance = null;
+						}
 					}
 					success = RecurseInstanceUpdate(factInstance, entityInstance, subtypeInstance, null, InstanceUpdateType.ObjectificationIdentifier, out instance);
 				}
@@ -7131,44 +7686,61 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 
-			private void FactTypeRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			private void FactRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
 				if (myEditInstance != null)
 				{
-					FactTypeInstanceHasRoleInstance link = (FactTypeInstanceHasRoleInstance)e.ModelElement;
-					ObjectTypeInstance instance;
-					if (RecurseInstanceUpdate(link.FactTypeInstance, null, null, link.RoleInstance.Role, InstanceUpdateType.FactTypeRole, out instance))
+					FactInstanceHasRoleInstance link = (FactInstanceHasRoleInstance)e.ModelElement;
+					ObjectInstance instance;
+					if (RecurseInstanceUpdate(link.FactInstance, null, null, link.RoleInstance.Role, InstanceUpdateType.FactTypeRole, out instance))
+					{
+						EditColumnDisplay(0);
+					}
+
+					link.FindEntityWithIdentifyingRole(out ObjectInstance entityInstance, out Role identifyingRole);
+					if (entityInstance != null && RecurseInstanceUpdate(null, entityInstance, null, identifyingRole, InstanceUpdateType.EntityTypeIdentifierRole, out instance))
 					{
 						EditColumnDisplay(0);
 					}
 				}
 			}
 
-			private void ObjectTypeInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			private void ObjectInstanceNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
-				ObjectTypeInstance objectTypeInstance = e.ModelElement as ObjectTypeInstance;
-				if (myEditInstance == objectTypeInstance)
+				ObjectInstance objectInstance = e.ModelElement as ObjectInstance;
+				ObjectInstance editEntityInstance;
+				if (myEditInstance == objectInstance)
 				{
 					EditColumnDisplay(0);
 				}
-				else if (myEditInstance != null)
+				else if (null != (editEntityInstance = myEditInstance))
 				{
-					LinkedElementCollection<EntityTypeRoleInstance> instances = myEditInstance.RoleInstanceCollection;
-					int instanceCount = instances.Count;
-					for (int i = 0; i < instanceCount; ++i)
+					LinkedElementCollection<Role> pidRoles = editEntityInstance.EntityType?.PreferredIdentifier?.RoleCollection;
+					if (pidRoles != null)
 					{
-						if (instances[i].ObjectTypeInstance == objectTypeInstance)
+						int pidRoleCount = pidRoles.Count;
+						int location = 0;
+						for (int i = 0; i < pidRoleCount; ++i)
 						{
-							EditInstanceDisplay(i);
+							RoleInstance identifyingRoleInstance = myEditInstance.FindIdentifyingRoleInstance(pidRoles[i]);
+							if (identifyingRoleInstance != null)
+							{
+								if (identifyingRoleInstance.ObjectInstance == objectInstance)
+								{
+									// UNDONE: NOW Kill EntityTypeRoleInstance. I'm not sure this code was right before. Relied on order of entity.RoleInstances, which should be unordered. This might just be the pid role position, which makes more sense.
+									EditInstanceDisplay(location);
+								}
+								++location;
+							}
 						}
 					}
 				}
 			}
 #if SAMPLEPOPULATIONEDITOR_DEBUGHELPER
 			/// <summary>
-			/// The <see cref="FactTypeInstance"/> from the top-most EntityEditorBranch expansion
+			/// The <see cref="FactInstance"/> from the top-most EntityEditorBranch expansion
 			/// </summary>
-			public FactTypeInstance TopLevelParentFactInstance
+			public FactInstance TopLevelParentFactInstance
 			{
 				get
 				{
@@ -7183,9 +7755,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// The <see cref="EntityTypeInstance"/> from the top-most EntityEditorBranch expansion
+			/// The <see cref="EntityInstance"/> from the top-most EntityEditorBranch expansion
 			/// </summary>
-			public EntityTypeInstance TopLevelParentEntityInstance
+			public EntityInstance TopLevelParentEntityInstance
 			{
 				get
 				{
@@ -7200,9 +7772,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// The <see cref="EntityTypeSubtypeInstance"/> from the top-most EntityEditorBranch expansion
+			/// The <see cref="EntitySubtypeInstance"/> from the top-most EntityEditorBranch expansion
 			/// </summary>
-			public EntityTypeSubtypeInstance TopLevelParentSubtypeInstance
+			public EntitySubtypeInstance TopLevelParentSubtypeInstance
 			{
 				get
 				{
@@ -7289,11 +7861,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// recognizes the type of instance, but there is no current instance for this branch of the
 			/// sample population.</param>
 			/// <returns>true if the <paramref name="resolvedInstance"/> should be used.</returns>
-			private bool RecurseInstanceUpdate(FactTypeInstance parentFactInstance, EntityTypeInstance parentEntityInstance, EntityTypeSubtypeInstance parentSubtypeInstance, Role selectedRole, InstanceUpdateType updateType, out ObjectTypeInstance resolvedInstance)
+			private bool RecurseInstanceUpdate(FactInstance parentFactInstance, ObjectInstance parentEntityInstance, ObjectInstance parentSubtypeInstance, Role selectedRole, InstanceUpdateType updateType, out ObjectInstance resolvedInstance)
 			{
 				resolvedInstance = null;
 				bool offerToParentBranch = false;
-				ObjectTypeInstance parentObjectInstance = (ObjectTypeInstance)parentSubtypeInstance ?? parentEntityInstance;
+				ObjectInstance parentObjectInstance = (ObjectInstance)parentSubtypeInstance ?? parentEntityInstance;
 				if (updateType == InstanceUpdateType.ObjectificationIdentifier &&
 					MatchesUpdateType(updateType))
 				{
@@ -7301,12 +7873,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					// this spaghetti routine, but recoding this at this point is too sensitive.
 					// Consider making better use of the update type when we have a test bed in
 					// place to verify the current behavior. The ObjectificationIdentifier case
-					// is special because instances always reference the ObjectTypeInstance side
+					// is special because instances always reference the ObjectInstance side
 					// of the relationship.
 					IBranch parentBranch = myParentBranch;
 					EntityEditorBranch parentEditorBranch = parentBranch as EntityEditorBranch;
 					IUnattachedBranchOwner unattachedOwner;
-					FactTypeInstance contextFactInstance = myParentFactInstance;
+					FactInstance contextFactInstance = myParentFactInstance;
 					if (parentFactInstance.IsDeleted)
 					{
 						// There is no way to get type information from a deleted instance, but if we
@@ -7338,7 +7910,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else if (parentFactInstance.FactType == myParentFactType)
 					{
-						ObjectTypeInstance verifiedIdentifier = parentFactInstance.ObjectifyingInstance;
+						ObjectInstance verifiedIdentifier = parentFactInstance.ObjectifyingInstance;
 						if (verifiedIdentifier == null)
 						{
 							if (parentEditorBranch == null)
@@ -7393,7 +7965,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						EntityEditorBranch parentEditorBranch;
 						if (null != (parentEditorBranch = parentBranch as EntityEditorBranch))
 						{
-							ObjectTypeInstance resolvedParentInstance;
+							ObjectInstance resolvedParentInstance;
 							if (parentEditorBranch.RecurseInstanceUpdate(parentFactInstance, parentEntityInstance, parentSubtypeInstance, selectedRole, updateType, out resolvedParentInstance))
 							{
 								ContextParentObjectInstance = resolvedParentInstance;
@@ -7441,7 +8013,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					parentEntityInstance != null &&
 					parentEntityInstance == ContextParentEntityInstance)
 				{
-					ObjectTypeInstance selectedInstance = parentEntityInstance.FindRoleInstance(selectedRole)?.ObjectTypeInstance;
+					ObjectInstance selectedInstance = parentEntityInstance.FindIdentifyingRoleInstance(selectedRole)?.ObjectInstance;
 					if (selectedInstance != ContextObjectInstance)
 					{
 						ContextObjectInstance = selectedInstance;
@@ -7461,7 +8033,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						// Note that we recurse even on a match to handle cases where the parent entity information
 						// is out of date. The parent entity information is only stable for the top-level branch.
-						ObjectTypeInstance resolvedParentInstance;
+						ObjectInstance resolvedParentInstance;
 						if (parentEditorBranch.RecurseInstanceUpdate(parentFactInstance, parentEntityInstance, parentSubtypeInstance, selectedRole, updateType, out resolvedParentInstance))
 						{
 							ContextParentObjectInstance = resolvedParentInstance;
@@ -7471,7 +8043,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else
 					{
-						EntityTypeSubtypeInstance contextSubtypeInstance = ContextParentSubtypeInstance;
+						ObjectInstance contextSubtypeInstance = ContextParentSubtypeInstance;
 						if (contextSubtypeInstance != null)
 						{
 							if (parentSubtypeInstance == contextSubtypeInstance)
@@ -7489,7 +8061,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					return false;
 				}
-				EntityTypeInstance editInstance = myEditInstance;
+				ObjectInstance editInstance = myEditInstance;
 				if (editInstance != null)
 				{
 					// We have a match, so there is no need to go farther as long as
@@ -7498,7 +8070,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					bool instanceChanged = false;
 					if (parentSubtypeInstance != null)
 					{
-						EntityTypeSubtypeInstance contextSubtypeInstance = ContextParentSubtypeInstance;
+						ObjectInstance contextSubtypeInstance = ContextParentSubtypeInstance;
 						if (contextSubtypeInstance != null)
 						{
 							if (parentSubtypeInstance == contextSubtypeInstance)
@@ -7522,7 +8094,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							if (subtypeEditRole != null)
 							{
-								EntityTypeSubtypeInstance subtypeInstance = myEditSubtypeInstance;
+								ObjectInstance subtypeInstance = myEditSubtypeInstance;
 								if (subtypeInstance != null)
 								{
 									if (subtypeInstance.IsDeleted)
@@ -7540,7 +8112,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							else if (supertypeEditRole != null)
 							{
-								EntityTypeSubtypeInstance subtypeInstance = myParentEntitySubtypeInstance;
+								ObjectInstance subtypeInstance = myParentEntitySubtypeInstance;
 								if (subtypeInstance != null)
 								{
 									if (subtypeInstance.IsDeleted)
@@ -7558,10 +8130,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							else
 							{
-								ObjectTypeInstance verifyInstance = (ObjectTypeInstance)myEditSubtypeInstance ?? editInstance;
+								ObjectInstance verifyInstance = (ObjectInstance)myEditSubtypeInstance ?? editInstance;
 								if (verifyInstance.IsDeleted)
 								{
-									ObjectTypeInstance contextParent = ContextParentObjectInstance;
+									ObjectInstance contextParent = ContextParentObjectInstance;
 									if (contextParent != null && contextParent.IsDeleted)
 									{
 										ContextParentObjectInstance = null;
@@ -7572,8 +8144,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									return true;
 								}
-								EntityTypeRoleInstance roleInstance = editInstance.FindRoleInstance(editRole);
-								if (((roleInstance != null) ? roleInstance.ObjectTypeInstance : null) == verifyInstance)
+								RoleInstance roleInstance = editInstance.FindIdentifyingRoleInstance(editRole);
+								if (((roleInstance != null) ? roleInstance.ObjectInstance : null) == verifyInstance)
 								{
 									resolvedInstance = verifyInstance;
 									return true;
@@ -7601,14 +8173,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							if (editRole != null && subtypeEditRole != null && supertypeEditRole != null && myObjectifyingType == null)
 							{
 #endif
-								ObjectTypeInstance verifyInstance = (ObjectTypeInstance)myEditSubtypeInstance ?? editInstance;
+								ObjectInstance verifyInstance = (ObjectInstance)myEditSubtypeInstance ?? editInstance;
 								if (verifyInstance.IsDeleted)
 								{
 									ContextObjectInstance = null;
 									return true;
 								}
-								FactTypeRoleInstance roleInstance = parentFactInstance.FindRoleInstance(editRole);
-								if (((roleInstance != null) ? roleInstance.ObjectTypeInstance : null) == verifyInstance)
+								RoleInstance roleInstance = parentFactInstance.FindRoleInstance(editRole);
+								if (((roleInstance != null) ? roleInstance.ObjectInstance : null) == verifyInstance)
 								{
 									ContextObjectInstance = verifyInstance;
 									resolvedInstance = ContextObjectInstance;
@@ -7625,10 +8197,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				if (supertypeEditRole != null || subtypeEditRole != null)
 				{
-					EntityTypeSubtypeInstance subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(parentEntityInstance, myParentEntityType, true, false);
+					ObjectInstance subtypeInstance = ObjectInstance.GetSubtypeInstance(parentEntityInstance, myParentEntityType, true, false);
 					if (subtypeInstance != null)
 					{
-						FactTypeInstance contextFactInstance;
+						FactInstance contextFactInstance;
 						if (null == (contextFactInstance = myParentFactInstance) || contextFactInstance.ObjectifyingInstance == subtypeInstance)
 						{
 							IBranch parentBranch = myParentBranch;
@@ -7665,7 +8237,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					ObjectType objectifyingType = myObjectifyingType;
 					bool factMember = myParentFactType != null && objectifyingType == null;
-					ObjectTypeInstance recurseParentObjectInstance = parentObjectInstance ?? (!factMember ? parentFactInstance.ObjectifyingInstance : null);
+					ObjectInstance recurseParentObjectInstance = parentObjectInstance ?? (!factMember ? parentFactInstance.ObjectifyingInstance : null);
 					if (recurseParentObjectInstance != null)
 					{
 						IBranch parentBranch = myParentBranch;
@@ -7673,23 +8245,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						IUnattachedBranchOwner unattachedOwner;
 						if (null != (parentEditorBranch = parentBranch as EntityEditorBranch))
 						{
-							ObjectTypeInstance instance = null;
+							ObjectInstance instance = null;
 							foreach (RoleInstance recurseParentRoleInstance in RoleInstance.GetLinksToRoleCollection(recurseParentObjectInstance))
 							{
 								if (recurseParentRoleInstance.Role != editRole)
 								{
 									continue;
 								}
-								EntityTypeRoleInstance recurseEntityRoleInstance;
-								FactTypeRoleInstance recurseFactRoleInstance;
+								RoleInstance recurseFactRoleInstance;
+								ObjectInstance testRecurseEntityInstance;
 								bool recurseMatches = false;
-								if (null != (recurseEntityRoleInstance = recurseParentRoleInstance as EntityTypeRoleInstance))
+								if (null != (testRecurseEntityInstance = recurseParentRoleInstance.IdentifiedEntityInstance))
 								{
-									recurseMatches = parentEditorBranch.RecurseInstanceUpdate(null, recurseEntityRoleInstance.EntityTypeInstance, null, recurseParentRoleInstance.Role, InstanceUpdateType.EntityTypeIdentifierRole, out instance);
+									recurseMatches = parentEditorBranch.RecurseInstanceUpdate(null, testRecurseEntityInstance, null, recurseParentRoleInstance.Role, InstanceUpdateType.EntityTypeIdentifierRole, out instance);
 								}
-								else if (null != (recurseFactRoleInstance = recurseParentRoleInstance as FactTypeRoleInstance))
+								else if (null != (recurseFactRoleInstance = recurseParentRoleInstance as RoleInstance))
 								{
-									recurseMatches = parentEditorBranch.RecurseInstanceUpdate(recurseFactRoleInstance.FactTypeInstance, null, null, recurseParentRoleInstance.Role, InstanceUpdateType.FactTypeRole, out instance);
+									recurseMatches = parentEditorBranch.RecurseInstanceUpdate(recurseFactRoleInstance.FactInstance, null, null, recurseParentRoleInstance.Role, InstanceUpdateType.FactTypeRole, out instance);
 								}
 								if (recurseMatches)
 								{
@@ -7698,10 +8270,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									return true;
 								}
 							}
-							EntityTypeInstance recurseEntityInstance = recurseParentObjectInstance as EntityTypeInstance;
-							if (recurseEntityInstance != null)
+							ObjectInstance recurseEntityInstance = recurseParentObjectInstance;
+							if (recurseEntityInstance != null && recurseEntityInstance.ObjectType?.PreferredIdentifier != null) // Ensure this is an entity instance
 							{
-								foreach (EntityTypeSubtypeInstance subtypeInstance in recurseEntityInstance.EntityTypeSubtypeInstanceCollection)
+								foreach (ObjectInstance subtypeInstance in recurseEntityInstance.EntitySubtypeInstanceCollection)
 								{
 									if (parentEditorBranch.RecurseInstanceUpdate(null, recurseEntityInstance, subtypeInstance, null, InstanceUpdateType.Subtype, out instance))
 									{
@@ -7716,8 +8288,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							if (factMember)
 							{
-								FactTypeInstance contextFactInstance = myParentFactInstance;
-								foreach (FactTypeRoleInstance recurseFactRoleInstance in FactTypeRoleInstance.GetLinksToRoleCollection(recurseParentObjectInstance))
+								FactInstance contextFactInstance = myParentFactInstance;
+								foreach (RoleInstance recurseFactRoleInstance in RoleInstance.GetLinksToRoleCollection(recurseParentObjectInstance))
 								{
 									if (recurseFactRoleInstance.Role != editRole)
 									{
@@ -7725,7 +8297,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									}
 									if (null != contextFactInstance)
 									{
-										if (contextFactInstance == recurseFactRoleInstance.FactTypeInstance)
+										if (contextFactInstance == recurseFactRoleInstance.FactInstance)
 										{
 											ContextObjectInstance = recurseParentObjectInstance;
 											resolvedInstance = ContextObjectInstance;
@@ -7733,7 +8305,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										}
 
 									}
-									else if (unattachedOwner.TryAnchorUnattachedBranches(null, recurseFactRoleInstance.FactTypeInstance))
+									else if (unattachedOwner.TryAnchorUnattachedBranches(null, recurseFactRoleInstance.FactInstance))
 									{
 										resolvedInstance = ContextObjectInstance;
 										return true;
@@ -7742,7 +8314,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							else
 							{
-								ObjectTypeInstance contextInstance = ContextParentEntityInstance;
+								ObjectInstance contextInstance = ContextParentEntityInstance;
 								if (null != contextInstance)
 								{
 									if (contextInstance == recurseParentObjectInstance)
@@ -7780,7 +8352,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// the instance for this branch.
 			/// </summary>
 			/// <remarks>Helper function for <see cref="RecurseInstanceUpdate"/></remarks>
-			private bool IsInstanceMatch(ObjectTypeInstance matchInstance)
+			private bool IsInstanceMatch(ObjectInstance matchInstance)
 			{
 				if (matchInstance == null)
 				{
@@ -7788,10 +8360,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				else if (myEditRole is SubtypeMetaRole && !(myParentFactType is SubtypeFact))
 				{
-					ObjectTypeInstance testInstance;
+					ObjectInstance testInstance;
 					if (null == (testInstance = ContextObjectInstance))
 					{
-						FactTypeInstance factInstance;
+						FactInstance factInstance;
 						IUnattachedBranchOwner unattachedOwner;
 						if (null != (factInstance = myParentFactInstance))
 						{
@@ -7813,29 +8385,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					foreach (RoleInstance testRoleInstance in RoleInstance.GetLinksToRoleCollection(matchInstance))
 					{
-						EntityTypeRoleInstance testEntityRoleInstance;
-						FactTypeRoleInstance testFactRoleInstance;
-						ObjectTypeInstance testInstance = null;
+						RoleInstance testFactRoleInstance;
+						ObjectInstance testInstance = null;
+						ObjectInstance testEntityInstance;
 						bool recurseMatches = false;
-						if (null != (testEntityRoleInstance = testRoleInstance as EntityTypeRoleInstance))
+						if (null != (testEntityInstance = testRoleInstance.IdentifiedEntityInstance))
 						{
-							recurseMatches = RecurseInstanceUpdate(null, testEntityRoleInstance.EntityTypeInstance, null, testRoleInstance.Role, InstanceUpdateType.EntityTypeIdentifierRole, out testInstance);
+							recurseMatches = RecurseInstanceUpdate(null, testEntityInstance, null, testRoleInstance.Role, InstanceUpdateType.EntityTypeIdentifierRole, out testInstance);
 						}
-						else if (null != (testFactRoleInstance = testRoleInstance as FactTypeRoleInstance))
+						else if (null != (testFactRoleInstance = testRoleInstance as RoleInstance))
 						{
-							recurseMatches = RecurseInstanceUpdate(testFactRoleInstance.FactTypeInstance, null, null, testRoleInstance.Role, InstanceUpdateType.FactTypeRole, out testInstance);
+							recurseMatches = RecurseInstanceUpdate(testFactRoleInstance.FactInstance, null, null, testRoleInstance.Role, InstanceUpdateType.FactTypeRole, out testInstance);
 						}
 						if (recurseMatches)
 						{
 							return matchInstance == testInstance;
 						}
 					}
-					EntityTypeInstance recurseEntityInstance = matchInstance as EntityTypeInstance;
-					if (recurseEntityInstance != null)
+					ObjectInstance recurseEntityInstance = matchInstance;
+					if (recurseEntityInstance.ObjectType?.PreferredIdentifier != null)
 					{
-						foreach (EntityTypeSubtypeInstance subtypeInstance in recurseEntityInstance.EntityTypeSubtypeInstanceCollection)
+						foreach (ObjectInstance subtypeInstance in recurseEntityInstance.EntitySubtypeInstanceCollection)
 						{
-							ObjectTypeInstance testInstance;
+							ObjectInstance testInstance;
 							if (RecurseInstanceUpdate(null, recurseEntityInstance, subtypeInstance, null, InstanceUpdateType.Subtype, out testInstance))
 							{
 								return matchInstance == testInstance;
@@ -7847,7 +8419,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			#endregion // Event Handlers
 			#region IUnattachedBranch Implementation
-			void IUnattachedBranch.AnchorUnattachedBranch(ObjectTypeInstance objectInstance, FactTypeInstance factInstance)
+			void IUnattachedBranch.AnchorUnattachedBranch(ObjectInstance objectInstance, FactInstance factInstance)
 			{
 				if (myParentFactType != null)
 				{
@@ -7882,7 +8454,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Read-only typed version of <see cref="ContextParentObjectInstance"/>
 			/// </summary>
-			private EntityTypeInstance ContextParentEntityInstance
+			private ObjectInstance ContextParentEntityInstance
 			{
 				get
 				{
@@ -7890,9 +8462,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// Return the parent <see cref="EntityTypeSubtypeInstance"/> if it is set
+			/// Return the parent <see cref="ObjectInstance"/> for an entity subtype if it is set
 			/// </summary>
-			private EntityTypeSubtypeInstance ContextParentSubtypeInstance
+			private ObjectInstance ContextParentSubtypeInstance
 			{
 				get
 				{
@@ -7902,7 +8474,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Control setting the instance and subtypeinstance fields
 			/// </summary>
-			private ObjectTypeInstance ContextParentObjectInstance
+			private ObjectInstance ContextParentObjectInstance
 			{
 				get
 				{
@@ -7914,13 +8486,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ObjectType objectifyingType = myObjectifyingType;
 					if (myParentFactType != null)
 					{
-						FactTypeInstance resolvedFactInstance = (value != null) ? value.ObjectifiedInstance : null;
+						FactInstance resolvedFactInstance = (value != null) ? value.ObjectifiedInstance : null;
 						bool updateFactInstance = myParentBranch is EntityEditorBranch;
 						if (!updateFactInstance)
 						{
 							// The parent fact instance can change for an expanded. However, if we're a
 							// top-level branch, then the parent fact instance cannot change.
-							FactTypeInstance parentFactInstance = myParentFactInstance;
+							FactInstance parentFactInstance = myParentFactInstance;
 							updateFactInstance =
 								(parentFactInstance != null && parentFactInstance == resolvedFactInstance) || // Resets edit instance
 								(parentFactInstance == null && resolvedFactInstance != null);
@@ -7949,13 +8521,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else
 					{
-						EntityTypeInstance entityInstance = null;
-						EntityTypeSubtypeInstance subtypeInstance = null;
-						if (null != value &&
-							null == (entityInstance = value as EntityTypeInstance) &&
-							null != (subtypeInstance = value as EntityTypeSubtypeInstance))
+						ObjectInstance entityInstance = null;
+						ObjectInstance subtypeInstance = null;
+
+						if (value != null)
 						{
-							entityInstance = subtypeInstance.SupertypeInstance;
+							ObjectInstance supertypeInstance = value.SupertypeInstance;
+							if (supertypeInstance != null)
+							{
+								entityInstance = supertypeInstance;
+								subtypeInstance = value;
+							}
+							else if (value.ObjectType?.PreferredIdentifier != null)
+							{
+								entityInstance = value;
+							}
 						}
 
 						if (entityInstance != null)
@@ -7974,11 +8554,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							else
 							{
-								ObjectTypeInstance foundInstance = null;
-								RoleInstance foundRoleInstance = entityInstance.FindRoleInstance(editRole);
+								ObjectInstance foundInstance = null;
+								RoleInstance foundRoleInstance = entityInstance.FindIdentifyingRoleInstance(editRole);
 								if (foundRoleInstance != null)
 								{
-									foundInstance = foundRoleInstance.ObjectTypeInstance;
+									foundInstance = foundRoleInstance.ObjectInstance;
 								}
 								ContextObjectInstance = foundInstance;
 							}
@@ -7995,7 +8575,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Control setting the parent fact instance
 			/// </summary>
-			private FactTypeInstance ContextParentFactInstance
+			private FactInstance ContextParentFactInstance
 			{
 				get
 				{
@@ -8012,12 +8592,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					else
 					{
 						Debug.Assert(myParentEntityType == null); // Only the identifier role can have both a parent EntityType and a parent FactType
-						ObjectTypeInstance localInstance = null;
-						FactTypeRoleInstance roleInstance;
+						ObjectInstance localInstance = null;
+						RoleInstance roleInstance;
 						if (value != null &&
 							null != (roleInstance = value.FindRoleInstance(myEditRole)))
 						{
-							localInstance = roleInstance.ObjectTypeInstance;
+							localInstance = roleInstance.ObjectInstance;
 						}
 						ContextObjectInstance = localInstance;
 					}
@@ -8026,30 +8606,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Control setting the instance and subtypeinstance fields
 			/// </summary>
-			private ObjectTypeInstance ContextObjectInstance
+			private ObjectInstance ContextObjectInstance
 			{
 				get
 				{
-					return (ObjectTypeInstance)myEditSubtypeInstance ?? myEditInstance;
+					return (ObjectInstance)myEditSubtypeInstance ?? myEditInstance;
 				}
 				set
 				{
-					EntityTypeSubtypeInstance subtypeInstance;
-					ObjectTypeInstance attachInstance = null;
+					ObjectInstance attachInstance = null;
+					ObjectInstance supertypeInstance;
 					if (value == null)
 					{
 						myEditInstance = null;
 						myEditSubtypeInstance = null;
 					}
-					else if (null != (subtypeInstance = value as EntityTypeSubtypeInstance))
+					else if (null != (supertypeInstance = value.SupertypeInstance))
 					{
-						myEditSubtypeInstance = subtypeInstance;
-						attachInstance = subtypeInstance;
-						myEditInstance = subtypeInstance.SupertypeInstance;
+						myEditSubtypeInstance = value;
+						attachInstance = value;
+						myEditInstance = supertypeInstance;
 					}
 					else
 					{
-						myEditInstance = (EntityTypeInstance)value;
+						myEditInstance = value;
 						attachInstance = value;
 						myEditSubtypeInstance = null;
 					}
@@ -8093,14 +8673,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// The row is an external identifier for an objectified FactType
 				/// </summary>
 				ObjectifyingIdentifier,
+				/// <summary>
+				/// The row represents the identity tag for an non-subtype entity type.
+				/// </summary>
+				IdentityTag,
 			}
-			private RowType ResolveRow(ref int row, out ObjectType rowType, out Role rowRole, out FactTypeInstance rowFactInstance, out ObjectTypeInstance rowInstance, out EntityTypeInstancePopulatesUnaryRole unaryRowInstance)
+			private RowType ResolveRow(ref int row, out ObjectType rowType, out Role rowRole, out FactInstance rowFactInstance, out RoleInstance rowIdentifyingRoleInstance, out ObjectInstance rowInstance)
 			{
 				rowType = null;
 				rowInstance = null;
 				rowRole = null;
 				rowFactInstance = null;
-				unaryRowInstance = null;
+				rowIdentifyingRoleInstance = null;
+				if (myShowIdentityTag)
+				{
+					if (row == 0)
+					{
+						rowInstance = myEditInstance;
+						return RowType.IdentityTag;
+					}
+					--row;
+				}
 				ObjectType contextType = myObjectifyingType;
 				bool testObjectification = false; // Testing the parent's objectifying type will give another instance of the same branch
 				if (contextType == null)
@@ -8113,7 +8706,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (testObjectification &&
 					null != (objectifiedFactType = contextType.NestedFactType))
 				{
-					ObjectTypeInstance contextInstance = (ObjectTypeInstance)myEditSubtypeInstance ?? myEditInstance;
+					ObjectInstance contextInstance = (ObjectInstance)myEditSubtypeInstance ?? myEditInstance;
 					if (pid.PreferredIdentifierFor != contextType || !pid.IsObjectifiedPreferredIdentifier)
 					{
 						if (row == 0)
@@ -8133,14 +8726,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					rowType = role.RolePlayer;
 					if (contextInstance != null)
 					{
-						FactTypeInstance objectifiedInstance;
-						FactTypeRoleInstance roleInstance;
+						FactInstance objectifiedInstance;
+						RoleInstance roleInstance;
 						if (null != (objectifiedInstance = contextInstance.ObjectifiedInstance))
 						{
 							rowFactInstance = objectifiedInstance;
 							if (null != (roleInstance = objectifiedInstance.FindRoleInstance(role)))
 							{
-								rowInstance = roleInstance.ObjectTypeInstance;
+								rowInstance = roleInstance.ObjectInstance;
 							}
 						}
 					}
@@ -8156,16 +8749,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				else
 				{
 					Role identifierRole = pid.RoleCollection[row];
-					EntityTypeInstance instance;
+					ObjectInstance instance;
 					rowRole = identifierRole;
 					if (identifierRole.FactType.UnaryPattern == UnaryValuePattern.NotUnary)
 					{
 						rowType = identifierRole.RolePlayer;
-						EntityTypeRoleInstance roleInstance;
+						RoleInstance roleInstance;
 						if (null != (instance = myEditInstance) &&
-							null != (roleInstance = instance.FindRoleInstance(identifierRole)))
+							null != (roleInstance = instance.FindIdentifyingRoleInstance(identifierRole)))
 						{
-							rowInstance = roleInstance.ObjectTypeInstance;
+							rowIdentifyingRoleInstance = roleInstance;
+							rowInstance = roleInstance.ObjectInstance;
 						}
 						return RowType.IdentifierRole;
 					}
@@ -8173,9 +8767,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						if (null != (instance = myEditInstance))
 						{
-							unaryRowInstance = EntityTypeInstancePopulatesUnaryRole.GetLink(instance, identifierRole);
+							rowIdentifyingRoleInstance = instance.FindIdentifyingRoleInstance(identifierRole);
 						}
-						return RowType.UnaryIdentifierRole;
+						return RowType.UnaryIdentifierRole; // The rowInstance is not set
 					}
 				}
 			}
@@ -8183,6 +8777,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				rowType = null;
 				rowRole = null;
+				if (myShowIdentityTag)
+				{
+					if (row == 0)
+					{
+						return RowType.IdentityTag;
+					}
+					--row;
+				}
 				ObjectType contextType = myObjectifyingType;
 				bool testObjectification = false; // Testing the parent's objectifying type will give another instance of the same branch
 				if (contextType == null)
@@ -8190,6 +8792,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					contextType = myEditRole.RolePlayer;
 					testObjectification = true;
 				}
+
 				FactType objectifiedFactType;
 				UniquenessConstraint pid = contextType.ResolvedPreferredIdentifier;
 				if (testObjectification &&
@@ -8229,7 +8832,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			/// <summary>
 			/// Hook up the given instance from a child branch to its parent instance on the current branch.
-			/// If the parent instance doesn't exist, it will be created.  The method then calls back up
+			/// If the parent instance doesn't exist, it will be created. The method then calls back up
 			/// the chain to the current branch's parent branch, passing the newly
 			/// created instance to be connected and the role to connect on.
 			/// </summary>
@@ -8237,18 +8840,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="identifierRole">Role to connect on</param>
 			/// <param name="objectifyingType">The objectifying type. Used in place of <paramref name="identifierRole"/> to edit the objectification relationship.</param>
 			/// <param name="factInstance">The fact instance from an objectified FactType</param>
-			public void ConnectInstance(ObjectTypeInstance instance, Role identifierRole, ObjectType objectifyingType, FactTypeInstance factInstance)
+			public void ConnectInstance(ObjectInstance instance, Role identifierRole, ObjectType objectifyingType, FactInstance factInstance)
 			{
 				Store store = Store;
 
-				EntityTypeInstance editInstance = myEditInstance;
-				ObjectTypeInstance recurseConnectInstance = null;
+				ObjectInstance editInstance = myEditInstance;
+				ObjectInstance recurseConnectInstance = null;
 
 				if ((identifierRole is SupertypeMetaRole || identifierRole is SubtypeMetaRole) && (factInstance == null || !(factInstance.FactType is SubtypeFact)))
 				{
 					ObjectType subtype = ContextObjectType;
-					EntityTypeInstance entityInstance = (EntityTypeInstance)instance;
-					EntityTypeSubtypeInstance editSubtypeInstance = myEditSubtypeInstance;
+					ObjectInstance entityInstance = instance;
+					ObjectInstance editSubtypeInstance = myEditSubtypeInstance;
 					if (editSubtypeInstance != null && editSubtypeInstance.SupertypeInstance == instance)
 					{
 						// No change, leave the instances bound
@@ -8258,7 +8861,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						// If the instance is already bound to a subtype instance for this subtype,
 						// then use the existing instance.
-						EntityTypeSubtypeInstance existingSubtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
+						ObjectInstance existingSubtypeInstance = ObjectInstance.GetSubtypeInstance(entityInstance, subtype, true, false);
 						if (existingSubtypeInstance != null)
 						{
 							myEditSubtypeInstance = existingSubtypeInstance;
@@ -8268,7 +8871,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						if (editSubtypeInstance == null)
 						{
-							editSubtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(entityInstance, subtype, true, true);
+							editSubtypeInstance = ObjectInstance.GetSubtypeInstance(entityInstance, subtype, true, true);
 						}
 						else
 						{
@@ -8283,8 +8886,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (identifierRole == null)
 					{
 						recurseConnectInstance = instance;
-						ObjectTypeInstance startingInstance;
-						FactTypeInstance attachedFactInstance;
+						ObjectInstance startingInstance;
+						FactInstance attachedFactInstance;
 						if (null != (startingInstance = ContextObjectInstance) &&
 							null != (attachedFactInstance = startingInstance.ObjectifiedInstance))
 						{
@@ -8308,8 +8911,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							identifierRole != null)
 						{
 							Debug.Assert(objectifiedFactType.RoleCollection.Contains(identifierRole));
-							ObjectTypeInstance objectifyingInstance = (ObjectTypeInstance)myEditSubtypeInstance ?? myEditInstance;
-							FactTypeInstance objectifiedInstance = (objectifyingInstance != null) ? objectifyingInstance.ObjectifiedInstance : factInstance;
+							ObjectInstance objectifyingInstance = (ObjectInstance)myEditSubtypeInstance ?? myEditInstance;
+							FactInstance objectifiedInstance = (objectifyingInstance != null) ? objectifyingInstance.ObjectifiedInstance : factInstance;
 							if (objectifiedInstance == null)
 							{
 								bool newInstance = objectifyingInstance == null;
@@ -8318,7 +8921,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									ContextObjectInstance = objectifyingInstance;
 								}
-								new FactTypeRoleInstance(identifierRole, instance).FactTypeInstance = objectifiedInstance;
+								new RoleInstance(identifierRole, instance).FactInstance = objectifiedInstance;
 							}
 							else
 							{
@@ -8331,22 +8934,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							Debug.Assert(pid.RoleCollection.Contains(identifierRole));
 							if (editInstance == null)
 							{
-								EntityTypeSubtypeInstance subtypeInstance = null;
+								ObjectInstance subtypeInstance = null;
 								switch (identifierRole.GetReferenceSchemePattern())
 								{
 									case ReferenceSchemeRolePattern.MandatorySimpleIdentifierRole:
 									case ReferenceSchemeRolePattern.OptionalSimpleIdentifierRole:
 										// The FactType patterns are one-to-one and implied. We should never
 										// create another instance if one is already available.
-										foreach (EntityTypeRoleInstance testRoleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(instance))
+										foreach (RoleInstance testRoleInstance in RoleInstance.GetLinksToRoleCollection(instance))
 										{
-											EntityTypeInstance testEntityInstance = testRoleInstance.EntityTypeInstance;
-											if (testEntityInstance.EntityType == identifierFor)
+											ObjectInstance testEntityInstance = testRoleInstance.IdentifiedEntityInstance;
+											if (testEntityInstance != null && testEntityInstance.EntityType == identifierFor)
 											{
 												editInstance = testEntityInstance;
 												if (editRolePlayer != identifierFor)
 												{
-													subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(editInstance, editRolePlayer, true, false);
+													subtypeInstance = ObjectInstance.GetSubtypeInstance(editInstance, editRolePlayer, true, false);
 												}
 												break;
 											}
@@ -8364,45 +8967,33 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										(identifierFactType = pidFactTypes[0]) == identifierForObjectifiedFactType)
 									{
 										// Entity instances are implied, create indirectly through the objectified FactType
-										factInstance = new FactTypeInstance(store);
+										factInstance = new FactInstance(store);
 										factInstance.FactType = identifierForObjectifiedFactType;
-										new FactTypeRoleInstance(identifierRole, instance).FactTypeInstance = factInstance;
-										editInstance = (EntityTypeInstance)factInstance.ObjectifyingInstance;
+										new RoleInstance(identifierRole, instance).FactInstance = factInstance;
+										editInstance = factInstance.ObjectifyingInstance;
 										Debug.Assert(editInstance != null); // The ObjectifyingInstance should be populated by inline rules
 									}
 									else
 									{
-										editInstance = new EntityTypeInstance(store);
-										editInstance.EntityType = identifierFor;
-										if (instance != null)
-										{
-											new EntityTypeRoleInstance(identifierRole, instance).EntityTypeInstance = editInstance;
-										}
-										else
-										{
-											// Only occurs for a unary
-											new EntityTypeInstancePopulatesUnaryRole(editInstance, identifierRole);
-										}
+										editInstance = new ObjectInstance(store);
+										editInstance.ObjectType = identifierFor;
+										editInstance.EnsureIdentifyingRoleInstance(identifierRole, instance); // null instance indicates a unary role
 									}
 								}
 								if (subtypeInstance == null && editRolePlayer != identifierFor)
 								{
-									subtypeInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(editInstance, editRolePlayer, false, true);
+									subtypeInstance = ObjectInstance.GetSubtypeInstance(editInstance, editRolePlayer, false, true);
 								}
-								recurseConnectInstance = (ObjectTypeInstance)subtypeInstance ?? editInstance;
+								recurseConnectInstance = (ObjectInstance)subtypeInstance ?? editInstance;
 							}
 							else if (pid.IsObjectifiedPreferredIdentifier)
 							{
 								// Control population through the FactType
 								editInstance.ObjectifiedInstance.EnsureRoleInstance(identifierRole, instance);
 							}
-							else if (instance != null)
-							{
-								editInstance.EnsureRoleInstance(identifierRole, instance);
-							}
 							else
 							{
-								new EntityTypeInstancePopulatesUnaryRole(editInstance, identifierRole);
+								editInstance.EnsureIdentifyingRoleInstance(identifierRole, instance); // null instance indicates a unary role
 							}
 						}
 					}
@@ -8433,16 +9024,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// Recursively create an <see cref="ObjectTypeInstance"/> required for editing an objectified <see cref="FactTypeInstance"/>
+			/// Recursively create an <see cref="ObjectInstance"/> required for editing an objectified <see cref="FactInstance"/>
 			/// </summary>
 			/// <param name="objectifyingType">The objectifying <see cref="ObjectType"/>. Cannot be null.</param>
 			/// <param name="objectifiedFactType">The objectified <see cref="FactType"/>. Cannot be null.</param>
-			/// <param name="objectInstance">The current or created <see cref="ObjectTypeInstance"/></param>
-			/// <param name="factInstance">The current or created <see cref="FactTypeInstance"/></param>
-			private static void CreateImpliedObjectInstance(ObjectType objectifyingType, FactType objectifiedFactType, ref ObjectTypeInstance objectInstance, ref FactTypeInstance factInstance)
+			/// <param name="objectInstance">The current or created <see cref="ObjectInstance"/></param>
+			/// <param name="factInstance">The current or created <see cref="FactInstance"/></param>
+			private static void CreateImpliedObjectInstance(ObjectType objectifyingType, FactType objectifiedFactType, ref ObjectInstance objectInstance, ref FactInstance factInstance)
 			{
-				ObjectTypeInstance editObjectInstance = objectInstance;
-				FactTypeInstance editFactInstance = factInstance;
+				ObjectInstance editObjectInstance = objectInstance;
+				FactInstance editFactInstance = factInstance;
 				if (editObjectInstance != null && editFactInstance != null)
 				{
 					return;
@@ -8461,28 +9052,28 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						else
 						{
-							EntityTypeInstance editEntityInstance = new EntityTypeInstance(store);
-							editEntityInstance.EntityType = objectifyingType;
+							ObjectInstance editEntityInstance = new ObjectInstance(store);
+							editEntityInstance.ObjectType = objectifyingType;
 							editObjectInstance = editEntityInstance;
 						}
 					}
 					else
 					{
 						FactType objectifiedByIdentifierFor = identifierFor.NestedFactType;
-						EntityTypeInstance supertypeInstance = null;
+						ObjectInstance supertypeInstance = null;
 						if (objectifiedByIdentifierFor != null)
 						{
-							ObjectTypeInstance recurseObjectInstance = null;
-							FactTypeInstance recurseFactInstance = null;
+							ObjectInstance recurseObjectInstance = null;
+							FactInstance recurseFactInstance = null;
 							CreateImpliedObjectInstance(identifierFor, objectifiedByIdentifierFor, ref recurseObjectInstance, ref recurseFactInstance);
-							supertypeInstance = (EntityTypeInstance)recurseObjectInstance;
+							supertypeInstance = recurseObjectInstance;
 						}
 						else
 						{
-							supertypeInstance = new EntityTypeInstance(store);
-							supertypeInstance.EntityType = identifierFor;
+							supertypeInstance = new ObjectInstance(store);
+							supertypeInstance.ObjectType = identifierFor;
 						}
-						editObjectInstance = EntityTypeSubtypeInstance.GetSubtypeInstance(supertypeInstance, objectifyingType, false, true);
+						editObjectInstance = ObjectInstance.GetSubtypeInstance(supertypeInstance, objectifyingType, false, true);
 						if (editFactInstance != null)
 						{
 							editObjectInstance.ObjectifiedInstance = factInstance;
@@ -8491,7 +9082,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				if (editFactInstance == null)
 				{
-					editFactInstance = new FactTypeInstance(store);
+					editFactInstance = new FactInstance(store);
 					editFactInstance.FactType = objectifiedFactType;
 					if (impliedObjectInstance)
 					{
@@ -8512,13 +9103,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				CellEditContext retVal = null;
 				useDefaultEdit = false;
 				ObjectType rowType;
-				ObjectTypeInstance rowInstance;
-				EntityTypeInstancePopulatesUnaryRole unaryRowInstance;
+				ObjectInstance rowInstance;
+				RoleInstance rowIdentifyingRoleInstance;
 				Role rowRole;
-				FactTypeInstance rowFactInstance;
+				FactInstance rowFactInstance;
 				Role supertypeIdentifyingRole;
 				int startRow = row;
-				switch (ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out rowInstance, out unaryRowInstance))
+				switch (ResolveRow(ref row, out rowType, out rowRole, out rowFactInstance, out rowIdentifyingRoleInstance, out rowInstance))
 				{
 					case RowType.FactRole:
 						retVal = new CellEditContext(rowRole, rowFactInstance, this, delegate (string commitText) { (this as IBranch).CommitLabelEdit(startRow, column, commitText); });
@@ -8538,15 +9129,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							});
 						break;
 					//case RowType.UnaryIdentifierRole: // Uses a checkbox, no edit context
-						//retVal = new CellEditContext(
-						//	null,
-						//	null,
-						//	rowRole,
-						//	myEditInstance,
-						//	null,
-						//	this,
-						//	null);
-						//break;
 					case RowType.ObjectifyingIdentifier:
 						retVal = new CellEditContext(rowType, rowFactInstance, rowInstance, this, delegate (string commitText) { (this as IBranch).CommitLabelEdit(startRow, column, commitText); });
 						break;

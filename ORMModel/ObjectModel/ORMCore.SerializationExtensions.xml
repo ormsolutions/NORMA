@@ -129,13 +129,12 @@
 			<se:OmitRelationship Class="FactConstraint"/>
 			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
-			<se:OmitRelationship Class="RoleInstance"/>
 			<se:OmitRelationship Class="ModelNoteReferencesModelElement"/>
 			<se:OmitRelationship Class="ModelHasModelErrorDisplayFilter"/>
 			<se:OmitRelationship Class="ElementAssociatedWithModelError"/>
 			<se:OmitRelationship Class="ElementHasAlias"/>
 			<se:OmitRelationship Class="NameGeneratorRefinesInstance"/>
-			<se:OmitRelationship Class="ObjectTypeHasObjectTypeInstance"/>
+			<se:OmitRelationship Class="ObjectTypeHasObjectInstance"/>
 			<se:OmitRelationship Class="RolePathOwnerHasSingleLeadRolePath"/>
 			<se:OmitRelationship Class="RolePathOwnerHasSingleOwnedLeadRolePath"/>
 			<se:OmitRelationship Class="RolePathOwnerHasLeadRolePath"/>
@@ -826,9 +825,7 @@
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link Name="Objectification" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:Container Name="Instances">
-			<se:Embed RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstance"/>
-			<se:Embed RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstance"/>
-			<se:Embed RelationshipName="EntityTypeSubtypeHasEntityTypeSubtypeInstance" RoleName="EntityTypeSubtypeInstance"/>
+			<se:Embed RelationshipName="ObjectTypeHasObjectInstance" RoleName="ObjectInstance"/>
 		</se:Container>
 		<se:Link RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="MandatoryConstraint" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MandatoryConstraintIsInherentForObjectType" RoleName="MandatoryConstraint" WriteStyle="NotWritten"/>
@@ -848,49 +845,98 @@
 		</se:Container>
 		<se:Link RelationshipName="RecognizedPhraseHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
-		<se:Attribute ID="Value" WriteStyle="Element"/>
-		<se:Attribute ID="InvariantValue" WriteStyle="Element">
+	<se:Element Class="ObjectInstance" Name="Entity" SortChildElements="true" Override="true">
+		<se:ConditionalName Name="Value">
+			<plx:binaryOperator type="identityInequality">
+				<plx:left>
+					<plx:callInstance name="DataType" type="property">
+						<plx:callObject>
+							<plx:callThis name="ObjectType" type="property"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:nullKeyword/>
+				</plx:right>
+			</plx:binaryOperator>
+		</se:ConditionalName>
+		<se:Attribute ID="Value" Name="LexicalValue" WriteStyle="Element">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="identityEquality">
+					<plx:left>
+						<plx:callInstance name="DataType" type="property">
+							<plx:callObject>
+								<plx:callThis name="ObjectType" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="InvariantValue" Name="InvariantLexicalValue" WriteStyle="Element">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+							<plx:passParam>
+								<plx:callThis name="InvariantValue" type="property"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:callInstance name="DataType" type="property">
+									<plx:callObject>
+										<plx:callThis name="ObjectType" type="property"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IdentityTag" Name="IdentityTag" WriteStyle="Attribute">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
 					<plx:passParam>
-						<plx:callThis name="InvariantValue" type="property"/>
+						<plx:callThis name="IdentityTag" type="property"/>
 					</plx:passParam>
 				</plx:callStatic>
 			</se:Condition>
 		</se:Attribute>
-		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
-	</se:Element>
-	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" SortChildElements="true" Override="true">
-		<se:Container Name="RoleInstances" SortChildElements="true">
-			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
-			<se:Link RelationshipName="EntityTypeInstancePopulatesUnaryRole" RoleName="UnaryRole"/>
-		</se:Container>
-		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
-		<se:Link Name="EntityTypeUnaryRoleInstance" RelationshipName="EntityTypeInstancePopulatesUnaryRole" RoleName="UnaryRole"/>
-		<se:Link Name="ObjectifiedInstance" RelationshipName="ObjectificationInstance" RoleName="ObjectifiedInstance"/>
-		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="TooFewEntityTypeRoleInstancesError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="EntityTypeSubtypeInstanceHasSupertypeInstance" RoleName="EntityTypeSubtypeInstance" WriteStyle="NotWritten"/>
+		<se:Attribute ID="AutoIdentityTag" Name="AutoIdentityTag" WriteStyle="Attribute">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis name="AutoIdentityTag" type="property"/>
+						</plx:unaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+							<plx:passParam>
+								<plx:callThis name="IdentityTag" type="property"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link Name="SupertypeEntity" RelationshipName="EntitySubtypeInstanceHasSupertypeInstance" RoleName="SupertypeInstance"/>
+		<se:Link Name="ObjectifiedFact" RelationshipName="ObjectificationInstance" RoleName="ObjectifiedInstance"/>
+		<se:Link RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityHasTooFewIdentifyingRoleInstancesError" RoleName="TooFewEntityRoleInstancesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntitySubtypeInstanceHasSupertypeInstance" RoleName="EntitySubtypeInstance" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" RoleName="ObjectifiedInstanceRequiredError" WriteStyle="NotWritten"/>
-	</se:Element>
-	<se:Element Class="EntityTypeSubtypeInstance" Name="EntityTypeSubtypeInstance" SortChildElements="true" Override="true">
-		<se:Link RelationshipName="EntityTypeSubtypeInstanceHasSupertypeInstance" RoleName="SupertypeInstance" Name="SupertypeInstance"/>
-		<se:Link Name="ObjectifiedInstance" RelationshipName="ObjectificationInstance" RoleName="ObjectifiedInstance"/>
-		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" RoleName="ObjectifiedInstanceRequiredError" WriteStyle="NotWritten"/>
-	</se:Element>
-	<se:Element Class="EntityTypeRoleInstance">
-		<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="EntityTypeInstance" WriteStyle="NotWritten" />
-		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CustomReferenceMode" SortChildElements="true" Override="true">
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
@@ -1109,7 +1155,7 @@
 			<se:Embed RelationshipName="FactTypeHasDerivationRule" RoleName="DerivationRule"/>
 		</se:Container>
 		<se:Container Name="Instances">
-			<se:Embed RelationshipName="FactTypeHasFactTypeInstance" RoleName="FactTypeInstance"/>
+			<se:Embed RelationshipName="FactTypeHasFactInstance" RoleName="FactInstance"/>
 		</se:Container>
 		<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraint" WriteStyle="NotWritten">
 			<se:ConditionalName Name="UniquenessConstraint" WriteStyle="Element">
@@ -1167,21 +1213,19 @@
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesFactType" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="FactTypeInstance" Name="FactTypeInstance" Override="true">
+	<se:Element Class="FactInstance" Name="Fact" Override="true">
 		<se:Container Name="RoleInstances">
-			<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
+			<se:Link RelationshipName="FactInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		</se:Container>
-		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
-		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="TooFewFactTypeRoleInstancesError" WriteStyle="NotWritten"/>
+		<se:Link Name="RoleInstance" RelationshipName="FactInstanceHasRoleInstance" RoleName="RoleInstance"/>
+		<se:Link RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactHasTooFewFactRoleInstancesError" RoleName="TooFewFactRoleInstancesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectificationInstance" RoleName="ObjectifyingInstance" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" RoleName="ObjectifyingInstanceRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="FactTypeRoleInstance">
-		<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="FactTypeInstance" WriteStyle="NotWritten" />
+	<se:Element Class="RoleInstance" Name="RoleInstance">
+		<se:Link RelationshipName="FactInstanceHasRoleInstance" RoleName="FactInstance" WriteStyle="NotWritten" />
 		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="PopulationUniquenessError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="Expression" Override="true">
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
@@ -1479,11 +1523,9 @@
 			<se:Embed RelationshipName="UnaryRoleHasCardinalityConstraint" RoleName="CardinalityConstraint"/>
 		</se:Container>
 		<se:Container Name="RoleInstances">
-			<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance"/>
-			<se:Link RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance"/>
+			<se:Link RelationshipName="RoleInstance" RoleName="ObjectInstance"/>
 		</se:Container>
-		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
-		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
+		<se:Link Name="RoleInstance" RelationshipName="RoleInstance" RoleName="ObjectInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectifiedUnaryRoleHasRole" RoleName="ObjectifiedUnaryRole" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequence" WriteStyle="NotWritten"/>
@@ -1494,7 +1536,6 @@
 		<se:Link RelationshipName="RoleHasDefaultValueMismatchError" RoleName="DefaultValueMismatchError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasDefaultValueOutOfRangeError" RoleName="DefaultValueOutOfRangeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasDefaultValueValueTypeDetachedError" RoleName="DefaultValueValueTypeDetachedError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="EntityTypeInstancePopulatesUnaryRole" RoleName="EntityTypeInstance" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--SubtypeMetaRole-->
 	<se:Element Class="SubtypeMetaRole" Name="SubtypeRole" Override="true"/>
@@ -1964,7 +2005,7 @@
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
 	</se:Element>
 	<se:Element Class="PathConstant" Name="Constant" Override="true">
-		<se:Attribute ID="LexicalValue" Name="Value" WriteStyle="Element"/>
+		<se:Attribute ID="LexicalValue" WriteStyle="Element"/>
 	</se:Element>
 	<se:Element Class="RolePath" SortChildElements="true" Override="true" LinkOnly="true">
 		<se:Attribute ID="SplitIsNegated">
@@ -2202,25 +2243,25 @@
 	<se:Element Class="CardinalityRangeOverlapError" Override="true">
 		<se:Link RelationshipName="CardinalityConstraintHasRangeOverlapError" RoleName="CardinalityConstraint" Name="CardinalityConstraint"/>
 	</se:Element>
-	<se:Element Class="CompatibleValueTypeInstanceValueError" Override="true">
+	<se:Element Class="CompatibleValueInstanceError" Name="CompatibleValueError" Override="true">
 		<se:ConditionalSerialization>
 			<plx:return>
 				<plx:callInstance name="ShouldSerialize">
 					<plx:callObject>
 						<plx:cast dataTypeName="ICustomSerializedElement">
-							<plx:callThis name="ValueTypeInstance" type="property"/>
+							<plx:callThis name="ValueInstance" type="property"/>
 						</plx:cast>
 					</plx:callObject>
 				</plx:callInstance>
 			</plx:return>
 		</se:ConditionalSerialization>
-		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="ValueTypeInstance" Name="ValueTypeInstance"/>
+		<se:Link RelationshipName="ValueInstanceHasCompatibleValueError" RoleName="ValueInstance" Name="Value"/>
 	</se:Element>
-	<se:Element Class="TooFewEntityTypeRoleInstancesError" Override="true">
-		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="EntityTypeInstance" Name="EntityTypeInstance"/>
+	<se:Element Class="TooFewEntityRoleInstancesError" Name="IncompleteEntityIdentifierError" Override="true">
+		<se:Link RelationshipName="EntityHasTooFewIdentifyingRoleInstancesError" RoleName="EntityInstance" Name="Entity"/>
 	</se:Element>
-	<se:Element Class="TooFewFactTypeRoleInstancesError" Override="true">
-		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="FactTypeInstance" Name="FactTypeInstance"/>
+	<se:Element Class="TooFewFactRoleInstancesError" Name="IncompleteFactError" Override="true">
+		<se:Link RelationshipName="FactHasTooFewFactRoleInstancesError" RoleName="FactInstance" Name="Fact"/>
 	</se:Element>
 	<se:Element Class="PopulationMandatoryError" Override="true">
 		<se:ConditionalSerialization>
@@ -2228,50 +2269,37 @@
 				<plx:callInstance name="ShouldSerialize">
 					<plx:callObject>
 						<plx:cast dataTypeName="ICustomSerializedElement">
-							<plx:callThis name="ObjectTypeInstance" type="property"/>
+							<plx:callThis name="ObjectInstance" type="property"/>
 						</plx:cast>
 					</plx:callObject>
 				</plx:callInstance>
 			</plx:return>
 		</se:ConditionalSerialization>
-		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="ObjectTypeInstance" Name="ObjectTypeInstance"/>
+		<se:Link RelationshipName="ObjectInstanceHasPopulationMandatoryError" RoleName="ObjectInstance" Name="ObjectInstance"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
 	</se:Element>
-	<se:Element Class="ObjectifiedInstanceRequiredError" Override="true">
+	<se:Element Class="ObjectifiedInstanceRequiredError" Name="ObjectifiedFactRequiredError" Override="true">
 		<se:ConditionalSerialization>
 			<plx:return>
 				<plx:callInstance name="ShouldSerialize">
 					<plx:callObject>
 						<plx:cast dataTypeName="ICustomSerializedElement">
-							<plx:callThis name="ObjectTypeInstance" type="property"/>
+							<plx:callThis name="ObjectInstance" type="property"/>
 						</plx:cast>
 					</plx:callObject>
 				</plx:callInstance>
 			</plx:return>
 		</se:ConditionalSerialization>
-		<se:Link RelationshipName="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" RoleName="ObjectTypeInstance" Name="EntityTypeInstance">
-			<se:ConditionalName Name="EntityTypeSubtypeInstance">
-				<plx:binaryOperator type="typeEquality">
-					<plx:left>
-						<plx:callThis name="ObjectTypeInstance" type="property"/>
-					</plx:left>
-					<plx:right>
-						<plx:directTypeReference dataTypeName="EntityTypeSubtypeInstance"/>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:ConditionalName>
-		</se:Link>
+		<se:Link RelationshipName="ObjectifyingInstanceHasObjectifiedInstanceRequiredError" RoleName="ObjectInstance" Name="Entity"/>
 	</se:Element>
-	<se:Element Class="ObjectifyingInstanceRequiredError" Override="true">
-		<se:Link RelationshipName="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" RoleName="FactTypeInstance" Name="FactTypeInstance"/>
+	<se:Element Class="ObjectifyingInstanceRequiredError" Name="ObjectifyingEntityRequiredError" Override="true">
+		<se:Link RelationshipName="ObjectifiedInstanceHasObjectifyingInstanceRequiredError" RoleName="FactInstance" Name="Fact"/>
 	</se:Element>
 	<se:Element Class="PopulationUniquenessError" Override="true">
 		<se:Container Name="RoleInstances">
-			<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
-			<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
+			<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
 		</se:Container>
-		<se:Link RelationshipName="FactTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance" Name="FactTypeRoleInstance"/>
-		<se:Link RelationshipName="EntityTypeRoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance" Name="EntityTypeRoleInstance"/>
+		<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance" Name="RoleInstance"/>
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>

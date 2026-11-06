@@ -192,6 +192,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>A <see cref="ReferenceSchemeRolePattern"/> value</returns>
 		public ReferenceSchemeRolePattern GetReferenceSchemePattern(out ObjectType identifiedEntityType)
 		{
+			// UNDONE: NOW GetReferenceSchemePattern does not have anything representing an identifying unary role. This is used well outside 'reference scheme' now. Does this matter?
 			UniquenessConstraint uniqueness;
 			RoleBase oppositeRoleBase;
 			LinkedElementCollection<Role> uniquenessRoles;
@@ -1489,7 +1490,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (filter == (ModelErrorUses)(-1))
 			{
-				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
+				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectInstanceCollection(this);
 				int count = roleInstances.Count;
 				for (int i = 0; i < count; ++i)
 				{

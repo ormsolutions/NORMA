@@ -342,7 +342,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						{
 							ActivateNameProperty(selectedElement);
 						}
-						else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityTypeRoleInstancesError || error is CompatibleValueTypeInstanceValueError)
+						else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityRoleInstancesError || error is CompatibleValueInstanceError)
 						{
 							ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 						}
@@ -479,7 +479,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								retVal = false;
 							}
 						}
-						else if (error is TooFewFactTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
+						else if (error is TooFewFactRoleInstancesError || error is ObjectifyingInstanceRequiredError)
 						{
 							ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 						}

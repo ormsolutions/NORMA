@@ -532,7 +532,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.AutoCorrectMandatoryError(populationMandatory, AssociatedObjectType);
 			}
-			else if (error is TooFewEntityTypeRoleInstancesError)
+			else if (error is TooFewEntityRoleInstancesError)
 			{
 				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 			}

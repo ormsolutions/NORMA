@@ -332,7 +332,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		protected override bool ShouldCreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo sourceRole)
 		{
-			return Utility.IsDescendantOrSelf(sourceRole, Objectification.NestingTypeDomainRoleId);
+			return sourceRole.Id == Objectification.NestingTypeDomainRoleId;
 		}
 
 		/// <summary>
@@ -340,7 +340,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		protected override RolePlayerPropertyDescriptor CreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo targetRoleInfo, Attribute[] sourceDomainRoleInfoAttributes)
 		{
-			if (Utility.IsDescendantOrSelf(targetRoleInfo, Objectification.NestedFactTypeDomainRoleId))
+			if (targetRoleInfo.Id == Objectification.NestedFactTypeDomainRoleId)
 			{
 				return new ObjectifiedFactTypePropertyDescriptor((ObjectType)sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
 			}

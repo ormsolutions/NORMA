@@ -2961,125 +2961,117 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>DerivationNote</value>
     <comment>DisplayName for DomainClass &apos;DerivationNote&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;ObjectTypeInstance&apos;</comment>
+    <comment>Description for DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>ObjectTypeInstance</value>
-    <comment>DisplayName for DomainClass &apos;ObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance.DisplayName" xml:space="preserve">
+    <value>ObjectInstance</value>
+    <comment>DisplayName for DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/Name.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Name.Description" xml:space="preserve">
     <value>An ordered tuple of values for this instance. If the parent &lt;see cref=&quot;ObjectType&quot;/&gt; objectifies a &lt;see cref=&quot;FactType&quot;/&gt;, then Name returns the FactType population prepended by an external identifier reference.</value>
-    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
-    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/IdentifierName.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentifierName.Description" xml:space="preserve">
     <value>An ordered tuple of values for this instance, ignores objectification of the associated &lt;see cref=&quot;ObjectType&quot;/&gt;.</value>
-    <comment>Description for DomainProperty &apos;IdentifierName&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+    <comment>Description for DomainProperty &apos;IdentifierName&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/IdentifierName.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentifierName.DisplayName" xml:space="preserve">
     <value>IdentifierName</value>
-    <comment>DisplayName for DomainProperty &apos;IdentifierName&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;IdentifierName&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/NameChanged.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.NameChanged</value>
-    <comment>Description for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/NameChanged.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance.NameChanged</value>
+    <comment>Description for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/NameChanged.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/NameChanged.DisplayName" xml:space="preserve">
     <value>NameChanged</value>
-    <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;ObjectTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;EntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeInstance</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance.Description" xml:space="preserve">
-    <value>An instance of an EntityType Subtype that uses the preferred identification scheme of a parent.</value>
-    <comment>Description for DomainClass &apos;EntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeSubtypeInstance</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainClass &apos;ValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.DisplayName" xml:space="preserve">
-    <value>ValueTypeInstance</value>
-    <comment>DisplayName for DomainClass &apos;ValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/Value.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Value.Description" xml:space="preserve">
     <value>The instance value.</value>
-    <comment>Description for DomainProperty &apos;Value&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
+    <comment>Description for DomainProperty &apos;Value&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/Value.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/Value.DisplayName" xml:space="preserve">
     <value>Value</value>
-    <comment>DisplayName for DomainProperty &apos;Value&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;Value&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/InvariantValue.Description" xml:space="preserve">
     <value>The culture-invariant form of the value property.</value>
-    <comment>Description for DomainProperty &apos;InvariantValue&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
+    <comment>Description for DomainProperty &apos;InvariantValue&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance/InvariantValue.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/InvariantValue.DisplayName" xml:space="preserve">
     <value>InvariantValue</value>
-    <comment>DisplayName for DomainProperty &apos;InvariantValue&apos; on DomainClass &apos;ValueTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;InvariantValue&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentityTag.Description" xml:space="preserve">
+    <value>A friendly name used to distinguish entities when a preferred identifier has not been determined.</value>
+    <comment>Description for DomainProperty &apos;IdentityTag&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/IdentityTag.DisplayName" xml:space="preserve">
+    <value>IdentityTag</value>
+    <comment>DisplayName for DomainProperty &apos;IdentityTag&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/AutoIdentityTag.Description" xml:space="preserve">
+    <value>The tag identifying this instance was auto-generated during an identifier transition.</value>
+    <comment>Description for DomainProperty &apos;AutoIdentityTag&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance/AutoIdentityTag.DisplayName" xml:space="preserve">
+    <value>AutoIdentityTag</value>
+    <comment>DisplayName for DomainProperty &apos;AutoIdentityTag&apos; on DomainClass &apos;ObjectInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;FactTypeInstance&apos;</comment>
+    <comment>Description for DomainClass &apos;FactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.DisplayName" xml:space="preserve">
-    <value>FactTypeInstance</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.DisplayName" xml:space="preserve">
+    <value>FactInstance</value>
+    <comment>DisplayName for DomainClass &apos;FactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/Name.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.Name</value>
-    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/Name.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;FactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/Name.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
-    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;FactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/NameChanged.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.NameChanged</value>
-    <comment>Description for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/NameChanged.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance.NameChanged</value>
+    <comment>Description for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance/NameChanged.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance/NameChanged.DisplayName" xml:space="preserve">
     <value>NameChanged</value>
-    <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainProperty &apos;NameChanged&apos; on DomainClass &apos;FactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityTypeRoleInstancesError.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityRoleInstancesError.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;TooFewEntityTypeRoleInstancesError&apos;</comment>
+    <comment>Description for DomainClass &apos;TooFewEntityRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityTypeRoleInstancesError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityRoleInstancesError.DisplayName" xml:space="preserve">
     <value>Incomplete Sample Population to Identify EntityType</value>
-    <comment>DisplayName for DomainClass &apos;TooFewEntityTypeRoleInstancesError&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;TooFewEntityRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactTypeRoleInstancesError.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactRoleInstancesError.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;TooFewFactTypeRoleInstancesError&apos;</comment>
+    <comment>Description for DomainClass &apos;TooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactTypeRoleInstancesError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactRoleInstancesError.DisplayName" xml:space="preserve">
     <value>Incomplete FactType Sample Population</value>
-    <comment>DisplayName for DomainClass &apos;TooFewFactTypeRoleInstancesError&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;TooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueTypeInstanceValueError.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueInstanceError.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;CompatibleValueTypeInstanceValueError&apos;</comment>
+    <comment>Description for DomainClass &apos;CompatibleValueInstanceError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueTypeInstanceValueError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueInstanceError.DisplayName" xml:space="preserve">
     <value>Sample Population Value Invalid for DataType</value>
-    <comment>DisplayName for DomainClass &apos;CompatibleValueTypeInstanceValueError&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;CompatibleValueInstanceError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming.Description" xml:space="preserve">
     <value></value>
@@ -4665,70 +4657,6 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Role Instance Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;RoleInstanceHasPopulationUniquenessError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError</value>
-    <comment>Description for DomainClass &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.DisplayName" xml:space="preserve">
-    <value>Entity Type Role Instance Has Population Uniqueness Error</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstance</value>
-    <comment>Description for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName" xml:space="preserve">
-    <value>RoleInstance</value>
-    <comment>DisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Population Uniqueness Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError</value>
-    <comment>Description for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName" xml:space="preserve">
-    <value>PopulationUniquenessError</value>
-    <comment>DisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type Role Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;EntityTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError</value>
-    <comment>Description for DomainClass &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.DisplayName" xml:space="preserve">
-    <value>Fact Type Role Instance Has Population Uniqueness Error</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstance</value>
-    <comment>Description for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName" xml:space="preserve">
-    <value>RoleInstance</value>
-    <comment>DisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Population Uniqueness Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError</value>
-    <comment>Description for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName" xml:space="preserve">
-    <value>PopulationUniquenessError</value>
-    <comment>DisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Role Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PopulationUniquenessError&apos; on DomainRelationship &apos;FactTypeRoleInstanceHasPopulationUniquenessError&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasContradictionError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasContradictionError</value>
     <comment>Description for DomainClass &apos;SetComparisonConstraintHasContradictionError&apos;</comment>
@@ -4985,37 +4913,37 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Mandatory Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;PopulationMandatoryError&apos; on DomainRelationship &apos;MandatoryConstraintHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError</value>
-    <comment>Description for DomainClass &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError</value>
+    <comment>Description for DomainClass &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.DisplayName" xml:space="preserve">
-    <value>Object Type Instance Has Population Mandatory Error</value>
-    <comment>DisplayName for DomainClass &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.DisplayName" xml:space="preserve">
+    <value>Object Instance Has Population Mandatory Error</value>
+    <comment>DisplayName for DomainClass &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstance</value>
-    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/ObjectInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.ObjectInstance</value>
+    <comment>Description for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>ObjectTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/ObjectInstance.DisplayName" xml:space="preserve">
+    <value>ObjectInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/ObjectInstance.PropertyDisplayName" xml:space="preserve">
     <value>Population Mandatory Error Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryError</value>
-    <comment>Description for DomainRole &apos;PopulationMandatoryError&apos; on DomainRelationship &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/PopulationMandatoryError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.PopulationMandatoryError</value>
+    <comment>Description for DomainRole &apos;PopulationMandatoryError&apos; on DomainRelationship &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/PopulationMandatoryError.DisplayName" xml:space="preserve">
     <value>PopulationMandatoryError</value>
-    <comment>DisplayName for DomainRole &apos;PopulationMandatoryError&apos; on DomainRelationship &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;PopulationMandatoryError&apos; on DomainRelationship &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type Instance</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PopulationMandatoryError&apos; on DomainRelationship &apos;ObjectTypeInstanceHasPopulationMandatoryError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/PopulationMandatoryError.PropertyDisplayName" xml:space="preserve">
+    <value>Object Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PopulationMandatoryError&apos; on DomainRelationship &apos;ObjectInstanceHasPopulationMandatoryError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading</value>
@@ -7737,133 +7665,37 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Objectified Unary Role</value>
     <comment>PropertyDisplayName for DomainRole &apos;TargetRole&apos; on DomainRelationship &apos;ObjectifiedUnaryRoleHasRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance</value>
-    <comment>Description for DomainClass &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance</value>
+    <comment>Description for DomainClass &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>Object Type Has Object Type Instance</value>
-    <comment>DisplayName for DomainClass &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.DisplayName" xml:space="preserve">
+    <value>Object Type Has Object Instance</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType</value>
-    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectType.DisplayName" xml:space="preserve">
     <value>ObjectType</value>
-    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectType.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Object Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance</value>
-    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectInstance</value>
+    <comment>Description for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>ObjectTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectInstance.DisplayName" xml:space="preserve">
+    <value>ObjectInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectInstance.PropertyDisplayName" xml:space="preserve">
     <value>Object Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectTypeHasObjectTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance</value>
-    <comment>Description for DomainClass &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.DisplayName" xml:space="preserve">
-    <value>Entity Type Has Entity Type Instance</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityType</value>
-    <comment>Description for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.DisplayName" xml:space="preserve">
-    <value>EntityType</value>
-    <comment>DisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityType&apos; on DomainRelationship &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstance</value>
-    <comment>Description for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityTypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeHasEntityTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance</value>
-    <comment>Description for DomainClass &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
-    <value>Entity Type Subtype Has Entity Type Subtype Instance</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtype</value>
-    <comment>Description for DomainRole &apos;EntityTypeSubtype&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.DisplayName" xml:space="preserve">
-    <value>EntityTypeSubtype</value>
-    <comment>DisplayName for DomainRole &apos;EntityTypeSubtype&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type Subtype Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeSubtype&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstance</value>
-    <comment>Description for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeSubtypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type Subtype</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeHasEntityTypeSubtypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance</value>
-    <comment>Description for DomainClass &apos;ValueTypeHasValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.DisplayName" xml:space="preserve">
-    <value>Value Type Has Value Type Instance</value>
-    <comment>DisplayName for DomainClass &apos;ValueTypeHasValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueType</value>
-    <comment>Description for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.DisplayName" xml:space="preserve">
-    <value>ValueType</value>
-    <comment>DisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.PropertyDisplayName" xml:space="preserve">
-    <value>Value Type Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ValueType&apos; on DomainRelationship &apos;ValueTypeHasValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstance</value>
-    <comment>Description for DomainRole &apos;ValueTypeInstance&apos; on DomainRelationship &apos;ValueTypeHasValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueTypeInstance.DisplayName" xml:space="preserve">
-    <value>ValueTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ValueTypeInstance&apos; on DomainRelationship &apos;ValueTypeHasValueTypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Value Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ValueTypeInstance&apos; on DomainRelationship &apos;ValueTypeHasValueTypeInstance&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectTypeHasObjectInstance&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance</value>
@@ -7882,244 +7714,116 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/Role.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type Instance Collection</value>
+    <value>Object Instance Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectTypeInstance</value>
-    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectInstance</value>
+    <comment>Description for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>ObjectTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectInstance.DisplayName" xml:space="preserve">
+    <value>ObjectInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectInstance.PropertyDisplayName" xml:space="preserve">
     <value>Role Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;RoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance</value>
-    <comment>Description for DomainClass &apos;EntityTypeRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance</value>
+    <comment>Description for DomainClass &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.DisplayName" xml:space="preserve">
-    <value>Entity Type Role Instance</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.DisplayName" xml:space="preserve">
+    <value>Entity Subtype Instance Has Supertype Instance</value>
+    <comment>DisplayName for DomainClass &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/Role.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.Role</value>
-    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/EntitySubtypeInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstance</value>
+    <comment>Description for DomainRole &apos;EntitySubtypeInstance&apos; on DomainRelationship &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/Role.DisplayName" xml:space="preserve">
-    <value>Role</value>
-    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/EntitySubtypeInstance.DisplayName" xml:space="preserve">
+    <value>EntitySubtypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;EntitySubtypeInstance&apos; on DomainRelationship &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/Role.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.ObjectTypeInstance</value>
-    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>ObjectTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Role Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance</value>
-    <comment>Description for DomainClass &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.DisplayName" xml:space="preserve">
-    <value>Fact Type Role Instance</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/Role.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.Role</value>
-    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/Role.DisplayName" xml:space="preserve">
-    <value>Role</value>
-    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/Role.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.ObjectTypeInstance</value>
-    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>ObjectTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Role Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance</value>
-    <comment>Description for DomainClass &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.DisplayName" xml:space="preserve">
-    <value>Entity Type Instance Has Role Instance</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/EntityTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstance</value>
-    <comment>Description for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/EntityTypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/EntityTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Role Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/RoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstance</value>
-    <comment>Description for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/RoleInstance.DisplayName" xml:space="preserve">
-    <value>RoleInstance</value>
-    <comment>DisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/RoleInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type Instance</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasRoleInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole</value>
-    <comment>Description for DomainClass &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.DisplayName" xml:space="preserve">
-    <value>Entity Type Instance Populates Unary Role</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstance</value>
-    <comment>Description for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Unary Role Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRole</value>
-    <comment>Description for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.DisplayName" xml:space="preserve">
-    <value>UnaryRole</value>
-    <comment>DisplayName for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Instances For Unary</value>
-    <comment>PropertyDisplayName for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;EntityTypeInstancePopulatesUnaryRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance</value>
-    <comment>Description for DomainClass &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.DisplayName" xml:space="preserve">
-    <value>Entity Type Subtype Instance Has Supertype Instance</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstance</value>
-    <comment>Description for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeSubtypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/EntitySubtypeInstance.PropertyDisplayName" xml:space="preserve">
     <value>Supertype Instance</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeSubtypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;EntitySubtypeInstance&apos; on DomainRelationship &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstance</value>
-    <comment>Description for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/SupertypeInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstance</value>
+    <comment>Description for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/SupertypeInstance.DisplayName" xml:space="preserve">
     <value>SupertypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type Subtype Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntityTypeSubtypeInstanceHasSupertypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/SupertypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Entity Subtype Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SupertypeInstance&apos; on DomainRelationship &apos;EntitySubtypeInstanceHasSupertypeInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance</value>
-    <comment>Description for DomainClass &apos;FactTypeHasFactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance</value>
+    <comment>Description for DomainClass &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.DisplayName" xml:space="preserve">
-    <value>Fact Type Has Fact Type Instance</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeHasFactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.DisplayName" xml:space="preserve">
+    <value>Fact Type Has Fact Instance</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactType</value>
-    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactType</value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactType.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactType.DisplayName" xml:space="preserve">
     <value>FactType</value>
-    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFactTypeInstance&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactType.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstance</value>
-    <comment>Description for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeHasFactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactInstance</value>
+    <comment>Description for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactTypeInstance.DisplayName" xml:space="preserve">
-    <value>FactTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeHasFactTypeInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactInstance.DisplayName" xml:space="preserve">
+    <value>FactInstance</value>
+    <comment>DisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactTypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactInstance.PropertyDisplayName" xml:space="preserve">
     <value>Fact Type</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeHasFactTypeInstance&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactTypeHasFactInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance</value>
-    <comment>Description for DomainClass &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance</value>
+    <comment>Description for DomainClass &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.DisplayName" xml:space="preserve">
-    <value>Fact Type Instance Has Role Instance</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.DisplayName" xml:space="preserve">
+    <value>Fact Instance Has Role Instance</value>
+    <comment>DisplayName for DomainClass &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/FactTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.FactTypeInstance</value>
-    <comment>Description for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/FactInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.FactInstance</value>
+    <comment>Description for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/FactTypeInstance.DisplayName" xml:space="preserve">
-    <value>FactTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/FactInstance.DisplayName" xml:space="preserve">
+    <value>FactInstance</value>
+    <comment>DisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/FactTypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/FactInstance.PropertyDisplayName" xml:space="preserve">
     <value>Role Instance Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/RoleInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstance</value>
-    <comment>Description for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/RoleInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.RoleInstance</value>
+    <comment>Description for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/RoleInstance.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/RoleInstance.DisplayName" xml:space="preserve">
     <value>RoleInstance</value>
-    <comment>DisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/RoleInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Instance</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasRoleInstance&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/RoleInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleInstance&apos; on DomainRelationship &apos;FactInstanceHasRoleInstance&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance</value>
@@ -8161,17 +7865,17 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Objectified Instance Has Objectifying Instance Required Error</value>
     <comment>DisplayName for DomainClass &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstance</value>
-    <comment>Description for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstance</value>
+    <comment>Description for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.DisplayName" xml:space="preserve">
-    <value>FactTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactInstance.DisplayName" xml:space="preserve">
+    <value>FactInstance</value>
+    <comment>DisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactInstance.PropertyDisplayName" xml:space="preserve">
     <value>Objectifying Instance Required Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredError</value>
@@ -8182,7 +7886,7 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <comment>DisplayName for DomainRole &apos;ObjectifyingInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Instance</value>
+    <value>Fact Instance</value>
     <comment>PropertyDisplayName for DomainRole &apos;ObjectifyingInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifiedInstanceHasObjectifyingInstanceRequiredError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.Description" xml:space="preserve">
@@ -8193,17 +7897,17 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Objectifying Instance Has Objectified Instance Required Error</value>
     <comment>DisplayName for DomainClass &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstance</value>
-    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstance</value>
+    <comment>Description for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.DisplayName" xml:space="preserve">
-    <value>ObjectTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectInstance.DisplayName" xml:space="preserve">
+    <value>ObjectInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectInstance.PropertyDisplayName" xml:space="preserve">
     <value>Objectified Instance Required Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectInstance&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredError</value>
@@ -8214,104 +7918,104 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <comment>DisplayName for DomainRole &apos;ObjectifiedInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.PropertyDisplayName" xml:space="preserve">
-    <value>Object Type Instance</value>
+    <value>Object Instance</value>
     <comment>PropertyDisplayName for DomainRole &apos;ObjectifiedInstanceRequiredError&apos; on DomainRelationship &apos;ObjectifyingInstanceHasObjectifiedInstanceRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError</value>
-    <comment>Description for DomainClass &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError</value>
+    <comment>Description for DomainClass &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.DisplayName" xml:space="preserve">
-    <value>Entity Type Instance Has Too Few Entity Type Role Instances Error</value>
-    <comment>DisplayName for DomainClass &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.DisplayName" xml:space="preserve">
+    <value>Entity Has Too Few Identifying Role Instances Error</value>
+    <comment>DisplayName for DomainClass &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstance</value>
-    <comment>Description for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/EntityInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstance</value>
+    <comment>Description for DomainRole &apos;EntityInstance&apos; on DomainRelationship &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.DisplayName" xml:space="preserve">
-    <value>EntityTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/EntityInstance.DisplayName" xml:space="preserve">
+    <value>EntityInstance</value>
+    <comment>DisplayName for DomainRole &apos;EntityInstance&apos; on DomainRelationship &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Too Few Entity Type Role Instances Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;EntityTypeInstance&apos; on DomainRelationship &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/EntityInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Too Few Entity Role Instances Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;EntityInstance&apos; on DomainRelationship &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/TooFewEntityTypeRoleInstancesError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesError</value>
-    <comment>Description for DomainRole &apos;TooFewEntityTypeRoleInstancesError&apos; on DomainRelationship &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/TooFewEntityRoleInstancesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesError</value>
+    <comment>Description for DomainRole &apos;TooFewEntityRoleInstancesError&apos; on DomainRelationship &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/TooFewEntityTypeRoleInstancesError.DisplayName" xml:space="preserve">
-    <value>TooFewEntityTypeRoleInstancesError</value>
-    <comment>DisplayName for DomainRole &apos;TooFewEntityTypeRoleInstancesError&apos; on DomainRelationship &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/TooFewEntityRoleInstancesError.DisplayName" xml:space="preserve">
+    <value>TooFewEntityRoleInstancesError</value>
+    <comment>DisplayName for DomainRole &apos;TooFewEntityRoleInstancesError&apos; on DomainRelationship &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/TooFewEntityTypeRoleInstancesError.PropertyDisplayName" xml:space="preserve">
-    <value>Entity Type Instance</value>
-    <comment>PropertyDisplayName for DomainRole &apos;TooFewEntityTypeRoleInstancesError&apos; on DomainRelationship &apos;EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/TooFewEntityRoleInstancesError.PropertyDisplayName" xml:space="preserve">
+    <value>Entity Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TooFewEntityRoleInstancesError&apos; on DomainRelationship &apos;EntityHasTooFewIdentifyingRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError</value>
-    <comment>Description for DomainClass &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError</value>
+    <comment>Description for DomainClass &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.DisplayName" xml:space="preserve">
-    <value>Fact Type Instance Has Too Few Fact Type Role Instances Error</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.DisplayName" xml:space="preserve">
+    <value>Fact Has Too Few Fact Role Instances Error</value>
+    <comment>DisplayName for DomainClass &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstance</value>
-    <comment>Description for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/FactInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstance</value>
+    <comment>Description for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.DisplayName" xml:space="preserve">
-    <value>FactTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/FactInstance.DisplayName" xml:space="preserve">
+    <value>FactInstance</value>
+    <comment>DisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Too Few Fact Type Role Instances Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactTypeInstance&apos; on DomainRelationship &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/FactInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Too Few Fact Role Instances Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactInstance&apos; on DomainRelationship &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/TooFewFactTypeRoleInstancesError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesError</value>
-    <comment>Description for DomainRole &apos;TooFewFactTypeRoleInstancesError&apos; on DomainRelationship &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/TooFewFactRoleInstancesError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesError</value>
+    <comment>Description for DomainRole &apos;TooFewFactRoleInstancesError&apos; on DomainRelationship &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/TooFewFactTypeRoleInstancesError.DisplayName" xml:space="preserve">
-    <value>TooFewFactTypeRoleInstancesError</value>
-    <comment>DisplayName for DomainRole &apos;TooFewFactTypeRoleInstancesError&apos; on DomainRelationship &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/TooFewFactRoleInstancesError.DisplayName" xml:space="preserve">
+    <value>TooFewFactRoleInstancesError</value>
+    <comment>DisplayName for DomainRole &apos;TooFewFactRoleInstancesError&apos; on DomainRelationship &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/TooFewFactTypeRoleInstancesError.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Instance</value>
-    <comment>PropertyDisplayName for DomainRole &apos;TooFewFactTypeRoleInstancesError&apos; on DomainRelationship &apos;FactTypeInstanceHasTooFewFactTypeRoleInstancesError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/TooFewFactRoleInstancesError.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TooFewFactRoleInstancesError&apos; on DomainRelationship &apos;FactHasTooFewFactRoleInstancesError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError</value>
-    <comment>Description for DomainClass &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError</value>
+    <comment>Description for DomainClass &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.DisplayName" xml:space="preserve">
-    <value>Value Type Instance Has Compatible Value Type Instance Value Error</value>
-    <comment>DisplayName for DomainClass &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.DisplayName" xml:space="preserve">
+    <value>Value Instance Has Compatible Value Error</value>
+    <comment>DisplayName for DomainClass &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstance</value>
-    <comment>Description for DomainRole &apos;ValueTypeInstance&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/ValueInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstance</value>
+    <comment>Description for DomainRole &apos;ValueInstance&apos; on DomainRelationship &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.DisplayName" xml:space="preserve">
-    <value>ValueTypeInstance</value>
-    <comment>DisplayName for DomainRole &apos;ValueTypeInstance&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/ValueInstance.DisplayName" xml:space="preserve">
+    <value>ValueInstance</value>
+    <comment>DisplayName for DomainRole &apos;ValueInstance&apos; on DomainRelationship &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.PropertyDisplayName" xml:space="preserve">
-    <value>Compatible Value Type Instance Value Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ValueTypeInstance&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/ValueInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Compatible Value Instance Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueInstance&apos; on DomainRelationship &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/CompatibleValueTypeInstanceValueError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueError</value>
-    <comment>Description for DomainRole &apos;CompatibleValueTypeInstanceValueError&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/CompatibleValueInstanceError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceError</value>
+    <comment>Description for DomainRole &apos;CompatibleValueInstanceError&apos; on DomainRelationship &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/CompatibleValueTypeInstanceValueError.DisplayName" xml:space="preserve">
-    <value>CompatibleValueTypeInstanceValueError</value>
-    <comment>DisplayName for DomainRole &apos;CompatibleValueTypeInstanceValueError&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/CompatibleValueInstanceError.DisplayName" xml:space="preserve">
+    <value>CompatibleValueInstanceError</value>
+    <comment>DisplayName for DomainRole &apos;CompatibleValueInstanceError&apos; on DomainRelationship &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/CompatibleValueTypeInstanceValueError.PropertyDisplayName" xml:space="preserve">
-    <value>Value Type Instance</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CompatibleValueTypeInstanceValueError&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/CompatibleValueInstanceError.PropertyDisplayName" xml:space="preserve">
+    <value>Value Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CompatibleValueInstanceError&apos; on DomainRelationship &apos;ValueInstanceHasCompatibleValueError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasJoinPath</value>

@@ -411,6 +411,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}</remark>
 		ExistentialQuantifier,
+		/// <summary>The 'FactBlockEnd' simple snippet value.</summary>
+		/// <remark>Description: Formatted single snippet used to end a sample population verbalization of fact types block.</remark>
+		FactBlockEnd,
+		/// <summary>The 'FactBlockStart' simple snippet value.</summary>
+		/// <remark>Description: Text and formatting to begin a sample population verbalization of fact types block. Format: Examples:</remark>
+		FactBlockStart,
+		/// <summary>The 'FactIdentifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: The text describing the identifier for an objectified FactType instance with an external identifier. Format: Identifier:</remark>
+		FactIdentifier,
 		/// <summary>The 'FactTypeAddedState' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used to indicate that a fact type is in the 'added' dynamic state.  Format: ({0}) is added</remark>
 		FactTypeAddedState,
@@ -420,15 +429,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'FactTypeInitialState' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used to indicate that a fact type is in the 'initial' dynamic state.  Format: ({0}) is initial</remark>
 		FactTypeInitialState,
-		/// <summary>The 'FactTypeInstanceBlockEnd' simple snippet value.</summary>
-		/// <remark>Description: Formatted single snippet used to end a sample population verbalization of fact types block.</remark>
-		FactTypeInstanceBlockEnd,
-		/// <summary>The 'FactTypeInstanceBlockStart' simple snippet value.</summary>
-		/// <remark>Description: Text and formatting to begin a sample population verbalization of fact types block. Format: Examples:</remark>
-		FactTypeInstanceBlockStart,
-		/// <summary>The 'FactTypeInstanceIdentifier' format string snippet. Contains 1 replacement field.</summary>
-		/// <remark>Description: The text describing the identifier for an objectified FactType instance with an external identifier. Format: Identifier:</remark>
-		FactTypeInstanceIdentifier,
 		/// <summary>The 'FactTypeListClose' simple snippet value.</summary>
 		/// <remark>Description: Text used to close the fact type verbalization list.</remark>
 		FactTypeListClose,
@@ -909,6 +909,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'ObjectifiesFactTypeVerbalization' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Verbalizes the objectification made for a FactType. Format: {0} objectifies "{1}"</remark>
 		ObjectifiesFactTypeVerbalization,
+		/// <summary>The 'ObjectInstanceListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used to close the sample population verbalization list. Format: .</remark>
+		ObjectInstanceListClose,
+		/// <summary>The 'ObjectInstanceListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate the last two items in a sample population verbalization list, or object types. Format: ,</remark>
+		ObjectInstanceListFinalSeparator,
+		/// <summary>The 'ObjectInstanceListOpen' simple snippet value.</summary>
+		/// <remark> Description:  Text and formatting to begin a sample population verbalization of object types block. Format: Examples:</remark>
+		ObjectInstanceListOpen,
+		/// <summary>The 'ObjectInstanceListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a sample population verbalization list. Format: , </remark>
+		ObjectInstanceListPairSeparator,
+		/// <summary>The 'ObjectInstanceListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a sample population verbalization list.	Format: ,</remark>
+		ObjectInstanceListSeparator,
 		/// <summary>The 'ObjectType' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Verbalizes an object. {0} is the name, {1} is the guid id for the element</remark>
 		ObjectType,
@@ -916,21 +931,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used as the boiler plate for object type cardinality.
 		/// Format: each population of {0} contains {1}</remark>
 		ObjectTypeCardinality,
-		/// <summary>The 'ObjectTypeInstanceListClose' simple snippet value.</summary>
-		/// <remark>Description: Text used to close the sample population verbalization list. Format: .</remark>
-		ObjectTypeInstanceListClose,
-		/// <summary>The 'ObjectTypeInstanceListFinalSeparator' simple snippet value.</summary>
-		/// <remark>Description: Text used to separate the last two items in a sample population verbalization list, or object types. Format: ,</remark>
-		ObjectTypeInstanceListFinalSeparator,
-		/// <summary>The 'ObjectTypeInstanceListOpen' simple snippet value.</summary>
-		/// <remark> Description:  Text and formatting to begin a sample population verbalization of object types block. Format: Examples:</remark>
-		ObjectTypeInstanceListOpen,
-		/// <summary>The 'ObjectTypeInstanceListPairSeparator' simple snippet value.</summary>
-		/// <remark>Description: Text used to separate items in a sample population verbalization list. Format: , </remark>
-		ObjectTypeInstanceListPairSeparator,
-		/// <summary>The 'ObjectTypeInstanceListSeparator' simple snippet value.</summary>
-		/// <remark>Description: Text used to separate items in a sample population verbalization list.	Format: ,</remark>
-		ObjectTypeInstanceListSeparator,
 		/// <summary>The 'ObjectTypeMissing' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes an object type as being missing.</remark>
 		ObjectTypeMissing,
@@ -1454,12 +1454,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">some deleted</span> {0}",
 				@"<span class=""quantifier"">some initial</span> {0}",
 				@"<span class=""quantifier"">some</span> {0}",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span></span>",
 				"<br/>",
 				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
@@ -1600,13 +1600,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
-				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<span class=""objectTypeMissing"" href=""elementid:{1}"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
@@ -1857,12 +1857,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">some deleted</span> {0}",
 				@"<span class=""quantifier"">some initial</span> {0}",
 				@"<span class=""quantifier"">some</span> {0}",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span></span>",
 				"<br/>",
 				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
@@ -2003,13 +2003,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
-				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<span class=""objectTypeMissing"" href=""elementid:{1}"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
@@ -2260,12 +2260,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">no deleted</span> {0}",
 				@"<span class=""quantifier"">no initial</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span></span>",
 				"<br/>",
 				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
@@ -2406,13 +2406,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
-				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<span class=""objectTypeMissing"" href=""elementid:{1}"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
@@ -2663,12 +2663,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">no deleted</span> {0}",
 				@"<span class=""quantifier"">no initial</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
-				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span>",
 				@"<br/><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""smallIndent""><span class=""quantifier"">Identifier: <span class=""instance"">{0}</span></span></span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is added</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is deleted</span>",
+				@"<span class=""listSeparator"">(</span>{0}<span class=""listSeparator"">)</span> <span class=""quantifier"">is initial</span>",
 				"</span></span>",
 				"<br/>",
 				@"<br/><span class=""indent""><span class=""quantifier"">Fact Types:</span><span class=""smallIndent""><br/>",
@@ -2809,13 +2809,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">&#8220;</span>{1}<span class=""listSeparator"">&#8221;</span></span>",
-				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
-				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				@"<span class=""objectTypeMissing"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<span class=""objectTypeMissing"" href=""elementid:{1}"">Missing<sub style=""font-size:smaller;"">{0}</sub></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
@@ -19468,26 +19468,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // ExclusionConstraint verbalization
-	#region FactType.FactTypeInstanceBlockStart verbalization
+	#region FactType.FactInstanceBlockStart verbalization
 	public partial class FactType
 	{
-		#region Child Verbalizer FactTypeInstanceBlockStart
-		partial class FactTypeInstanceBlockStart : IVerbalize, IDisposable
+		#region Child Verbalizer FactInstanceBlockStart
+		partial class FactInstanceBlockStart : IVerbalize, IDisposable
 		{
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
-			private static FactTypeInstanceBlockStart myCache;
+			private static FactInstanceBlockStart myCache;
 			/// <summary>Get the cached verbalizer or a new instance.</summary>
-			public static FactTypeInstanceBlockStart GetVerbalizer()
+			public static FactInstanceBlockStart GetVerbalizer()
 			{
-				FactTypeInstanceBlockStart retVal = myCache;
+				FactInstanceBlockStart retVal = myCache;
 				if (retVal != null)
 				{
-					retVal = System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockStart>(ref myCache, null as FactTypeInstanceBlockStart, retVal);
+					retVal = System.Threading.Interlocked.CompareExchange<FactInstanceBlockStart>(ref myCache, null as FactInstanceBlockStart, retVal);
 				}
 				if (retVal == null)
 				{
-					retVal = new FactTypeInstanceBlockStart();
+					retVal = new FactInstanceBlockStart();
 				}
 				return retVal;
 			}
@@ -19495,7 +19495,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (myCache == null)
 				{
-					System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockStart>(ref myCache, this, null as FactTypeInstanceBlockStart);
+					System.Threading.Interlocked.CompareExchange<FactInstanceBlockStart>(ref myCache, this, null as FactInstanceBlockStart);
 				}
 			}
 			#endregion // Cache management
@@ -19505,7 +19505,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool isNegative = 0 != (sign & VerbalizationSign.Negative);
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceBlockStart, false, false));
+				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactBlockStart, false, false));
 				return true;
 			}
 			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
@@ -19513,29 +19513,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 		}
-		#endregion // Child Verbalizerion FactTypeInstanceBlockStart
+		#endregion // Child Verbalizerion FactInstanceBlockStart
 	}
-	#endregion // FactType.FactTypeInstanceBlockStart verbalization
-	#region FactType.FactTypeInstanceBlockEnd verbalization
+	#endregion // FactType.FactInstanceBlockStart verbalization
+	#region FactType.FactInstanceBlockEnd verbalization
 	public partial class FactType
 	{
-		#region Child Verbalizer FactTypeInstanceBlockEnd
-		partial class FactTypeInstanceBlockEnd : IVerbalize, IDisposable
+		#region Child Verbalizer FactInstanceBlockEnd
+		partial class FactInstanceBlockEnd : IVerbalize, IDisposable
 		{
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
-			private static FactTypeInstanceBlockEnd myCache;
+			private static FactInstanceBlockEnd myCache;
 			/// <summary>Get the cached verbalizer or a new instance.</summary>
-			public static FactTypeInstanceBlockEnd GetVerbalizer()
+			public static FactInstanceBlockEnd GetVerbalizer()
 			{
-				FactTypeInstanceBlockEnd retVal = myCache;
+				FactInstanceBlockEnd retVal = myCache;
 				if (retVal != null)
 				{
-					retVal = System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockEnd>(ref myCache, null as FactTypeInstanceBlockEnd, retVal);
+					retVal = System.Threading.Interlocked.CompareExchange<FactInstanceBlockEnd>(ref myCache, null as FactInstanceBlockEnd, retVal);
 				}
 				if (retVal == null)
 				{
-					retVal = new FactTypeInstanceBlockEnd();
+					retVal = new FactInstanceBlockEnd();
 				}
 				return retVal;
 			}
@@ -19543,7 +19543,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (myCache == null)
 				{
-					System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockEnd>(ref myCache, this, null as FactTypeInstanceBlockEnd);
+					System.Threading.Interlocked.CompareExchange<FactInstanceBlockEnd>(ref myCache, this, null as FactInstanceBlockEnd);
 				}
 			}
 			#endregion // Cache management
@@ -19553,7 +19553,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool isNegative = 0 != (sign & VerbalizationSign.Negative);
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceBlockEnd, false, false));
+				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactBlockEnd, false, false));
 				return true;
 			}
 			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
@@ -19561,29 +19561,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 		}
-		#endregion // Child Verbalizerion FactTypeInstanceBlockEnd
+		#endregion // Child Verbalizerion FactInstanceBlockEnd
 	}
-	#endregion // FactType.FactTypeInstanceBlockEnd verbalization
-	#region FactType.FactTypeInstanceVerbalizer verbalization
+	#endregion // FactType.FactInstanceBlockEnd verbalization
+	#region FactType.FactInstanceVerbalizer verbalization
 	public partial class FactType
 	{
 		#region FactType Instance Verbalization
-		private partial class FactTypeInstanceVerbalizer : IVerbalize, IDisposable
+		private partial class FactInstanceVerbalizer : IVerbalize, IDisposable
 		{
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
-			private static FactTypeInstanceVerbalizer myCache;
+			private static FactInstanceVerbalizer myCache;
 			/// <summary>Get the cached verbalizer or a new instance.</summary>
-			public static FactTypeInstanceVerbalizer GetVerbalizer()
+			public static FactInstanceVerbalizer GetVerbalizer()
 			{
-				FactTypeInstanceVerbalizer retVal = myCache;
+				FactInstanceVerbalizer retVal = myCache;
 				if (retVal != null)
 				{
-					retVal = System.Threading.Interlocked.CompareExchange<FactTypeInstanceVerbalizer>(ref myCache, null as FactTypeInstanceVerbalizer, retVal);
+					retVal = System.Threading.Interlocked.CompareExchange<FactInstanceVerbalizer>(ref myCache, null as FactInstanceVerbalizer, retVal);
 				}
 				if (retVal == null)
 				{
-					retVal = new FactTypeInstanceVerbalizer();
+					retVal = new FactInstanceVerbalizer();
 				}
 				return retVal;
 			}
@@ -19592,7 +19592,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				this.DisposeHelper();
 				if (myCache == null)
 				{
-					System.Threading.Interlocked.CompareExchange<FactTypeInstanceVerbalizer>(ref myCache, this, null as FactTypeInstanceVerbalizer);
+					System.Threading.Interlocked.CompareExchange<FactInstanceVerbalizer>(ref myCache, this, null as FactInstanceVerbalizer);
 				}
 			}
 			#endregion // Cache management
@@ -19670,7 +19670,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 				IReading reading;
 				VerbalizationHyphenBinder hyphenBinder;
-				LinkedElementCollection<FactTypeRoleInstance> instanceRoles = Instance.RoleInstanceCollection;
+				LinkedElementCollection<RoleInstance> instanceRoles = Instance.RoleInstanceCollection;
 				int instanceRoleCount = instanceRoles.Count;
 				string[] basicRoleReplacements = new string[factArity];
 				string textFormat = snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative);
@@ -19690,10 +19690,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), ++lastMissingRolePlayerIndex);
 					}
-					FactTypeRoleInstance roleInstance = null;
+					RoleInstance roleInstance = null;
 					for (int j = 0; j < instanceRoleCount; ++j)
 					{
-						FactTypeRoleInstance testInstance = instanceRoles[j];
+						RoleInstance testInstance = instanceRoles[j];
 						if (testInstance.Role == factRole)
 						{
 							roleInstance = testInstance;
@@ -19703,7 +19703,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (roleInstance != null)
 					{
 						string instanceValue;
-						instanceValue = ObjectTypeInstance.GetDisplayString(roleInstance.ObjectTypeInstance, rolePlayer, false, formatProvider, textFormat, nonTextFormat);
+						instanceValue = ObjectInstance.GetDisplayString(roleInstance.ObjectInstance, rolePlayer, false, formatProvider, textFormat, nonTextFormat);
 						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.CombinedObjectAndInstance, isDeontic, isNegative), basicReplacement, instanceValue);
 					}
 					else
@@ -19712,7 +19712,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					basicRoleReplacements[i] = basicReplacement;
 				}
-				ObjectTypeInstance objectifyingInstance = this.DisplayIdentifier ? this.Instance.ObjectifyingInstance : null;
+				ObjectInstance objectifyingInstance = this.DisplayIdentifier ? this.Instance.ObjectifyingInstance : null;
 				#endregion // Preliminary
 				#region Pattern Matches
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
@@ -19722,9 +19722,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (objectifyingInstance != null)
 				{
 					writer.WriteLine();
-					string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceIdentifier, isDeontic, isNegative);
+					string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.FactIdentifier, isDeontic, isNegative);
 					string snippet2Replace1 = null;
-					snippet2Replace1 = ObjectTypeInstance.GetDisplayString(objectifyingInstance, objectifyingInstance.ObjectType, true, formatProvider, textFormat, nonTextFormat);
+					snippet2Replace1 = ObjectInstance.GetDisplayString(objectifyingInstance, objectifyingInstance.ObjectType, true, formatProvider, textFormat, nonTextFormat);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				#endregion // Pattern Matches
@@ -19766,27 +19766,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // FactType Instance Verbalization
 	}
-	#endregion // FactType.FactTypeInstanceVerbalizer verbalization
-	#region ObjectType.ObjectTypeInstanceVerbalizer verbalization
+	#endregion // FactType.FactInstanceVerbalizer verbalization
+	#region ObjectType.ObjectInstanceVerbalizer verbalization
 	public partial class ObjectType
 	{
 		#region ObjectType Instance Verbalization
-		private partial class ObjectTypeInstanceVerbalizer : IVerbalize, IDisposable
+		private partial class ObjectInstanceVerbalizer : IVerbalize, IDisposable
 		{
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
-			private static ObjectTypeInstanceVerbalizer myCache;
+			private static ObjectInstanceVerbalizer myCache;
 			/// <summary>Get the cached verbalizer or a new instance.</summary>
-			public static ObjectTypeInstanceVerbalizer GetVerbalizer()
+			public static ObjectInstanceVerbalizer GetVerbalizer()
 			{
-				ObjectTypeInstanceVerbalizer retVal = myCache;
+				ObjectInstanceVerbalizer retVal = myCache;
 				if (retVal != null)
 				{
-					retVal = System.Threading.Interlocked.CompareExchange<ObjectTypeInstanceVerbalizer>(ref myCache, null as ObjectTypeInstanceVerbalizer, retVal);
+					retVal = System.Threading.Interlocked.CompareExchange<ObjectInstanceVerbalizer>(ref myCache, null as ObjectInstanceVerbalizer, retVal);
 				}
 				if (retVal == null)
 				{
-					retVal = new ObjectTypeInstanceVerbalizer();
+					retVal = new ObjectInstanceVerbalizer();
 				}
 				return retVal;
 			}
@@ -19795,7 +19795,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				this.DisposeHelper();
 				if (myCache == null)
 				{
-					System.Threading.Interlocked.CompareExchange<ObjectTypeInstanceVerbalizer>(ref myCache, this, null as ObjectTypeInstanceVerbalizer);
+					System.Threading.Interlocked.CompareExchange<ObjectInstanceVerbalizer>(ref myCache, this, null as ObjectInstanceVerbalizer);
 				}
 			}
 			#endregion // Cache management
@@ -19884,28 +19884,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					CoreVerbalizationSnippetType listSnippet;
 					if (InstanceIter1 == 0)
 					{
-						listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListOpen;
+						listSnippet = CoreVerbalizationSnippetType.ObjectInstanceListOpen;
 					}
 					else if (InstanceIter1 == instanceCount - 1)
 					{
 						if (InstanceIter1 == 1)
 						{
-							listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListPairSeparator;
+							listSnippet = CoreVerbalizationSnippetType.ObjectInstanceListPairSeparator;
 						}
 						else
 						{
-							listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListFinalSeparator;
+							listSnippet = CoreVerbalizationSnippetType.ObjectInstanceListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListSeparator;
+						listSnippet = CoreVerbalizationSnippetType.ObjectInstanceListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(ObjectTypeInstance.GetDisplayString(this.Instances[InstanceIter1], this.ParentObject, false, writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative), snippets.GetSnippet(CoreVerbalizationSnippetType.NonTextInstanceValue, isDeontic, isNegative)));
+					sbTemp.Append(ObjectInstance.GetDisplayString(this.Instances[InstanceIter1], this.ParentObject, false, writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative), snippets.GetSnippet(CoreVerbalizationSnippetType.NonTextInstanceValue, isDeontic, isNegative)));
 					if (InstanceIter1 == instanceCount - 1)
 					{
-						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeInstanceListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectInstanceListClose, isDeontic, isNegative));
 					}
 				}
 				writer.Write(sbTemp.ToString());
@@ -19948,7 +19948,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // ObjectType Instance Verbalization
 	}
-	#endregion // ObjectType.ObjectTypeInstanceVerbalizer verbalization
+	#endregion // ObjectType.ObjectInstanceVerbalizer verbalization
 	#region FactType.DerivedElementsVerbalizer verbalization
 	public partial class FactType
 	{

@@ -5347,7 +5347,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				retVal = null != (errorValueConstraint = valueConstraintError.ContextValueConstraint as RoleValueConstraint);
 			}
-			else if (error is TooFewFactTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
+			else if (error is TooFewFactRoleInstancesError || error is ObjectifyingInstanceRequiredError)
 			{
 				retVal = ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 			}
@@ -7853,7 +7853,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					DomainTypeDescriptor.CreatePropertyDescriptor(requiresReferenceScheme.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
 					true);
 			}
-			else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityTypeRoleInstancesError)
+			else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityRoleInstancesError)
 			{
 				ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 			}

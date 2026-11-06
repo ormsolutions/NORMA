@@ -11810,7 +11810,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("5dbe50cd-a939-484d-9b96-700cb6cc7813")]
-	public abstract partial class RoleInstanceHasPopulationUniquenessError : ElementAssociatedWithModelError
+	public partial class RoleInstanceHasPopulationUniquenessError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
@@ -11819,13 +11819,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5dbe50cd, 0xa939, 0x484d, 0x9b, 0x96, 0x70, 0x0c, 0xb6, 0xcc, 0x78, 0x13);
 	
+				
 		/// <summary>
-		/// Constructor.
+		/// Constructor
+		/// Creates a RoleInstanceHasPopulationUniquenessError link in the same Partition as the given RoleInstance
 		/// </summary>
-		/// <param name="partition">The Partition instance containing this ElementLink</param>
-		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
-		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
-		protected RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		/// <param name="source">RoleInstance to use as the source of the relationship.</param>
+		/// <param name="target">PopulationUniquenessError to use as the target of the relationship.</param>
+		public RoleInstanceHasPopulationUniquenessError(RoleInstance source, PopulationUniquenessError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, source), new DslModeling::RoleAssignment(RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -11846,10 +11889,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError/RoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PopulationUniquenessError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("527ffaeb-8f4a-4dff-b02f-49822fce2f3d")]
-		public abstract RoleInstance RoleInstance
+		public virtual RoleInstance RoleInstance
 		{
-			get;
-			set;
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
+			}
 		}
 				
 		#endregion
@@ -11859,9 +11910,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::ReadOnlyLinkedElementCollection<RoleInstance> GetRoleInstanceCollection(PopulationUniquenessError element)
+		public static DslModeling::LinkedElementCollection<RoleInstance> GetRoleInstanceCollection(PopulationUniquenessError element)
 		{
-			return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<RoleInstance>, RoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<RoleInstance>, RoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
 		}
 		#endregion
 		#region AssociatedElement domain role override
@@ -11902,10 +11953,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("3ae1d857-c7e7-4053-a461-3eb965666f2c")]
-		public abstract PopulationUniquenessError PopulationUniquenessError
+		public virtual PopulationUniquenessError PopulationUniquenessError
 		{
-			get;
-			set;
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PopulationUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationUniquenessErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationUniquenessErrorDomainRoleId, value);
+			}
 		}
 				
 		#endregion
@@ -12012,490 +12071,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError link in links )
-			{
-				if ( target.Equals(link.PopulationUniquenessError) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship EntityTypeRoleInstanceHasPopulationUniquenessError
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("04312bef-ea3e-4525-9a1a-903497efdaf7")]
-	public partial class EntityTypeRoleInstanceHasPopulationUniquenessError : RoleInstanceHasPopulationUniquenessError
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// EntityTypeRoleInstanceHasPopulationUniquenessError domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x04312bef, 0xea3e, 0x4525, 0x9a, 0x1a, 0x90, 0x34, 0x97, 0xef, 0xda, 0xf7);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a EntityTypeRoleInstanceHasPopulationUniquenessError link in the same Partition as the given EntityTypeRoleInstance
-		/// </summary>
-		/// <param name="source">EntityTypeRoleInstance to use as the source of the relationship.</param>
-		/// <param name="target">PopulationUniquenessError to use as the target of the relationship.</param>
-		public EntityTypeRoleInstanceHasPopulationUniquenessError(EntityTypeRoleInstance source, PopulationUniquenessError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region RoleInstance domain role code
-		
-		/// <summary>
-		/// RoleInstance domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid RoleInstanceDomainRoleId = new global::System.Guid(0xf3ef0d4d, 0x5f76, 0x4dab, 0xbb, 0x6e, 0xb4, 0x75, 0xe7, 0xdd, 0xa7, 0x0d);
-		
-		/// <summary>
-		/// DomainRole RoleInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, RolePlayer = typeof(EntityTypeRoleInstance), PropertyName = "PopulationUniquenessError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("f3ef0d4d-5f76-4dab-bb6e-b475e7dda70d")]
-		public override RoleInstance RoleInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access EntityTypeRoleInstanceCollection of a PopulationUniquenessError
-		/// <summary>
-		/// Gets a list of EntityTypeRoleInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<EntityTypeRoleInstance> GetEntityTypeRoleInstanceCollection(PopulationUniquenessError element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeRoleInstance>, EntityTypeRoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
-		}
-		#endregion
-		#region PopulationUniquenessError domain role code
-		
-		/// <summary>
-		/// PopulationUniquenessError domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid PopulationUniquenessErrorDomainRoleId = new global::System.Guid(0x0f8036ba, 0x33aa, 0x48bc, 0xb0, 0x58, 0x1b, 0xd9, 0x90, 0xa6, 0xe2, 0x64);
-		
-		/// <summary>
-		/// DomainRole PopulationUniquenessError
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeRoleInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
-		[DslModeling::DomainObjectId("0f8036ba-33aa-48bc-b058-1bd990a6e264")]
-		public override PopulationUniquenessError PopulationUniquenessError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (PopulationUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationUniquenessErrorDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationUniquenessErrorDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access PopulationUniquenessError of a EntityTypeRoleInstance
-		/// <summary>
-		/// Gets PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static PopulationUniquenessError GetPopulationUniquenessError(EntityTypeRoleInstance element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as PopulationUniquenessError;
-		}
-		
-		/// <summary>
-		/// Sets PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetPopulationUniquenessError(EntityTypeRoleInstance element, PopulationUniquenessError newPopulationUniquenessError)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newPopulationUniquenessError);
-		}
-		#endregion
-		#region RoleInstance link accessor
-		/// <summary>
-		/// Get the EntityTypeRoleInstanceHasPopulationUniquenessError link to a EntityTypeRoleInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError GetLinkToPopulationUniquenessError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance roleInstanceInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(roleInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleInstance not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region PopulationUniquenessError link accessor
-		/// <summary>
-		/// Get the list of EntityTypeRoleInstanceHasPopulationUniquenessError links to a PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> GetLinksToEntityTypeRoleInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError populationUniquenessErrorInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(populationUniquenessErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
-		}
-		#endregion
-		#region EntityTypeRoleInstanceHasPopulationUniquenessError instance accessors
-		
-		/// <summary>
-		/// Get any EntityTypeRoleInstanceHasPopulationUniquenessError links between a given EntityTypeRoleInstance and a PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError link in links )
-			{
-				if ( target.Equals(link.PopulationUniquenessError) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one EntityTypeRoleInstanceHasPopulationUniquenessError link between a given EntityTypeRoleInstanceand a PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError link in links )
-			{
-				if ( target.Equals(link.PopulationUniquenessError) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship FactTypeRoleInstanceHasPopulationUniquenessError
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("a483fdfe-53ef-4352-8d97-986bf2c0e8e7")]
-	public partial class FactTypeRoleInstanceHasPopulationUniquenessError : RoleInstanceHasPopulationUniquenessError
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// FactTypeRoleInstanceHasPopulationUniquenessError domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa483fdfe, 0x53ef, 0x4352, 0x8d, 0x97, 0x98, 0x6b, 0xf2, 0xc0, 0xe8, 0xe7);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a FactTypeRoleInstanceHasPopulationUniquenessError link in the same Partition as the given FactTypeRoleInstance
-		/// </summary>
-		/// <param name="source">FactTypeRoleInstance to use as the source of the relationship.</param>
-		/// <param name="target">PopulationUniquenessError to use as the target of the relationship.</param>
-		public FactTypeRoleInstanceHasPopulationUniquenessError(FactTypeRoleInstance source, PopulationUniquenessError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeRoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region RoleInstance domain role code
-		
-		/// <summary>
-		/// RoleInstance domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid RoleInstanceDomainRoleId = new global::System.Guid(0x14bf8cdb, 0x9685, 0x49ac, 0xa7, 0xb9, 0x69, 0x6a, 0x72, 0xd6, 0xd9, 0x7c);
-		
-		/// <summary>
-		/// DomainRole RoleInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, RolePlayer = typeof(FactTypeRoleInstance), PropertyName = "PopulationUniquenessError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
-		[DslModeling::DomainObjectId("14bf8cdb-9685-49ac-a7b9-696a72d6d97c")]
-		public override RoleInstance RoleInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access FactTypeRoleInstanceCollection of a PopulationUniquenessError
-		/// <summary>
-		/// Gets a list of FactTypeRoleInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<FactTypeRoleInstance> GetFactTypeRoleInstanceCollection(PopulationUniquenessError element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<FactTypeRoleInstance>, FactTypeRoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
-		}
-		#endregion
-		#region PopulationUniquenessError domain role code
-		
-		/// <summary>
-		/// PopulationUniquenessError domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid PopulationUniquenessErrorDomainRoleId = new global::System.Guid(0xf00366b7, 0xa23f, 0x48d7, 0x89, 0x77, 0x00, 0x78, 0xeb, 0x2c, 0xd7, 0xb6);
-		
-		/// <summary>
-		/// DomainRole PopulationUniquenessError
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeRoleInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
-		[DslModeling::DomainObjectId("f00366b7-a23f-48d7-8977-0078eb2cd7b6")]
-		public override PopulationUniquenessError PopulationUniquenessError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (PopulationUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationUniquenessErrorDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationUniquenessErrorDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access PopulationUniquenessError of a FactTypeRoleInstance
-		/// <summary>
-		/// Gets PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static PopulationUniquenessError GetPopulationUniquenessError(FactTypeRoleInstance element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as PopulationUniquenessError;
-		}
-		
-		/// <summary>
-		/// Sets PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetPopulationUniquenessError(FactTypeRoleInstance element, PopulationUniquenessError newPopulationUniquenessError)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newPopulationUniquenessError);
-		}
-		#endregion
-		#region RoleInstance link accessor
-		/// <summary>
-		/// Get the FactTypeRoleInstanceHasPopulationUniquenessError link to a FactTypeRoleInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError GetLinkToPopulationUniquenessError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance roleInstanceInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(roleInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleInstance not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region PopulationUniquenessError link accessor
-		/// <summary>
-		/// Get the list of FactTypeRoleInstanceHasPopulationUniquenessError links to a PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> GetLinksToFactTypeRoleInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError populationUniquenessErrorInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(populationUniquenessErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
-		}
-		#endregion
-		#region FactTypeRoleInstanceHasPopulationUniquenessError instance accessors
-		
-		/// <summary>
-		/// Get any FactTypeRoleInstanceHasPopulationUniquenessError links between a given FactTypeRoleInstance and a PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError link in links )
-			{
-				if ( target.Equals(link.PopulationUniquenessError) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one FactTypeRoleInstanceHasPopulationUniquenessError link between a given FactTypeRoleInstanceand a PopulationUniquenessError.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError link in links )
 			{
 				if ( target.Equals(link.PopulationUniquenessError) )
 				{
@@ -14715,34 +14290,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship ObjectTypeInstanceHasPopulationMandatoryError
+	/// DomainRelationship ObjectInstanceHasPopulationMandatoryError
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("e0f0750e-47cb-44c6-b348-a9a1101475a7")]
-	public partial class ObjectTypeInstanceHasPopulationMandatoryError : DslModeling::ElementLink
+	public partial class ObjectInstanceHasPopulationMandatoryError : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ObjectTypeInstanceHasPopulationMandatoryError domain class Id.
+		/// ObjectInstanceHasPopulationMandatoryError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe0f0750e, 0x47cb, 0x44c6, 0xb3, 0x48, 0xa9, 0xa1, 0x10, 0x14, 0x75, 0xa7);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ObjectTypeInstanceHasPopulationMandatoryError link in the same Partition as the given ObjectTypeInstance
+		/// Creates a ObjectInstanceHasPopulationMandatoryError link in the same Partition as the given ObjectInstance
 		/// </summary>
-		/// <param name="source">ObjectTypeInstance to use as the source of the relationship.</param>
+		/// <param name="source">ObjectInstance to use as the source of the relationship.</param>
 		/// <param name="target">PopulationMandatoryError to use as the target of the relationship.</param>
-		public ObjectTypeInstanceHasPopulationMandatoryError(ObjectTypeInstance source, PopulationMandatoryError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, target)}, null)
+		public ObjectInstanceHasPopulationMandatoryError(ObjectInstance source, PopulationMandatoryError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectInstanceHasPopulationMandatoryError.ObjectInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -14751,7 +14326,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public ObjectInstanceHasPopulationMandatoryError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -14762,7 +14337,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ObjectInstanceHasPopulationMandatoryError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -14772,7 +14347,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public ObjectInstanceHasPopulationMandatoryError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -14783,61 +14358,61 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ObjectInstanceHasPopulationMandatoryError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region ObjectTypeInstance domain role code
+		#region ObjectInstance domain role code
 		
 		/// <summary>
-		/// ObjectTypeInstance domain role Id.
+		/// ObjectInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x4a0b3b52, 0xb579, 0x4e07, 0x97, 0x2c, 0x59, 0xf4, 0xf9, 0x8b, 0xea, 0xc3);
+		public static readonly global::System.Guid ObjectInstanceDomainRoleId = new global::System.Guid(0x4a0b3b52, 0xb579, 0x4e07, 0x97, 0x2c, 0x59, 0xf4, 0xf9, 0x8b, 0xea, 0xc3);
 		
 		/// <summary>
-		/// DomainRole ObjectTypeInstance
+		/// DomainRole ObjectInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.ObjectInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PopulationMandatoryErrorCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/ObjectInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/ObjectInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PopulationMandatoryErrorCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/ObjectInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("4a0b3b52-b579-4e07-972c-59f4f98beac3")]
-		public virtual ObjectTypeInstance ObjectTypeInstance
+		public virtual ObjectInstance ObjectInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ObjectTypeInstance of a PopulationMandatoryError
+		#region Static methods to access ObjectInstance of a PopulationMandatoryError
 		/// <summary>
-		/// Gets ObjectTypeInstance.
+		/// Gets ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectTypeInstance GetObjectTypeInstance(PopulationMandatoryError element)
+		public static ObjectInstance GetObjectInstance(PopulationMandatoryError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PopulationMandatoryErrorDomainRoleId) as ObjectTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PopulationMandatoryErrorDomainRoleId) as ObjectInstance;
 		}
 		
 		/// <summary>
-		/// Sets ObjectTypeInstance.
+		/// Sets ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectTypeInstance(PopulationMandatoryError element, ObjectTypeInstance newObjectTypeInstance)
+		public static void SetObjectInstance(PopulationMandatoryError element, ObjectInstance newObjectInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, PopulationMandatoryErrorDomainRoleId, newObjectTypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PopulationMandatoryErrorDomainRoleId, newObjectInstance);
 		}
 		#endregion
 		#region PopulationMandatoryError domain role code
@@ -14850,11 +14425,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole PopulationMandatoryError
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.PopulationMandatoryError
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/PopulationMandatoryError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/PopulationMandatoryError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError/PopulationMandatoryError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("078cf514-9f4c-44c2-9173-3a5f3edfafcb")]
 		public virtual PopulationMandatoryError PopulationMandatoryError
 		{
@@ -14871,37 +14446,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access PopulationMandatoryErrorCollection of a ObjectTypeInstance
+		#region Static methods to access PopulationMandatoryErrorCollection of a ObjectInstance
 		/// <summary>
 		/// Gets a list of PopulationMandatoryErrorCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<PopulationMandatoryError> GetPopulationMandatoryErrorCollection(ObjectTypeInstance element)
+		public static DslModeling::LinkedElementCollection<PopulationMandatoryError> GetPopulationMandatoryErrorCollection(ObjectInstance element)
 		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<PopulationMandatoryError>, PopulationMandatoryError>(element, ObjectTypeInstanceDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<PopulationMandatoryError>, PopulationMandatoryError>(element, ObjectInstanceDomainRoleId);
 		}
 		#endregion
-		#region ObjectTypeInstance link accessor
+		#region ObjectInstance link accessor
 		/// <summary>
-		/// Get the list of ObjectTypeInstanceHasPopulationMandatoryError links to a ObjectTypeInstance.
+		/// Get the list of ObjectInstanceHasPopulationMandatoryError links to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> GetLinksToPopulationMandatoryErrorCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError> GetLinksToPopulationMandatoryErrorCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance objectInstanceInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(objectTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError>(objectInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.ObjectInstanceDomainRoleId);
 		}
 		#endregion
 		#region PopulationMandatoryError link accessor
 		/// <summary>
-		/// Get the ObjectTypeInstanceHasPopulationMandatoryError link to a PopulationMandatoryError.
+		/// Get the ObjectInstanceHasPopulationMandatoryError link to a PopulationMandatoryError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError GetLinkToObjectTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationMandatoryError populationMandatoryErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError GetLinkToObjectInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationMandatoryError populationMandatoryErrorInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(populationMandatoryErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError>(populationMandatoryErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PopulationMandatoryError not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -14913,18 +14488,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region ObjectTypeInstanceHasPopulationMandatoryError instance accessors
+		#region ObjectInstanceHasPopulationMandatoryError instance accessors
 		
 		/// <summary>
-		/// Get any ObjectTypeInstanceHasPopulationMandatoryError links between a given ObjectTypeInstance and a PopulationMandatoryError.
+		/// Get any ObjectInstanceHasPopulationMandatoryError links between a given ObjectInstance and a PopulationMandatoryError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationMandatoryError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationMandatoryError target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.ObjectInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError link in links )
 			{
 				if ( target.Equals(link.PopulationMandatoryError) )
 				{
@@ -14934,14 +14509,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ObjectTypeInstanceHasPopulationMandatoryError link between a given ObjectTypeInstanceand a PopulationMandatoryError.
+		/// Get the one ObjectInstanceHasPopulationMandatoryError link between a given ObjectInstanceand a PopulationMandatoryError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationMandatoryError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationMandatoryError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError.ObjectInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstanceHasPopulationMandatoryError link in links )
 			{
 				if ( target.Equals(link.PopulationMandatoryError) )
 				{
@@ -38495,34 +38070,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship ObjectTypeHasObjectTypeInstance
+	/// DomainRelationship ObjectTypeHasObjectInstance
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("f4343cde-a3c7-402c-af81-cbdc8f092c9e")]
-	public partial class ObjectTypeHasObjectTypeInstance : DslModeling::ElementLink
+	public partial class ObjectTypeHasObjectInstance : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ObjectTypeHasObjectTypeInstance domain class Id.
+		/// ObjectTypeHasObjectInstance domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf4343cde, 0xa3c7, 0x402c, 0xaf, 0x81, 0xcb, 0xdc, 0x8f, 0x09, 0x2c, 0x9e);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ObjectTypeHasObjectTypeInstance link in the same Partition as the given ObjectType
+		/// Creates a ObjectTypeHasObjectInstance link in the same Partition as the given ObjectType
 		/// </summary>
 		/// <param name="source">ObjectType to use as the source of the relationship.</param>
-		/// <param name="target">ObjectTypeInstance to use as the target of the relationship.</param>
-		public ObjectTypeHasObjectTypeInstance(ObjectType source, ObjectTypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasObjectTypeInstance.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId, target)}, null)
+		/// <param name="target">ObjectInstance to use as the target of the relationship.</param>
+		public ObjectTypeHasObjectInstance(ObjectType source, ObjectInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasObjectInstance.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasObjectInstance.ObjectInstanceDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -38531,7 +38106,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeHasObjectTypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public ObjectTypeHasObjectInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -38542,7 +38117,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeHasObjectTypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ObjectTypeHasObjectInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -38552,7 +38127,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ObjectTypeHasObjectTypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public ObjectTypeHasObjectInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -38563,7 +38138,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ObjectTypeHasObjectTypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ObjectTypeHasObjectInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -38578,11 +38153,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole ObjectType
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectType
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("4ba85c9e-99d0-4f84-864b-b8e8c305b2c4")]
 		public virtual ObjectType ObjectType
 		{
@@ -38599,15 +38174,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ObjectType of a ObjectTypeInstance
+		#region Static methods to access ObjectType of a ObjectInstance
 		/// <summary>
 		/// Gets ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectType GetObjectType(ObjectTypeInstance element)
+		public static ObjectType GetObjectType(ObjectInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeInstanceDomainRoleId) as ObjectType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectInstanceDomainRoleId) as ObjectType;
 		}
 		
 		/// <summary>
@@ -38615,74 +38190,74 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectType(ObjectTypeInstance element, ObjectType newObjectType)
+		public static void SetObjectType(ObjectInstance element, ObjectType newObjectType)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeInstanceDomainRoleId, newObjectType);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectInstanceDomainRoleId, newObjectType);
 		}
 		#endregion
-		#region ObjectTypeInstance domain role code
+		#region ObjectInstance domain role code
 		
 		/// <summary>
-		/// ObjectTypeInstance domain role Id.
+		/// ObjectInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x9dff9164, 0xdc48, 0x46b8, 0xa2, 0x44, 0x7b, 0x9f, 0xab, 0x85, 0x98, 0xdb);
+		public static readonly global::System.Guid ObjectInstanceDomainRoleId = new global::System.Guid(0x9dff9164, 0xdc48, 0x46b8, 0xa2, 0x44, 0x7b, 0x9f, 0xab, 0x85, 0x98, 0xdb);
 		
 		/// <summary>
-		/// DomainRole ObjectTypeInstance
+		/// DomainRole ObjectInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance/ObjectTypeInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance/ObjectInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("9dff9164-dc48-46b8-a244-7b9fab8598db")]
-		public virtual ObjectTypeInstance ObjectTypeInstance
+		public virtual ObjectInstance ObjectInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ObjectTypeInstanceCollection of a ObjectType
+		#region Static methods to access ObjectInstanceCollection of a ObjectType
 		/// <summary>
-		/// Gets a list of ObjectTypeInstanceCollection.
+		/// Gets a list of ObjectInstanceCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ObjectTypeInstance> GetObjectTypeInstanceCollection(ObjectType element)
+		public static DslModeling::LinkedElementCollection<ObjectInstance> GetObjectInstanceCollection(ObjectType element)
 		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectTypeInstance>, ObjectTypeInstance>(element, ObjectTypeDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectInstance>, ObjectInstance>(element, ObjectTypeDomainRoleId);
 		}
 		#endregion
 		#region ObjectType link accessor
 		/// <summary>
-		/// Get the list of ObjectTypeHasObjectTypeInstance links to a ObjectType.
+		/// Get the list of ObjectTypeHasObjectInstance links to a ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance> GetLinksToObjectTypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance> GetLinksToObjectInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance>(objectTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance>(objectTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectTypeDomainRoleId);
 		}
 		#endregion
-		#region ObjectTypeInstance link accessor
+		#region ObjectInstance link accessor
 		/// <summary>
-		/// Get the ObjectTypeHasObjectTypeInstance link to a ObjectTypeInstance.
+		/// Get the ObjectTypeHasObjectInstance link to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance GetLinkToObjectType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance GetLinkToObjectType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance objectInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance>(objectTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectTypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance>(objectInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -38693,20 +38268,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region ObjectTypeHasObjectTypeInstance instance accessors
+		#region ObjectTypeHasObjectInstance instance accessors
 		
 		/// <summary>
-		/// Get any ObjectTypeHasObjectTypeInstance links between a given ObjectType and a ObjectTypeInstance.
+		/// Get any ObjectTypeHasObjectInstance links between a given ObjectType and a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance link in links )
 			{
-				if ( target.Equals(link.ObjectTypeInstance) )
+				if ( target.Equals(link.ObjectInstance) )
 				{
 					outLinks.Add(link);
 				}
@@ -38714,874 +38289,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ObjectTypeHasObjectTypeInstance link between a given ObjectTypeand a ObjectTypeInstance.
+		/// Get the one ObjectTypeHasObjectInstance link between a given ObjectTypeand a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance.ObjectTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectInstance link in links )
 			{
-				if ( target.Equals(link.ObjectTypeInstance) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship EntityTypeHasEntityTypeInstance
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
-	[DslModeling::DomainObjectId("0f9cda9d-88ce-47dd-b202-93b1455e08c3")]
-	public partial class EntityTypeHasEntityTypeInstance : ObjectTypeHasObjectTypeInstance
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// EntityTypeHasEntityTypeInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x0f9cda9d, 0x88ce, 0x47dd, 0xb2, 0x02, 0x93, 0xb1, 0x45, 0x5e, 0x08, 0xc3);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a EntityTypeHasEntityTypeInstance link in the same Partition as the given ObjectType
-		/// </summary>
-		/// <param name="source">ObjectType to use as the source of the relationship.</param>
-		/// <param name="target">EntityTypeInstance to use as the target of the relationship.</param>
-		public EntityTypeHasEntityTypeInstance(ObjectType source, EntityTypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeHasEntityTypeInstance.EntityTypeDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeHasEntityTypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeHasEntityTypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeHasEntityTypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeHasEntityTypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region EntityType domain role code
-		
-		/// <summary>
-		/// EntityType domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid EntityTypeDomainRoleId = new global::System.Guid(0x5a293722, 0x12d6, 0x4b42, 0xa3, 0x36, 0x32, 0x81, 0xa4, 0x04, 0xe7, 0x85);
-		
-		/// <summary>
-		/// DomainRole EntityType
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityType
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EntityTypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("5a293722-12d6-4b42-a336-3281a404e785")]
-		public virtual ObjectType EntityType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access EntityType of a EntityTypeInstance
-		/// <summary>
-		/// Gets EntityType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectType GetEntityType(EntityTypeInstance element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeInstanceDomainRoleId) as ObjectType;
-		}
-		
-		/// <summary>
-		/// Sets EntityType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetEntityType(EntityTypeInstance element, ObjectType newEntityType)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeInstanceDomainRoleId, newEntityType);
-		}
-		#endregion
-		#region ObjectType domain role override
-		
-		/// <summary>
-		/// Gets the element playing EntityType domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType
-		/// </summary>
-		public override ObjectType ObjectType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.EntityType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.EntityType = value;
-			}
-		}
-		
-		#endregion
-		#region EntityTypeInstance domain role code
-		
-		/// <summary>
-		/// EntityTypeInstance domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid EntityTypeInstanceDomainRoleId = new global::System.Guid(0xdcb0cb77, 0x842d, 0x4b69, 0x95, 0x0d, 0x26, 0xc3, 0xc4, 0x50, 0x9b, 0x6d);
-		
-		/// <summary>
-		/// DomainRole EntityTypeInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance/EntityTypeInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("dcb0cb77-842d-4b69-950d-26c3c4509b6d")]
-		public virtual EntityTypeInstance EntityTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (EntityTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access EntityTypeInstanceCollection of a ObjectType
-		/// <summary>
-		/// Gets a list of EntityTypeInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<EntityTypeInstance> GetEntityTypeInstanceCollection(ObjectType element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeInstance>, EntityTypeInstance>(element, EntityTypeDomainRoleId);
-		}
-		#endregion
-		#region ObjectTypeInstance domain role override
-		
-		/// <summary>
-		/// Gets the element playing EntityTypeInstance domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance
-		/// </summary>
-		public override ObjectTypeInstance ObjectTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.EntityTypeInstance;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.EntityTypeInstance = (EntityTypeInstance)value;
-			}
-		}
-		
-		#endregion
-		#region EntityType link accessor
-		/// <summary>
-		/// Get the list of EntityTypeHasEntityTypeInstance links to a ObjectType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance> GetLinksToEntityTypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType entityTypeInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance>(entityTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeDomainRoleId);
-		}
-		#endregion
-		#region EntityTypeInstance link accessor
-		/// <summary>
-		/// Get the EntityTypeHasEntityTypeInstance link to a EntityTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance GetLinkToEntityType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance entityTypeInstanceInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance>(entityTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityTypeInstance not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region EntityTypeHasEntityTypeInstance instance accessors
-		
-		/// <summary>
-		/// Get any EntityTypeHasEntityTypeInstance links between a given ObjectType and a EntityTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance link in links )
-			{
-				if ( target.Equals(link.EntityTypeInstance) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one EntityTypeHasEntityTypeInstance link between a given ObjectTypeand a EntityTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance.EntityTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasEntityTypeInstance link in links )
-			{
-				if ( target.Equals(link.EntityTypeInstance) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship EntityTypeSubtypeHasEntityTypeSubtypeInstance
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
-	[DslModeling::DomainObjectId("7e059bd5-d4a9-48a1-88fa-6459b77d7e23")]
-	public partial class EntityTypeSubtypeHasEntityTypeSubtypeInstance : ObjectTypeHasObjectTypeInstance
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// EntityTypeSubtypeHasEntityTypeSubtypeInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7e059bd5, 0xd4a9, 0x48a1, 0x88, 0xfa, 0x64, 0x59, 0xb7, 0x7d, 0x7e, 0x23);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a EntityTypeSubtypeHasEntityTypeSubtypeInstance link in the same Partition as the given ObjectType
-		/// </summary>
-		/// <param name="source">ObjectType to use as the source of the relationship.</param>
-		/// <param name="target">EntityTypeSubtypeInstance to use as the target of the relationship.</param>
-		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(ObjectType source, EntityTypeSubtypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeSubtypeHasEntityTypeSubtypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region EntityTypeSubtype domain role code
-		
-		/// <summary>
-		/// EntityTypeSubtype domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid EntityTypeSubtypeDomainRoleId = new global::System.Guid(0x0dade527, 0x8ad4, 0x4234, 0x9e, 0xf4, 0xf7, 0x8f, 0xd7, 0xd3, 0x60, 0xc2);
-		
-		/// <summary>
-		/// DomainRole EntityTypeSubtype
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtype
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EntityTypeSubtypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtype.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("0dade527-8ad4-4234-9ef4-f78fd7d360c2")]
-		public virtual ObjectType EntityTypeSubtype
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeSubtypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeSubtypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access EntityTypeSubtype of a EntityTypeSubtypeInstance
-		/// <summary>
-		/// Gets EntityTypeSubtype.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectType GetEntityTypeSubtype(EntityTypeSubtypeInstance element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId) as ObjectType;
-		}
-		
-		/// <summary>
-		/// Sets EntityTypeSubtype.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetEntityTypeSubtype(EntityTypeSubtypeInstance element, ObjectType newEntityTypeSubtype)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId, newEntityTypeSubtype);
-		}
-		#endregion
-		#region ObjectType domain role override
-		
-		/// <summary>
-		/// Gets the element playing EntityTypeSubtype domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType
-		/// </summary>
-		public override ObjectType ObjectType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.EntityTypeSubtype;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.EntityTypeSubtype = value;
-			}
-		}
-		
-		#endregion
-		#region EntityTypeSubtypeInstance domain role code
-		
-		/// <summary>
-		/// EntityTypeSubtypeInstance domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid EntityTypeSubtypeInstanceDomainRoleId = new global::System.Guid(0x9a51223a, 0x5d4d, 0x4e86, 0xbb, 0x76, 0xa4, 0x9f, 0x28, 0xde, 0xe7, 0x1d);
-		
-		/// <summary>
-		/// DomainRole EntityTypeSubtypeInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeSubtype", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("9a51223a-5d4d-4e86-bb76-a49f28dee71d")]
-		public virtual EntityTypeSubtypeInstance EntityTypeSubtypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (EntityTypeSubtypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access EntityTypeSubtypeInstanceCollection of a ObjectType
-		/// <summary>
-		/// Gets a list of EntityTypeSubtypeInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance> GetEntityTypeSubtypeInstanceCollection(ObjectType element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance>, EntityTypeSubtypeInstance>(element, EntityTypeSubtypeDomainRoleId);
-		}
-		#endregion
-		#region ObjectTypeInstance domain role override
-		
-		/// <summary>
-		/// Gets the element playing EntityTypeSubtypeInstance domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance
-		/// </summary>
-		public override ObjectTypeInstance ObjectTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.EntityTypeSubtypeInstance;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.EntityTypeSubtypeInstance = (EntityTypeSubtypeInstance)value;
-			}
-		}
-		
-		#endregion
-		#region EntityTypeSubtype link accessor
-		/// <summary>
-		/// Get the list of EntityTypeSubtypeHasEntityTypeSubtypeInstance links to a ObjectType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> GetLinksToEntityTypeSubtypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType entityTypeSubtypeInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(entityTypeSubtypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId);
-		}
-		#endregion
-		#region EntityTypeSubtypeInstance link accessor
-		/// <summary>
-		/// Get the EntityTypeSubtypeHasEntityTypeSubtypeInstance link to a EntityTypeSubtypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance GetLinkToEntityTypeSubtype (global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance entityTypeSubtypeInstanceInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(entityTypeSubtypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityTypeSubtypeInstance not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region EntityTypeSubtypeHasEntityTypeSubtypeInstance instance accessors
-		
-		/// <summary>
-		/// Get any EntityTypeSubtypeHasEntityTypeSubtypeInstance links between a given ObjectType and a EntityTypeSubtypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance link in links )
-			{
-				if ( target.Equals(link.EntityTypeSubtypeInstance) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one EntityTypeSubtypeHasEntityTypeSubtypeInstance link between a given ObjectTypeand a EntityTypeSubtypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance.EntityTypeSubtypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeHasEntityTypeSubtypeInstance link in links )
-			{
-				if ( target.Equals(link.EntityTypeSubtypeInstance) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship ValueTypeHasValueTypeInstance
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
-	[DslModeling::DomainObjectId("e01b8ec6-f3bf-4963-92db-7e352501c04d")]
-	public partial class ValueTypeHasValueTypeInstance : ObjectTypeHasObjectTypeInstance
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// ValueTypeHasValueTypeInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe01b8ec6, 0xf3bf, 0x4963, 0x92, 0xdb, 0x7e, 0x35, 0x25, 0x01, 0xc0, 0x4d);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a ValueTypeHasValueTypeInstance link in the same Partition as the given ObjectType
-		/// </summary>
-		/// <param name="source">ObjectType to use as the source of the relationship.</param>
-		/// <param name="target">ValueTypeInstance to use as the target of the relationship.</param>
-		public ValueTypeHasValueTypeInstance(ObjectType source, ValueTypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId, source), new DslModeling::RoleAssignment(ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ValueTypeHasValueTypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ValueTypeHasValueTypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ValueTypeHasValueTypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ValueTypeHasValueTypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region ValueType domain role code
-		
-		/// <summary>
-		/// ValueType domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid ValueTypeDomainRoleId = new global::System.Guid(0x9558751b, 0x6ae9, 0x424d, 0x8b, 0x62, 0x66, 0xb7, 0x1f, 0x01, 0xa2, 0x07);
-		
-		/// <summary>
-		/// DomainRole ValueType
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueType
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueTypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("9558751b-6ae9-424d-8b62-66b71f01a207")]
-		public virtual ObjectType ValueType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueTypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ValueType of a ValueTypeInstance
-		/// <summary>
-		/// Gets ValueType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectType GetValueType(ValueTypeInstance element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueTypeInstanceDomainRoleId) as ObjectType;
-		}
-		
-		/// <summary>
-		/// Sets ValueType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetValueType(ValueTypeInstance element, ObjectType newValueType)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueTypeInstanceDomainRoleId, newValueType);
-		}
-		#endregion
-		#region ObjectType domain role override
-		
-		/// <summary>
-		/// Gets the element playing ValueType domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectType
-		/// </summary>
-		public override ObjectType ObjectType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.ValueType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.ValueType = value;
-			}
-		}
-		
-		#endregion
-		#region ValueTypeInstance domain role code
-		
-		/// <summary>
-		/// ValueTypeInstance domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid ValueTypeInstanceDomainRoleId = new global::System.Guid(0x17da5f43, 0x028e, 0x4f9b, 0x8e, 0x91, 0x10, 0x5d, 0xbf, 0x10, 0xae, 0xe3);
-		
-		/// <summary>
-		/// DomainRole ValueTypeInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance/ValueTypeInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("17da5f43-028e-4f9b-8e91-105dbf10aee3")]
-		public virtual ValueTypeInstance ValueTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ValueTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueTypeInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ValueTypeInstanceCollection of a ObjectType
-		/// <summary>
-		/// Gets a list of ValueTypeInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ValueTypeInstance> GetValueTypeInstanceCollection(ObjectType element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<ValueTypeInstance>, ValueTypeInstance>(element, ValueTypeDomainRoleId);
-		}
-		#endregion
-		#region ObjectTypeInstance domain role override
-		
-		/// <summary>
-		/// Gets the element playing ValueTypeInstance domain role.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasObjectTypeInstance.ObjectTypeInstance
-		/// </summary>
-		public override ObjectTypeInstance ObjectTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return this.ValueTypeInstance;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				this.ValueTypeInstance = (ValueTypeInstance)value;
-			}
-		}
-		
-		#endregion
-		#region ValueType link accessor
-		/// <summary>
-		/// Get the list of ValueTypeHasValueTypeInstance links to a ObjectType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance> GetLinksToValueTypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType valueTypeInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance>(valueTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId);
-		}
-		#endregion
-		#region ValueTypeInstance link accessor
-		/// <summary>
-		/// Get the ValueTypeHasValueTypeInstance link to a ValueTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance GetLinkToValueType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance valueTypeInstanceInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance>(valueTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueTypeInstance not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region ValueTypeHasValueTypeInstance instance accessors
-		
-		/// <summary>
-		/// Get any ValueTypeHasValueTypeInstance links between a given ObjectType and a ValueTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance link in links )
-			{
-				if ( target.Equals(link.ValueTypeInstance) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one ValueTypeHasValueTypeInstance link between a given ObjectTypeand a ValueTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueTypeInstance link in links )
-			{
-				if ( target.Equals(link.ValueTypeInstance) )
+				if ( target.Equals(link.ObjectInstance) )
 				{
 					return link;
 				}
@@ -39604,7 +38321,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("d3162c67-de52-4b0d-802f-824e6ed5b74b")]
-	public abstract partial class RoleInstance : DslModeling::ElementLink
+	public partial class RoleInstance : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
@@ -39613,13 +38330,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd3162c67, 0xde52, 0x4b0d, 0x80, 0x2f, 0x82, 0x4e, 0x6e, 0xd5, 0xb7, 0x4b);
 	
+				
 		/// <summary>
-		/// Constructor.
+		/// Constructor
+		/// Creates a RoleInstance link in the same Partition as the given Role
 		/// </summary>
-		/// <param name="partition">The Partition instance containing this ElementLink</param>
-		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
-		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
-		protected RoleInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		/// <param name="source">Role to use as the source of the relationship.</param>
+		/// <param name="target">ObjectInstance to use as the target of the relationship.</param>
+		public RoleInstance(Role source, ObjectInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RoleInstance.RoleDomainRoleId, source), new DslModeling::RoleAssignment(RoleInstance.ObjectInstanceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RoleInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RoleInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RoleInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RoleInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -39637,58 +38397,74 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/Role.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/Role.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/Role.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("c927c1aa-2e2d-41cf-9d87-0a69a63f3e99")]
-		public abstract Role Role
+		public virtual Role Role
 		{
-			get;
-			set;
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
 		}
 				
 		#endregion
-		#region Static methods to access RoleCollection of a ObjectTypeInstance
+		#region Static methods to access RoleCollection of a ObjectInstance
 		/// <summary>
 		/// Gets a list of RoleCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::ReadOnlyLinkedElementCollection<Role> GetRoleCollection(ObjectTypeInstance element)
+		public static DslModeling::LinkedElementCollection<Role> GetRoleCollection(ObjectInstance element)
 		{
-			return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<Role>, Role>(element, ObjectTypeInstanceDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(element, ObjectInstanceDomainRoleId);
 		}
 		#endregion
-		#region ObjectTypeInstance domain role code
+		#region ObjectInstance domain role code
 		
 		/// <summary>
-		/// ObjectTypeInstance domain role Id.
+		/// ObjectInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x7e4356d2, 0x05d5, 0x4194, 0xbd, 0xbc, 0xf5, 0xb9, 0x6d, 0x22, 0xe4, 0x19);
+		public static readonly global::System.Guid ObjectInstanceDomainRoleId = new global::System.Guid(0x7e4356d2, 0x05d5, 0x4194, 0xbd, 0xbc, 0xf5, 0xb9, 0x6d, 0x22, 0xe4, 0x19);
 		
 		/// <summary>
-		/// DomainRole ObjectTypeInstance
+		/// DomainRole ObjectInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance/ObjectInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("7e4356d2-05d5-4194-bdbc-f5b96d22e419")]
-		public abstract ObjectTypeInstance ObjectTypeInstance
+		public virtual ObjectInstance ObjectInstance
 		{
-			get;
-			set;
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectInstanceDomainRoleId, value);
+			}
 		}
 				
 		#endregion
-		#region Static methods to access ObjectTypeInstanceCollection of a Role
+		#region Static methods to access ObjectInstanceCollection of a Role
 		/// <summary>
-		/// Gets a list of ObjectTypeInstanceCollection.
+		/// Gets a list of ObjectInstanceCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::ReadOnlyLinkedElementCollection<ObjectTypeInstance> GetObjectTypeInstanceCollection(Role element)
+		public static DslModeling::LinkedElementCollection<ObjectInstance> GetObjectInstanceCollection(Role element)
 		{
-			return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<ObjectTypeInstance>, ObjectTypeInstance>(element, RoleDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectInstance>, ObjectInstance>(element, RoleDomainRoleId);
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
@@ -39705,6 +38481,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId) as PopulationUniquenessError;
 			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region FactInstance opposite domain role accessor
+		/// <summary>
+		/// Gets or sets FactInstance.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.RoleInstance
+		/// </summary>
+		public virtual FactInstance FactInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.RoleInstanceDomainRoleId) as FactInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.RoleInstanceDomainRoleId, value);
+			}
 		}
 		#endregion
 		#endregion
@@ -39714,36 +38515,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> GetLinksToObjectTypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role roleInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> GetLinksToObjectInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role roleInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance>(roleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.RoleDomainRoleId);
 		}
 		#endregion
-		#region ObjectTypeInstance link accessor
+		#region ObjectInstance link accessor
 		/// <summary>
-		/// Get the list of RoleInstance links to a ObjectTypeInstance.
+		/// Get the list of RoleInstance links to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance objectInstanceInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance>(objectTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectTypeInstanceDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance>(objectInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.ObjectInstanceDomainRoleId);
 		}
 		#endregion
 		#region RoleInstance instance accessors
 		
 		/// <summary>
-		/// Get any RoleInstance links between a given Role and a ObjectTypeInstance.
+		/// Get any RoleInstance links between a given Role and a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance.RoleDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance link in links )
 			{
-				if ( target.Equals(link.ObjectTypeInstance) )
+				if ( target.Equals(link.ObjectInstance) )
 				{
 					outLinks.Add(link);
 				}
@@ -39756,992 +38557,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship EntityTypeRoleInstance
+	/// DomainRelationship EntitySubtypeInstanceHasSupertypeInstance
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
-	[DslModeling::DomainObjectId("5db3a2c1-c5de-4c4a-97c2-e09ce11537d3")]
-	public partial class EntityTypeRoleInstance : RoleInstance
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// EntityTypeRoleInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5db3a2c1, 0xc5de, 0x4c4a, 0x97, 0xc2, 0xe0, 0x9c, 0xe1, 0x15, 0x37, 0xd3);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a EntityTypeRoleInstance link in the same Partition as the given Role
-		/// </summary>
-		/// <param name="source">Role to use as the source of the relationship.</param>
-		/// <param name="target">ObjectTypeInstance to use as the target of the relationship.</param>
-		public EntityTypeRoleInstance(Role source, ObjectTypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeRoleInstance.RoleDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeRoleInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeRoleInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeRoleInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeRoleInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region Role domain role code
-		
-		/// <summary>
-		/// Role domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid RoleDomainRoleId = new global::System.Guid(0x26d1bf78, 0xfc2b, 0x4d86, 0xbd, 0xb3, 0xc1, 0x85, 0xfe, 0x44, 0x3d, 0xac);
-		
-		/// <summary>
-		/// DomainRole Role
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.Role
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/Role.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/Role.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("26d1bf78-fc2b-4d86-bdb3-c185fe443dac")]
-		public override Role Role
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access RoleCollection of a ObjectTypeInstance
-		/// <summary>
-		/// Gets a list of RoleCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new DslModeling::LinkedElementCollection<Role> GetRoleCollection(ObjectTypeInstance element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(element, ObjectTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region ObjectTypeInstance domain role code
-		
-		/// <summary>
-		/// ObjectTypeInstance domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0xb24b068f, 0xbf3c, 0x4d4a, 0x95, 0x69, 0x03, 0x05, 0xf9, 0xb5, 0xaa, 0x7e);
-		
-		/// <summary>
-		/// DomainRole ObjectTypeInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.ObjectTypeInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
-		[DslModeling::DomainObjectId("b24b068f-bf3c-4d4a-9569-0305f9b5aa7e")]
-		public override ObjectTypeInstance ObjectTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ObjectTypeInstanceCollection of a Role
-		/// <summary>
-		/// Gets a list of ObjectTypeInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new DslModeling::LinkedElementCollection<ObjectTypeInstance> GetObjectTypeInstanceCollection(Role element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectTypeInstance>, ObjectTypeInstance>(element, RoleDomainRoleId);
-		}
-		#endregion
-		#region Accessors for roles that this REL plays in other RELs
-		#region PopulationUniquenessError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets PopulationUniquenessError.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
-		/// </summary>
-		public virtual new PopulationUniquenessError PopulationUniquenessError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId) as PopulationUniquenessError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region EntityTypeInstance opposite domain role accessor
-		/// <summary>
-		/// Gets or sets EntityTypeInstance.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstance
-		/// </summary>
-		public virtual EntityTypeInstance EntityTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId) as EntityTypeInstance;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-		#endregion
-		#region Role link accessor
-		/// <summary>
-		/// Get the list of EntityTypeRoleInstance links to a Role.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance> GetLinksToObjectTypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role roleInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance>(roleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.RoleDomainRoleId);
-		}
-		#endregion
-		#region ObjectTypeInstance link accessor
-		/// <summary>
-		/// Get the list of EntityTypeRoleInstance links to a ObjectTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance>(objectTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region EntityTypeRoleInstance instance accessors
-		
-		/// <summary>
-		/// Get any EntityTypeRoleInstance links between a given Role and a ObjectTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance.RoleDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance link in links )
-			{
-				if ( target.Equals(link.ObjectTypeInstance) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship FactTypeRoleInstance
-	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
-	[DslModeling::DomainObjectId("fc7c9715-6886-46c2-a7a0-3bfd95cd0766")]
-	public partial class FactTypeRoleInstance : RoleInstance
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// FactTypeRoleInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xfc7c9715, 0x6886, 0x46c2, 0xa7, 0xa0, 0x3b, 0xfd, 0x95, 0xcd, 0x07, 0x66);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a FactTypeRoleInstance link in the same Partition as the given Role
-		/// </summary>
-		/// <param name="source">Role to use as the source of the relationship.</param>
-		/// <param name="target">ObjectTypeInstance to use as the target of the relationship.</param>
-		public FactTypeRoleInstance(Role source, ObjectTypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeRoleInstance.RoleDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeRoleInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeRoleInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeRoleInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeRoleInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region Role domain role code
-		
-		/// <summary>
-		/// Role domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid RoleDomainRoleId = new global::System.Guid(0xbdeb47fc, 0xdd0a, 0x4509, 0x92, 0x69, 0x2e, 0xa5, 0xc1, 0x96, 0xf6, 0x8f);
-		
-		/// <summary>
-		/// DomainRole Role
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.Role
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/Role.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/Role.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("bdeb47fc-dd0a-4509-9269-2ea5c196f68f")]
-		public override Role Role
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access RoleCollection of a ObjectTypeInstance
-		/// <summary>
-		/// Gets a list of RoleCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new DslModeling::LinkedElementCollection<Role> GetRoleCollection(ObjectTypeInstance element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(element, ObjectTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region ObjectTypeInstance domain role code
-		
-		/// <summary>
-		/// ObjectTypeInstance domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x2cde9b25, 0x54c8, 0x42b6, 0xa5, 0x4f, 0x61, 0x21, 0x03, 0x45, 0xe9, 0xa0);
-		
-		/// <summary>
-		/// DomainRole ObjectTypeInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.ObjectTypeInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
-		[DslModeling::DomainObjectId("2cde9b25-54c8-42b6-a54f-61210345e9a0")]
-		public override ObjectTypeInstance ObjectTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ObjectTypeInstanceCollection of a Role
-		/// <summary>
-		/// Gets a list of ObjectTypeInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new DslModeling::LinkedElementCollection<ObjectTypeInstance> GetObjectTypeInstanceCollection(Role element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectTypeInstance>, ObjectTypeInstance>(element, RoleDomainRoleId);
-		}
-		#endregion
-		#region Accessors for roles that this REL plays in other RELs
-		#region PopulationUniquenessError opposite domain role accessor
-		/// <summary>
-		/// Gets or sets PopulationUniquenessError.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstance
-		/// </summary>
-		public virtual new PopulationUniquenessError PopulationUniquenessError
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId) as PopulationUniquenessError;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region FactTypeInstance opposite domain role accessor
-		/// <summary>
-		/// Gets or sets FactTypeInstance.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstance
-		/// </summary>
-		public virtual FactTypeInstance FactTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId) as FactTypeInstance;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, value);
-			}
-		}
-		#endregion
-		#endregion
-		#region Role link accessor
-		/// <summary>
-		/// Get the list of FactTypeRoleInstance links to a Role.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance> GetLinksToObjectTypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role roleInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance>(roleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.RoleDomainRoleId);
-		}
-		#endregion
-		#region ObjectTypeInstance link accessor
-		/// <summary>
-		/// Get the list of FactTypeRoleInstance links to a ObjectTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance> GetLinksToRoleCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance>(objectTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region FactTypeRoleInstance instance accessors
-		
-		/// <summary>
-		/// Get any FactTypeRoleInstance links between a given Role and a ObjectTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance.RoleDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance link in links )
-			{
-				if ( target.Equals(link.ObjectTypeInstance) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship EntityTypeInstanceHasRoleInstance
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("05c64570-96fe-42c4-b9a6-f88d3bdc7c1f")]
-	public partial class EntityTypeInstanceHasRoleInstance : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// EntityTypeInstanceHasRoleInstance domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x05c64570, 0x96fe, 0x42c4, 0xb9, 0xa6, 0xf8, 0x8d, 0x3b, 0xdc, 0x7c, 0x1f);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a EntityTypeInstanceHasRoleInstance link in the same Partition as the given EntityTypeInstance
-		/// </summary>
-		/// <param name="source">EntityTypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">EntityTypeRoleInstance to use as the target of the relationship.</param>
-		public EntityTypeInstanceHasRoleInstance(EntityTypeInstance source, EntityTypeRoleInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeInstanceHasRoleInstance.EntityTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeInstanceHasRoleInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeInstanceHasRoleInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeInstanceHasRoleInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeInstanceHasRoleInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region EntityTypeInstance domain role code
-		
-		/// <summary>
-		/// EntityTypeInstance domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid EntityTypeInstanceDomainRoleId = new global::System.Guid(0x9997c315, 0x3b87, 0x4533, 0xa4, 0x5f, 0xc6, 0x2a, 0xfa, 0x68, 0x64, 0x7c);
-		
-		/// <summary>
-		/// DomainRole EntityTypeInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/EntityTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/EntityTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/EntityTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
-		[DslModeling::DomainObjectId("9997c315-3b87-4533-a45f-c62afa68647c")]
-		public virtual EntityTypeInstance EntityTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (EntityTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access EntityTypeInstance of a EntityTypeRoleInstance
-		/// <summary>
-		/// Gets EntityTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static EntityTypeInstance GetEntityTypeInstance(EntityTypeRoleInstance element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as EntityTypeInstance;
-		}
-		
-		/// <summary>
-		/// Sets EntityTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetEntityTypeInstance(EntityTypeRoleInstance element, EntityTypeInstance newEntityTypeInstance)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newEntityTypeInstance);
-		}
-		#endregion
-		#region RoleInstance domain role code
-		
-		/// <summary>
-		/// RoleInstance domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid RoleInstanceDomainRoleId = new global::System.Guid(0xc85848f4, 0x9e45, 0x44e7, 0xaa, 0xaf, 0x5e, 0x63, 0x2c, 0xab, 0x6d, 0x09);
-		
-		/// <summary>
-		/// DomainRole RoleInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/RoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/RoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance/RoleInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("c85848f4-9e45-44e7-aaaf-5e632cab6d09")]
-		public virtual EntityTypeRoleInstance RoleInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (EntityTypeRoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access RoleInstanceCollection of a EntityTypeInstance
-		/// <summary>
-		/// Gets a list of RoleInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<EntityTypeRoleInstance> GetRoleInstanceCollection(EntityTypeInstance element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeRoleInstance>, EntityTypeRoleInstance>(element, EntityTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region EntityTypeInstance link accessor
-		/// <summary>
-		/// Get the list of EntityTypeInstanceHasRoleInstance links to a EntityTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance> GetLinksToRoleInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance entityTypeInstanceInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance>(entityTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region RoleInstance link accessor
-		/// <summary>
-		/// Get the EntityTypeInstanceHasRoleInstance link to a EntityTypeRoleInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance GetLinkToEntityTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance roleInstanceInstance)
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance>(roleInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleInstance not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region EntityTypeInstanceHasRoleInstance instance accessors
-		
-		/// <summary>
-		/// Get any EntityTypeInstanceHasRoleInstance links between a given EntityTypeInstance and a EntityTypeRoleInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance link in links )
-			{
-				if ( target.Equals(link.RoleInstance) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one EntityTypeInstanceHasRoleInstance link between a given EntityTypeInstanceand a EntityTypeRoleInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeRoleInstance target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance.EntityTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasRoleInstance link in links )
-			{
-				if ( target.Equals(link.RoleInstance) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship EntityTypeInstancePopulatesUnaryRole
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("fb8f62ae-53d4-42cf-aea1-3cb8ac9f28fe")]
-	public partial class EntityTypeInstancePopulatesUnaryRole : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// EntityTypeInstancePopulatesUnaryRole domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xfb8f62ae, 0x53d4, 0x42cf, 0xae, 0xa1, 0x3c, 0xb8, 0xac, 0x9f, 0x28, 0xfe);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a EntityTypeInstancePopulatesUnaryRole link in the same Partition as the given EntityTypeInstance
-		/// </summary>
-		/// <param name="source">EntityTypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">Role to use as the target of the relationship.</param>
-		public EntityTypeInstancePopulatesUnaryRole(EntityTypeInstance source, Role target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeInstancePopulatesUnaryRole.EntityTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeInstancePopulatesUnaryRole.UnaryRoleDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeInstancePopulatesUnaryRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeInstancePopulatesUnaryRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeInstancePopulatesUnaryRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeInstancePopulatesUnaryRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region EntityTypeInstance domain role code
-		
-		/// <summary>
-		/// EntityTypeInstance domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid EntityTypeInstanceDomainRoleId = new global::System.Guid(0x2f088568, 0xceeb, 0x4b68, 0x8c, 0x48, 0xdf, 0xbc, 0xd5, 0x9f, 0x31, 0xc4);
-		
-		/// <summary>
-		/// DomainRole EntityTypeInstance
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstance
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "UnaryRoleInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/EntityTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("2f088568-ceeb-4b68-8c48-dfbcd59f31c4")]
-		public virtual EntityTypeInstance EntityTypeInstance
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (EntityTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeInstanceDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeInstanceDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access EntityInstancesForUnary of a Role
-		/// <summary>
-		/// Gets a list of EntityInstancesForUnary.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<EntityTypeInstance> GetEntityInstancesForUnary(Role element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeInstance>, EntityTypeInstance>(element, UnaryRoleDomainRoleId);
-		}
-		#endregion
-		#region UnaryRole domain role code
-		
-		/// <summary>
-		/// UnaryRole domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid UnaryRoleDomainRoleId = new global::System.Guid(0x099f0092, 0x23ba, 0x48fc, 0xa4, 0x7b, 0xca, 0x41, 0x9f, 0x97, 0x9c, 0xcb);
-		
-		/// <summary>
-		/// DomainRole UnaryRole
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRole
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityInstancesForUnary", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole/UnaryRole.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("099f0092-23ba-48fc-a47b-ca419f979ccb")]
-		public virtual Role UnaryRole
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, UnaryRoleDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, UnaryRoleDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access UnaryRoleInstanceCollection of a EntityTypeInstance
-		/// <summary>
-		/// Gets a list of UnaryRoleInstanceCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Role> GetUnaryRoleInstanceCollection(EntityTypeInstance element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(element, EntityTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region EntityTypeInstance link accessor
-		/// <summary>
-		/// Get the list of EntityTypeInstancePopulatesUnaryRole links to a EntityTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole> GetLinksToUnaryRoleInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance entityTypeInstanceInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole>(entityTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstanceDomainRoleId);
-		}
-		#endregion
-		#region UnaryRole link accessor
-		/// <summary>
-		/// Get the list of EntityTypeInstancePopulatesUnaryRole links to a Role.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole> GetLinksToEntityInstancesForUnary ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role unaryRoleInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole>(unaryRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.UnaryRoleDomainRoleId);
-		}
-		#endregion
-		#region EntityTypeInstancePopulatesUnaryRole instance accessors
-		
-		/// <summary>
-		/// Get any EntityTypeInstancePopulatesUnaryRole links between a given EntityTypeInstance and a Role.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role target )
-		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole link in links )
-			{
-				if ( target.Equals(link.UnaryRole) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one EntityTypeInstancePopulatesUnaryRole link between a given EntityTypeInstanceand a Role.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role target )
-		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole.EntityTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstancePopulatesUnaryRole link in links )
-			{
-				if ( target.Equals(link.UnaryRole) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace ORMSolutions.ORMArchitect.Core.ObjectModel
-{
-	/// <summary>
-	/// DomainRelationship EntityTypeSubtypeInstanceHasSupertypeInstance
-	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance
-	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("f11d087f-8b5b-4ac9-9b67-f967d5a5013e")]
-	public partial class EntityTypeSubtypeInstanceHasSupertypeInstance : DslModeling::ElementLink
+	public partial class EntitySubtypeInstanceHasSupertypeInstance : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// EntityTypeSubtypeInstanceHasSupertypeInstance domain class Id.
+		/// EntitySubtypeInstanceHasSupertypeInstance domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf11d087f, 0x8b5b, 0x4ac9, 0x9b, 0x67, 0xf9, 0x67, 0xd5, 0xa5, 0x01, 0x3e);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a EntityTypeSubtypeInstanceHasSupertypeInstance link in the same Partition as the given EntityTypeSubtypeInstance
+		/// Creates a EntitySubtypeInstanceHasSupertypeInstance link in the same Partition as the given ObjectInstance
 		/// </summary>
-		/// <param name="source">EntityTypeSubtypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">EntityTypeInstance to use as the target of the relationship.</param>
-		public EntityTypeSubtypeInstanceHasSupertypeInstance(EntityTypeSubtypeInstance source, EntityTypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId, target)}, null)
+		/// <param name="source">ObjectInstance to use as the source of the relationship.</param>
+		/// <param name="target">ObjectInstance to use as the target of the relationship.</param>
+		public EntitySubtypeInstanceHasSupertypeInstance(ObjectInstance source, ObjectInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -40750,7 +38593,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public EntitySubtypeInstanceHasSupertypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -40761,7 +38604,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public EntitySubtypeInstanceHasSupertypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -40771,7 +38614,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public EntitySubtypeInstanceHasSupertypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -40782,51 +38625,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeSubtypeInstanceHasSupertypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public EntitySubtypeInstanceHasSupertypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region EntityTypeSubtypeInstance domain role code
+		#region EntitySubtypeInstance domain role code
 		
 		/// <summary>
-		/// EntityTypeSubtypeInstance domain role Id.
+		/// EntitySubtypeInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid EntityTypeSubtypeInstanceDomainRoleId = new global::System.Guid(0x23f6cec5, 0xe016, 0x40ad, 0xa4, 0xd2, 0xb6, 0x84, 0xa9, 0xca, 0x02, 0x31);
+		public static readonly global::System.Guid EntitySubtypeInstanceDomainRoleId = new global::System.Guid(0x23f6cec5, 0xe016, 0x40ad, 0xa4, 0xd2, 0xb6, 0x84, 0xa9, 0xca, 0x02, 0x31);
 		
 		/// <summary>
-		/// DomainRole EntityTypeSubtypeInstance
+		/// DomainRole EntitySubtypeInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SupertypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/EntityTypeSubtypeInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/EntitySubtypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/EntitySubtypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SupertypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/EntitySubtypeInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("23f6cec5-e016-40ad-a4d2-b684a9ca0231")]
-		public virtual EntityTypeSubtypeInstance EntityTypeSubtypeInstance
+		public virtual ObjectInstance EntitySubtypeInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (EntityTypeSubtypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntitySubtypeInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeSubtypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntitySubtypeInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access EntityTypeSubtypeInstanceCollection of a EntityTypeInstance
+		#region Static methods to access EntitySubtypeInstanceCollection of a ObjectInstance
 		/// <summary>
-		/// Gets a list of EntityTypeSubtypeInstanceCollection.
+		/// Gets a list of EntitySubtypeInstanceCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance> GetEntityTypeSubtypeInstanceCollection(EntityTypeInstance element)
+		public static DslModeling::LinkedElementCollection<ObjectInstance> GetEntitySubtypeInstanceCollection(ObjectInstance element)
 		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<EntityTypeSubtypeInstance>, EntityTypeSubtypeInstance>(element, SupertypeInstanceDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<ObjectInstance>, ObjectInstance>(element, SupertypeInstanceDomainRoleId);
 		}
 		#endregion
 		#region SupertypeInstance domain role code
@@ -40839,18 +38682,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole SupertypeInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeSubtypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance/SupertypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/SupertypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/SupertypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntitySubtypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance/SupertypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("bc2cd94c-d143-4676-8036-d4094a61b970")]
-		public virtual EntityTypeInstance SupertypeInstance
+		public virtual ObjectInstance SupertypeInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (EntityTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, SupertypeInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, SupertypeInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -40860,15 +38703,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access SupertypeInstance of a EntityTypeSubtypeInstance
+		#region Static methods to access SupertypeInstance of a ObjectInstance
 		/// <summary>
 		/// Gets SupertypeInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static EntityTypeInstance GetSupertypeInstance(EntityTypeSubtypeInstance element)
+		public static ObjectInstance GetSupertypeInstance(ObjectInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId) as EntityTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntitySubtypeInstanceDomainRoleId) as ObjectInstance;
 		}
 		
 		/// <summary>
@@ -40876,21 +38719,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetSupertypeInstance(EntityTypeSubtypeInstance element, EntityTypeInstance newSupertypeInstance)
+		public static void SetSupertypeInstance(ObjectInstance element, ObjectInstance newSupertypeInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeSubtypeInstanceDomainRoleId, newSupertypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntitySubtypeInstanceDomainRoleId, newSupertypeInstance);
 		}
 		#endregion
-		#region EntityTypeSubtypeInstance link accessor
+		#region EntitySubtypeInstance link accessor
 		/// <summary>
-		/// Get the EntityTypeSubtypeInstanceHasSupertypeInstance link to a EntityTypeSubtypeInstance.
+		/// Get the EntitySubtypeInstanceHasSupertypeInstance link to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance GetLinkToSupertypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance entityTypeSubtypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance GetLinkToSupertypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance entitySubtypeInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(entityTypeSubtypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityTypeSubtypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance>(entitySubtypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntitySubtypeInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -40903,27 +38746,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region SupertypeInstance link accessor
 		/// <summary>
-		/// Get the list of EntityTypeSubtypeInstanceHasSupertypeInstance links to a EntityTypeInstance.
+		/// Get the list of EntitySubtypeInstanceHasSupertypeInstance links to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> GetLinksToEntityTypeSubtypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance supertypeInstanceInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance> GetLinksToEntitySubtypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance supertypeInstanceInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(supertypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance>(supertypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId);
 		}
 		#endregion
-		#region EntityTypeSubtypeInstanceHasSupertypeInstance instance accessors
+		#region EntitySubtypeInstanceHasSupertypeInstance instance accessors
 		
 		/// <summary>
-		/// Get any EntityTypeSubtypeInstanceHasSupertypeInstance links between a given EntityTypeSubtypeInstance and a EntityTypeInstance.
+		/// Get any EntitySubtypeInstanceHasSupertypeInstance links between a given ObjectInstance and a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance link in links )
 			{
 				if ( target.Equals(link.SupertypeInstance) )
 				{
@@ -40933,14 +38776,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one EntityTypeSubtypeInstanceHasSupertypeInstance link between a given EntityTypeSubtypeInstanceand a EntityTypeInstance.
+		/// Get the one EntitySubtypeInstanceHasSupertypeInstance link between a given ObjectInstanceand a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeSubtypeInstanceHasSupertypeInstance link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance.EntitySubtypeInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntitySubtypeInstanceHasSupertypeInstance link in links )
 			{
 				if ( target.Equals(link.SupertypeInstance) )
 				{
@@ -40956,34 +38799,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship FactTypeHasFactTypeInstance
+	/// DomainRelationship FactTypeHasFactInstance
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("5283f53b-0da8-4e4c-8a31-bde51057e7ef")]
-	public partial class FactTypeHasFactTypeInstance : DslModeling::ElementLink
+	public partial class FactTypeHasFactInstance : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// FactTypeHasFactTypeInstance domain class Id.
+		/// FactTypeHasFactInstance domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5283f53b, 0x0da8, 0x4e4c, 0x8a, 0x31, 0xbd, 0xe5, 0x10, 0x57, 0xe7, 0xef);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a FactTypeHasFactTypeInstance link in the same Partition as the given FactType
+		/// Creates a FactTypeHasFactInstance link in the same Partition as the given FactType
 		/// </summary>
 		/// <param name="source">FactType to use as the source of the relationship.</param>
-		/// <param name="target">FactTypeInstance to use as the target of the relationship.</param>
-		public FactTypeHasFactTypeInstance(FactType source, FactTypeInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeHasFactTypeInstance.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId, target)}, null)
+		/// <param name="target">FactInstance to use as the target of the relationship.</param>
+		public FactTypeHasFactInstance(FactType source, FactInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeHasFactInstance.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeHasFactInstance.FactInstanceDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -40992,7 +38835,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeHasFactTypeInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public FactTypeHasFactInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -41003,7 +38846,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeHasFactTypeInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactTypeHasFactInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -41013,7 +38856,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeHasFactTypeInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public FactTypeHasFactInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -41024,7 +38867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeHasFactTypeInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactTypeHasFactInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -41039,11 +38882,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole FactType
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactType
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactType
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("4690eaff-667b-4aa6-93ed-9487e109c7bc")]
 		public virtual FactType FactType
 		{
@@ -41060,15 +38903,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access FactType of a FactTypeInstance
+		#region Static methods to access FactType of a FactInstance
 		/// <summary>
 		/// Gets FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static FactType GetFactType(FactTypeInstance element)
+		public static FactType GetFactType(FactInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeInstanceDomainRoleId) as FactType;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactInstanceDomainRoleId) as FactType;
 		}
 		
 		/// <summary>
@@ -41076,74 +38919,74 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetFactType(FactTypeInstance element, FactType newFactType)
+		public static void SetFactType(FactInstance element, FactType newFactType)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeInstanceDomainRoleId, newFactType);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactInstanceDomainRoleId, newFactType);
 		}
 		#endregion
-		#region FactTypeInstance domain role code
+		#region FactInstance domain role code
 		
 		/// <summary>
-		/// FactTypeInstance domain role Id.
+		/// FactInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid FactTypeInstanceDomainRoleId = new global::System.Guid(0xe2961a99, 0x6eb7, 0x45d5, 0x9e, 0xaf, 0xec, 0x1c, 0x39, 0xfd, 0x02, 0x6b);
+		public static readonly global::System.Guid FactInstanceDomainRoleId = new global::System.Guid(0xe2961a99, 0x6eb7, 0x45d5, 0x9e, 0xaf, 0xec, 0x1c, 0x39, 0xfd, 0x02, 0x6b);
 		
 		/// <summary>
-		/// DomainRole FactTypeInstance
+		/// DomainRole FactInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance/FactTypeInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance/FactInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("e2961a99-6eb7-45d5-9eaf-ec1c39fd026b")]
-		public virtual FactTypeInstance FactTypeInstance
+		public virtual FactInstance FactInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (FactTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeInstanceDomainRoleId);
+				return (FactInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access FactTypeInstanceCollection of a FactType
+		#region Static methods to access FactInstanceCollection of a FactType
 		/// <summary>
-		/// Gets a list of FactTypeInstanceCollection.
+		/// Gets a list of FactInstanceCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<FactTypeInstance> GetFactTypeInstanceCollection(FactType element)
+		public static DslModeling::LinkedElementCollection<FactInstance> GetFactInstanceCollection(FactType element)
 		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<FactTypeInstance>, FactTypeInstance>(element, FactTypeDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<FactInstance>, FactInstance>(element, FactTypeDomainRoleId);
 		}
 		#endregion
 		#region FactType link accessor
 		/// <summary>
-		/// Get the list of FactTypeHasFactTypeInstance links to a FactType.
+		/// Get the list of FactTypeHasFactInstance links to a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance> GetLinksToFactTypeInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance> GetLinksToFactInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactTypeDomainRoleId);
 		}
 		#endregion
-		#region FactTypeInstance link accessor
+		#region FactInstance link accessor
 		/// <summary>
-		/// Get the FactTypeHasFactTypeInstance link to a FactTypeInstance.
+		/// Get the FactTypeHasFactInstance link to a FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance GetLinkToFactType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance factTypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance GetLinkToFactType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance factInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance>(factTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactTypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance>(factInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -41154,20 +38997,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region FactTypeHasFactTypeInstance instance accessors
+		#region FactTypeHasFactInstance instance accessors
 		
 		/// <summary>
-		/// Get any FactTypeHasFactTypeInstance links between a given FactType and a FactTypeInstance.
+		/// Get any FactTypeHasFactInstance links between a given FactType and a FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance link in links )
 			{
-				if ( target.Equals(link.FactTypeInstance) )
+				if ( target.Equals(link.FactInstance) )
 				{
 					outLinks.Add(link);
 				}
@@ -41175,16 +39018,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one FactTypeHasFactTypeInstance link between a given FactTypeand a FactTypeInstance.
+		/// Get the one FactTypeHasFactInstance link between a given FactTypeand a FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance.FactTypeDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactTypeInstance link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance.FactTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasFactInstance link in links )
 			{
-				if ( target.Equals(link.FactTypeInstance) )
+				if ( target.Equals(link.FactInstance) )
 				{
 					return link;
 				}
@@ -41198,34 +39041,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship FactTypeInstanceHasRoleInstance
+	/// DomainRelationship FactInstanceHasRoleInstance
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("f92b6ec1-8055-4502-bd5d-763d1f5b6849")]
-	public partial class FactTypeInstanceHasRoleInstance : DslModeling::ElementLink
+	public partial class FactInstanceHasRoleInstance : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// FactTypeInstanceHasRoleInstance domain class Id.
+		/// FactInstanceHasRoleInstance domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xf92b6ec1, 0x8055, 0x4502, 0xbd, 0x5d, 0x76, 0x3d, 0x1f, 0x5b, 0x68, 0x49);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a FactTypeInstanceHasRoleInstance link in the same Partition as the given FactTypeInstance
+		/// Creates a FactInstanceHasRoleInstance link in the same Partition as the given FactInstance
 		/// </summary>
-		/// <param name="source">FactTypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">FactTypeRoleInstance to use as the target of the relationship.</param>
-		public FactTypeInstanceHasRoleInstance(FactTypeInstance source, FactTypeRoleInstance target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeInstanceHasRoleInstance.FactTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId, target)}, null)
+		/// <param name="source">FactInstance to use as the source of the relationship.</param>
+		/// <param name="target">RoleInstance to use as the target of the relationship.</param>
+		public FactInstanceHasRoleInstance(FactInstance source, RoleInstance target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactInstanceHasRoleInstance.FactInstanceDomainRoleId, source), new DslModeling::RoleAssignment(FactInstanceHasRoleInstance.RoleInstanceDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -41234,7 +39077,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeInstanceHasRoleInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public FactInstanceHasRoleInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -41245,7 +39088,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeInstanceHasRoleInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactInstanceHasRoleInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -41255,7 +39098,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeInstanceHasRoleInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public FactInstanceHasRoleInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -41266,61 +39109,61 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeInstanceHasRoleInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactInstanceHasRoleInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region FactTypeInstance domain role code
+		#region FactInstance domain role code
 		
 		/// <summary>
-		/// FactTypeInstance domain role Id.
+		/// FactInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid FactTypeInstanceDomainRoleId = new global::System.Guid(0x82d54796, 0x2a6c, 0x48c4, 0x8b, 0x9c, 0x36, 0xce, 0x19, 0x14, 0xd3, 0xbc);
+		public static readonly global::System.Guid FactInstanceDomainRoleId = new global::System.Guid(0x82d54796, 0x2a6c, 0x48c4, 0x8b, 0x9c, 0x36, 0xce, 0x19, 0x14, 0xd3, 0xbc);
 		
 		/// <summary>
-		/// DomainRole FactTypeInstance
+		/// DomainRole FactInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.FactInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/FactTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/FactTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/FactTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/FactInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/FactInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleInstanceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/FactInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("82d54796-2a6c-48c4-8b9c-36ce1914d3bc")]
-		public virtual FactTypeInstance FactTypeInstance
+		public virtual FactInstance FactInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (FactTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeInstanceDomainRoleId);
+				return (FactInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access FactTypeInstance of a FactTypeRoleInstance
+		#region Static methods to access FactInstance of a RoleInstance
 		/// <summary>
-		/// Gets FactTypeInstance.
+		/// Gets FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static FactTypeInstance GetFactTypeInstance(FactTypeRoleInstance element)
+		public static FactInstance GetFactInstance(RoleInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as FactTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as FactInstance;
 		}
 		
 		/// <summary>
-		/// Sets FactTypeInstance.
+		/// Sets FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetFactTypeInstance(FactTypeRoleInstance element, FactTypeInstance newFactTypeInstance)
+		public static void SetFactInstance(RoleInstance element, FactInstance newFactInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newFactTypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newFactInstance);
 		}
 		#endregion
 		#region RoleInstance domain role code
@@ -41333,18 +39176,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DomainRole RoleInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.RoleInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/RoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/RoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance/RoleInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/RoleInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/RoleInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance/RoleInstance.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("af7b2192-02b6-49a6-a6d7-67a608124bb6")]
-		public virtual FactTypeRoleInstance RoleInstance
+		public virtual RoleInstance RoleInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (FactTypeRoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
+				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -41354,37 +39197,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access RoleInstanceCollection of a FactTypeInstance
+		#region Static methods to access RoleInstanceCollection of a FactInstance
 		/// <summary>
 		/// Gets a list of RoleInstanceCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<FactTypeRoleInstance> GetRoleInstanceCollection(FactTypeInstance element)
+		public static DslModeling::LinkedElementCollection<RoleInstance> GetRoleInstanceCollection(FactInstance element)
 		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<FactTypeRoleInstance>, FactTypeRoleInstance>(element, FactTypeInstanceDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<RoleInstance>, RoleInstance>(element, FactInstanceDomainRoleId);
 		}
 		#endregion
-		#region FactTypeInstance link accessor
+		#region FactInstance link accessor
 		/// <summary>
-		/// Get the list of FactTypeInstanceHasRoleInstance links to a FactTypeInstance.
+		/// Get the list of FactInstanceHasRoleInstance links to a FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance> GetLinksToRoleInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance factTypeInstanceInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance> GetLinksToRoleInstanceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance factInstanceInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance>(factTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.FactTypeInstanceDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance>(factInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.FactInstanceDomainRoleId);
 		}
 		#endregion
 		#region RoleInstance link accessor
 		/// <summary>
-		/// Get the FactTypeInstanceHasRoleInstance link to a FactTypeRoleInstance.
+		/// Get the FactInstanceHasRoleInstance link to a RoleInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance GetLinkToFactTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance roleInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance GetLinkToFactInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance roleInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance>(roleInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance>(roleInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.RoleInstanceDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
@@ -41396,18 +39239,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region FactTypeInstanceHasRoleInstance instance accessors
+		#region FactInstanceHasRoleInstance instance accessors
 		
 		/// <summary>
-		/// Get any FactTypeInstanceHasRoleInstance links between a given FactTypeInstance and a FactTypeRoleInstance.
+		/// Get any FactInstanceHasRoleInstance links between a given FactInstance and a RoleInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.FactTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.FactInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance link in links )
 			{
 				if ( target.Equals(link.RoleInstance) )
 				{
@@ -41417,14 +39260,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one FactTypeInstanceHasRoleInstance link between a given FactTypeInstanceand a FactTypeRoleInstance.
+		/// Get the one FactInstanceHasRoleInstance link between a given FactInstanceand a RoleInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleInstance target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleInstance target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance.FactTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasRoleInstance link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance.FactInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstanceHasRoleInstance link in links )
 			{
 				if ( target.Equals(link.RoleInstance) )
 				{
@@ -41462,11 +39305,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ObjectificationInstance link in the same Partition as the given FactTypeInstance
+		/// Creates a ObjectificationInstance link in the same Partition as the given FactInstance
 		/// </summary>
-		/// <param name="source">FactTypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">ObjectTypeInstance to use as the target of the relationship.</param>
-		public ObjectificationInstance(FactTypeInstance source, ObjectTypeInstance target)
+		/// <param name="source">FactInstance to use as the source of the relationship.</param>
+		/// <param name="target">ObjectInstance to use as the target of the relationship.</param>
+		public ObjectificationInstance(FactInstance source, ObjectInstance target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectificationInstance.ObjectifiedInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectificationInstance.ObjectifyingInstanceDomainRoleId, target)}, null)
 		{
 		}
@@ -41529,12 +39372,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance/ObjectifiedInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifyingInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance/ObjectifiedInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("819a1d2b-125b-4193-a336-25be03ea91c3")]
-		public virtual FactTypeInstance ObjectifiedInstance
+		public virtual FactInstance ObjectifiedInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (FactTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifiedInstanceDomainRoleId);
+				return (FactInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifiedInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -41544,15 +39387,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ObjectifiedInstance of a ObjectTypeInstance
+		#region Static methods to access ObjectifiedInstance of a ObjectInstance
 		/// <summary>
 		/// Gets ObjectifiedInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static FactTypeInstance GetObjectifiedInstance(ObjectTypeInstance element)
+		public static FactInstance GetObjectifiedInstance(ObjectInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifyingInstanceDomainRoleId) as FactTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifyingInstanceDomainRoleId) as FactInstance;
 		}
 		
 		/// <summary>
@@ -41560,7 +39403,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectifiedInstance(ObjectTypeInstance element, FactTypeInstance newObjectifiedInstance)
+		public static void SetObjectifiedInstance(ObjectInstance element, FactInstance newObjectifiedInstance)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifyingInstanceDomainRoleId, newObjectifiedInstance);
 		}
@@ -41581,12 +39424,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance/ObjectifyingInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectifiedInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance/ObjectifyingInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("326e4cf1-6a1f-41ab-b535-3a016ce59c7f")]
-		public virtual ObjectTypeInstance ObjectifyingInstance
+		public virtual ObjectInstance ObjectifyingInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifyingInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectifyingInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -41596,15 +39439,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ObjectifyingInstance of a FactTypeInstance
+		#region Static methods to access ObjectifyingInstance of a FactInstance
 		/// <summary>
 		/// Gets ObjectifyingInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectTypeInstance GetObjectifyingInstance(FactTypeInstance element)
+		public static ObjectInstance GetObjectifyingInstance(FactInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifiedInstanceDomainRoleId) as ObjectTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifiedInstanceDomainRoleId) as ObjectInstance;
 		}
 		
 		/// <summary>
@@ -41612,18 +39455,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectifyingInstance(FactTypeInstance element, ObjectTypeInstance newObjectifyingInstance)
+		public static void SetObjectifyingInstance(FactInstance element, ObjectInstance newObjectifyingInstance)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifiedInstanceDomainRoleId, newObjectifyingInstance);
 		}
 		#endregion
 		#region ObjectifiedInstance link accessor
 		/// <summary>
-		/// Get the ObjectificationInstance link to a FactTypeInstance.
+		/// Get the ObjectificationInstance link to a FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance GetLinkToObjectifyingInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance objectifiedInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance GetLinkToObjectifyingInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance objectifiedInstanceInstance)
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance>(objectifiedInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifiedInstance not obeyed.");
@@ -41639,11 +39482,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 		#region ObjectifyingInstance link accessor
 		/// <summary>
-		/// Get the ObjectificationInstance link to a ObjectTypeInstance.
+		/// Get the ObjectificationInstance link to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance GetLinkToObjectifiedInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance objectifyingInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance GetLinkToObjectifiedInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance objectifyingInstanceInstance)
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance>(objectifyingInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifyingInstanceDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifyingInstance not obeyed.");
@@ -41660,11 +39503,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region ObjectificationInstance instance accessors
 		
 		/// <summary>
-		/// Get any ObjectificationInstance links between a given FactTypeInstance and a ObjectTypeInstance.
+		/// Get any ObjectificationInstance links between a given FactInstance and a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
@@ -41678,11 +39521,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ObjectificationInstance link between a given FactTypeInstanceand a ObjectTypeInstance.
+		/// Get the one ObjectificationInstance link between a given FactInstanceand a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance target )
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectifiedInstanceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance link in links )
@@ -41723,12 +39566,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ObjectifiedInstanceHasObjectifyingInstanceRequiredError link in the same Partition as the given FactTypeInstance
+		/// Creates a ObjectifiedInstanceHasObjectifyingInstanceRequiredError link in the same Partition as the given FactInstance
 		/// </summary>
-		/// <param name="source">FactTypeInstance to use as the source of the relationship.</param>
+		/// <param name="source">FactInstance to use as the source of the relationship.</param>
 		/// <param name="target">ObjectifyingInstanceRequiredError to use as the target of the relationship.</param>
-		public ObjectifiedInstanceHasObjectifyingInstanceRequiredError(FactTypeInstance source, ObjectifyingInstanceRequiredError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId, target)}, null)
+		public ObjectifiedInstanceHasObjectifyingInstanceRequiredError(FactInstance source, ObjectifyingInstanceRequiredError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -41774,62 +39617,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region FactTypeInstance domain role code
+		#region FactInstance domain role code
 		
 		/// <summary>
-		/// FactTypeInstance domain role Id.
+		/// FactInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid FactTypeInstanceDomainRoleId = new global::System.Guid(0x2d8dd1d8, 0x131e, 0x44e7, 0x90, 0x30, 0xe1, 0x6c, 0xc5, 0x88, 0xa0, 0xaa);
+		public static readonly global::System.Guid FactInstanceDomainRoleId = new global::System.Guid(0x2d8dd1d8, 0x131e, 0x44e7, 0x90, 0x30, 0xe1, 0x6c, 0xc5, 0x88, 0xa0, 0xaa);
 		
 		/// <summary>
-		/// DomainRole FactTypeInstance
+		/// DomainRole FactInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifyingInstanceRequiredError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifyingInstanceRequiredError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/FactInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("2d8dd1d8-131e-44e7-9030-e16cc588a0aa")]
-		public virtual FactTypeInstance FactTypeInstance
+		public virtual FactInstance FactInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (FactTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeInstanceDomainRoleId);
+				return (FactInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access FactTypeInstance of a ObjectifyingInstanceRequiredError
+		#region Static methods to access FactInstance of a ObjectifyingInstanceRequiredError
 		/// <summary>
-		/// Gets FactTypeInstance.
+		/// Gets FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static FactTypeInstance GetFactTypeInstance(ObjectifyingInstanceRequiredError element)
+		public static FactInstance GetFactInstance(ObjectifyingInstanceRequiredError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifyingInstanceRequiredErrorDomainRoleId) as FactTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifyingInstanceRequiredErrorDomainRoleId) as FactInstance;
 		}
 		
 		/// <summary>
-		/// Sets FactTypeInstance.
+		/// Sets FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetFactTypeInstance(ObjectifyingInstanceRequiredError element, FactTypeInstance newFactTypeInstance)
+		public static void SetFactInstance(ObjectifyingInstanceRequiredError element, FactInstance newFactInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifyingInstanceRequiredErrorDomainRoleId, newFactTypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifyingInstanceRequiredErrorDomainRoleId, newFactInstance);
 		}
 		#endregion
 		#region AssociatedElement domain role override
 		
 		/// <summary>
-		/// Gets the element playing FactTypeInstance domain role.
+		/// Gets the element playing FactInstance domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
 		/// </summary>
@@ -41838,12 +39681,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.FactTypeInstance;
+				return this.FactInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.FactTypeInstance = (FactTypeInstance)value;
+				this.FactInstance = (FactInstance)value;
 			}
 		}
 		
@@ -41862,7 +39705,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError/ObjectifyingInstanceRequiredError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("0b7c29c1-067c-4986-9cb6-e485cd091c28")]
 		public virtual ObjectifyingInstanceRequiredError ObjectifyingInstanceRequiredError
 		{
@@ -41879,15 +39722,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ObjectifyingInstanceRequiredError of a FactTypeInstance
+		#region Static methods to access ObjectifyingInstanceRequiredError of a FactInstance
 		/// <summary>
 		/// Gets ObjectifyingInstanceRequiredError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectifyingInstanceRequiredError GetObjectifyingInstanceRequiredError(FactTypeInstance element)
+		public static ObjectifyingInstanceRequiredError GetObjectifyingInstanceRequiredError(FactInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeInstanceDomainRoleId) as ObjectifyingInstanceRequiredError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactInstanceDomainRoleId) as ObjectifyingInstanceRequiredError;
 		}
 		
 		/// <summary>
@@ -41895,9 +39738,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectifyingInstanceRequiredError(FactTypeInstance element, ObjectifyingInstanceRequiredError newObjectifyingInstanceRequiredError)
+		public static void SetObjectifyingInstanceRequiredError(FactInstance element, ObjectifyingInstanceRequiredError newObjectifyingInstanceRequiredError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeInstanceDomainRoleId, newObjectifyingInstanceRequiredError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactInstanceDomainRoleId, newObjectifyingInstanceRequiredError);
 		}
 		#endregion
 		#region ModelError domain role override
@@ -41922,16 +39765,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region FactTypeInstance link accessor
+		#region FactInstance link accessor
 		/// <summary>
-		/// Get the ObjectifiedInstanceHasObjectifyingInstanceRequiredError link to a FactTypeInstance.
+		/// Get the ObjectifiedInstanceHasObjectifyingInstanceRequiredError link to a FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLinkToObjectifyingInstanceRequiredError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance factTypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLinkToObjectifyingInstanceRequiredError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance factInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(factTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactTypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(factInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -41948,7 +39791,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLinkToFactTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceRequiredError objectifyingInstanceRequiredErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLinkToFactInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceRequiredError objectifyingInstanceRequiredErrorInstance)
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(objectifyingInstanceRequiredErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.ObjectifyingInstanceRequiredErrorDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifyingInstanceRequiredError not obeyed.");
@@ -41965,14 +39808,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region ObjectifiedInstanceHasObjectifyingInstanceRequiredError instance accessors
 		
 		/// <summary>
-		/// Get any ObjectifiedInstanceHasObjectifyingInstanceRequiredError links between a given FactTypeInstance and a ObjectifyingInstanceRequiredError.
+		/// Get any ObjectifiedInstanceHasObjectifyingInstanceRequiredError links between a given FactInstance and a ObjectifyingInstanceRequiredError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceRequiredError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceRequiredError target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError link in links )
 			{
 				if ( target.Equals(link.ObjectifyingInstanceRequiredError) )
@@ -41983,13 +39826,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ObjectifiedInstanceHasObjectifyingInstanceRequiredError link between a given FactTypeInstanceand a ObjectifyingInstanceRequiredError.
+		/// Get the one ObjectifiedInstanceHasObjectifyingInstanceRequiredError link between a given FactInstanceand a ObjectifyingInstanceRequiredError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceRequiredError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceRequiredError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactTypeInstanceDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError.FactInstanceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceHasObjectifyingInstanceRequiredError link in links )
 			{
 				if ( target.Equals(link.ObjectifyingInstanceRequiredError) )
@@ -42028,12 +39871,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ObjectifyingInstanceHasObjectifiedInstanceRequiredError link in the same Partition as the given ObjectTypeInstance
+		/// Creates a ObjectifyingInstanceHasObjectifiedInstanceRequiredError link in the same Partition as the given ObjectInstance
 		/// </summary>
-		/// <param name="source">ObjectTypeInstance to use as the source of the relationship.</param>
+		/// <param name="source">ObjectInstance to use as the source of the relationship.</param>
 		/// <param name="target">ObjectifiedInstanceRequiredError to use as the target of the relationship.</param>
-		public ObjectifyingInstanceHasObjectifiedInstanceRequiredError(ObjectTypeInstance source, ObjectifiedInstanceRequiredError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId, target)}, null)
+		public ObjectifyingInstanceHasObjectifiedInstanceRequiredError(ObjectInstance source, ObjectifiedInstanceRequiredError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -42079,62 +39922,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region ObjectTypeInstance domain role code
+		#region ObjectInstance domain role code
 		
 		/// <summary>
-		/// ObjectTypeInstance domain role Id.
+		/// ObjectInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x07cbb8ae, 0xfc88, 0x4f02, 0x90, 0x5e, 0x2c, 0xe7, 0x25, 0x8e, 0xba, 0x46);
+		public static readonly global::System.Guid ObjectInstanceDomainRoleId = new global::System.Guid(0x07cbb8ae, 0xfc88, 0x4f02, 0x90, 0x5e, 0x2c, 0xe7, 0x25, 0x8e, 0xba, 0x46);
 		
 		/// <summary>
-		/// DomainRole ObjectTypeInstance
+		/// DomainRole ObjectInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifiedInstanceRequiredError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectifiedInstanceRequiredError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("07cbb8ae-fc88-4f02-905e-2ce7258eba46")]
-		public virtual ObjectTypeInstance ObjectTypeInstance
+		public virtual ObjectInstance ObjectInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ObjectTypeInstance of a ObjectifiedInstanceRequiredError
+		#region Static methods to access ObjectInstance of a ObjectifiedInstanceRequiredError
 		/// <summary>
-		/// Gets ObjectTypeInstance.
+		/// Gets ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectTypeInstance GetObjectTypeInstance(ObjectifiedInstanceRequiredError element)
+		public static ObjectInstance GetObjectInstance(ObjectifiedInstanceRequiredError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifiedInstanceRequiredErrorDomainRoleId) as ObjectTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectifiedInstanceRequiredErrorDomainRoleId) as ObjectInstance;
 		}
 		
 		/// <summary>
-		/// Sets ObjectTypeInstance.
+		/// Sets ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectTypeInstance(ObjectifiedInstanceRequiredError element, ObjectTypeInstance newObjectTypeInstance)
+		public static void SetObjectInstance(ObjectifiedInstanceRequiredError element, ObjectInstance newObjectInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifiedInstanceRequiredErrorDomainRoleId, newObjectTypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectifiedInstanceRequiredErrorDomainRoleId, newObjectInstance);
 		}
 		#endregion
 		#region AssociatedElement domain role override
 		
 		/// <summary>
-		/// Gets the element playing ObjectTypeInstance domain role.
+		/// Gets the element playing ObjectInstance domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
 		/// </summary>
@@ -42143,12 +39986,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.ObjectTypeInstance;
+				return this.ObjectInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.ObjectTypeInstance = (ObjectTypeInstance)value;
+				this.ObjectInstance = (ObjectInstance)value;
 			}
 		}
 		
@@ -42167,7 +40010,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError/ObjectifiedInstanceRequiredError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("b8b818dd-b4f9-4641-992f-c405c45c6f8f")]
 		public virtual ObjectifiedInstanceRequiredError ObjectifiedInstanceRequiredError
 		{
@@ -42184,15 +40027,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 				
 		#endregion
-		#region Static methods to access ObjectifiedInstanceRequiredError of a ObjectTypeInstance
+		#region Static methods to access ObjectifiedInstanceRequiredError of a ObjectInstance
 		/// <summary>
 		/// Gets ObjectifiedInstanceRequiredError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ObjectifiedInstanceRequiredError GetObjectifiedInstanceRequiredError(ObjectTypeInstance element)
+		public static ObjectifiedInstanceRequiredError GetObjectifiedInstanceRequiredError(ObjectInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeInstanceDomainRoleId) as ObjectifiedInstanceRequiredError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectInstanceDomainRoleId) as ObjectifiedInstanceRequiredError;
 		}
 		
 		/// <summary>
@@ -42200,9 +40043,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectifiedInstanceRequiredError(ObjectTypeInstance element, ObjectifiedInstanceRequiredError newObjectifiedInstanceRequiredError)
+		public static void SetObjectifiedInstanceRequiredError(ObjectInstance element, ObjectifiedInstanceRequiredError newObjectifiedInstanceRequiredError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeInstanceDomainRoleId, newObjectifiedInstanceRequiredError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectInstanceDomainRoleId, newObjectifiedInstanceRequiredError);
 		}
 		#endregion
 		#region ModelError domain role override
@@ -42227,16 +40070,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region ObjectTypeInstance link accessor
+		#region ObjectInstance link accessor
 		/// <summary>
-		/// Get the ObjectifyingInstanceHasObjectifiedInstanceRequiredError link to a ObjectTypeInstance.
+		/// Get the ObjectifyingInstanceHasObjectifiedInstanceRequiredError link to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLinkToObjectifiedInstanceRequiredError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLinkToObjectifiedInstanceRequiredError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance objectInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(objectTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectTypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(objectInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -42253,7 +40096,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLinkToObjectTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceRequiredError objectifiedInstanceRequiredErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLinkToObjectInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceRequiredError objectifiedInstanceRequiredErrorInstance)
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(objectifiedInstanceRequiredErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectifiedInstanceRequiredErrorDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectifiedInstanceRequiredError not obeyed.");
@@ -42270,14 +40113,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region ObjectifyingInstanceHasObjectifiedInstanceRequiredError instance accessors
 		
 		/// <summary>
-		/// Get any ObjectifyingInstanceHasObjectifiedInstanceRequiredError links between a given ObjectTypeInstance and a ObjectifiedInstanceRequiredError.
+		/// Get any ObjectifyingInstanceHasObjectifiedInstanceRequiredError links between a given ObjectInstance and a ObjectifiedInstanceRequiredError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceRequiredError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceRequiredError target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError link in links )
 			{
 				if ( target.Equals(link.ObjectifiedInstanceRequiredError) )
@@ -42288,13 +40131,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ObjectifyingInstanceHasObjectifiedInstanceRequiredError link between a given ObjectTypeInstanceand a ObjectifiedInstanceRequiredError.
+		/// Get the one ObjectifyingInstanceHasObjectifiedInstanceRequiredError link between a given ObjectInstanceand a ObjectifiedInstanceRequiredError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceRequiredError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifiedInstanceRequiredError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectTypeInstanceDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError.ObjectInstanceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectifyingInstanceHasObjectifiedInstanceRequiredError link in links )
 			{
 				if ( target.Equals(link.ObjectifiedInstanceRequiredError) )
@@ -42311,34 +40154,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError
+	/// DomainRelationship EntityHasTooFewIdentifyingRoleInstancesError
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("922e0a74-9384-4d25-9c38-e0ab709fee8f")]
-	public partial class EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError : ElementAssociatedWithModelError
+	public partial class EntityHasTooFewIdentifyingRoleInstancesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError domain class Id.
+		/// EntityHasTooFewIdentifyingRoleInstancesError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x922e0a74, 0x9384, 0x4d25, 0x9c, 0x38, 0xe0, 0xab, 0x70, 0x9f, 0xee, 0x8f);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError link in the same Partition as the given EntityTypeInstance
+		/// Creates a EntityHasTooFewIdentifyingRoleInstancesError link in the same Partition as the given ObjectInstance
 		/// </summary>
-		/// <param name="source">EntityTypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">TooFewEntityTypeRoleInstancesError to use as the target of the relationship.</param>
-		public EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError(EntityTypeInstance source, TooFewEntityTypeRoleInstancesError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId, target)}, null)
+		/// <param name="source">ObjectInstance to use as the source of the relationship.</param>
+		/// <param name="target">TooFewEntityRoleInstancesError to use as the target of the relationship.</param>
+		public EntityHasTooFewIdentifyingRoleInstancesError(ObjectInstance source, TooFewEntityRoleInstancesError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId, source), new DslModeling::RoleAssignment(EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -42347,7 +40190,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public EntityHasTooFewIdentifyingRoleInstancesError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -42358,7 +40201,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public EntityHasTooFewIdentifyingRoleInstancesError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -42368,7 +40211,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public EntityHasTooFewIdentifyingRoleInstancesError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -42379,67 +40222,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public EntityHasTooFewIdentifyingRoleInstancesError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region EntityTypeInstance domain role code
+		#region EntityInstance domain role code
 		
 		/// <summary>
-		/// EntityTypeInstance domain role Id.
+		/// EntityInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid EntityTypeInstanceDomainRoleId = new global::System.Guid(0x715ed45e, 0x2c85, 0x491e, 0xa5, 0x77, 0x3a, 0x69, 0x85, 0x34, 0x76, 0x87);
+		public static readonly global::System.Guid EntityInstanceDomainRoleId = new global::System.Guid(0x715ed45e, 0x2c85, 0x491e, 0xa5, 0x77, 0x3a, 0x69, 0x85, 0x34, 0x76, 0x87);
 		
 		/// <summary>
-		/// DomainRole EntityTypeInstance
+		/// DomainRole EntityInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewEntityTypeRoleInstancesError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/EntityInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/EntityInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewEntityRoleInstancesError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/EntityInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("715ed45e-2c85-491e-a577-3a6985347687")]
-		public virtual EntityTypeInstance EntityTypeInstance
+		public virtual ObjectInstance EntityInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (EntityTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityTypeInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, EntityInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, EntityInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access EntityTypeInstance of a TooFewEntityTypeRoleInstancesError
+		#region Static methods to access EntityInstance of a TooFewEntityRoleInstancesError
 		/// <summary>
-		/// Gets EntityTypeInstance.
+		/// Gets EntityInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static EntityTypeInstance GetEntityTypeInstance(TooFewEntityTypeRoleInstancesError element)
+		public static ObjectInstance GetEntityInstance(TooFewEntityRoleInstancesError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, TooFewEntityTypeRoleInstancesErrorDomainRoleId) as EntityTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, TooFewEntityRoleInstancesErrorDomainRoleId) as ObjectInstance;
 		}
 		
 		/// <summary>
-		/// Sets EntityTypeInstance.
+		/// Sets EntityInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetEntityTypeInstance(TooFewEntityTypeRoleInstancesError element, EntityTypeInstance newEntityTypeInstance)
+		public static void SetEntityInstance(TooFewEntityRoleInstancesError element, ObjectInstance newEntityInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewEntityTypeRoleInstancesErrorDomainRoleId, newEntityTypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewEntityRoleInstancesErrorDomainRoleId, newEntityInstance);
 		}
 		#endregion
 		#region AssociatedElement domain role override
 		
 		/// <summary>
-		/// Gets the element playing EntityTypeInstance domain role.
+		/// Gets the element playing EntityInstance domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
 		/// </summary>
@@ -42448,72 +40291,72 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.EntityTypeInstance;
+				return this.EntityInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.EntityTypeInstance = (EntityTypeInstance)value;
+				this.EntityInstance = (ObjectInstance)value;
 			}
 		}
 		
 		#endregion
-		#region TooFewEntityTypeRoleInstancesError domain role code
+		#region TooFewEntityRoleInstancesError domain role code
 		
 		/// <summary>
-		/// TooFewEntityTypeRoleInstancesError domain role Id.
+		/// TooFewEntityRoleInstancesError domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid TooFewEntityTypeRoleInstancesErrorDomainRoleId = new global::System.Guid(0x61d2d2df, 0x749c, 0x4d93, 0x8e, 0xf4, 0x5c, 0xcd, 0x92, 0xe0, 0x31, 0x54);
+		public static readonly global::System.Guid TooFewEntityRoleInstancesErrorDomainRoleId = new global::System.Guid(0x61d2d2df, 0x749c, 0x4d93, 0x8e, 0xf4, 0x5c, 0xcd, 0x92, 0xe0, 0x31, 0x54);
 		
 		/// <summary>
-		/// DomainRole TooFewEntityTypeRoleInstancesError
+		/// DomainRole TooFewEntityRoleInstancesError
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesError
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/TooFewEntityTypeRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/TooFewEntityTypeRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/TooFewEntityTypeRoleInstancesError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/TooFewEntityRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/TooFewEntityRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "EntityInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError/TooFewEntityRoleInstancesError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("61d2d2df-749c-4d93-8ef4-5ccd92e03154")]
-		public virtual TooFewEntityTypeRoleInstancesError TooFewEntityTypeRoleInstancesError
+		public virtual TooFewEntityRoleInstancesError TooFewEntityRoleInstancesError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (TooFewEntityTypeRoleInstancesError)DslModeling::DomainRoleInfo.GetRolePlayer(this, TooFewEntityTypeRoleInstancesErrorDomainRoleId);
+				return (TooFewEntityRoleInstancesError)DslModeling::DomainRoleInfo.GetRolePlayer(this, TooFewEntityRoleInstancesErrorDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, TooFewEntityTypeRoleInstancesErrorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, TooFewEntityRoleInstancesErrorDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access TooFewEntityTypeRoleInstancesError of a EntityTypeInstance
+		#region Static methods to access TooFewEntityRoleInstancesError of a ObjectInstance
 		/// <summary>
-		/// Gets TooFewEntityTypeRoleInstancesError.
+		/// Gets TooFewEntityRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static TooFewEntityTypeRoleInstancesError GetTooFewEntityTypeRoleInstancesError(EntityTypeInstance element)
+		public static TooFewEntityRoleInstancesError GetTooFewEntityRoleInstancesError(ObjectInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityTypeInstanceDomainRoleId) as TooFewEntityTypeRoleInstancesError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, EntityInstanceDomainRoleId) as TooFewEntityRoleInstancesError;
 		}
 		
 		/// <summary>
-		/// Sets TooFewEntityTypeRoleInstancesError.
+		/// Sets TooFewEntityRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetTooFewEntityTypeRoleInstancesError(EntityTypeInstance element, TooFewEntityTypeRoleInstancesError newTooFewEntityTypeRoleInstancesError)
+		public static void SetTooFewEntityRoleInstancesError(ObjectInstance element, TooFewEntityRoleInstancesError newTooFewEntityRoleInstancesError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityTypeInstanceDomainRoleId, newTooFewEntityTypeRoleInstancesError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, EntityInstanceDomainRoleId, newTooFewEntityRoleInstancesError);
 		}
 		#endregion
 		#region ModelError domain role override
 		
 		/// <summary>
-		/// Gets the element playing TooFewEntityTypeRoleInstancesError domain role.
+		/// Gets the element playing TooFewEntityRoleInstancesError domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
 		/// </summary>
@@ -42522,26 +40365,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.TooFewEntityTypeRoleInstancesError;
+				return this.TooFewEntityRoleInstancesError;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.TooFewEntityTypeRoleInstancesError = (TooFewEntityTypeRoleInstancesError)value;
+				this.TooFewEntityRoleInstancesError = (TooFewEntityRoleInstancesError)value;
 			}
 		}
 		
 		#endregion
-		#region EntityTypeInstance link accessor
+		#region EntityInstance link accessor
 		/// <summary>
-		/// Get the EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError link to a EntityTypeInstance.
+		/// Get the EntityHasTooFewIdentifyingRoleInstancesError link to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError GetLinkToTooFewEntityTypeRoleInstancesError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance entityTypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError GetLinkToTooFewEntityRoleInstancesError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance entityInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError>(entityTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityTypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError>(entityInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of EntityInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -42552,16 +40395,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region TooFewEntityTypeRoleInstancesError link accessor
+		#region TooFewEntityRoleInstancesError link accessor
 		/// <summary>
-		/// Get the EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError link to a TooFewEntityTypeRoleInstancesError.
+		/// Get the EntityHasTooFewIdentifyingRoleInstancesError link to a TooFewEntityRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError GetLinkToEntityTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityTypeRoleInstancesError tooFewEntityTypeRoleInstancesErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError GetLinkToEntityInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityRoleInstancesError tooFewEntityRoleInstancesErrorInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError>(tooFewEntityTypeRoleInstancesErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of TooFewEntityTypeRoleInstancesError not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError>(tooFewEntityRoleInstancesErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.TooFewEntityRoleInstancesErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of TooFewEntityRoleInstancesError not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -42572,20 +40415,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError instance accessors
+		#region EntityHasTooFewIdentifyingRoleInstancesError instance accessors
 		
 		/// <summary>
-		/// Get any EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError links between a given EntityTypeInstance and a TooFewEntityTypeRoleInstancesError.
+		/// Get any EntityHasTooFewIdentifyingRoleInstancesError links between a given ObjectInstance and a TooFewEntityRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityTypeRoleInstancesError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityRoleInstancesError target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError link in links )
 			{
-				if ( target.Equals(link.TooFewEntityTypeRoleInstancesError) )
+				if ( target.Equals(link.TooFewEntityRoleInstancesError) )
 				{
 					outLinks.Add(link);
 				}
@@ -42593,16 +40436,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError link between a given EntityTypeInstanceand a TooFewEntityTypeRoleInstancesError.
+		/// Get the one EntityHasTooFewIdentifyingRoleInstancesError link between a given ObjectInstanceand a TooFewEntityRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityTypeRoleInstancesError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewEntityRoleInstancesError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.EntityTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError.EntityInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.EntityHasTooFewIdentifyingRoleInstancesError link in links )
 			{
-				if ( target.Equals(link.TooFewEntityTypeRoleInstancesError) )
+				if ( target.Equals(link.TooFewEntityRoleInstancesError) )
 				{
 					return link;
 				}
@@ -42616,34 +40459,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship FactTypeInstanceHasTooFewFactTypeRoleInstancesError
+	/// DomainRelationship FactHasTooFewFactRoleInstancesError
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6ac86dd8-1766-472e-b70f-b788c04ed688")]
-	public partial class FactTypeInstanceHasTooFewFactTypeRoleInstancesError : ElementAssociatedWithModelError
+	public partial class FactHasTooFewFactRoleInstancesError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// FactTypeInstanceHasTooFewFactTypeRoleInstancesError domain class Id.
+		/// FactHasTooFewFactRoleInstancesError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6ac86dd8, 0x1766, 0x472e, 0xb7, 0x0f, 0xb7, 0x88, 0xc0, 0x4e, 0xd6, 0x88);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a FactTypeInstanceHasTooFewFactTypeRoleInstancesError link in the same Partition as the given FactTypeInstance
+		/// Creates a FactHasTooFewFactRoleInstancesError link in the same Partition as the given FactInstance
 		/// </summary>
-		/// <param name="source">FactTypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">TooFewFactTypeRoleInstancesError to use as the target of the relationship.</param>
-		public FactTypeInstanceHasTooFewFactTypeRoleInstancesError(FactTypeInstance source, TooFewFactTypeRoleInstancesError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId, target)}, null)
+		/// <param name="source">FactInstance to use as the source of the relationship.</param>
+		/// <param name="target">TooFewFactRoleInstancesError to use as the target of the relationship.</param>
+		public FactHasTooFewFactRoleInstancesError(FactInstance source, TooFewFactRoleInstancesError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId, source), new DslModeling::RoleAssignment(FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -42652,7 +40495,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeInstanceHasTooFewFactTypeRoleInstancesError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public FactHasTooFewFactRoleInstancesError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -42663,7 +40506,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeInstanceHasTooFewFactTypeRoleInstancesError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactHasTooFewFactRoleInstancesError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -42673,7 +40516,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public FactTypeInstanceHasTooFewFactTypeRoleInstancesError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public FactHasTooFewFactRoleInstancesError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -42684,67 +40527,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public FactTypeInstanceHasTooFewFactTypeRoleInstancesError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public FactHasTooFewFactRoleInstancesError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region FactTypeInstance domain role code
+		#region FactInstance domain role code
 		
 		/// <summary>
-		/// FactTypeInstance domain role Id.
+		/// FactInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid FactTypeInstanceDomainRoleId = new global::System.Guid(0xac1f89f9, 0x1dbc, 0x4826, 0x80, 0x35, 0x6e, 0xa0, 0xc1, 0xd3, 0x5e, 0xb1);
+		public static readonly global::System.Guid FactInstanceDomainRoleId = new global::System.Guid(0xac1f89f9, 0x1dbc, 0x4826, 0x80, 0x35, 0x6e, 0xa0, 0xc1, 0xd3, 0x5e, 0xb1);
 		
 		/// <summary>
-		/// DomainRole FactTypeInstance
+		/// DomainRole FactInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewFactTypeRoleInstancesError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/FactInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/FactInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewFactRoleInstancesError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/FactInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("ac1f89f9-1dbc-4826-8035-6ea0c1d35eb1")]
-		public virtual FactTypeInstance FactTypeInstance
+		public virtual FactInstance FactInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (FactTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeInstanceDomainRoleId);
+				return (FactInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access FactTypeInstance of a TooFewFactTypeRoleInstancesError
+		#region Static methods to access FactInstance of a TooFewFactRoleInstancesError
 		/// <summary>
-		/// Gets FactTypeInstance.
+		/// Gets FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static FactTypeInstance GetFactTypeInstance(TooFewFactTypeRoleInstancesError element)
+		public static FactInstance GetFactInstance(TooFewFactRoleInstancesError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, TooFewFactTypeRoleInstancesErrorDomainRoleId) as FactTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, TooFewFactRoleInstancesErrorDomainRoleId) as FactInstance;
 		}
 		
 		/// <summary>
-		/// Sets FactTypeInstance.
+		/// Sets FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetFactTypeInstance(TooFewFactTypeRoleInstancesError element, FactTypeInstance newFactTypeInstance)
+		public static void SetFactInstance(TooFewFactRoleInstancesError element, FactInstance newFactInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewFactTypeRoleInstancesErrorDomainRoleId, newFactTypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, TooFewFactRoleInstancesErrorDomainRoleId, newFactInstance);
 		}
 		#endregion
 		#region AssociatedElement domain role override
 		
 		/// <summary>
-		/// Gets the element playing FactTypeInstance domain role.
+		/// Gets the element playing FactInstance domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
 		/// </summary>
@@ -42753,72 +40596,72 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.FactTypeInstance;
+				return this.FactInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.FactTypeInstance = (FactTypeInstance)value;
+				this.FactInstance = (FactInstance)value;
 			}
 		}
 		
 		#endregion
-		#region TooFewFactTypeRoleInstancesError domain role code
+		#region TooFewFactRoleInstancesError domain role code
 		
 		/// <summary>
-		/// TooFewFactTypeRoleInstancesError domain role Id.
+		/// TooFewFactRoleInstancesError domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid TooFewFactTypeRoleInstancesErrorDomainRoleId = new global::System.Guid(0x8d72911a, 0x53e9, 0x4e0d, 0x8b, 0xe7, 0x79, 0xfc, 0x16, 0x05, 0x7e, 0xd5);
+		public static readonly global::System.Guid TooFewFactRoleInstancesErrorDomainRoleId = new global::System.Guid(0x8d72911a, 0x53e9, 0x4e0d, 0x8b, 0xe7, 0x79, 0xfc, 0x16, 0x05, 0x7e, 0xd5);
 		
 		/// <summary>
-		/// DomainRole TooFewFactTypeRoleInstancesError
+		/// DomainRole TooFewFactRoleInstancesError
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesError
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/TooFewFactTypeRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/TooFewFactTypeRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/TooFewFactTypeRoleInstancesError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/TooFewFactRoleInstancesError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/TooFewFactRoleInstancesError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError/TooFewFactRoleInstancesError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("8d72911a-53e9-4e0d-8be7-79fc16057ed5")]
-		public virtual TooFewFactTypeRoleInstancesError TooFewFactTypeRoleInstancesError
+		public virtual TooFewFactRoleInstancesError TooFewFactRoleInstancesError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (TooFewFactTypeRoleInstancesError)DslModeling::DomainRoleInfo.GetRolePlayer(this, TooFewFactTypeRoleInstancesErrorDomainRoleId);
+				return (TooFewFactRoleInstancesError)DslModeling::DomainRoleInfo.GetRolePlayer(this, TooFewFactRoleInstancesErrorDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, TooFewFactTypeRoleInstancesErrorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, TooFewFactRoleInstancesErrorDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access TooFewFactTypeRoleInstancesError of a FactTypeInstance
+		#region Static methods to access TooFewFactRoleInstancesError of a FactInstance
 		/// <summary>
-		/// Gets TooFewFactTypeRoleInstancesError.
+		/// Gets TooFewFactRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static TooFewFactTypeRoleInstancesError GetTooFewFactTypeRoleInstancesError(FactTypeInstance element)
+		public static TooFewFactRoleInstancesError GetTooFewFactRoleInstancesError(FactInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactTypeInstanceDomainRoleId) as TooFewFactTypeRoleInstancesError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, FactInstanceDomainRoleId) as TooFewFactRoleInstancesError;
 		}
 		
 		/// <summary>
-		/// Sets TooFewFactTypeRoleInstancesError.
+		/// Sets TooFewFactRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetTooFewFactTypeRoleInstancesError(FactTypeInstance element, TooFewFactTypeRoleInstancesError newTooFewFactTypeRoleInstancesError)
+		public static void SetTooFewFactRoleInstancesError(FactInstance element, TooFewFactRoleInstancesError newTooFewFactRoleInstancesError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactTypeInstanceDomainRoleId, newTooFewFactTypeRoleInstancesError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, FactInstanceDomainRoleId, newTooFewFactRoleInstancesError);
 		}
 		#endregion
 		#region ModelError domain role override
 		
 		/// <summary>
-		/// Gets the element playing TooFewFactTypeRoleInstancesError domain role.
+		/// Gets the element playing TooFewFactRoleInstancesError domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
 		/// </summary>
@@ -42827,26 +40670,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.TooFewFactTypeRoleInstancesError;
+				return this.TooFewFactRoleInstancesError;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.TooFewFactTypeRoleInstancesError = (TooFewFactTypeRoleInstancesError)value;
+				this.TooFewFactRoleInstancesError = (TooFewFactRoleInstancesError)value;
 			}
 		}
 		
 		#endregion
-		#region FactTypeInstance link accessor
+		#region FactInstance link accessor
 		/// <summary>
-		/// Get the FactTypeInstanceHasTooFewFactTypeRoleInstancesError link to a FactTypeInstance.
+		/// Get the FactHasTooFewFactRoleInstancesError link to a FactInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError GetLinkToTooFewFactTypeRoleInstancesError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance factTypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError GetLinkToTooFewFactRoleInstancesError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance factInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError>(factTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactTypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError>(factInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of FactInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -42857,16 +40700,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region TooFewFactTypeRoleInstancesError link accessor
+		#region TooFewFactRoleInstancesError link accessor
 		/// <summary>
-		/// Get the FactTypeInstanceHasTooFewFactTypeRoleInstancesError link to a TooFewFactTypeRoleInstancesError.
+		/// Get the FactHasTooFewFactRoleInstancesError link to a TooFewFactRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError GetLinkToFactTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactTypeRoleInstancesError tooFewFactTypeRoleInstancesErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError GetLinkToFactInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactRoleInstancesError tooFewFactRoleInstancesErrorInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError>(tooFewFactTypeRoleInstancesErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.TooFewFactTypeRoleInstancesErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of TooFewFactTypeRoleInstancesError not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError>(tooFewFactRoleInstancesErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.TooFewFactRoleInstancesErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of TooFewFactRoleInstancesError not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -42877,20 +40720,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region FactTypeInstanceHasTooFewFactTypeRoleInstancesError instance accessors
+		#region FactHasTooFewFactRoleInstancesError instance accessors
 		
 		/// <summary>
-		/// Get any FactTypeInstanceHasTooFewFactTypeRoleInstancesError links between a given FactTypeInstance and a TooFewFactTypeRoleInstancesError.
+		/// Get any FactHasTooFewFactRoleInstancesError links between a given FactInstance and a TooFewFactRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactTypeRoleInstancesError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactRoleInstancesError target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError link in links )
 			{
-				if ( target.Equals(link.TooFewFactTypeRoleInstancesError) )
+				if ( target.Equals(link.TooFewFactRoleInstancesError) )
 				{
 					outLinks.Add(link);
 				}
@@ -42898,16 +40741,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one FactTypeInstanceHasTooFewFactTypeRoleInstancesError link between a given FactTypeInstanceand a TooFewFactTypeRoleInstancesError.
+		/// Get the one FactHasTooFewFactRoleInstancesError link between a given FactInstanceand a TooFewFactRoleInstancesError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactTypeRoleInstancesError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewFactRoleInstancesError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.FactTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError.FactInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactHasTooFewFactRoleInstancesError link in links )
 			{
-				if ( target.Equals(link.TooFewFactTypeRoleInstancesError) )
+				if ( target.Equals(link.TooFewFactRoleInstancesError) )
 				{
 					return link;
 				}
@@ -42921,34 +40764,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainRelationship ValueTypeInstanceHasCompatibleValueTypeInstanceValueError
+	/// DomainRelationship ValueInstanceHasCompatibleValueError
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a8af2a8f-cdd0-41cb-b8cd-60cf28277288")]
-	public partial class ValueTypeInstanceHasCompatibleValueTypeInstanceValueError : ElementAssociatedWithModelError
+	public partial class ValueInstanceHasCompatibleValueError : ElementAssociatedWithModelError
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ValueTypeInstanceHasCompatibleValueTypeInstanceValueError domain class Id.
+		/// ValueInstanceHasCompatibleValueError domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa8af2a8f, 0xcdd0, 0x41cb, 0xb8, 0xcd, 0x60, 0xcf, 0x28, 0x27, 0x72, 0x88);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ValueTypeInstanceHasCompatibleValueTypeInstanceValueError link in the same Partition as the given ValueTypeInstance
+		/// Creates a ValueInstanceHasCompatibleValueError link in the same Partition as the given ObjectInstance
 		/// </summary>
-		/// <param name="source">ValueTypeInstance to use as the source of the relationship.</param>
-		/// <param name="target">CompatibleValueTypeInstanceValueError to use as the target of the relationship.</param>
-		public ValueTypeInstanceHasCompatibleValueTypeInstanceValueError(ValueTypeInstance source, CompatibleValueTypeInstanceValueError target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId, target)}, null)
+		/// <param name="source">ObjectInstance to use as the source of the relationship.</param>
+		/// <param name="target">CompatibleValueInstanceError to use as the target of the relationship.</param>
+		public ValueInstanceHasCompatibleValueError(ObjectInstance source, CompatibleValueInstanceError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ValueInstanceHasCompatibleValueError.CompatibleValueInstanceErrorDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -42957,7 +40800,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ValueTypeInstanceHasCompatibleValueTypeInstanceValueError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public ValueInstanceHasCompatibleValueError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
 		{
 		}
@@ -42968,7 +40811,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ValueTypeInstanceHasCompatibleValueTypeInstanceValueError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ValueInstanceHasCompatibleValueError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -42978,7 +40821,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ValueTypeInstanceHasCompatibleValueTypeInstanceValueError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public ValueInstanceHasCompatibleValueError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -42989,67 +40832,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ValueTypeInstanceHasCompatibleValueTypeInstanceValueError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ValueInstanceHasCompatibleValueError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region ValueTypeInstance domain role code
+		#region ValueInstance domain role code
 		
 		/// <summary>
-		/// ValueTypeInstance domain role Id.
+		/// ValueInstance domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ValueTypeInstanceDomainRoleId = new global::System.Guid(0x5c173594, 0xaa0c, 0x45ba, 0x92, 0xf1, 0x8d, 0x80, 0xa7, 0x4e, 0x13, 0x00);
+		public static readonly global::System.Guid ValueInstanceDomainRoleId = new global::System.Guid(0x5c173594, 0xaa0c, 0x45ba, 0x92, 0xf1, 0x8d, 0x80, 0xa7, 0x4e, 0x13, 0x00);
 		
 		/// <summary>
-		/// DomainRole ValueTypeInstance
+		/// DomainRole ValueInstance
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstance
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstance
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleValueTypeInstanceValueError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/ValueInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/ValueInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleValueInstanceError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/ValueInstance.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("5c173594-aa0c-45ba-92f1-8d80a74e1300")]
-		public virtual ValueTypeInstance ValueTypeInstance
+		public virtual ObjectInstance ValueInstance
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ValueTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueTypeInstanceDomainRoleId);
+				return (ObjectInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueInstanceDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueTypeInstanceDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueInstanceDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ValueTypeInstance of a CompatibleValueTypeInstanceValueError
+		#region Static methods to access ValueInstance of a CompatibleValueInstanceError
 		/// <summary>
-		/// Gets ValueTypeInstance.
+		/// Gets ValueInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ValueTypeInstance GetValueTypeInstance(CompatibleValueTypeInstanceValueError element)
+		public static ObjectInstance GetValueInstance(CompatibleValueInstanceError element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CompatibleValueTypeInstanceValueErrorDomainRoleId) as ValueTypeInstance;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CompatibleValueInstanceErrorDomainRoleId) as ObjectInstance;
 		}
 		
 		/// <summary>
-		/// Sets ValueTypeInstance.
+		/// Sets ValueInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetValueTypeInstance(CompatibleValueTypeInstanceValueError element, ValueTypeInstance newValueTypeInstance)
+		public static void SetValueInstance(CompatibleValueInstanceError element, ObjectInstance newValueInstance)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, CompatibleValueTypeInstanceValueErrorDomainRoleId, newValueTypeInstance);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CompatibleValueInstanceErrorDomainRoleId, newValueInstance);
 		}
 		#endregion
 		#region AssociatedElement domain role override
 		
 		/// <summary>
-		/// Gets the element playing ValueTypeInstance domain role.
+		/// Gets the element playing ValueInstance domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
 		/// </summary>
@@ -43058,72 +40901,72 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.ValueTypeInstance;
+				return this.ValueInstance;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.ValueTypeInstance = (ValueTypeInstance)value;
+				this.ValueInstance = (ObjectInstance)value;
 			}
 		}
 		
 		#endregion
-		#region CompatibleValueTypeInstanceValueError domain role code
+		#region CompatibleValueInstanceError domain role code
 		
 		/// <summary>
-		/// CompatibleValueTypeInstanceValueError domain role Id.
+		/// CompatibleValueInstanceError domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid CompatibleValueTypeInstanceValueErrorDomainRoleId = new global::System.Guid(0x52774478, 0x7f8b, 0x4974, 0xa2, 0x66, 0x75, 0x46, 0x3e, 0xa1, 0x80, 0x8f);
+		public static readonly global::System.Guid CompatibleValueInstanceErrorDomainRoleId = new global::System.Guid(0x52774478, 0x7f8b, 0x4974, 0xa2, 0x66, 0x75, 0x46, 0x3e, 0xa1, 0x80, 0x8f);
 		
 		/// <summary>
-		/// DomainRole CompatibleValueTypeInstanceValueError
+		/// DomainRole CompatibleValueInstanceError
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueError
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceError
 		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/CompatibleValueTypeInstanceValueError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/CompatibleValueTypeInstanceValueError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueTypeInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/CompatibleValueTypeInstanceValueError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/CompatibleValueInstanceError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/CompatibleValueInstanceError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError/CompatibleValueInstanceError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("52774478-7f8b-4974-a266-75463ea1808f")]
-		public virtual CompatibleValueTypeInstanceValueError CompatibleValueTypeInstanceValueError
+		public virtual CompatibleValueInstanceError CompatibleValueInstanceError
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (CompatibleValueTypeInstanceValueError)DslModeling::DomainRoleInfo.GetRolePlayer(this, CompatibleValueTypeInstanceValueErrorDomainRoleId);
+				return (CompatibleValueInstanceError)DslModeling::DomainRoleInfo.GetRolePlayer(this, CompatibleValueInstanceErrorDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CompatibleValueTypeInstanceValueErrorDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CompatibleValueInstanceErrorDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access CompatibleValueTypeInstanceValueError of a ValueTypeInstance
+		#region Static methods to access CompatibleValueInstanceError of a ObjectInstance
 		/// <summary>
-		/// Gets CompatibleValueTypeInstanceValueError.
+		/// Gets CompatibleValueInstanceError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static CompatibleValueTypeInstanceValueError GetCompatibleValueTypeInstanceValueError(ValueTypeInstance element)
+		public static CompatibleValueInstanceError GetCompatibleValueInstanceError(ObjectInstance element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueTypeInstanceDomainRoleId) as CompatibleValueTypeInstanceValueError;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueInstanceDomainRoleId) as CompatibleValueInstanceError;
 		}
 		
 		/// <summary>
-		/// Sets CompatibleValueTypeInstanceValueError.
+		/// Sets CompatibleValueInstanceError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetCompatibleValueTypeInstanceValueError(ValueTypeInstance element, CompatibleValueTypeInstanceValueError newCompatibleValueTypeInstanceValueError)
+		public static void SetCompatibleValueInstanceError(ObjectInstance element, CompatibleValueInstanceError newCompatibleValueInstanceError)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueTypeInstanceDomainRoleId, newCompatibleValueTypeInstanceValueError);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueInstanceDomainRoleId, newCompatibleValueInstanceError);
 		}
 		#endregion
 		#region ModelError domain role override
 		
 		/// <summary>
-		/// Gets the element playing CompatibleValueTypeInstanceValueError domain role.
+		/// Gets the element playing CompatibleValueInstanceError domain role.
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
 		/// </summary>
@@ -43132,26 +40975,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.CompatibleValueTypeInstanceValueError;
+				return this.CompatibleValueInstanceError;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.CompatibleValueTypeInstanceValueError = (CompatibleValueTypeInstanceValueError)value;
+				this.CompatibleValueInstanceError = (CompatibleValueInstanceError)value;
 			}
 		}
 		
 		#endregion
-		#region ValueTypeInstance link accessor
+		#region ValueInstance link accessor
 		/// <summary>
-		/// Get the ValueTypeInstanceHasCompatibleValueTypeInstanceValueError link to a ValueTypeInstance.
+		/// Get the ValueInstanceHasCompatibleValueError link to a ObjectInstance.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError GetLinkToCompatibleValueTypeInstanceValueError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance valueTypeInstanceInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError GetLinkToCompatibleValueInstanceError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance valueInstanceInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError>(valueTypeInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueTypeInstance not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError>(valueInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueInstance not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -43162,16 +41005,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region CompatibleValueTypeInstanceValueError link accessor
+		#region CompatibleValueInstanceError link accessor
 		/// <summary>
-		/// Get the ValueTypeInstanceHasCompatibleValueTypeInstanceValueError link to a CompatibleValueTypeInstanceValueError.
+		/// Get the ValueInstanceHasCompatibleValueError link to a CompatibleValueInstanceError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError GetLinkToValueTypeInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueTypeInstanceValueError compatibleValueTypeInstanceValueErrorInstance)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError GetLinkToValueInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueInstanceError compatibleValueInstanceErrorInstance)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError>(compatibleValueTypeInstanceValueErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CompatibleValueTypeInstanceValueError not obeyed.");
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError>(compatibleValueInstanceErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.CompatibleValueInstanceErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CompatibleValueInstanceError not obeyed.");
 			if ( links.Count == 0 )
 			{
 				return null;
@@ -43182,20 +41025,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
-		#region ValueTypeInstanceHasCompatibleValueTypeInstanceValueError instance accessors
+		#region ValueInstanceHasCompatibleValueError instance accessors
 		
 		/// <summary>
-		/// Get any ValueTypeInstanceHasCompatibleValueTypeInstanceValueError links between a given ValueTypeInstance and a CompatibleValueTypeInstanceValueError.
+		/// Get any ValueInstanceHasCompatibleValueError links between a given ObjectInstance and a CompatibleValueInstanceError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueTypeInstanceValueError target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueInstanceError target )
 		{
-			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError link in links )
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError link in links )
 			{
-				if ( target.Equals(link.CompatibleValueTypeInstanceValueError) )
+				if ( target.Equals(link.CompatibleValueInstanceError) )
 				{
 					outLinks.Add(link);
 				}
@@ -43203,16 +41046,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ValueTypeInstanceHasCompatibleValueTypeInstanceValueError link between a given ValueTypeInstanceand a CompatibleValueTypeInstanceValueError.
+		/// Get the one ValueInstanceHasCompatibleValueError link between a given ObjectInstanceand a CompatibleValueInstanceError.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueTypeInstanceValueError target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectInstance source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CompatibleValueInstanceError target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.ValueTypeInstanceDomainRoleId);
-			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError link in links )
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError.ValueInstanceDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueInstanceHasCompatibleValueError link in links )
 			{
-				if ( target.Equals(link.CompatibleValueTypeInstanceValueError) )
+				if ( target.Equals(link.CompatibleValueInstanceError) )
 				{
 					return link;
 				}

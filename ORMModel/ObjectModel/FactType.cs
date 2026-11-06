@@ -1005,12 +1005,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			if (0 != (filter & (ModelErrorUses.DisplayPrimary | ModelErrorUses.Verbalize)))
 			{
-				LinkedElementCollection<FactTypeInstance> factTypeInstances = this.FactTypeInstanceCollection;
-				int factTypeInstanceCount = factTypeInstances.Count;
-				for (int i = 0; i < factTypeInstanceCount; ++i)
+				LinkedElementCollection<FactInstance> factInstances = this.FactInstanceCollection;
+				int factInstanceCount = factInstances.Count;
+				for (int i = 0; i < factInstanceCount; ++i)
 				{
-					FactTypeInstance factTypeInstance = factTypeInstances[i];
-					foreach (ModelErrorUsage usage in (factTypeInstance as IModelErrorOwner).GetErrorCollection(startFilter))
+					FactInstance factInstance = factInstances[i];
+					foreach (ModelErrorUsage usage in (factInstance as IModelErrorOwner).GetErrorCollection(startFilter))
 					{
 						yield return usage;
 					}
@@ -3566,17 +3566,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Equality Overrides
 		}
 		#endregion // CombinedMandatoryUniqueVerbalizer class
-		#region FactTypeInstanceVerbalizer class
+		#region FactInstanceVerbalizer class
 		/// <summary>
 		/// Non-generated portions of verbalization helper used to verbalize a
 		/// combined internal uniqueness constraint and simple mandatory constraint.
 		/// </summary>
-		private partial class FactTypeInstanceVerbalizer
+		private partial class FactInstanceVerbalizer
 		{
 			private FactType myFactType;
-			private FactTypeInstance myInstance;
+			private FactInstance myInstance;
 			private bool myDisplayIdentifier;
-			public void Initialize(FactType factType, FactTypeInstance factInstance, bool displayIdentifier)
+			public void Initialize(FactType factType, FactInstance factInstance, bool displayIdentifier)
 			{
 				myFactType = factType;
 				myInstance = factInstance;
@@ -3594,7 +3594,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myFactType;
 				}
 			}
-			private FactTypeInstance Instance
+			private FactInstance Instance
 			{
 				get
 				{
@@ -3624,12 +3624,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			public override bool Equals(object obj)
 			{
-				FactTypeInstanceVerbalizer other;
-				return (null != (other = obj as FactTypeInstanceVerbalizer)) && other.myFactType == myFactType && other.myInstance == myInstance && other.myDisplayIdentifier == myDisplayIdentifier;
+				FactInstanceVerbalizer other;
+				return (null != (other = obj as FactInstanceVerbalizer)) && other.myFactType == myFactType && other.myInstance == myInstance && other.myDisplayIdentifier == myDisplayIdentifier;
 			}
 			#endregion // Equality Overrides
 		}
-		#endregion // FactTypeInstanceVerbalizer class
+		#endregion // FactInstanceVerbalizer class
 		#region DerivedElementsVerbalizer class
 		/// <summary>
 		/// Helper class for verbalization elements derived using a fact type.
@@ -4220,7 +4220,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 
 			// Verbalize instances
-			LinkedElementCollection<FactTypeInstance> instances = FactTypeInstanceCollection;
+			LinkedElementCollection<FactInstance> instances = FactInstanceCollection;
 			int instanceCount = instances.Count;
 			if (instanceCount != 0)
 			{
@@ -4233,23 +4233,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool first = true;
 				for (int i = 0; i < instanceCount; ++i)
 				{
-					FactTypeInstance instance = instances[i];
+					FactInstance instance = instances[i];
 					if (filter == null || !filter.FilterChildVerbalizer(instance, sign).IsBlocked)
 					{
 						if (first)
 						{
 							first = false;
-							yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockStart.GetVerbalizer(), true);
+							yield return CustomChildVerbalizer.VerbalizeInstance(FactInstanceBlockStart.GetVerbalizer(), true);
 						}
 
-						FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
+						FactInstanceVerbalizer verbalizer = FactInstanceVerbalizer.GetVerbalizer();
 						verbalizer.Initialize(this, instance, displayIdentifier);
 						yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 					}
 				}
 				if (!first)
 				{
-					yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
+					yield return CustomChildVerbalizer.VerbalizeInstance(FactInstanceBlockEnd.GetVerbalizer(), true);
 				}
 			}
 
@@ -4533,7 +4533,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					//    e) Delete the objectified unary role and the internal uniqueness constraint on it. The constraint will be implied
 					//       by the role proxy.
 					//    f) Create a RoleProxy to replace the ObjectifiedUnaryRole.
-					// 5) Replace any EntityTypeRoleInstance attached to the implicit boolean role to an EntityTypeInstancePopulatesUnaryRole.
+					// 5) Replace any EntityTypeRoleInstance attached to the implicit boolean role to an EntityInstancePopulatesUnaryRole.
 					// 6) SET the fact type UnaryPattern to UnaryValuePattern.OptionalWithNegation (for later processing)
 					foreach (Role role in element.PlayedRoleCollection)
 					{
@@ -4569,12 +4569,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												{
 													objectifyingType.PreferredIdentifier = unaryRoleConstraint;
 												}
-											}
-
-											// Move role instances before we delete the objectified unary role
-											foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToObjectTypeInstanceCollection(objectifiedUnaryRole))
-											{
-												roleInstance.Role = unaryRole;
 											}
 										}
 										uniquenessConstraint.Delete();
@@ -4761,13 +4755,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											break;
 									}
 								}
-							}
-
-							// Move any entity type role instances on the unary role to unary role instances on the unary role
-							// Note that fact type instances populate the unary role, not the boolean role.
-							foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToObjectTypeInstanceCollection(booleanRole))
-							{
-								new EntityTypeInstancePopulatesUnaryRole(roleInstance.EntityTypeInstance, unaryRole);
 							}
 
 							// Delete the boolean role, role player and value constraint
@@ -5160,7 +5147,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							role.Cardinality = null;
 							role.DefaultState = DefaultValueState.UseValue;
 							role.DefaultValue = "";
-							role.EntityInstancesForUnary.Clear();
 						}
 					}
 				}

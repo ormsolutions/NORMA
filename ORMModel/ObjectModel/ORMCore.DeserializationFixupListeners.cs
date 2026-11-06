@@ -54,7 +54,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return ObjectType.IsIndependentFixupListener;
 				yield return ObjectType.PreferredIdentificationPathFixupListener;
 				yield return ValueConstraint.FixupListener;
-				yield return ValueTypeInstance.FixupListener;
+				yield return ObjectInstance.FixupListener;
 				yield return ModelError.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateErrors, contextDomainModel);
 				yield return NameAlias.FixupListener;
 				yield return NameGenerator.FixupListener;

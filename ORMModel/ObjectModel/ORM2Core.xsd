@@ -327,7 +327,7 @@
 						</xs:annotation>
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="ValueTypeInstance" type="ValueTypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="Value" type="ValueType" minOccurs="0" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -351,8 +351,8 @@
 		</xs:sequence>
 	</xs:complexType>
 	<!--End Objects and Object Types-->
-	<!--ObjectTypeInstances-->
-	<xs:complexType name="ObjectTypeInstanceRef">
+	<!--ObjectInstances-->
+	<xs:complexType name="ObjectInstanceRef">
 		<xs:annotation>
 			<xs:documentation>A reference to an object type instance. An object type instance may be a value instance, an entity instance, or a subtype instance.</xs:documentation>
 		</xs:annotation>
@@ -363,82 +363,57 @@
 			<xs:documentation>Container for instances associated with an entity type.</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element name="EntityTypeInstance" type="EntityTypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="EntityTypeSubtypeInstance" type="EntityTypeSubtypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Entity" type="EntityType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="EntityTypeInstanceType">
+	<xs:complexType name="EntityType">
 		<xs:annotation>
 			<xs:documentation>An instance of a directly identified entity type.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleInstances" type="EntityTypeRoleInstancesType" minOccurs="0"/>
-			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0">
+			<xs:element name="SupertypeEntity" type="EntityRef" minOccurs="0"/>
+			<xs:element name="ObjectifiedFact" type="FactRef" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>A reference to the fact instance associated with this entity instance.</xs:documentation>
+					<xs:documentation>A reference to the fact objectified by with this entity.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="IdentityTag" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>A friendly name used to distinguish entities when a preferred identifier has not been determined.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="AutoIdentityTag" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The IdentityTag attribute was auto-generated.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="EntityTypeSubtypeInstanceType">
+	<xs:complexType name="EntityRef">
 		<xs:annotation>
-			<xs:documentation>An instance of a subtype instance defined as a relationship to an instance of the identifying supertype.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="SupertypeInstance" type="EntityTypeInstanceRef" minOccurs="0"/>
-			<xs:element name="ObjectifiedInstance" type="FactTypeInstanceRef" minOccurs="0">
-				<xs:annotation>
-					<xs:documentation>A reference to the fact instance associated with this subtype instance.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
-		</xs:sequence>
-		<xs:attributeGroup ref="idAttribute"/>
-	</xs:complexType>
-	<xs:complexType name="EntityTypeInstanceRef">
-		<xs:annotation>
-			<xs:documentation>A reference to an entity type instance.</xs:documentation>
+			<xs:documentation>A reference to an entity.</xs:documentation>
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
-	</xs:complexType>
-	<xs:complexType name="EntityTypeSubtypeInstanceRef">
-		<xs:annotation>
-			<xs:documentation>A reference to an entity type subtype instance.</xs:documentation>
-		</xs:annotation>
-		<xs:attributeGroup ref="refAttribute"/>
-	</xs:complexType>
-	<xs:complexType name="EntityTypeRoleInstancesType">
-		<xs:annotation>
-			<xs:documentation>Container for the role instances associated with an entity instance.</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="EntityTypeRoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="EntityTypeUnaryRoleInstance" type="RoleRef" minOccurs="0" maxOccurs="unbounded">
-				<xs:annotation>
-					<xs:documentation>A reference to a unary role indicating the role is populated by the EntityInstance.</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeRoleInstanceRef">
 		<xs:annotation>
-			<xs:documentation>A reference to a role instance, which is a use of an object instance by a role in a single entity instance or fact instance.</xs:documentation>
+			<xs:documentation>A reference to a role instance, which is a use of an object instance by a role in a fact.</xs:documentation>
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ValueTypeInstanceType">
+	<xs:complexType name="ValueType">
 		<xs:annotation>
 			<xs:documentation>Value instance. All other instance specifications are ultimately combinations of value instances.</xs:documentation>
 		</xs:annotation>
 		<xs:all>
-			<xs:element name="Value" type="xs:string">
+			<xs:element name="LexicalValue" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>The text form of an instance value.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="InvariantValue" type="xs:string" minOccurs="0">
+			<xs:element name="InvariantLexicalValue" type="xs:string" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>A culture-invariant form of the instance value. This will not be set for data types with data that is not culture dependent.</xs:documentation>
 				</xs:annotation>
@@ -447,7 +422,7 @@
 		</xs:all>
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ValueTypeInstanceRef">
+	<xs:complexType name="ValueRef">
 		<xs:annotation>
 			<xs:documentation>A reference to a value instance</xs:documentation>
 		</xs:annotation>
@@ -458,9 +433,7 @@
 			<xs:documentation>Container for relationships between instances of the role player and roles used in other complex instance definitions.</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="EntityTypeRoleInstance" type="RoleInstanceType"/>
-			<xs:element name="ValueTypeRoleInstance" type="RoleInstanceType"/>
-			<xs:element name="FactTypeRoleInstance" type="RoleInstanceType"/>
+			<xs:element name="RoleInstance" type="RoleInstanceType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="RoleInstanceType">
@@ -475,34 +448,34 @@
 			<xs:documentation>Container for instances associated with a fact type.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="FactTypeInstance" type="FactTypeInstanceType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Fact" type="FactType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="FactTypeInstanceType">
+	<xs:complexType name="FactType">
 		<xs:annotation>
-			<xs:documentation>A fact instance defined by a population of the fact roles.</xs:documentation>
+			<xs:documentation>A fact defined by a population of roles in the fact type.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleInstances" type="FactTypeRoleInstancesType" minOccurs="0"/>
+			<xs:element name="RoleInstances" type="FactRoleInstancesType" minOccurs="0"/>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeInstanceRef">
+	<xs:complexType name="FactRef">
 		<xs:annotation>
-			<xs:documentation>A reference to a fact instance.</xs:documentation>
+			<xs:documentation>A reference to a fact.</xs:documentation>
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeRoleInstancesType">
+	<xs:complexType name="FactRoleInstancesType">
 		<xs:annotation>
-			<xs:documentation>Container for the role instances associated with a fact instance.</xs:documentation>
+			<xs:documentation>Container for the role instances associated with a fact.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="FactTypeRoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
-	<!--end ObjectTypeInstances-->
+	<!--end ObjectInstances-->
 	<!--DataType -->
 	<!--DataTypeUse indicates a reference to a datatype by an object type -->
 	<xs:complexType name="DataTypeUse">
@@ -947,12 +920,12 @@
 			<xs:documentation>Container for the meta roles associated with a subtype fact.</xs:documentation>
 		</xs:annotation>
 		<xs:all>
-			<xs:element name="SupertypeRole" type="RoleType">
+			<xs:element name="SupertypeRole" type="SubtypingRoleType">
 				<xs:annotation>
 					<xs:documentation>The meta role associated with the supertype role player.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SubtypeRole" type="RoleType">
+			<xs:element name="SubtypeRole" type="SubtypingRoleType">
 				<xs:annotation>
 					<xs:documentation>The meta role associated with the subtype role player.</xs:documentation>
 				</xs:annotation>
@@ -978,7 +951,6 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="CardinalityRestriction" type="UnaryRoleCardinalityRestrictionType" minOccurs="0"/>
-			<xs:element name="RoleInstances" type="RoleInstancesType"  minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" type="xs:string">
 			<xs:annotation>
@@ -996,9 +968,30 @@
 		<xs:attribute name="_Multiplicity" type="MultiplicityValues" default="ZeroToOne"/>
 		<xs:attribute name="DefaultState" type="DefaultValueState" use="optional" default="UseValue"/>
 	</xs:complexType>
+	<xs:complexType name="RoleWithInstancesBaseType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="RoleBaseType">
+				<xs:sequence>
+					<xs:element name="RoleInstances" type="RoleInstancesType"  minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="RoleType">
 		<xs:annotation>
 			<xs:documentation>A primary role declaration.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="RoleWithInstancesBaseType">
+				<xs:sequence>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubtypingRoleType">
+		<xs:annotation>
+			<xs:documentation>A primary role declaring in a subtype fact type.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="RoleBaseType">
@@ -1023,7 +1016,7 @@
 			<xs:documentation>(Deprecated legacy structure, loaded but not saved) With unary negation replacing binarized unaries, objectification uses a RoleProxy instead. A role representing the identifying role in the fact type implied between the object type that objectifies a unary role and the unary role player. There is an implied equality constraint between this role and the referenced unary role.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="RoleBaseType">
+			<xs:extension base="RoleWithInstancesBaseType">
 				<xs:sequence>
 					<xs:element name="UnaryRole" type="RoleRef">
 						<xs:annotation>
@@ -1293,7 +1286,6 @@
 			<xs:element name="Roles" type="SubtypingRolesType"/>
 			<xs:element name="ReadingOrders" type="ReadingOrdersType" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraintsType" minOccurs="0"/>
-			<xs:element name="Instances" type="FactTypeInstancesType" minOccurs="0"/>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="_Name" type="xs:string">
@@ -1977,7 +1969,7 @@
 			<xs:documentation>A constant value used in a role path.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Value" type="xs:string">
+			<xs:element name="LexicalValue" type="xs:string">
 				<xs:annotation>
 					<xs:documentation>The lexical constant value. The value is interpreted based on context.</xs:documentation>
 				</xs:annotation>
@@ -2836,8 +2828,8 @@
 			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchErrorType"/>
 			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintErrorType"/>
 			<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingErrorType"/>
-			<xs:element name="TooFewEntityTypeRoleInstancesError" type="TooFewEntityTypeRoleInstancesErrorType"/>
-			<xs:element name="TooFewFactTypeRoleInstancesError" type="TooFewFactTypeRoleInstancesErrorType"/>
+			<xs:element name="IncompleteEntityIdentifierError" type="IncompleteEntityIdentifierErrorType"/>
+			<xs:element name="IncompleteFactError" type="IncompleteFactErrorType"/>
 			<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesErrorType"/>
 			<xs:element name="ReadingRequiresUserModificationError" type="ReadingRequiresUserModificationErrorType"/>
 			<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesErrorType"/>
@@ -2871,9 +2863,9 @@
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintErrorType"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryErrorType"/>
 			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesErrorType"/>
-			<xs:element name="ObjectifyingInstanceRequiredError" type="ObjectifyingInstanceRequiredErrorType"/>
-			<xs:element name="ObjectifiedInstanceRequiredError" type="ObjectifiedInstanceRequiredErrorType"/>
-			<xs:element name="CompatibleValueTypeInstanceValueError" type="CompatibleValueTypeInstanceValueErrorType"/>
+			<xs:element name="ObjectifyingEntityRequiredError" type="ObjectifyingEntityRequiredErrorType"/>
+			<xs:element name="ObjectifiedFactRequiredError" type="ObjectifiedFactRequiredErrorType"/>
+			<xs:element name="CompatibleValueError" type="CompatibleValueErrorType"/>
 			<xs:element name="PopulationMandatoryError" type="PopulationMandatoryErrorType"/>
 			<xs:element name="PopulationUniquenessError" type="PopulationUniquenessErrorType"/>
 			<xs:element name="ExclusionContradictsEqualityError" type="ExclusionContradictsEqualityErrorType"/>
@@ -3144,26 +3136,26 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TooFewEntityTypeRoleInstancesErrorType">
+	<xs:complexType name="IncompleteEntityIdentifierErrorType">
 		<xs:annotation>
-			<xs:documentation>An entity instance is missing instance associations for some of the roles in its preferred identifier.</xs:documentation>
+			<xs:documentation>An entity does not participate in facts for some of the roles in its preferred identifier.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="EntityTypeInstance" type="EntityTypeInstanceRef"/>
+					<xs:element name="Entity" type="EntityRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TooFewFactTypeRoleInstancesErrorType">
+	<xs:complexType name="IncompleteFactErrorType">
 		<xs:annotation>
-			<xs:documentation>A fact instance is missing instance associations for some roles in the fact type.</xs:documentation>
+			<xs:documentation>A fact is missing instance associations for some roles in the fact type.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="FactTypeInstance" type="FactTypeInstanceRef"/>
+					<xs:element name="Fact" type="FactRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -3599,14 +3591,14 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="CompatibleValueTypeInstanceValueErrorType">
+	<xs:complexType name="CompatibleValueErrorType">
 		<xs:annotation>
 			<xs:documentation>The value of an instance is not compatible with the data type of the corresponding value type.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="ValueTypeInstance" type="ValueTypeInstanceRef"/>
+					<xs:element name="Value" type="ValueRef"/>
 				</xs:sequence>
 			</xs:extension >
 		</xs:complexContent>
@@ -3618,7 +3610,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:all>
-					<xs:element name="ObjectTypeInstance" type="ObjectTypeInstanceRef"/>
+					<xs:element name="ObjectInstance" type="ObjectInstanceRef"/>
 					<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
 				</xs:all>
 			</xs:extension>
@@ -3637,8 +3629,7 @@
 						</xs:annotation>
 						<xs:complexType>
 							<xs:choice minOccurs="2" maxOccurs="unbounded">
-								<xs:element name="FactTypeRoleInstance" type="ObjectTypeRoleInstanceRef"/>
-								<xs:element name="EntityTypeRoleInstance" type="ObjectTypeRoleInstanceRef"/>
+								<xs:element name="RoleInstance" type="ObjectTypeRoleInstanceRef"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
@@ -3646,27 +3637,26 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ObjectifyingInstanceRequiredErrorType">
+	<xs:complexType name="ObjectifyingEntityRequiredErrorType">
 		<xs:annotation>
-			<xs:documentation>An instance of an objectified fact type does not have an associated instance for the objectifying entity type.</xs:documentation>
+			<xs:documentation>An objectified fact does not have an associated objectifying entity.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
-					<xs:element name="FactTypeInstance" type="FactTypeInstanceRef"/>
+					<xs:element name="Fact" type="FactRef"/>
 				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ObjectifiedInstanceRequiredErrorType">
+	<xs:complexType name="ObjectifiedFactRequiredErrorType">
 		<xs:annotation>
-			<xs:documentation>An instance an objectifying entity does not have an associated instance for the objectifed fact type.</xs:documentation>
+			<xs:documentation>An entity does not have an associated objectified fact.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
-					<xs:element name="EntityTypeInstance" type="EntityTypeInstanceRef"/>
-					<xs:element name="EntityTypeSubtypeInstance" type="EntityTypeSubtypeInstanceRef"/>
+					<xs:element name="Entity" type="EntityRef"/>
 				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>

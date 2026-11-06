@@ -161,7 +161,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="ObjectType">
 				<xs:annotation>
-					<xs:documentation>Use with the ObjectTypeInstanceVerbalizer</xs:documentation>
+					<xs:documentation>Use with the ObjectInstanceVerbalizer</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="RingConstraint">
@@ -450,7 +450,7 @@
 			<xs:enumeration value="IndentedLogicalAndList"/>
 			<xs:enumeration value="IndentedLogicalOrList"/>
 			<xs:enumeration value="MultilineIndentedCompoundList"/>
-			<xs:enumeration value="ObjectTypeInstanceList"/>
+			<xs:enumeration value="ObjectInstanceList"/>
 			<xs:enumeration value="SimpleList"/>
 			<xs:enumeration value="SimpleLogicalAndList"/>
 			<xs:enumeration value="SimpleLogicalOrList"/>
@@ -1013,7 +1013,7 @@
 					</xs:enumeration>
 					<xs:enumeration value="ObjectifyingInstance">
 						<xs:annotation>
-							<xs:documentation>The FactTypeInstance has an objectifying identifier that should be displayed</xs:documentation>
+							<xs:documentation>The FactInstance has an objectifying identifier that should be displayed</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 					<xs:enumeration value="VerbalizeFactTypesWithBrowserObjectType">
@@ -1528,7 +1528,7 @@ selection of replacement contents anywhere a snippet can be used.</xs:documentat
 	</xs:complexType>
 	<xs:complexType name="ObjectifyingInstanceIdentifierNameType">
 		<xs:annotation>
-			<xs:documentation>Returns the IdentifierName for an ObjectTypeInstance.</xs:documentation>
+			<xs:documentation>Returns the IdentifierName for an ObjectInstance.</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="ParameterNameType">
@@ -1546,7 +1546,7 @@ selection of replacement contents anywhere a snippet can be used.</xs:documentat
 			<xs:documentation>Returns the name of the identified ObjectType from the context of a UniquenessConstraint</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
-	<xs:complexType name="ObjectTypeInstanceValueType">
+	<xs:complexType name="ObjectInstanceValueType">
 		<xs:annotation>
 			<xs:documentation>Returns the value of the Object Type Instance</xs:documentation>
 		</xs:annotation>
@@ -2076,7 +2076,7 @@ selection of replacement contents anywhere a snippet can be used.</xs:documentat
 	</xs:complexType>
 	<xs:complexType name="IterateInstancesType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="ObjectTypeInstanceValue" type="ObjectTypeInstanceValueType"/>
+			<xs:element name="ObjectInstanceValue" type="ObjectInstanceValueType"/>
 		</xs:choice>
 		<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
 	</xs:complexType>

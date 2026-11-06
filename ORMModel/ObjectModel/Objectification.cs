@@ -1797,14 +1797,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Note that this assumes xsd validation has occurred (RoleProxy is only on an ImpliedFact, there
 				// is 1 Role and 1 RoleProxy or two Roles for a unary objectification, and implied facts must be
 				// attached to an Objectification relationship).
-				FactType nestedFact = element.NestedFactType;
-				Partition partition = nestedFact.Partition;
+				FactType nestedFactType = element.NestedFactType;
+				Partition partition = nestedFactType.Partition;
 				bool checkedOwner = false;
 				ORMModel model = null;
 				DomainClassInfo alternateFactTypeCtor = null;
 				IAlternateElementOwner<FactType> alternateOwner = null;
 				ObjectType nestingType = element.NestingType;
-				LinkedElementCollection<RoleBase> factRoles = nestedFact.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = nestedFactType.RoleCollection;
 				int factRolesCount = factRoles.Count;
 
 				// Make sure each of the facts has a properly constructed role proxy
@@ -1858,7 +1858,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (impliedFact != null)
 								{
 									// Implied facts have implied instance collections
-									impliedFact.FactTypeInstanceCollection.Clear();
+									impliedFact.FactInstanceCollection.Clear();
 								}
 							}
 						}
@@ -1881,7 +1881,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							checkedOwner = true;
 							IHasAlternateOwner<FactType> toAlternateOwner;
-							if (null != (toAlternateOwner = nestedFact as IHasAlternateOwner<FactType>) &&
+							if (null != (toAlternateOwner = nestedFactType as IHasAlternateOwner<FactType>) &&
 								null != (alternateOwner = toAlternateOwner.AlternateOwner))
 							{
 								if (null == (alternateFactTypeCtor = alternateOwner.GetOwnedElementClassInfo(typeof(FactType))))
@@ -1892,7 +1892,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							else
 							{
-								model = nestedFact.Model;
+								model = nestedFactType.Model;
 							}
 						}
 						impliedFact = (alternateFactTypeCtor != null) ?
@@ -1966,7 +1966,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							Role targetRole;
 							if (proxy == null ||
 								null == (targetRole = proxy.Role) ||
-								nestedFact != targetRole.FactType)
+								nestedFactType != targetRole.FactType)
 							{
 								RemoveFactType(impliedFact);
 								--leftToRemove;
@@ -2016,7 +2016,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						element.IsImplied = false;
 					}
-					else if (null != (derivationRule = nestedFact.DerivationRule as FactTypeDerivationRule) &&
+					else if (null != (derivationRule = nestedFactType.DerivationRule as FactTypeDerivationRule) &&
 						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 						!derivationRule.ExternalDerivation)
 					{
@@ -2033,332 +2033,52 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 
 				// Verify ObjectificationInstance population links
-				LinkedElementCollection<FactTypeInstance> factInstances = nestedFact.FactTypeInstanceCollection;
+				// Make sure there is a fact for every entity and vice versa.
+				// UNDONE: NOW Kill EntityTypeRoleInstance Do we need to condition this? We definitely need
+				// the delete code, but force populating an entity when no internal identifying roles are
+				// populated seems silly (except for display, where the partial fact population may be useful
+				// even if not identifying. Do we show this in the instance name?).
+				// Also, empty fact instance seem silly as these are never implicitly populated.
+				LinkedElementCollection<FactInstance> factInstances = nestedFactType.FactInstanceCollection;
 				int factInstanceCount = factInstances.Count;
-				LinkedElementCollection<EntityTypeInstance> entityInstances = nestingType.EntityTypeInstanceCollection;
+				for (int i = 0; i < factInstanceCount; ++i)
+				{
+					FactInstance factInstance = factInstances[i];
+					ObjectificationInstance instanceLink = ObjectificationInstance.GetLinkToObjectifyingInstance(factInstance);
+					if (instanceLink != null && instanceLink.ObjectifiedInstance != factInstance)
+					{
+						instanceLink.Delete();
+						instanceLink = null;
+					}
+
+					if (instanceLink == null)
+					{
+						ObjectInstance objectifyingInstance = new ObjectInstance(partition);
+						new ObjectTypeHasObjectInstance(nestingType, objectifyingInstance);
+						new ObjectificationInstance(factInstance, objectifyingInstance);
+						notifyAdded.ElementAdded(objectifyingInstance, true);
+					}
+				}
+
+				LinkedElementCollection<ObjectInstance> entityInstances = nestingType.ObjectInstanceCollection;
 				int entityInstanceCount = entityInstances.Count;
-				if (factInstanceCount != 0 || entityInstanceCount != 0)
+				for (int i = 0; i < entityInstanceCount; ++i)
 				{
-					// What we do here depends on the pid. This is very similar to ObjectificationInstance.ValidateObjectificationInstances,
-					// except that this does not rely on implicit elements and attempts to resolve unconnected instances.
-					// We first need to figure out if we have an internal preferred identifier on the FactType, an external
-					// preferred identifier, or none at all.
-					UniquenessConstraint pid = nestingType.PreferredIdentifier;
-					if (pid == null)
+					ObjectInstance entityInstance = entityInstances[i];
+					ObjectificationInstance instanceLink = ObjectificationInstance.GetLinkToObjectifiedInstance(entityInstance);
+					if (instanceLink != null && instanceLink.ObjectifyingInstance != entityInstance)
 					{
-						if (entityInstanceCount != 0)
-						{
-							entityInstances.Clear();
-						}
+						instanceLink.Delete();
+						instanceLink = null;
 					}
-					else
+					if (instanceLink == null)
 					{
-						bool internalIdentifier = false;
-						LinkedElementCollection<Role> pidRoles = null;
-						if (pid.IsInternal)
-						{
-							internalIdentifier = true;
-							pidRoles = pid.RoleCollection;
-							foreach (Role role in pidRoles)
-							{
-								if (role.FactType != nestedFact)
-								{
-									internalIdentifier = false;
-									break;
-								}
-							}
-						}
-						if (internalIdentifier)
-						{
-							// Walk the FactType instances, adding any values that are not already correctly associated
-							KeyedRoleInstanceComparer comparer = new KeyedRoleInstanceComparer(pidRoles);
-							HashSet<IList, ORMModelElement> keyedValues = null;
-							for (int i = 0; i < factInstanceCount; ++i)
-							{
-								FactTypeInstance factInstance = factInstances[i];
-								EntityTypeInstance impliedEntityInstance = factInstance.ObjectifyingInstance as EntityTypeInstance;
-								bool addToCompareBucket = true;
-								if (impliedEntityInstance != null)
-								{
-									if (addToCompareBucket = !comparer.Equals((IList)factInstance.RoleInstanceCollection, (IList)impliedEntityInstance.RoleInstanceCollection))
-									{
-										// Remove the link, it was incorrect. We can relink appropriately later.
-										factInstance.ObjectifyingInstance = null;
-									}
-								}
-								if (addToCompareBucket)
-								{
-									if (keyedValues == null)
-									{
-										keyedValues = new HashSet<IList, ORMModelElement>(comparer, comparer);
-									}
-									keyedValues.Add(factInstance);
-								}
-							}
-							// Walk the other entity type end
-							for (int i = 0; i < entityInstanceCount; ++i)
-							{
-								EntityTypeInstance entityInstance = entityInstances[i];
-								if (entityInstance.ObjectifiedInstance == null)
-								{
-									if (keyedValues == null)
-									{
-										keyedValues = new HashSet<IList, ORMModelElement>(comparer, comparer);
-									}
-									keyedValues.Add(entityInstance);
-								}
-							}
-							if (keyedValues != null)
-							{
-								foreach (IList key in keyedValues.Keys)
-								{
-									IList<ORMModelElement> instanceList = keyedValues.GetValues(key);
-									int instanceCount = instanceList.Count;
-									FactTypeInstance factInstance;
-									EntityTypeInstance entityInstance;
-
-									// The keys collection does not return unique keys. Make sure we haven't
-									// processed an equivalent key before.
-									ORMModelElement firstInstance = instanceList[0];
-									if (null != (factInstance = firstInstance as FactTypeInstance))
-									{
-										if (factInstance.ObjectifyingInstance != null)
-										{
-											continue;
-										}
-									}
-									else if (null != (((EntityTypeInstance)firstInstance).ObjectifiedInstance))
-									{
-										continue;
-									}
-									
-									ORMModelElement[] instances = new ORMModelElement[instanceCount];
-									instanceList.CopyTo(instances, 0);
-									int firstFactInstanceIndex = -1;
-									int firstEntityInstanceIndex = -1;
-									int remainingCount = instanceCount;
-									while (remainingCount != 0)
-									{
-										for (int i = 0; i < instanceCount; ++i)
-										{
-											ORMModelElement instance = instances[i];
-											if (instance != null)
-											{
-												if (firstFactInstanceIndex == -1)
-												{
-													if (null != (factInstance = instance as FactTypeInstance))
-													{
-														firstFactInstanceIndex = i;
-														if (firstEntityInstanceIndex != -1)
-														{
-															break;
-														}
-													}
-													else if (firstEntityInstanceIndex == -1)
-													{
-														firstEntityInstanceIndex = i;
-													}
-												}
-												else if (firstEntityInstanceIndex == -1)
-												{
-													if (null != (entityInstance = instance as EntityTypeInstance))
-													{
-														firstEntityInstanceIndex = i;
-														if (firstFactInstanceIndex != -1)
-														{
-															break;
-														}
-													}
-												}
-											}
-										}
-										if (firstFactInstanceIndex != -1)
-										{
-											if (firstEntityInstanceIndex != -1)
-											{
-												remainingCount -= 2;
-												factInstance = (FactTypeInstance)instances[firstFactInstanceIndex];
-												instances[firstFactInstanceIndex] = null;
-												entityInstance = (EntityTypeInstance)instances[firstEntityInstanceIndex];
-												instances[firstEntityInstanceIndex] = null;
-												notifyAdded.ElementAdded(new ObjectificationInstance(factInstance, entityInstance), false);
-											}
-											else
-											{
-												remainingCount = 0;
-												for (int i = firstFactInstanceIndex; i < instanceCount; ++i)
-												{
-													factInstance = instances[i] as FactTypeInstance;
-													if (factInstance != null)
-													{
-														// Create a new corresponding EntityTypeInstance
-														entityInstance = new EntityTypeInstance(partition);
-														entityInstance.EntityType = nestingType;
-														entityInstance.ObjectifiedInstance = factInstance;
-														notifyAdded.ElementAdded(entityInstance, true);
-
-														// Attach role instances
-														foreach (RoleInstance roleInstance in key)
-														{
-															EntityTypeRoleInstance entityRoleInstance = new EntityTypeRoleInstance(roleInstance.Role, roleInstance.ObjectTypeInstance);
-															entityRoleInstance.EntityTypeInstance = entityInstance;
-															notifyAdded.ElementAdded(entityRoleInstance, true);
-														}
-													}
-												}
-											}
-										}
-										else if (firstEntityInstanceIndex != -1)
-										{
-											remainingCount = 0;
-											for (int i = firstEntityInstanceIndex; i < instanceCount; ++i)
-											{
-												entityInstance = instances[i] as EntityTypeInstance;
-												if (entityInstance != null)
-												{
-													// Create a new corresponding FactTypeInstance
-													factInstance = new FactTypeInstance(partition);
-													factInstance.FactType = nestedFact;
-													factInstance.ObjectifyingInstance = entityInstance;
-													notifyAdded.ElementAdded(factInstance, true);
-
-													// Attach role instances
-													foreach (RoleInstance roleInstance in key)
-													{
-														FactTypeRoleInstance factRoleInstance = new FactTypeRoleInstance(roleInstance.Role, roleInstance.ObjectTypeInstance);
-														factRoleInstance.FactTypeInstance = factInstance;
-														notifyAdded.ElementAdded(factRoleInstance, true);
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+						FactInstance objectifiedInstance = new FactInstance(partition);
+						new FactTypeHasFactInstance(nestedFactType, objectifiedInstance);
+						new ObjectificationInstance(objectifiedInstance, entityInstance);
+						notifyAdded.ElementAdded(objectifiedInstance, true);
 					}
 				}
-			}
-			private sealed class KeyedRoleInstanceComparer : IEqualityComparer<IList>, IKeyProvider<IList, ORMModelElement>
-			{
-				#region Member variables
-				private IList<Role> myReferenceRoles;
-				#endregion // Member variables
-				#region Constructor
-				public KeyedRoleInstanceComparer(IList<Role> referenceRoles)
-				{
-					myReferenceRoles = referenceRoles;
-				}
-				#endregion // Constructor
-				#region IEqualityComparer<IList> Implementation
-				public bool Equals(IList x, IList y)
-				{
-					int xCount = x.Count;
-					int yCount = y.Count;
-					if (xCount == 0)
-					{
-						return yCount == 0;
-					}
-					else if (yCount == 0)
-					{
-						return false;
-					}
-					IList<Role> referenceRoles = myReferenceRoles;
-					int roleCount = referenceRoles.Count;
-					for (int i = 0; i < roleCount; ++i)
-					{
-						Role testRole = referenceRoles[i];
-						int j = 0;
-						for (; j < xCount; ++j)
-						{
-							RoleInstance xRoleInstance = (RoleInstance)x[j];
-							if (xRoleInstance.Role == testRole)
-							{
-								int k = 0;
-								for (; k < yCount; ++k)
-								{
-									RoleInstance yRoleInstance = (RoleInstance)y[k];
-									if (yRoleInstance.Role == testRole)
-									{
-										if (xRoleInstance.ObjectTypeInstance == yRoleInstance.ObjectTypeInstance)
-										{
-											break;
-										}
-										return false;
-									}
-								}
-								if (k == yCount)
-								{
-									// Match not found
-									return false;
-								}
-								break;
-							}
-						}
-						if (j == xCount)
-						{
-							// Match not found. If we find a match in y then the sets are not equal
-							for (int k = 0; k < yCount; ++k)
-							{
-								if (((RoleInstance)y[k]).Role == testRole)
-								{
-									return false;
-								}
-							}
-						}
-					}
-					return true;
-				}
-				public int GetHashCode(IList instances)
-				{
-					int instanceCount = instances.Count;
-					if (instanceCount == 0)
-					{
-						return 0;
-					}
-					IList<Role> referenceRoles = myReferenceRoles;
-					int roleCount = referenceRoles.Count;
-					int hashCode = 0;
-					for (int i = 0; i < roleCount; ++i)
-					{
-						Role testRole = referenceRoles[i];
-						int currentHashCode = 0;
-						for (int j = 0; j < instanceCount; ++j)
-						{
-							RoleInstance instance = (RoleInstance)instances[j];
-							if (instance.Role == testRole)
-							{
-								currentHashCode = testRole.GetHashCode() ^ instance.ObjectTypeInstance.GetHashCode();
-								break;
-							}
-						}
-						if (currentHashCode != 0)
-						{
-							if (i == 0)
-							{
-								hashCode = currentHashCode;
-							}
-							else
-							{
-								int shift = i % 32;
-								hashCode = unchecked((int)((uint)hashCode ^ (((uint)currentHashCode >> shift) | ((uint)currentHashCode << (32 - shift)))));
-							}
-						}
-					}
-					return hashCode;
-				}
-				#endregion // IEqualityComparer<IList> Implementation
-				#region IKeyProvider<IList,ORMModelElement> Implementation
-				public IList GetKey(ORMModelElement value)
-				{
-					EntityTypeInstance entityInstance;
-					if (null != (entityInstance = value as EntityTypeInstance))
-					{
-						return entityInstance.RoleInstanceCollection;
-					}
-					return ((FactTypeInstance)value).RoleInstanceCollection;
-				}
-				#endregion // IKeyProvider<IList<RoleInstance>,ORMModelElement> Implementation
 			}
 			/// <summary>
 			/// Internal constraints are not fully connected at this point (FactSetConstraint instances

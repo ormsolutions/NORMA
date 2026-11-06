@@ -51,9 +51,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
 			FactType factType = ModelElement;
-			Store store;
 			if (factType.UnaryPattern == UnaryValuePattern.Negation &&
-				null != (store = Utility.ValidateStore(factType.Store)))
+				null != Utility.ValidateStore(factType.Store))
 			{
 				retVal = EditorUtility.GetEditablePropertyDescriptors(retVal);
 				retVal.Add(UnaryNegationPropertyDescriptor);
@@ -139,7 +138,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		protected override bool ShouldCreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo sourceRole)
 		{
-			return Utility.IsDescendantOrSelf(sourceRole, Objectification.NestedFactTypeDomainRoleId);
+			return sourceRole.Id == Objectification.NestedFactTypeDomainRoleId;
 		}
 
 		/// <summary>
@@ -147,7 +146,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		protected override RolePlayerPropertyDescriptor CreateRolePlayerPropertyDescriptor(ModelElement sourceRolePlayer, DomainRoleInfo targetRoleInfo, Attribute[] sourceDomainRoleInfoAttributes)
 		{
-			if (Utility.IsDescendantOrSelf(targetRoleInfo, Objectification.NestingTypeDomainRoleId))
+			if (targetRoleInfo.Id == Objectification.NestingTypeDomainRoleId)
 			{
 				return new ObjectifyingEntityTypePropertyDescriptor((FactType)sourceRolePlayer, targetRoleInfo, sourceDomainRoleInfoAttributes);
 			}
@@ -176,7 +175,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				PropertyDescriptor retVal = myUnaryNegationStatusPropertyDescriptor;
 				if (retVal == null)
 				{
-					PropertyDescriptor innerDescriptor = TypeDescriptor.CreateProperty(typeof(UnaryNegationComponent), "UnaryNegation", typeof(Boolean));
 					myUnaryNegationStatusPropertyDescriptor = retVal = EditorUtility.RedirectPropertyDescriptor(
 						new UnaryNegationComponent(),
 						EditorUtility.ModifyPropertyDescriptorDisplay(TypeDescriptor.CreateProperty(typeof(UnaryNegationComponent), "UnaryNegation", typeof(Boolean)), "IsUnaryNegation", ResourceStrings.FactTypeUnaryNegationDisplayName, ResourceStrings.FactTypeUnaryNegationDisplayName, null, true),
